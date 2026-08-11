@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId = "com.seepd.toki"
         minSdk = 26
-        targetSdk = 37
+        targetSdk = 36
         versionCode = 413
         versionName = "0.4.13"
 
@@ -70,6 +70,7 @@ android {
             "DiscouragedPrivateApi",
             "GradleDependency",
             "MonochromeLauncherIcon",
+            "OldTargetApi",
             "PrivateApi",
             "SdCardPath",
             "SoonBlockedPrivateApi",

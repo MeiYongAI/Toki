@@ -42,7 +42,8 @@ Toki 不声明网络权限，不包含统计、遥测、远程更新、外部 AP
 
 ## 构建
 
-需要 JDK 21、Android SDK 37 和 Build Tools 37.0.0：
+需要 JDK 21、Android SDK Platform 37.0 和 Build Tools 37.0.0。应用的
+`targetSdk` 保持为 36：
 
 ```powershell
 .\gradlew.bat testDebugUnitTest lintDebug assembleDebug
