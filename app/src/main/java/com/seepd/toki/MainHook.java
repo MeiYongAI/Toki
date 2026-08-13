@@ -62,6 +62,8 @@ public final class MainHook extends XposedModule {
     private final AtomicBoolean loopPreventionEngineInvocationLogged = new AtomicBoolean(false);
     private final AtomicBoolean loopPreventionCompletionStateLogged = new AtomicBoolean(false);
     private final AtomicBoolean loopPreventionCompletionStateFailureLogged = new AtomicBoolean(false);
+    private final AtomicBoolean defaultPlaybackSpeedAppliedLogged = new AtomicBoolean(false);
+    private final AtomicBoolean defaultPlaybackSpeedFailureLogged = new AtomicBoolean(false);
     private final AtomicBoolean antiBurnInPhotoTitleFailureLogged = new AtomicBoolean(false);
     private final AtomicInteger antiBurnInTraceBudget = new AtomicInteger(0);
     private final Object officialTranslationLock = new Object();
@@ -74,6 +76,7 @@ public final class MainHook extends XposedModule {
     private final WeakHashMap<Object, AntiBurnInGestureTracker> antiBurnInPhotoGestures =
             new WeakHashMap<>();
     private final WeakHashMap<Object, Boolean> antiBurnInPausePanels = new WeakHashMap<>();
+    private final WeakHashMap<Object, String> defaultPlaybackSpeedSourceIds = new WeakHashMap<>();
     private final WeakHashMap<Object, PhotoUiRestoreTarget> antiBurnInPhotoUiRestoreTargets =
             new WeakHashMap<>();
     private final WeakHashMap<Object, Runnable> antiBurnInPhotoLongPressTasks =
@@ -136,6 +139,7 @@ public final class MainHook extends XposedModule {
             logInfo("Active for " + context.getPackageName());
             logInfo("Hook revision: direct-ui-gates-2-loop-engine-1");
             logInfo("Loop prevention setting: " + config.disableLoop);
+            logInfo("Default playback speed: " + config.defaultPlaybackSpeed);
             logInfo("Anti-burn-in setting: " + config.antiBurnIn);
             logInfo("Comment translation setting: " + config.autoTranslateComments);
             if (config.regionSpoof) {
@@ -157,6 +161,7 @@ public final class MainHook extends XposedModule {
                             new ClassNotFoundException("TTVideoEngine#setLooping(boolean)"));
                 }
             }
+            installDefaultPlaybackSpeed(classLoader);
             if (config.antiBurnIn) {
                 logInfo("Installing anti-burn-in bridges");
                 installAntiBurnIn(classLoader, context);
@@ -2862,6 +2867,24 @@ public final class MainHook extends XposedModule {
         return findMethodByNameAndArity(type, 0, names);
     }
 
+    private static Method findFloatVoidMethod(Class<?> type, String name) {
+        Class<?> current = type;
+        while (current != null) {
+            for (Method method : current.getDeclaredMethods()) {
+                Class<?>[] parameters = method.getParameterTypes();
+                if (name.equals(method.getName())
+                        && method.getReturnType() == void.class
+                        && parameters.length == 1
+                        && parameters[0] == float.class) {
+                    method.setAccessible(true);
+                    return method;
+                }
+            }
+            current = current.getSuperclass();
+        }
+        return null;
+    }
+
     private static Method findMethodByNameAndParameter(
             Class<?> type,
             Class<?> parameter,
@@ -3260,6 +3283,140 @@ public final class MainHook extends XposedModule {
             installedTargets++;
         }
         return installedTargets;
+    }
+
+    /**
+     * Applies the configured speed after TikTok finishes initializing a newly rendered video.
+     * This deliberately runs once per source ID, so an in-app manual speed change stays intact
+     * for the current video while the next video returns to the configured default.
+     */
+    private void installDefaultPlaybackSpeed(ClassLoader classLoader) {
+        try {
+            Class<?> type = Class.forName(
+                    "com.ss.android.ugc.aweme.feed.controller.PlayerController",
+                    false,
+                    classLoader);
+            int installed = 0;
+            for (Method method : type.getDeclaredMethods()) {
+                if (!"onRenderReady".equals(method.getName())
+                        || method.getParameterCount() != 1
+                        || method.getReturnType() != void.class
+                        || method.isSynthetic()) {
+                    continue;
+                }
+                method.setAccessible(true);
+                hook(method)
+                        .setId("toki-default-playback-speed-" + installed)
+                        .intercept(chain -> {
+                            Object result = chain.proceed();
+                            applyDefaultPlaybackSpeed(chain.getThisObject(), chain.getArg(0));
+                            return result;
+                        });
+                installed++;
+            }
+            if (installed == 0) {
+                logError(
+                        "Unable to find PlayerController#onRenderReady(*)",
+                        new NoSuchMethodException("onRenderReady(*)"));
+            } else {
+                logInfo("Default playback speed bridge installed: " + installed + " target(s)");
+            }
+        } catch (ClassNotFoundException ignored) {
+            // The player controller is unavailable in this TikTok variant.
+        } catch (Throwable error) {
+            logError("Unable to install default playback speed bridge", error);
+        }
+    }
+
+    private void applyDefaultPlaybackSpeed(Object controller, Object renderEvent) {
+        String sourceId = extractPlaybackSourceId(renderEvent);
+        if (controller == null || sourceId == null || sourceId.isEmpty()) {
+            return;
+        }
+        float speed = loadConfiguredDefaultPlaybackSpeed();
+        if (speed == PlaybackSpeed.DEFAULT) {
+            return;
+        }
+        synchronized (defaultPlaybackSpeedSourceIds) {
+            if (sourceId.equals(defaultPlaybackSpeedSourceIds.get(controller))) {
+                return;
+            }
+            defaultPlaybackSpeedSourceIds.put(controller, sourceId);
+        }
+        try {
+            Method setSpeed = findControllerSpeedMethod(controller.getClass());
+            if (setSpeed != null) {
+                setSpeed.invoke(controller, speed);
+            } else {
+                Object playerManager = resolvePlayerManager(controller);
+                setSpeed = findFloatVoidMethod(
+                        playerManager == null ? null : playerManager.getClass(), "setSpeed");
+                if (setSpeed == null || playerManager == null) {
+                    throw new NoSuchMethodException("PlayerController#setSpeed(float)");
+                }
+                setSpeed.invoke(playerManager, speed);
+            }
+            if (defaultPlaybackSpeedAppliedLogged.compareAndSet(false, true)) {
+                logInfo("Default playback speed active: " + speed + "x");
+            }
+        } catch (Throwable error) {
+            synchronized (defaultPlaybackSpeedSourceIds) {
+                defaultPlaybackSpeedSourceIds.remove(controller);
+            }
+            if (defaultPlaybackSpeedFailureLogged.compareAndSet(false, true)) {
+                logError("Unable to apply default playback speed", error);
+            }
+        }
+    }
+
+    private float loadConfiguredDefaultPlaybackSpeed() {
+        try {
+            return PlaybackSpeed.sanitize(getRemotePreferences(ModuleConfig.PREFS).getFloat(
+                    ModuleConfig.KEY_DEFAULT_PLAYBACK_SPEED,
+                    PlaybackSpeed.DEFAULT));
+        } catch (Throwable error) {
+            if (defaultPlaybackSpeedFailureLogged.compareAndSet(false, true)) {
+                logError("Unable to read default playback speed", error);
+            }
+            return PlaybackSpeed.DEFAULT;
+        }
+    }
+
+    private static Object resolvePlayerManager(Object controller) throws ReflectiveOperationException {
+        Field field = findField(controller.getClass(), "mPlayerManager");
+        if (field != null) {
+            Object value = field.get(controller);
+            if (value != null) {
+                return value;
+            }
+        }
+        Method getter = findMethodByNameAndArity(controller.getClass(), "getPlayerManager");
+        if (getter == null) {
+            throw new NoSuchMethodException("PlayerController#mPlayerManager");
+        }
+        getter.setAccessible(true);
+        return getter.invoke(controller);
+    }
+
+    private static Method findControllerSpeedMethod(Class<?> type) {
+        Method official = findFloatVoidMethod(type, "setSpeed");
+        return official != null ? official : findFloatVoidMethod(type, "LJ");
+    }
+
+    private static String extractPlaybackSourceId(Object renderEvent) {
+        if (renderEvent instanceof String) {
+            return (String) renderEvent;
+        }
+        if (renderEvent == null) {
+            return null;
+        }
+        try {
+            Field field = findField(renderEvent.getClass(), "LIZ");
+            Object value = field == null ? null : field.get(renderEvent);
+            return value instanceof String ? (String) value : null;
+        } catch (Throwable ignored) {
+            return null;
+        }
     }
 
     private boolean installLoopCompletionStateHook(ClassLoader classLoader) {

@@ -40,6 +40,8 @@
     <string name="filter_views_likes_summary">只显示落在设定范围内的视频。</string>
     <string name="disable_loop">禁止循环播放</string>
     <string name="disable_loop_summary">视频结束后停留在最后一帧，不再自动重播。</string>
+    <string name="default_playback_speed">默认播放速度</string>
+    <string name="default_playback_speed_dialog_title">选择默认播放速度</string>
     <string name="anti_burn_in">防烧屏</string>
     <string name="anti_burn_in_summary">双指长按视频或图集切换清屏模式。</string>
     <string name="more_options">更多选项</string>

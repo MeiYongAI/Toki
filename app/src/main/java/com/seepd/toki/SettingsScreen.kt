@@ -82,6 +82,7 @@ private enum class SettingsDialog {
     REGION,
     MEDIA_DIRECTORY_ERROR,
     DURATION,
+    PLAYBACK_SPEED,
     VIEW_RANGE,
     LIKE_RANGE,
     RESTART,
@@ -208,6 +209,14 @@ internal fun SettingsApp(
             },
             onDismiss = closeDialog,
         )
+        SettingsDialog.PLAYBACK_SPEED -> PlaybackSpeedDialog(
+            selected = state.defaultPlaybackSpeed,
+            onSelect = { speed ->
+                onUpdate { current -> current.copy(defaultPlaybackSpeed = speed) }
+                closeDialog()
+            },
+            onDismiss = closeDialog,
+        )
         SettingsDialog.VIEW_RANGE -> RangeDialog(
             title = R.string.views_range,
             initialMinimum = state.viewsMin,
@@ -314,6 +323,12 @@ private fun SettingsContent(
                     onCheckedChange = { checked ->
                         onUpdate { it.copy(disableLoop = checked) }
                     },
+                )
+                GroupDivider()
+                ValueSettingRow(
+                    title = stringResource(R.string.default_playback_speed),
+                    value = formatPlaybackSpeed(state.defaultPlaybackSpeed),
+                    onClick = { onDialog(SettingsDialog.PLAYBACK_SPEED) },
                 )
                 GroupDivider()
                 SwitchSettingRow(
@@ -836,6 +851,52 @@ private fun DurationDialog(
 }
 
 @Composable
+private fun PlaybackSpeedDialog(
+    selected: Float,
+    onSelect: (Float) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val normalizedSelected = PlaybackSpeed.sanitize(selected)
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.default_playback_speed_dialog_title)) },
+        text = {
+            Column(modifier = Modifier.selectableGroup()) {
+                PlaybackSpeed.supportedValues().forEach { speed ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = speed == normalizedSelected,
+                                role = Role.RadioButton,
+                                onClick = { onSelect(speed) },
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(
+                            selected = speed == normalizedSelected,
+                            onClick = null,
+                        )
+                        Text(
+                            text = playbackSpeedOptionLabel(speed),
+                            modifier = Modifier.padding(start = 12.dp),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
+}
+
+@Composable
 private fun RangeDialog(
     @StringRes title: Int,
     initialMinimum: Long,
@@ -983,3 +1044,22 @@ private fun formatRange(minimum: Long, maximum: Long?): String {
     val upper = maximum?.let(formatter::format) ?: stringResource(R.string.unlimited)
     return stringResource(R.string.range_value, formatter.format(minimum), upper)
 }
+
+private fun formatPlaybackSpeed(speed: Float): String {
+    val normalized = PlaybackSpeed.sanitize(speed)
+    return when (normalized) {
+        1.0f -> "1.0x"
+        1.25f -> "1.25x"
+        1.5f -> "1.5x"
+        1.75f -> "1.75x"
+        2.0f -> "2.0x"
+        else -> "1.0x"
+    }
+}
+
+private fun playbackSpeedOptionLabel(speed: Float): String =
+    if (PlaybackSpeed.sanitize(speed) == PlaybackSpeed.DEFAULT) {
+        "关闭（1.0x）"
+    } else {
+        formatPlaybackSpeed(speed)
+    }

@@ -77,4 +77,11 @@ class SettingsInputTest {
         assertNull(SettingsInput.validateDuration("not-a-number"))
         assertTrue(SettingsInput.validateDuration("60") == 60)
     }
+
+    @Test
+    fun defaultPlaybackSpeedOnlyAcceptsSupportedValues() {
+        assertEquals(1.5f, PlaybackSpeed.sanitize(1.5f))
+        assertEquals(1.0f, PlaybackSpeed.sanitize(1.33f))
+        assertEquals(1.0f, PlaybackSpeed.sanitize(Float.NaN))
+    }
 }

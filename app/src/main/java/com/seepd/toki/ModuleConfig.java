@@ -18,6 +18,7 @@ final class ModuleConfig {
     static final String KEY_HIDE_LONG_POSTS = "hide_long_posts";
     static final String KEY_FILTER_VIEWS_LIKES = "filter_views_likes";
     static final String KEY_DISABLE_LOOP = "disable_loop";
+    static final String KEY_DEFAULT_PLAYBACK_SPEED = "default_playback_speed";
     static final String KEY_ANTI_BURN_IN = "anti_burn_in";
     static final String KEY_AUTO_TRANSLATE_COMMENTS = "auto_translate_comments";
     static final String KEY_COMMENT_TRANSLATION_ACTIVE = "comment_translation_active";
@@ -33,6 +34,7 @@ final class ModuleConfig {
     static final String KEY_VIEWS_MAX = "views_max";
     static final String KEY_LIKES_MIN = "likes_min";
     static final String KEY_LIKES_MAX = "likes_max";
+    static final float DEFAULT_PLAYBACK_SPEED = PlaybackSpeed.DEFAULT;
 
     private static final Uri SETTINGS_URI = Uri.parse("content://com.seepd.toki.settings");
     private static final String METHOD_GET_COMMENT_TRANSLATION_STATE =
@@ -50,6 +52,7 @@ final class ModuleConfig {
     final boolean hideLongPosts;
     final boolean filterViewsLikes;
     final boolean disableLoop;
+    final float defaultPlaybackSpeed;
     final boolean antiBurnIn;
     final boolean autoTranslateComments;
     final String videoLocation;
@@ -68,7 +71,8 @@ final class ModuleConfig {
     ModuleConfig(boolean regionSpoof, RegionPreset region, boolean removeDownloadRestrictions,
                  boolean hideFeedAds, boolean hideLive, boolean hideImages,
                  boolean forceRegion, boolean hideLongPosts, boolean filterViewsLikes,
-                 boolean disableLoop, boolean antiBurnIn, boolean autoTranslateComments,
+                 boolean disableLoop, float defaultPlaybackSpeed, boolean antiBurnIn,
+                 boolean autoTranslateComments,
                  String videoLocation, String picLocation, String gifLocation,
                  boolean allowDuet, boolean allowStitch,
                  boolean forceUnmute, boolean grayMode,
@@ -83,6 +87,7 @@ final class ModuleConfig {
         this.hideLongPosts = hideLongPosts;
         this.filterViewsLikes = filterViewsLikes;
         this.disableLoop = disableLoop;
+        this.defaultPlaybackSpeed = PlaybackSpeed.sanitize(defaultPlaybackSpeed);
         this.antiBurnIn = antiBurnIn;
         this.autoTranslateComments = autoTranslateComments;
         this.videoLocation = nonEmpty(videoLocation, "Movies/TikTok");
@@ -134,6 +139,7 @@ final class ModuleConfig {
                 preferences.getBoolean(KEY_HIDE_LONG_POSTS, false),
                 preferences.getBoolean(KEY_FILTER_VIEWS_LIKES, false),
                 preferences.getBoolean(KEY_DISABLE_LOOP, false),
+                preferences.getFloat(KEY_DEFAULT_PLAYBACK_SPEED, DEFAULT_PLAYBACK_SPEED),
                 preferences.getBoolean(KEY_ANTI_BURN_IN, false),
                 preferences.getBoolean(KEY_AUTO_TRANSLATE_COMMENTS, false),
                 preferences.getString(KEY_VIDEO_LOCATION, "Movies/TikTok"),
@@ -153,7 +159,7 @@ final class ModuleConfig {
 
     static ModuleConfig defaults() {
         return new ModuleConfig(false, RegionPreset.US, false, false, false, false,
-                false, false, false, false, false, false,
+                false, false, false, false, PlaybackSpeed.DEFAULT, false, false,
                 "Movies/TikTok", "Pictures/TikTok", "Movies/TikTok",
                 false, false,
                 false, false,
@@ -190,4 +196,5 @@ final class ModuleConfig {
             return fallback;
         }
     }
+
 }

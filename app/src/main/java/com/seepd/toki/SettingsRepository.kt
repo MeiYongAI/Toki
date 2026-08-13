@@ -31,6 +31,12 @@ internal class SettingsRepository(context: Context) {
             false,
         ),
         disableLoop = preferences.getBoolean(ModuleConfig.KEY_DISABLE_LOOP, false),
+        defaultPlaybackSpeed = PlaybackSpeed.sanitize(
+            preferences.getFloat(
+                ModuleConfig.KEY_DEFAULT_PLAYBACK_SPEED,
+                ModuleConfig.DEFAULT_PLAYBACK_SPEED,
+            ),
+        ),
         antiBurnIn = preferences.getBoolean(ModuleConfig.KEY_ANTI_BURN_IN, false),
         autoTranslateComments = preferences.getBoolean(
             ModuleConfig.KEY_AUTO_TRANSLATE_COMMENTS,
@@ -93,6 +99,10 @@ internal class SettingsRepository(context: Context) {
         .putBoolean(ModuleConfig.KEY_HIDE_LONG_POSTS, state.hideLongPosts)
         .putBoolean(ModuleConfig.KEY_FILTER_VIEWS_LIKES, state.filterViewsLikes)
         .putBoolean(ModuleConfig.KEY_DISABLE_LOOP, state.disableLoop)
+        .putFloat(
+            ModuleConfig.KEY_DEFAULT_PLAYBACK_SPEED,
+            PlaybackSpeed.sanitize(state.defaultPlaybackSpeed),
+        )
         .putBoolean(ModuleConfig.KEY_ANTI_BURN_IN, state.antiBurnIn)
         .putBoolean(ModuleConfig.KEY_AUTO_TRANSLATE_COMMENTS, state.autoTranslateComments)
         .putString(ModuleConfig.KEY_VIDEO_LOCATION, state.videoLocation)
