@@ -27,8 +27,6 @@ final class ModuleConfig {
     static final String KEY_GIF_LOCATION = "gif_location";
     static final String KEY_ALLOW_DUET = "allow_duet";
     static final String KEY_ALLOW_STITCH = "allow_stitch";
-    static final String KEY_FORCE_UNMUTE = "force_unmute";
-    static final String KEY_GRAY_MODE = "gray_mode";
     static final String KEY_LONG_POST_SECONDS = "long_post_seconds";
     static final String KEY_VIEWS_MIN = "views_min";
     static final String KEY_VIEWS_MAX = "views_max";
@@ -60,8 +58,6 @@ final class ModuleConfig {
     final String gifLocation;
     final boolean allowDuet;
     final boolean allowStitch;
-    final boolean forceUnmute;
-    final boolean grayMode;
     final int longPostSeconds;
     final long viewsMin;
     final long viewsMax;
@@ -75,7 +71,6 @@ final class ModuleConfig {
                  boolean autoTranslateComments,
                  String videoLocation, String picLocation, String gifLocation,
                  boolean allowDuet, boolean allowStitch,
-                 boolean forceUnmute, boolean grayMode,
                  int longPostSeconds, long viewsMin, long viewsMax, long likesMin, long likesMax) {
         this.regionSpoof = regionSpoof;
         this.region = region;
@@ -95,8 +90,6 @@ final class ModuleConfig {
         this.gifLocation = nonEmpty(gifLocation, "Movies/TikTok");
         this.allowDuet = allowDuet;
         this.allowStitch = allowStitch;
-        this.forceUnmute = forceUnmute;
-        this.grayMode = grayMode;
         this.longPostSeconds = longPostSeconds;
         this.viewsMin = viewsMin;
         this.viewsMax = viewsMax;
@@ -147,8 +140,6 @@ final class ModuleConfig {
                 preferences.getString(KEY_GIF_LOCATION, "Movies/TikTok"),
                 preferences.getBoolean(KEY_ALLOW_DUET, false),
                 preferences.getBoolean(KEY_ALLOW_STITCH, false),
-                preferences.getBoolean(KEY_FORCE_UNMUTE, false),
-                preferences.getBoolean(KEY_GRAY_MODE, false),
                 positiveInt(preferences.getString(KEY_LONG_POST_SECONDS, "60"), 60),
                 nonNegativeLong(preferences.getString(KEY_VIEWS_MIN, "0"), 0),
                 positiveLong(preferences.getString(KEY_VIEWS_MAX, Long.toString(Long.MAX_VALUE)), Long.MAX_VALUE),
@@ -161,7 +152,6 @@ final class ModuleConfig {
         return new ModuleConfig(false, RegionPreset.US, false, false, false, false,
                 false, false, false, false, PlaybackSpeed.DEFAULT, false, false,
                 "Movies/TikTok", "Pictures/TikTok", "Movies/TikTok",
-                false, false,
                 false, false,
                 60, 0, Long.MAX_VALUE, 0, Long.MAX_VALUE);
     }

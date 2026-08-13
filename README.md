@@ -1,6 +1,6 @@
 # Toki
 
-Toki 是面向 TikTok 46.3.x 的功能增强模块，使用 libxposed API 102。模块仅作用于
+Toki 是面向官方 TikTok 46.3.x 的功能增强模块，使用 libxposed API 102。模块仅作用于
 `com.zhiliaoapp.musically`，设置界面采用 Material 3。
 
 > Toki 与 TikTok、ByteDance 和 LSPosed 项目均无隶属或背书关系。TikTok 内部实现会随
@@ -10,17 +10,18 @@ Toki 是面向 TikTok 46.3.x 的功能增强模块，使用 libxposed API 102。
 
 - Android 8.0 或更高版本
 - 支持 libxposed API 102 的 LSPosed 实现
-- TikTok 46.3.x，包名为 `com.zhiliaoapp.musically`
+- 官方 TikTok 46.3.x，包名为 `com.zhiliaoapp.musically`
 - ARM64 与否不影响模块 APK；目标 TikTok 客户端本身仍需匹配设备架构
 
-目前只维护上述目标包和 API，不提供旧版 Xposed 入口或旧包设置迁移。
+目前只维护上述官方目标包和 API，不对第三方修改、重打包或捆绑插件客户端提供兼容支持，
+也不提供旧版 Xposed 入口或旧包设置迁移。
 
 ## 功能
 
 - 地区与 SIM 信息伪装，支持地区、ISO 代码和运营商搜索。
 - 解除下载限制，优先使用无水印地址，并分别设置视频、图片和 GIF 保存目录。
 - 过滤信息流广告、直播、照片模式、长视频及不符合播放量/点赞条件的内容。
-- 允许受限内容合拍与拼接，强制取消静音，禁止视频循环播放。
+- 允许受限内容合拍与拼接，并可禁止视频循环播放。
 - 为每条新视频设置默认播放速度，可选 1.25x、1.5x、1.75x 和 2.0x；当前视频的手动倍速选择不会被覆盖。
 - 在评论区显示“翻译/还原”按钮，并跨视频保持翻译状态。
 - 双指长按切换防烧屏清屏模式，同时保留缩放和上下切换视频手势。

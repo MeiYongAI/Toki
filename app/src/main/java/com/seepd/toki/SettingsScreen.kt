@@ -265,24 +265,6 @@ private fun SettingsContent(
     SettingsList(modifier) {
         item(key = "common_group") {
             SettingsGroup {
-                SwitchSettingRow(
-                    title = stringResource(R.string.gray_mode),
-                    summary = stringResource(R.string.gray_mode_summary),
-                    checked = state.grayMode,
-                    onCheckedChange = { checked ->
-                        onUpdate { it.copy(grayMode = checked) }
-                    },
-                )
-                GroupDivider()
-                SwitchSettingRow(
-                    title = stringResource(R.string.force_unmute),
-                    summary = stringResource(R.string.force_unmute_summary),
-                    checked = state.forceUnmute,
-                    onCheckedChange = { checked ->
-                        onUpdate { it.copy(forceUnmute = checked) }
-                    },
-                )
-                GroupDivider()
                 ValueSettingRow(
                     title = stringResource(R.string.region),
                     value = "${state.region.displayName} (${state.region.code})",
@@ -344,7 +326,6 @@ private fun SettingsContent(
 
         item(key = "download_creation_group") {
             SettingsGroup {
-                GroupDivider()
                 SwitchSettingRow(
                     title = stringResource(R.string.remove_download_restrictions),
                     summary = stringResource(R.string.remove_download_restrictions_summary),

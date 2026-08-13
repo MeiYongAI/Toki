@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -55,7 +54,6 @@ public final class MainHook extends XposedModule {
             "toki-official-comment-translation-button";
     private static final int MAX_TRACKED_COMMENTS = 512;
     private final AtomicBoolean initialized = new AtomicBoolean(false);
-    private final AtomicBoolean commentTranslationStateFailureLogged = new AtomicBoolean(false);
     private final AtomicBoolean officialTranslationFailureLogged = new AtomicBoolean(false);
     private final AtomicBoolean officialDownloadLocationRewriteLogged = new AtomicBoolean(false);
     private final AtomicBoolean loopPreventionConfigInvocationLogged = new AtomicBoolean(false);
@@ -149,7 +147,7 @@ public final class MainHook extends XposedModule {
                 installDownloadPatches(classLoader);
             }
             // The save-directory fields are independent from download permission bypassing.
-            installDownloadLocations(classLoader, config);
+            installOfficialDownloadLocationHook(config);
             if (config.disableLoop) {
                 logInfo("Installing loop-prevention bridge");
                 int installedTargets = installLoopPrevention(classLoader);
@@ -176,9 +174,6 @@ public final class MainHook extends XposedModule {
             }
             if (config.allowDuet || config.allowStitch) {
                 installReusePermissionPatches(classLoader, config);
-            }
-            if (config.forceUnmute || config.grayMode) {
-                installClientSettingPatches(classLoader, config);
             }
             if (config.hideFeedAds || config.hideLive || config.hideImages || config.forceRegion
                     || config.hideLongPosts || config.filterViewsLikes) {
@@ -211,119 +206,15 @@ public final class MainHook extends XposedModule {
         installRegionPayloadPatches(classLoader, preset);
     }
 
-    /** Restores the comment-page translation control for both modified and official 46.3.x clients. */
+    /** Restores the comment-page translation control in the supported official TikTok client. */
     private void installCommentTranslationButton(ClassLoader classLoader) {
-        if (!installPlatinumCommentTranslationButton(classLoader)) {
-            installOfficialCommentTranslationButton(classLoader);
-        }
-    }
-
-    private boolean installPlatinumCommentTranslationButton(ClassLoader classLoader) {
-        try {
-            Class<?> availability = Class.forName("X.07IP", false, classLoader);
-            Method isFeatureAvailable = availability.getDeclaredMethod("LIZJ");
-            Method isAvailableForAuthor = availability.getDeclaredMethod("LIZ", boolean.class);
-            if (isFeatureAvailable.getReturnType() != boolean.class
-                    || isAvailableForAuthor.getReturnType() != boolean.class) {
-                logInfo("Platinum comment translation gate has an incompatible signature");
-                return false;
-            }
-            hook(isFeatureAvailable)
-                    .setId("toki-comment-translation-button-feature")
-                    .intercept(chain -> true);
-            hook(isAvailableForAuthor)
-                    .setId("toki-comment-translation-button-author")
-                    .intercept(chain -> true);
-
-            Class<?> captionServiceProvider = Class.forName("X.0I4t", false, classLoader);
-            Method getCaptionService = captionServiceProvider.getDeclaredMethod("LIZ");
-            Class<?> captionService = Class.forName(
-                    "com.ss.android.ugc.aweme.service.ICaptionKevaService", false, classLoader);
-            Method setTranslationState = captionService.getDeclaredMethod("LJJI", Boolean.class);
-            boolean installed = false;
-
-            try {
-                Class<?> classicPage = Class.forName(
-                        "com.ss.android.ugc.aweme.comment.commentpage.ui.CommentListPageFragment",
-                        false,
-                        classLoader);
-                Method renderTranslationState = classicPage.getDeclaredMethod("mF", Boolean.class);
-                hook(renderTranslationState)
-                        .setId("toki-comment-translation-button-classic-state")
-                        .intercept(chain -> {
-                            // Multi-tab comment pages pass null here, which hides both native controls.
-                            if (chain.getArg(0) == null) {
-                                return chain.proceed(new Object[]{Boolean.FALSE});
-                            }
-                            return chain.proceed();
-                        });
-
-                try {
-                    Method onViewCreated = classicPage.getDeclaredMethod(
-                            "onViewCreated", View.class, Bundle.class);
-                    hook(onViewCreated)
-                            .setId("toki-comment-translation-button-classic-init")
-                            .intercept(chain -> {
-                                Object result = chain.proceed();
-                                setNativeCommentTranslationState(
-                                        getCaptionService, setTranslationState);
-                                return result;
-                            });
-                } catch (NoSuchMethodException error) {
-                    logInfo("Classic comment translation initializer unavailable: "
-                            + error.getMessage());
-                }
-                installed = true;
-                logInfo("Enabled classic native comment translation button");
-            } catch (ClassNotFoundException | NoSuchMethodException error) {
-                logInfo("Classic comment translation symbols unavailable: "
-                        + error.getClass().getSimpleName() + ": " + error.getMessage());
-            } catch (Throwable error) {
-                logError("Unable to enable classic comment translation button", error);
-            }
-
-            try {
-                Class<?> actionBar = Class.forName(
-                        "com.ss.android.ugc.aweme.commentv2.actionbar.CommentPageActionBarAssem",
-                        false,
-                        classLoader);
-                Method onActionBarCreated = actionBar.getDeclaredMethod("We", View.class);
-                if (onActionBarCreated.getReturnType() != void.class) {
-                    logInfo("Platinum comment action bar has an incompatible signature");
-                } else {
-                    hook(onActionBarCreated)
-                            .setId("toki-comment-translation-button-state")
-                            .intercept(chain -> {
-                                Object result = chain.proceed();
-                                setNativeCommentTranslationState(
-                                        getCaptionService, setTranslationState);
-                                return result;
-                            });
-                    installed = true;
-                    logInfo("Enabled V2 native comment translation button");
-                }
-            } catch (ClassNotFoundException | NoSuchMethodException error) {
-                logInfo("V2 native comment translation symbols unavailable: "
-                        + error.getClass().getSimpleName() + ": " + error.getMessage());
-            } catch (Throwable error) {
-                logError("Unable to enable V2 native comment translation button", error);
-            }
-
-            return installed;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Platinum comment translation symbols unavailable: "
-                    + error.getClass().getSimpleName() + ": " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logError("Unable to enable Platinum comment translation button", error);
-            return false;
-        }
+        installOfficialCommentTranslationButton(classLoader);
     }
 
     /**
-     * Official 46.3.3 keeps the native comment translation repository but does not place the
-     * Platinum qrt/r2v controls in its action-bar layout. Track the cell-owned translation actions
-     * and expose them through a TuxIconView added beside the existing close control.
+     * Official 46.3.3 keeps the native comment translation repository without exposing a page-wide
+     * control. Track the cell-owned translation actions and expose them through a TuxIconView added
+     * beside the existing close control.
      */
     private void installOfficialCommentTranslationButton(ClassLoader classLoader) {
         try {
@@ -1388,20 +1279,6 @@ public final class MainHook extends XposedModule {
         }
     }
 
-    private void setNativeCommentTranslationState(Method getCaptionService, Method setTranslationState) {
-        try {
-            Object service = getCaptionService.invoke(null);
-            if (service != null) {
-                // The action bar hides both icon states while this flow is null. False reveals qrt.
-                setTranslationState.invoke(service, Boolean.FALSE);
-            }
-        } catch (ReflectiveOperationException | RuntimeException error) {
-            if (commentTranslationStateFailureLogged.compareAndSet(false, true)) {
-                logError("Unable to initialize native comment translation button state", error);
-            }
-        }
-    }
-
     private void installRegionPayloadPatches(ClassLoader classLoader, RegionPreset preset) {
         hookRegionJsonPayload(classLoader, preset);
         hookRegionQueryPayload(classLoader, preset);
@@ -1509,53 +1386,10 @@ public final class MainHook extends XposedModule {
         hookNoWatermarkDownloadAddress(classLoader);
     }
 
-    private void installDownloadLocations(ClassLoader classLoader, ModuleConfig config) {
-        try {
-            Class<?> type = Class.forName("com.tiktok.plugin.client.ChangeLocation", false, classLoader);
-            hookLocationMethod(type, "getVideoLocation", config.videoLocation);
-            hookLocationMethod(type, "getPicLocation", config.picLocation);
-            hookLocationMethod(type, "getGifLocation", config.gifLocation);
-            logInfo("Modified-client download location hooks installed");
-        } catch (ClassNotFoundException ignored) {
-            // Official TikTok does not contain the modified client's bridge.
-            logInfo("Modified-client download location bridge not present");
-        } catch (Throwable error) {
-            logError("Unable to hook download locations", error);
-        }
-        installOfficialDownloadLocationHook(config);
-    }
-
-    private void hookLocationMethod(Class<?> type, String methodName, String configuredPath) {
-        try {
-            Method method = type.getDeclaredMethod(methodName, String.class);
-            if (method.getReturnType() != String.class) {
-                return;
-            }
-            hook(method)
-                        .setId("toki-location-" + methodName)
-                    .intercept(chain -> resolveDownloadLocation((String) chain.getArg(0), configuredPath));
-        } catch (NoSuchMethodException ignored) {
-            // Individual media types may be missing in a client variant.
-        } catch (Throwable error) {
-            logError("Unable to hook ChangeLocation#" + methodName, error);
-        }
-    }
-
-    private static String resolveDownloadLocation(String original, String configuredPath) {
-        String target = normalizeRelativeMediaDirectory(configuredPath);
-        if (target == null) {
-            return original;
-        }
-        if (original != null && new File(original).isAbsolute()) {
-            return new File(Environment.getExternalStorageDirectory(), target).getPath();
-        }
-        return target;
-    }
-
     /**
      * Official TikTok 46.3.x writes a saved item through ContentResolver with
-     * RELATIVE_PATH set to DCIM/Camera. The old ChangeLocation bridge only exists
-     * in repacked clients, so intercept this stable framework boundary for official builds.
+     * RELATIVE_PATH set to DCIM/Camera. Intercept this stable framework boundary to apply the
+     * configured media directory.
      */
     private void installOfficialDownloadLocationHook(ModuleConfig config) {
         int installed = 0;
@@ -1965,9 +1799,8 @@ public final class MainHook extends XposedModule {
     }
 
     /**
-     * The panel clean owner changed names between the official client and the modified 46.3.5
-     * builds (Il, Ye and Xe are all present in the wild). Guarding this owner prevents the top
-     * navigation and feed chrome from being restored by pause/page callbacks.
+     * The panel clean method name varies across supported official builds. Guarding this owner
+     * prevents the top navigation and feed chrome from being restored by pause/page callbacks.
      */
     private void installAntiBurnInPanelCleanBridge(ClassLoader classLoader) {
         try {
@@ -3344,7 +3177,7 @@ public final class MainHook extends XposedModule {
             defaultPlaybackSpeedSourceIds.put(controller, sourceId);
         }
         try {
-            Method setSpeed = findControllerSpeedMethod(controller.getClass());
+            Method setSpeed = findFloatVoidMethod(controller.getClass(), "setSpeed");
             if (setSpeed != null) {
                 setSpeed.invoke(controller, speed);
             } else {
@@ -3396,11 +3229,6 @@ public final class MainHook extends XposedModule {
         }
         getter.setAccessible(true);
         return getter.invoke(controller);
-    }
-
-    private static Method findControllerSpeedMethod(Class<?> type) {
-        Method official = findFloatVoidMethod(type, "setSpeed");
-        return official != null ? official : findFloatVoidMethod(type, "LJ");
     }
 
     private static String extractPlaybackSourceId(Object renderEvent) {
@@ -3596,31 +3424,6 @@ public final class MainHook extends XposedModule {
             // The model is version-specific; leave missing variants untouched.
         } catch (Throwable error) {
             logError("Unable to hook " + className + "#" + methodName, error);
-        }
-    }
-
-    private void installClientSettingPatches(ClassLoader classLoader, ModuleConfig config) {
-        if (config.forceUnmute) {
-            hookClientBoolean(classLoader, "getForceUnmute", true);
-        }
-        if (config.grayMode) {
-            hookClientBoolean(classLoader, "getForceGraymode", true);
-        }
-    }
-
-    private void hookClientBoolean(ClassLoader classLoader, String methodName, boolean value) {
-        try {
-            Class<?> type = Class.forName("com.tiktok.plugin.client.ClientSettings$Region", false, classLoader);
-            Method method = type.getDeclaredMethod(methodName);
-            if (method.getReturnType() == boolean.class) {
-                hook(method)
-                        .setId("toki-client-setting-" + methodName)
-                        .intercept(chain -> value);
-            }
-        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
-            // The client-side settings bridge is version-specific.
-        } catch (Throwable error) {
-            logError("Unable to hook ClientSettings$Region#" + methodName, error);
         }
     }
 

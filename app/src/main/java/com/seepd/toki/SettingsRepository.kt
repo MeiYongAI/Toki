@@ -47,8 +47,6 @@ internal class SettingsRepository(context: Context) {
         gifLocation = stringValue(ModuleConfig.KEY_GIF_LOCATION, "Movies/TikTok"),
         allowDuet = preferences.getBoolean(ModuleConfig.KEY_ALLOW_DUET, false),
         allowStitch = preferences.getBoolean(ModuleConfig.KEY_ALLOW_STITCH, false),
-        forceUnmute = preferences.getBoolean(ModuleConfig.KEY_FORCE_UNMUTE, false),
-        grayMode = preferences.getBoolean(ModuleConfig.KEY_GRAY_MODE, false),
         longPostSeconds = positiveInt(ModuleConfig.KEY_LONG_POST_SECONDS, 60),
         viewsMin = nonNegativeLong(ModuleConfig.KEY_VIEWS_MIN, 0),
         viewsMax = optionalPositiveLong(ModuleConfig.KEY_VIEWS_MAX),
@@ -110,8 +108,6 @@ internal class SettingsRepository(context: Context) {
         .putString(ModuleConfig.KEY_GIF_LOCATION, state.gifLocation)
         .putBoolean(ModuleConfig.KEY_ALLOW_DUET, state.allowDuet)
         .putBoolean(ModuleConfig.KEY_ALLOW_STITCH, state.allowStitch)
-        .putBoolean(ModuleConfig.KEY_FORCE_UNMUTE, state.forceUnmute)
-        .putBoolean(ModuleConfig.KEY_GRAY_MODE, state.grayMode)
         .putString(ModuleConfig.KEY_LONG_POST_SECONDS, state.longPostSeconds.toString())
         .putString(ModuleConfig.KEY_VIEWS_MIN, state.viewsMin.toString())
         .putString(ModuleConfig.KEY_VIEWS_MAX, (state.viewsMax ?: Long.MAX_VALUE).toString())

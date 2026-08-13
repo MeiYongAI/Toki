@@ -21,10 +21,6 @@
     <string name="allow_duet_summary">允许受限视频合拍，部分内容仍可能不可用。</string>
     <string name="allow_stitch">允许拼接</string>
     <string name="allow_stitch_summary">允许受限视频拼接，部分内容仍可能不可用。</string>
-    <string name="force_unmute">强制取消静音</string>
-    <string name="force_unmute_summary">尝试恢复因版权或地区限制而静音的视频。</string>
-    <string name="gray_mode">灰度模式</string>
-    <string name="gray_mode_summary">在 TikTok 设置中显示灰度模式入口。</string>
     <string name="auto_translate_comments">评论翻译</string>
     <string name="auto_translate_comments_summary">在评论区显示翻译与还原按钮。</string>
     <string name="hide_feed_ads">屏蔽信息流广告</string>
