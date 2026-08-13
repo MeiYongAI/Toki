@@ -58,8 +58,8 @@ public final class MainHook extends XposedModule {
     private final AtomicBoolean officialDownloadLocationRewriteLogged = new AtomicBoolean(false);
     private final AtomicBoolean loopPreventionConfigInvocationLogged = new AtomicBoolean(false);
     private final AtomicBoolean loopPreventionEngineInvocationLogged = new AtomicBoolean(false);
-    private final AtomicBoolean loopPreventionCompletionStateLogged = new AtomicBoolean(false);
-    private final AtomicBoolean loopPreventionCompletionStateFailureLogged = new AtomicBoolean(false);
+    private final AtomicBoolean loopPreventionManualPauseLogged = new AtomicBoolean(false);
+    private final AtomicBoolean loopPreventionManualPauseFailureLogged = new AtomicBoolean(false);
     private final AtomicBoolean defaultPlaybackSpeedAppliedLogged = new AtomicBoolean(false);
     private final AtomicBoolean defaultPlaybackSpeedFailureLogged = new AtomicBoolean(false);
     private final AtomicBoolean antiBurnInPhotoTitleFailureLogged = new AtomicBoolean(false);
@@ -135,7 +135,7 @@ public final class MainHook extends XposedModule {
         try {
             ModuleConfig config = loadModuleConfig(context);
             logInfo("Active for " + context.getPackageName());
-            logInfo("Hook revision: direct-ui-gates-2-loop-engine-1");
+            logInfo("Hook revision: direct-ui-gates-2-loop-replay-frame-4");
             logInfo("Loop prevention setting: " + config.disableLoop);
             logInfo("Default playback speed: " + config.defaultPlaybackSpeed);
             logInfo("Anti-burn-in setting: " + config.antiBurnIn);
@@ -3100,7 +3100,7 @@ public final class MainHook extends XposedModule {
         if (installOfficialLoopConfigHook(classLoader)) {
             installedTargets++;
         }
-        if (installLoopCompletionStateHook(classLoader)) {
+        if (installLoopCompletionPauseHook(classLoader)) {
             installedTargets++;
         }
         if (installLoopSetter(
@@ -3247,29 +3247,80 @@ public final class MainHook extends XposedModule {
         }
     }
 
-    private boolean installLoopCompletionStateHook(ClassLoader classLoader) {
+    private boolean installLoopCompletionPauseHook(ClassLoader classLoader) {
         try {
             Class<?> type = Class.forName(
                     "com.ss.android.ugc.aweme.feed.controller.PlayerController",
                     false,
                     classLoader);
-            Method method = type.getDeclaredMethod("onPlayCompleted", String.class);
-            method.setAccessible(true);
-            hook(method)
-                    .setId("toki-disable-loop-completion-state")
+            Class<?> awemeType = Class.forName(
+                    "com.ss.android.ugc.aweme.feed.model.Aweme",
+                    false,
+                    classLoader);
+            Method completionMethod = type.getDeclaredMethod("onPlayCompleted", String.class);
+            Method currentAwemeMethod = type.getDeclaredMethod("LLJI");
+            Method currentHolderMethod = type.getDeclaredMethod("LLJZIJLIL");
+            Method holderForSourceMethod = type.getDeclaredMethod("LJJIJL", String.class);
+            Method manualPauseMethod = type.getDeclaredMethod(
+                    "qk",
+                    awemeType,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class);
+            Method seekToReplayFrameMethod = type.getDeclaredMethod("LJIILL", float.class);
+            Method getAwemeAidMethod = awemeType.getMethod("getAid");
+            if (manualPauseMethod.getReturnType() != void.class) {
+                throw new NoSuchMethodException(
+                        "PlayerController#qk(Aweme, boolean, boolean, boolean) must return void");
+            }
+            if (seekToReplayFrameMethod.getReturnType() != void.class) {
+                throw new NoSuchMethodException("PlayerController#LJIILL(float) must return void");
+            }
+            completionMethod.setAccessible(true);
+            currentAwemeMethod.setAccessible(true);
+            currentHolderMethod.setAccessible(true);
+            holderForSourceMethod.setAccessible(true);
+            manualPauseMethod.setAccessible(true);
+            seekToReplayFrameMethod.setAccessible(true);
+            getAwemeAidMethod.setAccessible(true);
+            hook(completionMethod)
+                    .setId("toki-disable-loop-completion-replay-frame")
                     .intercept(chain -> {
                         Object result = chain.proceed();
                         Object controller = chain.getThisObject();
-                        Boolean normalized = markPlaybackPausedAfterCompletion(
-                                controller,
-                                chain.getArg(0));
-                        if (Boolean.TRUE.equals(normalized)) {
-                            if (loopPreventionCompletionStateLogged.compareAndSet(false, true)) {
-                                logInfo("Loop-prevention completion state normalized");
+                        try {
+                            Object completedSourceId = chain.getArg(0);
+                            Object currentAweme = currentAwemeMethod.invoke(controller);
+                            if (!awemeType.isInstance(currentAweme)) {
+                                throw new IllegalStateException("PlayerController#LLJI() did not return the current Aweme");
                             }
-                        } else if (Boolean.FALSE.equals(normalized)
-                                && loopPreventionCompletionStateFailureLogged.compareAndSet(false, true)) {
-                            logInfo("Loop-prevention completion state owner unavailable");
+                            boolean currentCompletion = isCurrentPlaybackCompletion(
+                                    controller,
+                                    completedSourceId,
+                                    currentAweme,
+                                    getAwemeAidMethod,
+                                    currentHolderMethod,
+                                    holderForSourceMethod);
+                            if (!currentCompletion) {
+                                return result;
+                            }
+                            // qk() is TikTok's own single-tap play/pause path. Its first flag makes the
+                            // pause UI visible; the remaining flags preserve ordinary user-tap behavior.
+                            manualPauseMethod.invoke(
+                                    controller,
+                                    currentAweme,
+                                    Boolean.TRUE,
+                                    Boolean.FALSE,
+                                    Boolean.FALSE);
+                            // Keep TikTok's real paused state, then render the frame from which replay starts.
+                            seekToReplayFrameMethod.invoke(controller, 0.0f);
+                            if (loopPreventionManualPauseLogged.compareAndSet(false, true)) {
+                                logInfo("Loop-prevention paused and rewound to the replay frame");
+                            }
+                        } catch (Throwable error) {
+                            if (loopPreventionManualPauseFailureLogged.compareAndSet(false, true)) {
+                                logError("Unable to pause and rewind TikTok playback", error);
+                            }
                         }
                         return result;
                     });
@@ -3277,45 +3328,55 @@ public final class MainHook extends XposedModule {
         } catch (ClassNotFoundException ignored) {
             return false;
         } catch (NoSuchMethodException error) {
-            logError("Unable to find PlayerController#onPlayCompleted(String)", error);
+            logError("Unable to find TikTok loop-completion playback controls", error);
             return false;
         } catch (Throwable error) {
-            logError("Unable to hook PlayerController completion state", error);
+            logError("Unable to hook PlayerController completion pause and rewind", error);
             return false;
         }
     }
 
-    private static Boolean markPlaybackPausedAfterCompletion(
+    private static boolean isCurrentPlaybackCompletion(
             Object controller,
-            Object completedAid) {
-        if (controller == null || !(completedAid instanceof String)) {
-            return Boolean.FALSE;
+            Object completedSourceId,
+            Object currentAweme,
+            Method getAwemeAidMethod,
+            Method currentHolderMethod,
+            Method holderForSourceMethod) {
+        if (controller == null || !(completedSourceId instanceof String)) {
+            return false;
+        }
+        String completedId = (String) completedSourceId;
+        try {
+            Object currentHolder = currentHolderMethod.invoke(controller);
+            Object completedHolder = holderForSourceMethod.invoke(controller, completedId);
+            if (currentHolder != null && currentHolder == completedHolder) {
+                return true;
+            }
+        } catch (Throwable ignored) {
+            // Continue with model and controller IDs when a holder is being rebound.
         }
         try {
-            Field currentAidField = findField(controller.getClass(), "mCurrentAid");
-            if (currentAidField == null) {
-                return Boolean.FALSE;
+            Object currentAid = getAwemeAidMethod.invoke(currentAweme);
+            if (completedId.equals(currentAid)) {
+                return true;
             }
-            Object currentAid = currentAidField.get(controller);
-            if (!completedAid.equals(currentAid)) {
-                return null;
-            }
-            Field helperField = findField(controller.getClass(), "mPlayStateHelper");
-            if (helperField == null) {
-                return Boolean.FALSE;
-            }
-            Object helper = helperField.get(controller);
-            if (helper == null) {
-                return Boolean.FALSE;
-            }
-            Field stateField = findField(helper.getClass(), "LIZ");
-            if (stateField == null || stateField.getType() != int.class) {
-                return Boolean.FALSE;
-            }
-            stateField.setInt(helper, 3);
-            return Boolean.TRUE;
         } catch (Throwable ignored) {
-            return Boolean.FALSE;
+            // Continue with controller IDs.
+        }
+        try {
+            Field currentSourceIdField = findField(controller.getClass(), "mCurrentSourceId");
+            Object currentSourceId = currentSourceIdField == null
+                    ? null
+                    : currentSourceIdField.get(controller);
+            if (completedId.equals(currentSourceId)) {
+                return true;
+            }
+            Field currentAidField = findField(controller.getClass(), "mCurrentAid");
+            Object currentAid = currentAidField == null ? null : currentAidField.get(controller);
+            return completedId.equals(currentAid);
+        } catch (Throwable ignored) {
+            return false;
         }
     }
 
