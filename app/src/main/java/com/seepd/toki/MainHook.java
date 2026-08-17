@@ -71,14 +71,16 @@ public final class MainHook extends XposedModule {
     private final WeakHashMap<Object, String> officialTranslatedActions = new WeakHashMap<>();
     private final WeakHashMap<Object, AntiBurnInGestureTracker> antiBurnInGestures =
             new WeakHashMap<>();
-    private final WeakHashMap<Object, AntiBurnInGestureTracker> antiBurnInPhotoGestures =
+    private final WeakHashMap<Object, PhotoUiRestoreTarget> antiBurnInPhotoUiRestoreTargets =
+            new WeakHashMap<>();
+    private final WeakHashMap<Object, PhotoStateRestoreTarget>
+            antiBurnInPhotoStateRestoreTargets = new WeakHashMap<>();
+    private final WeakHashMap<Object, Boolean> antiBurnInPhotoIntercepts =
+            new WeakHashMap<>();
+    private final WeakHashMap<Object, Boolean> antiBurnInHiddenVideoCells =
             new WeakHashMap<>();
     private final WeakHashMap<Object, Boolean> antiBurnInPausePanels = new WeakHashMap<>();
     private final WeakHashMap<Object, String> defaultPlaybackSpeedSourceIds = new WeakHashMap<>();
-    private final WeakHashMap<Object, PhotoUiRestoreTarget> antiBurnInPhotoUiRestoreTargets =
-            new WeakHashMap<>();
-    private final WeakHashMap<Object, Runnable> antiBurnInPhotoLongPressTasks =
-            new WeakHashMap<>();
     private final WeakHashMap<Object, Runnable> antiBurnInLongPressTasks = new WeakHashMap<>();
     private final Handler antiBurnInHandler = new Handler(Looper.getMainLooper());
     private volatile Context translationStateContext;
@@ -86,9 +88,10 @@ public final class MainHook extends XposedModule {
     private volatile String officialCommentPageAwemeId;
     private volatile String officialTranslatedAwemeId;
     private volatile Field antiBurnInDetectorField;
-    private volatile Field antiBurnInPhotoImageField;
     private volatile boolean antiBurnInDesiredState;
-    private volatile WeakReference<Object> antiBurnInActiveVideoCell = new WeakReference<>(null);
+    private volatile PhotoTitleVisibilityBridge antiBurnInPhotoTitleVisibilityBridge;
+    private volatile boolean antiBurnInPhotoTitleForcedHidden;
+    private volatile Method antiBurnInPhotoStateMethod;
     private volatile Method antiBurnInVideoVisibilityMethod;
     private volatile Method antiBurnInPauseResumeMethod;
     private volatile Method antiBurnInCellCleanMethod;
@@ -99,9 +102,6 @@ public final class MainHook extends XposedModule {
     private volatile Method antiBurnInToastMessageMethod;
     private volatile Method antiBurnInToastLegacyMethod;
     private volatile Method antiBurnInToastShowMethod;
-    private volatile PhotoClearEventBridge antiBurnInPhotoClearEventBridge;
-    private volatile PhotoTitleVisibilityBridge antiBurnInPhotoTitleVisibilityBridge;
-    private volatile boolean antiBurnInPhotoTitleForcedHidden;
     private volatile float antiBurnInCenterTolerancePx = 24f;
     private volatile float antiBurnInSpanTolerancePx = 8f;
 
@@ -135,11 +135,16 @@ public final class MainHook extends XposedModule {
         try {
             ModuleConfig config = loadModuleConfig(context);
             logInfo("Active for " + context.getPackageName());
-            logInfo("Hook revision: direct-ui-gates-2-loop-replay-frame-4");
+            logInfo("Hook revision: direct-ui-gates-2-loop-replay-frame-4-anti-burn-in-11-photo-gates");
             logInfo("Loop prevention setting: " + config.disableLoop);
             logInfo("Default playback speed: " + config.defaultPlaybackSpeed);
             logInfo("Anti-burn-in setting: " + config.antiBurnIn);
             logInfo("Comment translation setting: " + config.autoTranslateComments);
+            if (config.antiBurnIn) {
+                logInfo("Installing anti-burn-in bridges");
+                installAntiBurnIn(classLoader, context);
+                logInfo("Anti-burn-in bridge installation complete");
+            }
             if (config.regionSpoof) {
                 installRegionSpoof(classLoader, config.region);
             }
@@ -160,11 +165,6 @@ public final class MainHook extends XposedModule {
                 }
             }
             installDefaultPlaybackSpeed(classLoader);
-            if (config.antiBurnIn) {
-                logInfo("Installing anti-burn-in bridges");
-                installAntiBurnIn(classLoader, context);
-                logInfo("Anti-burn-in bridge installation complete");
-            }
             if (config.autoTranslateComments) {
                 Context applicationContext = context.getApplicationContext();
                 translationStateContext = applicationContext == null ? context : applicationContext;
@@ -1038,18 +1038,55 @@ public final class MainHook extends XposedModule {
         return Math.round(value * context.getResources().getDisplayMetrics().density);
     }
 
+    private static final class BoundComment {
+        final String key;
+        final String awemeId;
+        final WeakReference<Object> comment;
+        final WeakReference<Object> action;
+
+        BoundComment(String key, String awemeId, Object comment, Object action) {
+            this.key = key;
+            this.awemeId = awemeId;
+            this.comment = new WeakReference<>(comment);
+            this.action = new WeakReference<>(action);
+        }
+    }
+
     private static final class PhotoUiRestoreTarget {
         final WeakReference<Object> owner;
+        final PhotoClearEventBridge bridge;
         final Method method;
         final Object event;
 
-        PhotoUiRestoreTarget(Object owner, Method method, Object event) {
+        PhotoUiRestoreTarget(
+                Object owner,
+                PhotoClearEventBridge bridge,
+                Method method,
+                Object event
+        ) {
             this.owner = new WeakReference<>(owner);
+            this.bridge = bridge;
             this.method = method;
             this.event = event;
         }
     }
 
+    private static final class PhotoStateRestoreTarget {
+        final WeakReference<Object> owner;
+        final Method method;
+        final String source;
+
+        PhotoStateRestoreTarget(Object owner, Method method, String source) {
+            this.owner = new WeakReference<>(owner);
+            this.method = method;
+            this.source = source;
+        }
+    }
+
+    /**
+     * Reflects a TikTok ClearMode event (for example X.0RG4 in the photo pager or X.0RMM in the
+     * skylight overlay) so the module can replay an original exit event while the latch is on.
+     */
     private static final class PhotoClearEventBridge {
         final Constructor<?> constructor;
         final Field clean;
@@ -1058,9 +1095,11 @@ public final class MainHook extends XposedModule {
         final Field page;
         final Field extra;
         final Field anchor;
+        final int constructorArity;
 
         private PhotoClearEventBridge(
                 Constructor<?> constructor,
+                int constructorArity,
                 Field clean,
                 Field kind,
                 Field source,
@@ -1069,6 +1108,7 @@ public final class MainHook extends XposedModule {
                 Field anchor
         ) {
             this.constructor = constructor;
+            this.constructorArity = constructorArity;
             this.clean = clean;
             this.kind = kind;
             this.source = source;
@@ -1078,13 +1118,39 @@ public final class MainHook extends XposedModule {
         }
 
         static PhotoClearEventBridge create(Class<?> eventType)
-                throws NoSuchMethodException, NoSuchFieldException {
-            Constructor<?> constructor = eventType.getDeclaredConstructor(
-                    boolean.class,
-                    int.class,
-                    String.class,
-                    String.class,
-                    String.class);
+                throws ReflectiveOperationException {
+            Constructor<?> constructor = null;
+            int arity = 0;
+            for (int candidateArity : new int[]{5, 4, 2}) {
+                try {
+                    if (candidateArity == 5) {
+                        constructor = eventType.getDeclaredConstructor(
+                                boolean.class,
+                                int.class,
+                                String.class,
+                                String.class,
+                                String.class);
+                    } else if (candidateArity == 4) {
+                        constructor = eventType.getDeclaredConstructor(
+                                boolean.class,
+                                int.class,
+                                String.class,
+                                String.class);
+                    } else {
+                        constructor = eventType.getDeclaredConstructor(
+                                int.class,
+                                String.class);
+                    }
+                    arity = candidateArity;
+                    break;
+                } catch (NoSuchMethodException ignored) {
+                    // Try the next known ClearMode constructor shape.
+                }
+            }
+            if (constructor == null) {
+                throw new NoSuchMethodException(
+                        "ClearMode event constructor on " + eventType.getName());
+            }
             Field clean = eventType.getDeclaredField("LIZ");
             Field kind = eventType.getDeclaredField("LIZIZ");
             Field source = eventType.getDeclaredField("LIZJ");
@@ -1100,6 +1166,7 @@ public final class MainHook extends XposedModule {
             anchor.setAccessible(true);
             return new PhotoClearEventBridge(
                     constructor,
+                    arity,
                     clean,
                     kind,
                     source,
@@ -1126,13 +1193,35 @@ public final class MainHook extends XposedModule {
 
         Object copyWithClean(Object event, boolean cleanValue)
                 throws ReflectiveOperationException {
-            Object replacement = constructor.newInstance(
-                    cleanValue,
-                    kind.getInt(event),
-                    source.get(event),
-                    page.get(event),
-                    extra.get(event));
-            anchor.set(replacement, anchor.get(event));
+            String sourceValue = source.get(event) instanceof String
+                    ? (String) source.get(event) : "";
+            String pageValue = page.get(event) instanceof String
+                    ? (String) page.get(event) : "";
+            String extraValue = extra.get(event) instanceof String
+                    ? (String) extra.get(event) : "";
+            Object replacement;
+            if (constructorArity == 5) {
+                replacement = constructor.newInstance(
+                        cleanValue,
+                        kind.getInt(event),
+                        sourceValue,
+                        pageValue,
+                        extraValue);
+            } else if (constructorArity == 4) {
+                replacement = constructor.newInstance(
+                        cleanValue,
+                        kind.getInt(event),
+                        sourceValue,
+                        pageValue);
+            } else {
+                replacement = constructor.newInstance(
+                        kind.getInt(event),
+                        sourceValue);
+            }
+            Object anchorValue = anchor.get(event);
+            if (anchorValue != null) {
+                anchor.set(replacement, anchorValue);
+            }
             return replacement;
         }
     }
@@ -1163,20 +1252,6 @@ public final class MainHook extends XposedModule {
             }
             setVisible.invoke(service, visible);
             return true;
-        }
-    }
-
-    private static final class BoundComment {
-        final String key;
-        final String awemeId;
-        final WeakReference<Object> comment;
-        final WeakReference<Object> action;
-
-        BoundComment(String key, String awemeId, Object comment, Object action) {
-            this.key = key;
-            this.awemeId = awemeId;
-            this.comment = new WeakReference<>(comment);
-            this.action = new WeakReference<>(action);
         }
     }
 
@@ -1303,7 +1378,7 @@ public final class MainHook extends XposedModule {
         } catch (ClassNotFoundException ignored) {
             // The class is obfuscated and may change in newer TikTok builds.
         } catch (NoSuchMethodException ignored) {
-            // This exact 46.3.x payload builder is not present in this TikTok build.
+            // This exact 46.3.3 payload builder is not present in this TikTok build.
         } catch (Throwable error) {
             logError("Unable to hook region JSON payload", error);
         }
@@ -1322,7 +1397,7 @@ public final class MainHook extends XposedModule {
         } catch (ClassNotFoundException ignored) {
             // The class is obfuscated and may change in newer TikTok builds.
         } catch (NoSuchMethodException ignored) {
-            // This exact 46.3.x upload-parameter builder is not present in this TikTok build.
+            // This exact 46.3.3 upload-parameter builder is not present in this TikTok build.
         } catch (Throwable error) {
             logError("Unable to hook region query payload", error);
         }
@@ -1387,7 +1462,7 @@ public final class MainHook extends XposedModule {
     }
 
     /**
-     * Official TikTok 46.3.x writes a saved item through ContentResolver with
+     * Official TikTok 46.3.3 writes a saved item through ContentResolver with
      * RELATIVE_PATH set to DCIM/Camera. Intercept this stable framework boundary to apply the
      * configured media directory.
      */
@@ -1545,216 +1620,113 @@ public final class MainHook extends XposedModule {
         }
         logInfo("Anti-burn-in stage: toast");
         installAntiBurnInToastBridge(classLoader);
-        logInfo("Anti-burn-in stage: cell");
-        installAntiBurnInCellCleanBridge(classLoader);
-        logInfo("Anti-burn-in stage: panel");
-        installAntiBurnInPanelCleanBridge(classLoader);
-        logInfo("Anti-burn-in stage: video");
-        boolean videoVisibilityAvailable = installAntiBurnInVideoVisibilityGate(classLoader);
-        logInfo("Anti-burn-in stage: pause");
-        boolean pausePanelAvailable = installAntiBurnInPausePanelGate(classLoader);
-        logInfo("Anti-burn-in stage: photo-ui");
-        boolean photoUiGateAvailable = installAntiBurnInPhotoUiGate(classLoader);
         logInfo("Anti-burn-in stage: photo-gesture");
         boolean photoGestureAvailable = installAntiBurnInPhotoGesture(classLoader);
         logInfo("Anti-burn-in stage: pinch");
         boolean pinchBridgeAvailable = installAntiBurnInPinchBridge(classLoader);
-        if (pinchBridgeAvailable) {
-            logInfo("Anti-burn-in stage: gesture");
-            installAntiBurnInGesture(classLoader);
-        } else {
-            logInfo("Video anti-burn-in gesture is unavailable; photo surface bridge remains active");
-        }
-        logInfo("Anti-burn-in bridges: cell=" + (antiBurnInCellCleanMethod != null)
-                + ", panel=" + (antiBurnInPanelCleanMethod != null)
-                + ", video=" + videoVisibilityAvailable
-                + ", pause=" + pausePanelAvailable
-                + ", pinch=" + pinchBridgeAvailable
-                + ", photo=" + photoGestureAvailable
-                + ", photoUi=" + photoUiGateAvailable
-                + ", gesture=motion-only");
-    }
-
-    /** Keeps photo chrome hidden without changing TikTok's NORMAL/CLEAR_MODE/ZOOM_FIX state. */
-    private boolean installAntiBurnInPhotoUiGate(ClassLoader classLoader) {
-        try {
-            Class<?> stateType = Class.forName("X.0SHn", false, classLoader);
-            Class<?> serviceManagerType = Class.forName(
-                    "com.ss.android.ugc.aweme.framework.services.ServiceManager",
-                    false,
-                    classLoader);
-            Class<?> homePageUiFrameServiceType = Class.forName(
-                    "com.ss.android.ugc.aweme.homepage.api.ui.HomePageUIFrameService",
-                    false,
-                    classLoader);
-            Method getServiceManager = serviceManagerType.getMethod("get");
-            Method getHomePageUiFrameService = serviceManagerType.getMethod(
-                    "getService",
-                    Class.class);
-            Method setTitleTabVisibility = homePageUiFrameServiceType.getMethod(
-                    "setTitleTabVisibility",
-                    boolean.class);
-            antiBurnInPhotoTitleVisibilityBridge = new PhotoTitleVisibilityBridge(
-                    homePageUiFrameServiceType,
-                    getServiceManager,
-                    getHomePageUiFrameService,
-                    setTitleTabVisibility);
-
-            Class<?> holderType = Class.forName(
-                    "com.ss.android.ugc.aweme.ui.feed.subphoto.holders.PhotosViewHolderV3",
-                    false,
-                    classLoader);
-            Method update = holderType.getDeclaredMethod(
-                    "LJIJJLI",
-                    float.class,
-                    boolean.class,
-                    stateType,
-                    float.class,
-                    String.class);
-            update.setAccessible(true);
-            hook(update)
-                    .setId("toki-anti-burn-in-photo-title-gate")
-                    .intercept(chain -> {
-                        Object result = chain.proceed();
-                        if (antiBurnInDesiredState) {
-                            setAntiBurnInPhotoTitleVisibility(false);
-                        }
-                        return result;
-                    });
-
-            Class<?> eventType = Class.forName("X.0RMM", false, classLoader);
-            PhotoClearEventBridge eventBridge = PhotoClearEventBridge.create(eventType);
-            antiBurnInPhotoClearEventBridge = eventBridge;
-
-            Class<?> pagerType = Class.forName(
-                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.PhotoSlideViewPagerComponent",
-                    false,
-                    classLoader);
-            Method clearModeUpdate = pagerType.getDeclaredMethod("onClearModeEvent", eventType);
-            Field pendingPageEventField = pagerType.getDeclaredField("LLLIIL");
-            clearModeUpdate.setAccessible(true);
-            pendingPageEventField.setAccessible(true);
-            hook(clearModeUpdate)
-                    .setId("toki-anti-burn-in-photo-pager-ui-gate")
-                    .intercept(chain -> {
-                        Object event = chain.getArg(0);
-                        if (!antiBurnInDesiredState
-                                || event == null
-                                || eventBridge.isClean(event)) {
-                            return chain.proceed();
-                        }
-                        try {
-                            Object pager = chain.getThisObject();
-                            rememberAntiBurnInPhotoUiRestoreTarget(
-                                    pager,
-                                    clearModeUpdate,
-                                    event);
-                            Object replacement = eventBridge.copyWithClean(event, true);
-                            if (pendingPageEventField.get(pager) == event) {
-                                pendingPageEventField.set(pager, replacement);
-                            }
-                            traceAntiBurnInPhotoEventGate(
-                                    eventBridge.kind(event),
-                                    eventBridge.source(event));
-                            return chain.proceed(new Object[]{replacement});
-                        } catch (Throwable error) {
-                            logAntiBurnInFailure(
-                                    "Unable to preserve photo pager UI state",
-                                    error);
-                            return chain.proceed();
-                        }
-                    });
-
-            int subscriberCount = 1;
-            subscriberCount += installAntiBurnInPhotoUiSubscriber(
-                    classLoader,
-                    eventType,
-                    eventBridge,
-                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.AbsPhotosDotIndicatorAssem",
-                    "dots") ? 1 : 0;
-            subscriberCount += installAntiBurnInPhotoUiSubscriber(
-                    classLoader,
-                    eventType,
-                    eventBridge,
-                    "com.ss.android.ugc.aweme.base.ui.assem.FeedSkylightBubbleAssem",
-                    "skylight-bubble") ? 1 : 0;
-            subscriberCount += installAntiBurnInPhotoUiSubscriber(
-                    classLoader,
-                    eventType,
-                    eventBridge,
-                    "com.ss.android.ugc.aweme.base.ui.assem.FYPSkylightDrawerAssem",
-                    "skylight-drawer") ? 1 : 0;
-            logInfo("Photo UI clear subscribers installed: " + subscriberCount + "/4");
-            return true;
-        } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException error) {
-            logInfo("Photo UI clean gate is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook photo UI clean state", error);
-            return false;
-        }
-    }
-
-    private boolean installAntiBurnInPhotoUiSubscriber(
-            ClassLoader classLoader,
-            Class<?> eventType,
-            PhotoClearEventBridge eventBridge,
-            String className,
-            String id
-    ) {
-        try {
-            Class<?> type = Class.forName(className, false, classLoader);
-            Method update = type.getDeclaredMethod("onClearModeEvent", eventType);
-            update.setAccessible(true);
-            hook(update)
-                    .setId("toki-anti-burn-in-photo-ui-" + id)
-                    .intercept(chain -> {
-                        Object event = chain.getArg(0);
-                        if (!antiBurnInDesiredState
-                                || event == null
-                                || eventBridge.isClean(event)) {
-                            return chain.proceed();
-                        }
-                        try {
-                            rememberAntiBurnInPhotoUiRestoreTarget(
-                                    chain.getThisObject(),
-                                    update,
-                                    event);
-                            return chain.proceed(new Object[]{
-                                    eventBridge.copyWithClean(event, true)
-                            });
-                        } catch (Throwable error) {
-                            logAntiBurnInFailure(
-                                    "Unable to preserve photo UI subscriber " + id,
-                                    error);
-                            return chain.proceed();
-                        }
-                    });
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Photo UI subscriber is unavailable (" + id + "): " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook photo UI subscriber " + id, error);
-            return false;
-        }
+        logInfo("Anti-burn-in stage: gesture");
+        boolean gestureAvailable = pinchBridgeAvailable && installAntiBurnInGesture();
+        logInfo("Anti-burn-in stage: clear-state");
+        boolean clearStateAvailable = installAntiBurnInClearStateGate(classLoader);
+        logInfo("Anti-burn-in stage: cell");
+        installAntiBurnInCellCleanBridge(classLoader);
+        logInfo("Anti-burn-in stage: panel");
+        installAntiBurnInPanelCleanBridge(classLoader);
+        logInfo("Core anti-burn-in bridges installed; scheduling remaining gates");
+        antiBurnInHandler.postDelayed(
+                () -> installDeferredAntiBurnInGates(
+                        classLoader,
+                        photoGestureAvailable,
+                        pinchBridgeAvailable,
+                        gestureAvailable,
+                        clearStateAvailable),
+                15_000L);
     }
 
     /**
-     * Guards the Cell-level visibility owner itself. This runs earlier than a feed-level
-     * PinchComponent replay and prevents pause/render callbacks from exposing one frame.
+     * The remaining gates load feed/photo UI classes that TikTok touches heavily during startup.
+     * Installing them on the main looper shortly after launch keeps the module init thread short
+     * and avoids TikTok startup contention.
      */
+    private void installDeferredAntiBurnInGates(
+            ClassLoader classLoader,
+            boolean photoGestureAvailable,
+            boolean pinchBridgeAvailable,
+            boolean gestureAvailable,
+            boolean clearStateAvailable
+    ) {
+        try {
+            logInfo("Anti-burn-in stage: video");
+            boolean videoVisibilityAvailable = installAntiBurnInVideoVisibilityGate(classLoader);
+            logInfo("Anti-burn-in stage: pause");
+            boolean pausePanelAvailable = installAntiBurnInPausePanelGate(classLoader);
+            logInfo("Anti-burn-in stage: photo-ui");
+            boolean photoUiGateAvailable = installAntiBurnInPhotoUiGate(classLoader);
+            logInfo("Anti-burn-in stage: photo-state");
+            boolean photoStateAvailable = installAntiBurnInPhotoStateGate(classLoader);
+            logInfo("Anti-burn-in bridges: cell=" + (antiBurnInCellCleanMethod != null)
+                    + ", panel=" + (antiBurnInPanelCleanMethod != null)
+                    + ", clearState=" + clearStateAvailable
+                    + ", video=" + videoVisibilityAvailable
+                    + ", pause=" + pausePanelAvailable
+                    + ", pinch=" + pinchBridgeAvailable
+                    + ", photoGesture=" + photoGestureAvailable
+                    + ", photoUi=" + photoUiGateAvailable
+                    + ", photoState=" + photoStateAvailable
+                    + ", mediaUi=cell-clean"
+                    + ", gesture=" + gestureAvailable);
+        } catch (Throwable error) {
+            logAntiBurnInFailure("Unable to finish anti-burn-in gate installation", error);
+        }
+    }
+
+    /** Keeps TikTok's own ClearMode state true while the gesture latch is enabled. */
+    private boolean installAntiBurnInClearStateGate(ClassLoader classLoader) {
+        try {
+            Class<?> type = Class.forName("X.0Qjw", false, classLoader);
+            Method query = findMethodInHierarchy(type, "LIZLLL");
+            if (query == null || (query.getReturnType() != boolean.class
+                    && query.getReturnType() != Boolean.class)) {
+                throw new NoSuchMethodException("X.0Qjw#LIZLLL()");
+            }
+            query.setAccessible(true);
+            hook(query)
+                    .setId("toki-anti-burn-in-clear-state")
+                    .intercept(chain -> antiBurnInDesiredState
+                            ? Boolean.TRUE
+                            : chain.proceed());
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException error) {
+            logInfo("TikTok clear-mode state gate is unavailable: " + error.getMessage());
+            return false;
+        } catch (Throwable error) {
+            logAntiBurnInFailure("Unable to hook TikTok clear-mode state", error);
+            return false;
+        }
+    }
+
     private void installAntiBurnInCellCleanBridge(ClassLoader classLoader) {
         try {
             Class<?> type = Class.forName(
                     "com.ss.android.ugc.feed.platform.cell.clean.CellCleanComponent",
                     false,
                     classLoader);
-            Method clean = findCleanVisibilityMethod(type, "Il", "Ye", "Xe");
+            Method clean = findCleanVisibilityMethod(type, "El", "Il", "Ye", "Xe");
             if (clean == null) {
                 throw new NoSuchMethodException("CellCleanComponent clean method");
             }
             Method onViewCreated = findLifecycleViewMethod(type, "onViewCreated", "lf", "ue");
+            Method onBind = null;
+            for (Method method : type.getDeclaredMethods()) {
+                Class<?>[] parameters = method.getParameterTypes();
+                if ("onBind".equals(method.getName())
+                        && method.getReturnType() == void.class
+                        && parameters.length == 1
+                        && !parameters[0].isPrimitive()) {
+                    onBind = method;
+                    break;
+                }
+            }
             clean.setAccessible(true);
             antiBurnInCellCleanMethod = clean;
             antiBurnInCellCleanModeArgument = findCleanBooleanArgumentIndex(clean);
@@ -1791,6 +1763,20 @@ public final class MainHook extends XposedModule {
                             return result;
                         });
             }
+            if (onBind != null) {
+                onBind.setAccessible(true);
+                hook(onBind)
+                        .setId("toki-anti-burn-in-cell-clean-bind")
+                        .intercept(chain -> {
+                            Object result = chain.proceed();
+                            if (antiBurnInDesiredState) {
+                                invokeAntiBurnInCellClean(chain.getThisObject(), true);
+                            }
+                            return result;
+                        });
+            }
+            logInfo("Cell clean lifecycle hooks: created=" + (onViewCreated != null)
+                    + ", bind=" + (onBind != null));
         } catch (ClassNotFoundException | NoSuchMethodException error) {
             logInfo("Cell clean bridge is unavailable: " + error.getMessage());
         } catch (Throwable error) {
@@ -1808,7 +1794,7 @@ public final class MainHook extends XposedModule {
                     "com.ss.android.ugc.feed.platform.panel.clean.FeedCleanComponent",
                     false,
                     classLoader);
-            Method clean = findCleanVisibilityMethod(type, "Il", "Ye", "Xe");
+            Method clean = findCleanVisibilityMethod(type, "El", "Il", "Ye", "Xe");
             if (clean == null) {
                 throw new NoSuchMethodException("FeedCleanComponent clean method");
             }
@@ -1862,22 +1848,106 @@ public final class MainHook extends XposedModule {
                     "com.ss.android.ugc.aweme.feed.adapter.VideoViewCell",
                     false,
                     classLoader);
-            Method visibility = type.getDeclaredMethod("ot", boolean.class, boolean.class);
+            Method visibility = findMethodInHierarchy(
+                    type,
+                    new String[]{"LLJJIII", "ot"},
+                    boolean.class,
+                    boolean.class);
+            if (visibility == null || visibility.getReturnType() != void.class) {
+                throw new NoSuchMethodException("VideoViewCell visibility method");
+            }
             visibility.setAccessible(true);
             antiBurnInVideoVisibilityMethod = visibility;
             hook(visibility)
                     .setId("toki-anti-burn-in-video-visibility-gate")
                     .intercept(chain -> {
                         Object cell = chain.getThisObject();
-                        if (cell != null) {
-                            antiBurnInActiveVideoCell = new WeakReference<>(cell);
+                        if (!antiBurnInDesiredState) {
+                            return chain.proceed();
                         }
-                        if (!antiBurnInDesiredState || Boolean.TRUE.equals(chain.getArg(0))) {
+                        rememberAntiBurnInHiddenVideoCell(cell);
+                        if (Boolean.TRUE.equals(chain.getArg(0))) {
                             return chain.proceed();
                         }
                         traceAntiBurnInCleanGate("video", chain.getArg(1), chain.getArg(0));
                         return chain.proceed(new Object[]{Boolean.TRUE, chain.getArg(1)});
                     });
+
+            ArrayList<Method> lifecycleMethods = new ArrayList<>();
+            boolean reusedBindFound = false;
+            for (Method method : type.getDeclaredMethods()) {
+                Class<?>[] parameters = method.getParameterTypes();
+                boolean holderSelected = "LJIIZILJ".equals(method.getName())
+                        && parameters.length == 1
+                        && parameters[0] == int.class;
+                boolean holderState = "LLLILZLLLI".equals(method.getName())
+                        && parameters.length == 1
+                        && parameters[0] == int.class;
+                boolean reusedBind = "LLLLLJIL".equals(method.getName())
+                        && parameters.length == 3
+                        && !parameters[0].isPrimitive()
+                        && parameters[1] == int.class
+                        && parameters[2] == boolean.class;
+                if ((!holderSelected && !holderState && !reusedBind)
+                        || method.getReturnType() != void.class
+                        || method.isSynthetic()) {
+                    continue;
+                }
+                lifecycleMethods.add(method);
+                reusedBindFound |= reusedBind;
+            }
+            if (!reusedBindFound) {
+                for (Method method : type.getDeclaredMethods()) {
+                    Class<?>[] parameters = method.getParameterTypes();
+                    if (method.getReturnType() == void.class
+                            && parameters.length == 3
+                            && !parameters[0].isPrimitive()
+                            && parameters[1] == int.class
+                            && parameters[2] == boolean.class
+                            && !method.isSynthetic()) {
+                        lifecycleMethods.add(method);
+                        break;
+                    }
+                }
+            }
+
+            StringBuilder lifecycleNames = new StringBuilder();
+            int lifecycleIndex = 0;
+            for (Method method : lifecycleMethods) {
+                method.setAccessible(true);
+                String lifecycleName = method.getName();
+                hook(method)
+                        .setId("toki-anti-burn-in-video-lifecycle-" + lifecycleIndex)
+                        .intercept(chain -> {
+                            Object result = chain.proceed();
+                            Object cell = chain.getThisObject();
+                            if (antiBurnInDesiredState && cell != null) {
+                                rememberAntiBurnInHiddenVideoCell(cell);
+                                reapplyAntiBurnInVideoCell(
+                                        cell,
+                                        visibility,
+                                        lifecycleName);
+                                scheduleAntiBurnInVideoCellReapply(
+                                        cell,
+                                        visibility);
+                            } else if (cell != null
+                                    && isAntiBurnInHiddenVideoCell(cell)
+                                    && restoreAntiBurnInVideoCell(
+                                    cell,
+                                    visibility,
+                                    lifecycleName)) {
+                                forgetAntiBurnInHiddenVideoCell(cell);
+                            }
+                            return result;
+                        });
+                if (lifecycleNames.length() > 0) {
+                    lifecycleNames.append(',');
+                }
+                lifecycleNames.append(lifecycleName);
+                lifecycleIndex++;
+            }
+            logInfo("Video cell clean lifecycle hooks installed: "
+                    + lifecycleMethods.size() + " (" + lifecycleNames + ")");
             return true;
         } catch (ClassNotFoundException | NoSuchMethodException error) {
             logInfo("Video visibility gate is unavailable: " + error.getMessage());
@@ -1895,7 +1965,13 @@ public final class MainHook extends XposedModule {
                     "com.ss.android.ugc.feed.platform.panel.pause.PausePanelComponent",
                     false,
                     classLoader);
-            Method resume = type.getDeclaredMethod("Io", boolean.class);
+            Method resume = findMethodInHierarchy(
+                    type,
+                    new String[]{"ap", "Io"},
+                    boolean.class);
+            if (resume == null || resume.getReturnType() != void.class) {
+                throw new NoSuchMethodException("PausePanelComponent restore method");
+            }
             resume.setAccessible(true);
             antiBurnInPauseResumeMethod = resume;
             hook(resume)
@@ -1959,9 +2035,14 @@ public final class MainHook extends XposedModule {
                     "com.ss.android.ugc.feed.platform.cell.pinch.PinchComponent",
                     false,
                     classLoader);
-            Method clean = findLongBooleanMethod(type, "Ap", "Mf", "zf");
+            Method clean = findMethodInHierarchy(
+                    type,
+                    new String[]{"Sp", "Ap", "Mf", "zf"},
+                    long.class,
+                    boolean.class,
+                    boolean.class);
             Field detector = findDetectorField(type);
-            if (clean == null || detector == null) {
+            if (clean == null || clean.getReturnType() != void.class || detector == null) {
                 throw new NoSuchMethodException("PinchComponent clean/detector fields");
             }
             clean.setAccessible(true);
@@ -2000,41 +2081,297 @@ public final class MainHook extends XposedModule {
     }
 
     /**
-     * Photo-mode posts use their own image pinch listener instead of PinchComponent. Observe its
-     * events without replacing or consuming the listener. TikTok remains the sole owner of its
-     * private photo clear/zoom state machine.
+     * Keeps photo chrome (pager overlays, page dots, skylight bubbles and top title tabs) hidden
+     * while the latch is enabled. TikTok's own ClearMode events are replayed on exit so the
+     * photo UI returns exactly to its previous state.
      */
+    private boolean installAntiBurnInPhotoUiGate(ClassLoader classLoader) {
+        try {
+            Class<?> stateType = findClass(classLoader, "X.0SHn", "X.0Rsh");
+            Class<?> serviceManagerType = Class.forName(
+                    "com.ss.android.ugc.aweme.framework.services.ServiceManager",
+                    false,
+                    classLoader);
+            Class<?> homePageUiFrameServiceType = Class.forName(
+                    "com.ss.android.ugc.aweme.homepage.api.ui.HomePageUIFrameService",
+                    false,
+                    classLoader);
+            Method getServiceManager = serviceManagerType.getMethod("get");
+            Method getService = serviceManagerType.getMethod("getService", Class.class);
+            Method setTitleTabVisibility = homePageUiFrameServiceType.getMethod(
+                    "setTitleTabVisibility",
+                    boolean.class);
+            antiBurnInPhotoTitleVisibilityBridge = new PhotoTitleVisibilityBridge(
+                    homePageUiFrameServiceType,
+                    getServiceManager,
+                    getService,
+                    setTitleTabVisibility);
+
+            Class<?> holderType = Class.forName(
+                    "com.ss.android.ugc.aweme.ui.feed.subphoto.holders.PhotosViewHolderV3",
+                    false,
+                    classLoader);
+            Method update = findMethodInHierarchy(
+                    holderType,
+                    new String[]{"LJIJJLI", "LIZJ"},
+                    float.class,
+                    boolean.class,
+                    stateType,
+                    float.class,
+                    String.class);
+            if (update == null) {
+                throw new NoSuchMethodException(
+                        "PhotosViewHolderV3 clear-mode update method");
+            }
+            update.setAccessible(true);
+            hook(update)
+                    .setId("toki-anti-burn-in-photo-title-gate")
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        if (antiBurnInDesiredState) {
+                            setAntiBurnInPhotoTitleVisibility(false);
+                        }
+                        return result;
+                    });
+
+            Class<?> photoEventType = findClass(classLoader, "X.0RMM", "X.0RG4");
+            PhotoClearEventBridge photoBridge = PhotoClearEventBridge.create(photoEventType);
+            Class<?> pagerType = Class.forName(
+                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.PhotoSlideViewPagerComponent",
+                    false,
+                    classLoader);
+            Method clearModeUpdate = pagerType.getDeclaredMethod(
+                    "onClearModeEvent",
+                    photoEventType);
+            Field pendingPageEventField = pagerType.getDeclaredField("LLLIIL");
+            clearModeUpdate.setAccessible(true);
+            pendingPageEventField.setAccessible(true);
+            hook(clearModeUpdate)
+                    .setId("toki-anti-burn-in-photo-pager-ui-gate")
+                    .intercept(chain -> {
+                        Object event = chain.getArg(0);
+                        if (!antiBurnInDesiredState
+                                || event == null
+                                || photoBridge.isClean(event)) {
+                            return chain.proceed();
+                        }
+                        try {
+                            Object pager = chain.getThisObject();
+                            rememberAntiBurnInPhotoUiRestoreTarget(
+                                    photoBridge,
+                                    pager,
+                                    clearModeUpdate,
+                                    event);
+                            Object replacement = photoBridge.copyWithClean(event, true);
+                            if (pendingPageEventField.get(pager) == event) {
+                                pendingPageEventField.set(pager, replacement);
+                            }
+                            traceAntiBurnInPhotoEventGate(
+                                    photoBridge.kind(event),
+                                    photoBridge.source(event));
+                            return chain.proceed(new Object[]{replacement});
+                        } catch (Throwable error) {
+                            logAntiBurnInFailure(
+                                    "Unable to preserve photo pager UI state",
+                                    error);
+                            return chain.proceed();
+                        }
+                    });
+
+            int subscriberCount = 1;
+            subscriberCount += installAntiBurnInPhotoUiSubscriber(
+                    classLoader,
+                    photoEventType,
+                    photoBridge,
+                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.AbsPhotosDotIndicatorAssem",
+                    "dots") ? 1 : 0;
+            subscriberCount += installAntiBurnInPhotoUiSubscriber(
+                    classLoader,
+                    photoEventType,
+                    photoBridge,
+                    "com.ss.android.ugc.aweme.base.ui.assem.FeedSkylightBubbleAssem",
+                    "skylight-bubble") ? 1 : 0;
+            subscriberCount += installAntiBurnInPhotoUiSubscriber(
+                    classLoader,
+                    photoEventType,
+                    photoBridge,
+                    "com.ss.android.ugc.aweme.base.ui.assem.FYPSkylightDrawerAssem",
+                    "skylight-drawer") ? 1 : 0;
+            logInfo("Photo UI clear subscribers installed: " + subscriberCount + "/4");
+            return true;
+        } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException error) {
+            logInfo("Photo UI clean gate is unavailable: " + error.getMessage());
+            return false;
+        } catch (Throwable error) {
+            logAntiBurnInFailure("Unable to hook photo UI clean state", error);
+            return false;
+        }
+    }
+
+    private boolean installAntiBurnInPhotoUiSubscriber(
+            ClassLoader classLoader,
+            Class<?> eventType,
+            PhotoClearEventBridge eventBridge,
+            String className,
+            String id
+    ) {
+        try {
+            Class<?> type = Class.forName(className, false, classLoader);
+            Method update = type.getDeclaredMethod("onClearModeEvent", eventType);
+            update.setAccessible(true);
+            hook(update)
+                    .setId("toki-anti-burn-in-photo-ui-" + id)
+                    .intercept(chain -> {
+                        Object event = chain.getArg(0);
+                        if (!antiBurnInDesiredState
+                                || event == null
+                                || eventBridge.isClean(event)) {
+                            return chain.proceed();
+                        }
+                        try {
+                            rememberAntiBurnInPhotoUiRestoreTarget(
+                                    eventBridge,
+                                    chain.getThisObject(),
+                                    update,
+                                    event);
+                            return chain.proceed(new Object[]{
+                                    eventBridge.copyWithClean(event, true)
+                            });
+                        } catch (Throwable error) {
+                            logAntiBurnInFailure(
+                                    "Unable to preserve photo UI subscriber " + id,
+                                    error);
+                            return chain.proceed();
+                        }
+                    });
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException error) {
+            logInfo("Photo UI subscriber is unavailable (" + id + "): " + error.getMessage());
+            return false;
+        } catch (Throwable error) {
+            logAntiBurnInFailure("Unable to hook photo UI subscriber " + id, error);
+            return false;
+        }
+    }
+
+    /**
+     * Drives TikTok's own photo clear-mode owner. The photo slideshow does not enter or exit
+     * clear mode through PinchComponent; it uses PhotoGestureInterceptComponent#pp(String,
+     * boolean), which posts the photo ClearMode events consumed by the pager and dots.
+     */
+    private boolean installAntiBurnInPhotoStateGate(ClassLoader classLoader) {
+        try {
+            Class<?> type = Class.forName(
+                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.PhotoGestureInterceptComponent",
+                    false,
+                    classLoader);
+            Method onViewCreated = findLifecycleViewMethod(type, "onViewCreated", "lf", "ue");
+            Method onTouchEvent = findMethodInHierarchy(
+                    type,
+                    "onTouchEvent",
+                    MotionEvent.class);
+            Method pp = findMethodInHierarchy(
+                    type,
+                    new String[]{"Zo", "pp"},
+                    String.class,
+                    boolean.class);
+            if (pp == null || pp.getReturnType() != void.class) {
+                throw new NoSuchMethodException(
+                        "PhotoGestureInterceptComponent#Zo/String, boolean)");
+            }
+            pp.setAccessible(true);
+            antiBurnInPhotoStateMethod = pp;
+            if (onTouchEvent != null) {
+                onTouchEvent.setAccessible(true);
+                hook(onTouchEvent)
+                        .setId("toki-anti-burn-in-photo-state-touch")
+                        .intercept(chain -> {
+                            Object result = chain.proceed();
+                            rememberAntiBurnInPhotoIntercept(chain.getThisObject());
+                            return result;
+                        });
+            }
+            if (onViewCreated != null) {
+                onViewCreated.setAccessible(true);
+                hook(onViewCreated)
+                        .setId("toki-anti-burn-in-photo-state-created")
+                        .intercept(chain -> {
+                            Object result = chain.proceed();
+                            rememberAntiBurnInPhotoIntercept(chain.getThisObject());
+                            return result;
+                        });
+            }
+            hook(pp)
+                    .setId("toki-anti-burn-in-photo-state-gate")
+                    .intercept(chain -> {
+                        Object component = chain.getThisObject();
+                        rememberAntiBurnInPhotoIntercept(component);
+                        if (!antiBurnInDesiredState
+                                || Boolean.TRUE.equals(chain.getArg(1))) {
+                            return chain.proceed();
+                        }
+                        String source = chain.getArg(0) instanceof String
+                                ? (String) chain.getArg(0) : "pinch";
+                        rememberAntiBurnInPhotoStateRestore(component, pp, source);
+                        traceAntiBurnInPhotoStateGate(source);
+                        return chain.proceed(new Object[]{
+                                chain.getArg(0),
+                                Boolean.TRUE
+                        });
+                    });
+            logInfo("Photo state gate hooks: created=" + (onViewCreated != null)
+                    + ", touch=" + (onTouchEvent != null));
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException error) {
+            logInfo("Photo state gate is unavailable: " + error.getMessage());
+            return false;
+        } catch (Throwable error) {
+            logAntiBurnInFailure("Unable to hook TikTok photo state owner", error);
+            return false;
+        }
+    }
+
+    /** Observes the photo surface's own touch listener without replacing or consuming its events. */
     private boolean installAntiBurnInPhotoGesture(ClassLoader classLoader) {
         try {
             Class<?> touchType = findClass(
                     classLoader,
+                    "X.0v32",
                     "X.0v2u",
                     "X.ViewOnTouchListenerC1727040v2u");
-            Method touchDispatch = touchType.getDeclaredMethod(
-                    "LJIILJJIL", MotionEvent.class);
-            Field image = findFieldByNames(touchType, "LL");
-            touchDispatch.setAccessible(true);
-            if (image != null) {
-                image.setAccessible(true);
+            Method touchDispatch = findPhotoTouchDispatch(touchType);
+            if (touchDispatch == null) {
+                throw new NoSuchMethodException(
+                        "No MotionEvent dispatch on " + touchType.getName());
             }
-            antiBurnInPhotoImageField = image;
+            int motionEventArg = antiBurnInMotionEventArgumentIndex(touchDispatch);
+            Field imageField = findViewField(
+                    touchType,
+                    "LLJILJIL",
+                    "LLJ",
+                    "LLIZLLLIL",
+                    "LL");
+            touchDispatch.setAccessible(true);
+            if (imageField != null) {
+                imageField.setAccessible(true);
+            }
 
             hook(touchDispatch)
                     .setId("toki-anti-burn-in-photo-gesture")
                     .intercept(chain -> {
                         Object touch = chain.getThisObject();
-                        MotionEvent event = chain.getArg(0) instanceof MotionEvent
-                                ? (MotionEvent) chain.getArg(0)
+                        MotionEvent event = chain.getArg(motionEventArg) instanceof MotionEvent
+                                ? (MotionEvent) chain.getArg(motionEventArg)
                                 : null;
                         int eventAction = event == null ? -1 : event.getActionMasked();
-                        Boolean targetState = observeAntiBurnInPhotoGesture(touch, event);
+                        View toastAnchor = antiBurnInToastAnchor(touch, imageField);
+                        Boolean targetState = observeAntiBurnInGesture(touch, event);
                         if (targetState != null) {
-                            requestAntiBurnInPhotoState(touch, targetState);
+                            requestAntiBurnInState(targetState, toastAnchor);
                         }
                         Object result = chain.proceed();
                         if (eventAction == MotionEvent.ACTION_POINTER_DOWN) {
-                            traceAntiBurnInPhotoSequence("begin");
-                            scheduleAntiBurnInPhotoLongPress(touch);
+                            scheduleAntiBurnInLongPress(touch, toastAnchor);
                         }
                         return result;
                     });
@@ -2048,7 +2385,36 @@ public final class MainHook extends XposedModule {
         }
     }
 
-    private void installAntiBurnInGesture(ClassLoader classLoader) {
+    private static Method findPhotoTouchDispatch(Class<?> type) {
+        Class<?> current = type;
+        while (current != null) {
+            try {
+                Method onTouch = current.getDeclaredMethod(
+                        "onTouch",
+                        View.class,
+                        MotionEvent.class);
+                if (!onTouch.isSynthetic()) {
+                    return onTouch;
+                }
+            } catch (NoSuchMethodException ignored) {
+                // Continue with the legacy dispatch name or a superclass.
+            }
+            current = current.getSuperclass();
+        }
+        return findMotionEventMethodByName(type, "LJIILJJIL");
+    }
+
+    private static int antiBurnInMotionEventArgumentIndex(Method method) {
+        Class<?>[] parameters = method.getParameterTypes();
+        for (int i = 0; i < parameters.length; i++) {
+            if (MotionEvent.class.isAssignableFrom(parameters[i])) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private boolean installAntiBurnInGesture() {
         try {
             Field detectorField = antiBurnInDetectorField;
             if (detectorField == null) {
@@ -2057,49 +2423,45 @@ public final class MainHook extends XposedModule {
             Class<?> type = detectorField.getType();
             Method touch = findMotionEventMethod(type);
             if (touch == null) {
-                throw new NoSuchMethodException(
-                        "No MotionEvent method on " + type.getName());
+                throw new NoSuchMethodException("No MotionEvent method on " + type.getName());
             }
-            Field gestureView = findFieldByNames(type, "LJIIZILJ", "LJIIL");
-            Field toastAnchorField = gestureView;
+            Field toastAnchorField = findViewField(type, "LJIIZILJ", "LJIIL");
             touch.setAccessible(true);
-            if (gestureView != null) {
-                gestureView.setAccessible(true);
+            if (toastAnchorField != null) {
+                toastAnchorField.setAccessible(true);
             }
             hook(touch)
                     .setId("toki-anti-burn-in-gesture-" + type.getName())
                     .intercept(chain -> {
+                        Object detector = chain.getThisObject();
                         MotionEvent event = chain.getArg(0) instanceof MotionEvent
                                 ? (MotionEvent) chain.getArg(0)
                                 : null;
                         int eventAction = event == null ? -1 : event.getActionMasked();
-                        View toastAnchor = antiBurnInToastAnchor(
-                                chain.getThisObject(), toastAnchorField);
-                        Boolean targetState = observeAntiBurnInGesture(
-                                chain.getThisObject(), event);
+                        View toastAnchor = antiBurnInToastAnchor(detector, toastAnchorField);
+                        Boolean targetState = observeAntiBurnInGesture(detector, event);
                         if (targetState != null) {
-                            requestAntiBurnInState(
-                                    chain.getThisObject(),
-                                    targetState,
-                                    toastAnchor);
+                            requestAntiBurnInState(targetState, toastAnchor);
                         }
                         Object result = chain.proceed();
                         boolean officialAccepted = !(result instanceof Boolean)
                                 || (Boolean) result;
                         if (!officialAccepted) {
-                            cancelAntiBurnInGesture(chain.getThisObject());
+                            cancelAntiBurnInGesture(detector);
                             return result;
                         }
                         if (eventAction == MotionEvent.ACTION_POINTER_DOWN) {
-                            scheduleAntiBurnInLongPress(
-                                    chain.getThisObject(), toastAnchor);
+                            scheduleAntiBurnInLongPress(detector, toastAnchor);
                         }
                         return result;
                     });
-        } catch (NoSuchMethodException ignored) {
-            logInfo("Official two-finger detector is unavailable");
+            return true;
+        } catch (NoSuchMethodException error) {
+            logInfo("Official two-finger detector is unavailable: " + error.getMessage());
+            return false;
         } catch (Throwable error) {
             logAntiBurnInFailure("Unable to hook official two-finger detector", error);
+            return false;
         }
     }
 
@@ -2184,172 +2546,7 @@ public final class MainHook extends XposedModule {
         return null;
     }
 
-    private Boolean observeAntiBurnInPhotoGesture(Object touch, MotionEvent event) {
-        if (touch == null || event == null) {
-            return null;
-        }
-        synchronized (antiBurnInLock) {
-            AntiBurnInGestureTracker tracker = antiBurnInPhotoGestures.get(touch);
-            if (tracker == null) {
-                tracker = new AntiBurnInGestureTracker(
-                        antiBurnInCenterTolerancePx,
-                        antiBurnInSpanTolerancePx);
-                antiBurnInPhotoGestures.put(touch, tracker);
-            }
-            try {
-                int pointerCount = event.getPointerCount();
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        cancelAntiBurnInPhotoGestureLocked(touch, tracker);
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        if (pointerCount == 2) {
-                            tracker.down(
-                                    pointerCount,
-                                    event.getEventTime(),
-                                    event.getX(0),
-                                    event.getY(0),
-                                    event.getX(1),
-                                    event.getY(1),
-                                    antiBurnInDesiredState);
-                        } else {
-                            cancelAntiBurnInPhotoGestureLocked(touch, tracker);
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (pointerCount == 2) {
-                            tracker.move(
-                                    pointerCount,
-                                    event.getEventTime(),
-                                    event.getX(0),
-                                    event.getY(0),
-                                    event.getX(1),
-                                    event.getY(1));
-                            if (!tracker.isTracking()) {
-                                removeAntiBurnInPhotoLongPressTaskLocked(touch);
-                            }
-                        } else {
-                            cancelAntiBurnInPhotoGestureLocked(touch, tracker);
-                        }
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        if (pointerCount == 2) {
-                            tracker.move(
-                                    pointerCount,
-                                    event.getEventTime(),
-                                    event.getX(0),
-                                    event.getY(0),
-                                    event.getX(1),
-                                    event.getY(1));
-                            Boolean targetState = tracker.pointerUp(event.getEventTime());
-                            removeAntiBurnInPhotoLongPressTaskLocked(touch);
-                            return targetState;
-                        }
-                        cancelAntiBurnInPhotoGestureLocked(touch, tracker);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        cancelAntiBurnInPhotoGestureLocked(touch, tracker);
-                        break;
-                    default:
-                        break;
-                }
-            } catch (RuntimeException error) {
-                cancelAntiBurnInPhotoGestureLocked(touch, tracker);
-                logAntiBurnInFailure("Unable to inspect photo touch event", error);
-            }
-        }
-        return null;
-    }
-
-    private void scheduleAntiBurnInPhotoLongPress(Object touch) {
-        if (touch == null) {
-            return;
-        }
-        WeakReference<Object> touchReference = new WeakReference<>(touch);
-        Runnable task = new Runnable() {
-            @Override
-            public void run() {
-                Object activeTouch = touchReference.get();
-                if (activeTouch != null) {
-                    completeScheduledAntiBurnInPhotoLongPress(activeTouch, this);
-                }
-            }
-        };
-        synchronized (antiBurnInLock) {
-            AntiBurnInGestureTracker tracker = antiBurnInPhotoGestures.get(touch);
-            if (tracker == null || !tracker.isTracking()) {
-                return;
-            }
-            removeAntiBurnInPhotoLongPressTaskLocked(touch);
-            antiBurnInPhotoLongPressTasks.put(touch, task);
-        }
-        if (!antiBurnInHandler.postDelayed(
-                task,
-                AntiBurnInGestureTracker.LONG_PRESS_MILLIS)) {
-            synchronized (antiBurnInLock) {
-                if (antiBurnInPhotoLongPressTasks.get(touch) == task) {
-                    antiBurnInPhotoLongPressTasks.remove(touch);
-                }
-            }
-        }
-    }
-
-    private void completeScheduledAntiBurnInPhotoLongPress(Object touch, Runnable task) {
-        Boolean targetState;
-        synchronized (antiBurnInLock) {
-            if (antiBurnInPhotoLongPressTasks.get(touch) != task) {
-                return;
-            }
-            antiBurnInPhotoLongPressTasks.remove(touch);
-            AntiBurnInGestureTracker tracker = antiBurnInPhotoGestures.get(touch);
-            targetState = tracker == null
-                    ? null
-                    : tracker.longPress(SystemClock.uptimeMillis());
-        }
-        if (targetState != null) {
-            requestAntiBurnInPhotoState(touch, targetState);
-        }
-    }
-
-    private void cancelAntiBurnInPhotoGestureLocked(
-            Object touch,
-            AntiBurnInGestureTracker tracker
-    ) {
-        tracker.cancel();
-        removeAntiBurnInPhotoLongPressTaskLocked(touch);
-    }
-
-    private void removeAntiBurnInPhotoLongPressTaskLocked(Object touch) {
-        Runnable task = antiBurnInPhotoLongPressTasks.remove(touch);
-        if (task != null) {
-            antiBurnInHandler.removeCallbacks(task);
-        }
-    }
-
-    private void requestAntiBurnInPhotoState(Object touch, boolean enabled) {
-        View anchor = antiBurnInPhotoImage(touch);
-        setAntiBurnInDesiredState(enabled);
-        showAntiBurnInToast(anchor, enabled);
-    }
-
-    private View antiBurnInPhotoImage(Object touch) {
-        Field field = antiBurnInPhotoImageField;
-        if (touch == null || field == null) {
-            return null;
-        }
-        try {
-            Object value = field.get(touch);
-            return value instanceof View ? (View) value : null;
-        } catch (IllegalAccessException | RuntimeException error) {
-            return null;
-        }
-    }
-
     private void cancelAntiBurnInGesture(Object detector) {
-        if (detector == null) {
-            return;
-        }
         synchronized (antiBurnInLock) {
             AntiBurnInGestureTracker tracker = antiBurnInGestures.get(detector);
             if (tracker != null) {
@@ -2428,7 +2625,7 @@ public final class MainHook extends XposedModule {
                     : tracker.longPress(SystemClock.uptimeMillis());
         }
         if (targetState != null) {
-            requestAntiBurnInState(detector, targetState, anchor);
+            requestAntiBurnInState(targetState, anchor);
         }
     }
 
@@ -2444,15 +2641,16 @@ public final class MainHook extends XposedModule {
         }
     }
 
-    private void requestAntiBurnInState(Object detector, boolean enabled, View toastAnchor) {
+    private void requestAntiBurnInState(boolean enabled, View toastAnchor) {
         setAntiBurnInDesiredState(enabled);
         showAntiBurnInToast(toastAnchor, enabled);
     }
 
-    /** Applies state only to the active cell and restores UI through TikTok's own methods. */
+    /** Applies the latched state through TikTok's shared media clean-mode owners. */
     private void setAntiBurnInDesiredState(boolean enabled) {
         ArrayList<Object> pausePanels = new ArrayList<>();
         ArrayList<PhotoUiRestoreTarget> photoTargets = new ArrayList<>();
+        ArrayList<PhotoStateRestoreTarget> photoStateTargets = new ArrayList<>();
         synchronized (antiBurnInLock) {
             antiBurnInDesiredState = enabled;
             antiBurnInTraceBudget.set(enabled ? 10 : 4);
@@ -2462,16 +2660,19 @@ public final class MainHook extends XposedModule {
                         pausePanels.add(panel);
                     }
                 }
-                photoTargets.addAll(antiBurnInPhotoUiRestoreTargets.values());
                 antiBurnInPausePanels.clear();
+                photoTargets.addAll(antiBurnInPhotoUiRestoreTargets.values());
                 antiBurnInPhotoUiRestoreTargets.clear();
+                photoStateTargets.addAll(antiBurnInPhotoStateRestoreTargets.values());
+                antiBurnInPhotoStateRestoreTargets.clear();
             }
         }
 
         Runnable apply = () -> applyAntiBurnInDesiredState(
                 enabled,
                 pausePanels,
-                photoTargets);
+                photoTargets,
+                photoStateTargets);
         if (Looper.myLooper() == Looper.getMainLooper()) {
             apply.run();
         } else {
@@ -2482,76 +2683,119 @@ public final class MainHook extends XposedModule {
     private void applyAntiBurnInDesiredState(
             boolean enabled,
             List<Object> pausePanels,
-            List<PhotoUiRestoreTarget> photoTargets
+            List<PhotoUiRestoreTarget> photoTargets,
+            List<PhotoStateRestoreTarget> photoStateTargets
     ) {
         if (antiBurnInDesiredState != enabled) {
             return;
-        }
-
-        Object activeCell = antiBurnInActiveVideoCell.get();
-        Method videoVisibility = antiBurnInVideoVisibilityMethod;
-        if (activeCell != null && videoVisibility != null) {
-            try {
-                videoVisibility.invoke(activeCell, enabled, false);
-            } catch (Throwable error) {
-                logAntiBurnInFailure("Unable to apply TikTok video visibility", error);
-            }
         }
 
         int restoredPausePanels = 0;
         int restoredPhotoOwners = 0;
         if (enabled) {
             setAntiBurnInPhotoTitleVisibility(false);
+            driveAntiBurnInPhotoState(true);
         } else {
-            Method pauseResume = antiBurnInPauseResumeMethod;
-            if (pauseResume != null) {
+            if (antiBurnInPauseResumeMethod != null) {
                 for (Object panel : pausePanels) {
                     try {
-                        pauseResume.invoke(panel, false);
+                        antiBurnInPauseResumeMethod.invoke(panel, false);
                         restoredPausePanels++;
                     } catch (Throwable error) {
                         logAntiBurnInFailure("Unable to restore TikTok pause panel", error);
                     }
                 }
             }
-
-            PhotoClearEventBridge eventBridge = antiBurnInPhotoClearEventBridge;
-            if (eventBridge != null) {
-                for (PhotoUiRestoreTarget target : photoTargets) {
-                    Object owner = target.owner.get();
-                    if (owner == null) {
-                        continue;
-                    }
-                    try {
-                        Object restoreEvent = eventBridge.copyWithClean(target.event, false);
-                        target.method.invoke(owner, restoreEvent);
-                        restoredPhotoOwners++;
-                    } catch (Throwable error) {
-                        logAntiBurnInFailure("Unable to restore TikTok photo UI", error);
-                    }
+            for (PhotoUiRestoreTarget target : photoTargets) {
+                Object owner = target.owner.get();
+                if (owner == null) {
+                    continue;
+                }
+                try {
+                    Object restoreEvent = target.bridge.copyWithClean(target.event, false);
+                    target.method.invoke(owner, restoreEvent);
+                    restoredPhotoOwners++;
+                } catch (Throwable error) {
+                    logAntiBurnInFailure("Unable to restore TikTok photo UI", error);
                 }
             }
+            for (PhotoStateRestoreTarget target : photoStateTargets) {
+                Object owner = target.owner.get();
+                if (owner == null) {
+                    continue;
+                }
+                try {
+                    target.method.invoke(owner, target.source, false);
+                } catch (Throwable error) {
+                    logAntiBurnInFailure("Unable to restore TikTok photo state", error);
+                }
+            }
+            driveAntiBurnInPhotoState(false);
             setAntiBurnInPhotoTitleVisibility(true);
         }
 
         logInfo("Anti-burn-in mode changed: " + enabled
-                + " activeCell=" + (activeCell != null)
                 + " pauseRestores=" + restoredPausePanels
                 + " photoRestores=" + restoredPhotoOwners);
     }
 
+    private void rememberAntiBurnInPhotoIntercept(Object component) {
+        if (component == null) {
+            return;
+        }
+        synchronized (antiBurnInLock) {
+            antiBurnInPhotoIntercepts.put(component, Boolean.TRUE);
+        }
+    }
+
+    private void rememberAntiBurnInPhotoStateRestore(
+            Object component,
+            Method pp,
+            String source
+    ) {
+        if (component == null || pp == null) {
+            return;
+        }
+        synchronized (antiBurnInLock) {
+            antiBurnInPhotoStateRestoreTargets.put(
+                    component,
+                    new PhotoStateRestoreTarget(component, pp, source));
+        }
+    }
+
+    /** Replays pp("toki", state) on every photo intercept owner seen so far. */
+    private void driveAntiBurnInPhotoState(boolean enabled) {
+        Method pp = antiBurnInPhotoStateMethod;
+        if (pp == null) {
+            return;
+        }
+        synchronized (antiBurnInLock) {
+            for (Object component : antiBurnInPhotoIntercepts.keySet()) {
+                if (component == null) {
+                    continue;
+                }
+                try {
+                    pp.invoke(component, "toki", enabled);
+                } catch (Throwable error) {
+                    logAntiBurnInFailure("Unable to drive TikTok photo clear state", error);
+                }
+            }
+        }
+    }
+
     private void rememberAntiBurnInPhotoUiRestoreTarget(
+            PhotoClearEventBridge bridge,
             Object owner,
             Method method,
             Object event
     ) {
-        if (owner == null || method == null || event == null) {
+        if (bridge == null || owner == null || method == null || event == null) {
             return;
         }
         synchronized (antiBurnInLock) {
             antiBurnInPhotoUiRestoreTargets.put(
                     owner,
-                    new PhotoUiRestoreTarget(owner, method, event));
+                    new PhotoUiRestoreTarget(owner, bridge, method, event));
         }
     }
 
@@ -2569,6 +2813,77 @@ public final class MainHook extends XposedModule {
                 logAntiBurnInFailure("Unable to update the photo title tab", error);
             }
         }
+    }
+
+    private void rememberAntiBurnInHiddenVideoCell(Object cell) {
+        if (cell == null) {
+            return;
+        }
+        synchronized (antiBurnInLock) {
+            antiBurnInHiddenVideoCells.put(cell, Boolean.TRUE);
+        }
+    }
+
+    private boolean isAntiBurnInHiddenVideoCell(Object cell) {
+        synchronized (antiBurnInLock) {
+            return antiBurnInHiddenVideoCells.containsKey(cell);
+        }
+    }
+
+    private void forgetAntiBurnInHiddenVideoCell(Object cell) {
+        synchronized (antiBurnInLock) {
+            antiBurnInHiddenVideoCells.remove(cell);
+        }
+    }
+
+    private boolean restoreAntiBurnInVideoCell(
+            Object cell,
+            Method visibility,
+            String source
+    ) {
+        if (antiBurnInDesiredState || cell == null) {
+            return false;
+        }
+        try {
+            visibility.invoke(cell, false, false);
+            traceAntiBurnInVideoRestore(source);
+            return true;
+        } catch (Throwable error) {
+            logAntiBurnInFailure("Unable to restore TikTok video cell state", error);
+            return false;
+        }
+    }
+
+    private void reapplyAntiBurnInVideoCell(
+            Object cell,
+            Method visibility,
+            String source
+    ) {
+        if (!antiBurnInDesiredState || cell == null) {
+            return;
+        }
+        try {
+            visibility.invoke(cell, true, false);
+            traceAntiBurnInVideoLifecycle(source);
+        } catch (Throwable error) {
+            logAntiBurnInFailure("Unable to reapply TikTok video cell clean state", error);
+        }
+    }
+
+    private void scheduleAntiBurnInVideoCellReapply(
+            Object cell,
+            Method visibility
+    ) {
+        WeakReference<Object> cellReference = new WeakReference<>(cell);
+        antiBurnInHandler.post(() -> {
+            Object activeCell = cellReference.get();
+            if (activeCell != null) {
+                reapplyAntiBurnInVideoCell(
+                        activeCell,
+                        visibility,
+                        "next-loop");
+            }
+        });
     }
 
     private boolean invokeAntiBurnInCellClean(Object component, boolean clean) {
@@ -2649,18 +2964,29 @@ public final class MainHook extends XposedModule {
         return null;
     }
 
-    private static Field findFieldByNames(Class<?> type, String... names) {
-        if (type == null || names == null) {
-            return null;
-        }
-        for (String name : names) {
-            if (name == null) {
-                continue;
+    private static Method findMethodInHierarchy(
+            Class<?> type,
+            String name,
+            Class<?>... parameters
+    ) {
+        return findMethodInHierarchy(type, new String[]{name}, parameters);
+    }
+
+    private static Method findMethodInHierarchy(
+            Class<?> type,
+            String[] names,
+            Class<?>... parameters
+    ) {
+        Class<?> current = type;
+        while (current != null) {
+            for (String name : names) {
+                try {
+                    return current.getDeclaredMethod(name, parameters);
+                } catch (NoSuchMethodException ignored) {
+                    // Continue with the next known name or superclass.
+                }
             }
-            Field field = findField(type, name);
-            if (field != null) {
-                return field;
-            }
+            current = current.getSuperclass();
         }
         return null;
     }
@@ -2752,37 +3078,6 @@ public final class MainHook extends XposedModule {
         return null;
     }
 
-    private static Method findLongBooleanMethod(Class<?> type, String... names) {
-        if (type == null) {
-            return null;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            Method fallback = null;
-            for (String name : names) {
-                for (Method method : current.getDeclaredMethods()) {
-                    Class<?>[] parameters = method.getParameterTypes();
-                    if (!method.getName().equals(name)
-                            || parameters.length != 3
-                            || parameters[0] != long.class
-                            || parameters[1] != boolean.class
-                            || parameters[2] != boolean.class) {
-                        continue;
-                    }
-                    if (!method.isSynthetic()) {
-                        return method;
-                    }
-                    fallback = method;
-                }
-            }
-            if (fallback != null) {
-                return fallback;
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
     private static Method findLifecycleViewMethod(
             Class<?> type,
             String... names
@@ -2815,6 +3110,79 @@ public final class MainHook extends XposedModule {
         return null;
     }
 
+    private static Method findMotionEventMethod(Class<?> type) {
+        Method named = findMotionEventMethodByName(type, "LIZJ");
+        if (named == null) {
+            named = findMotionEventMethodByName(type, "LIZIZ");
+        }
+        if (named != null) {
+            return named;
+        }
+        Class<?> current = type;
+        while (current != null) {
+            for (Method method : current.getDeclaredMethods()) {
+                Class<?>[] parameters = method.getParameterTypes();
+                if (parameters.length == 1
+                        && MotionEvent.class.isAssignableFrom(parameters[0])
+                        && (method.getReturnType() == boolean.class
+                        || method.getReturnType() == void.class)) {
+                    return method;
+                }
+            }
+            current = current.getSuperclass();
+        }
+        return null;
+    }
+
+    private static Method findMotionEventMethodByName(Class<?> type, String name) {
+        Class<?> current = type;
+        while (current != null) {
+            for (Method method : current.getDeclaredMethods()) {
+                Class<?>[] parameters = method.getParameterTypes();
+                if (name.equals(method.getName())
+                        && parameters.length == 1
+                        && MotionEvent.class.isAssignableFrom(parameters[0])
+                        && (method.getReturnType() == boolean.class
+                        || method.getReturnType() == void.class)) {
+                    return method;
+                }
+            }
+            current = current.getSuperclass();
+        }
+        return null;
+    }
+
+    private static Field findDetectorField(Class<?> type) {
+        Field known = findField(type, "LLJLIL");
+        if (known != null && findMotionEventMethod(known.getType()) != null) {
+            return known;
+        }
+        Class<?> current = type;
+        while (current != null) {
+            for (Field field : current.getDeclaredFields()) {
+                if (Modifier.isStatic(field.getModifiers()) || field.getType().isPrimitive()) {
+                    continue;
+                }
+                if (findMotionEventMethod(field.getType()) != null) {
+                    field.setAccessible(true);
+                    return field;
+                }
+            }
+            current = current.getSuperclass();
+        }
+        return null;
+    }
+
+    private static Field findViewField(Class<?> type, String... names) {
+        for (String name : names) {
+            Field field = findField(type, name);
+            if (field != null && View.class.isAssignableFrom(field.getType())) {
+                return field;
+            }
+        }
+        return null;
+    }
+
     private static Method findCleanVisibilityMethod(
             Class<?> type,
             String... names
@@ -2841,12 +3209,28 @@ public final class MainHook extends XposedModule {
             }
             current = current.getSuperclass();
         }
-        return null;
+
+        Method candidate = null;
+        current = type;
+        while (current != null) {
+            for (Method method : current.getDeclaredMethods()) {
+                if (method.isSynthetic() || !isCleanVisibilitySignature(method)) {
+                    continue;
+                }
+                if (candidate != null) {
+                    return null;
+                }
+                candidate = method;
+            }
+            current = current.getSuperclass();
+        }
+        return candidate;
     }
 
     private static boolean isCleanVisibilitySignature(Method method) {
         Class<?>[] parameters = method.getParameterTypes();
-        if (parameters.length < 5 || parameters.length > 6
+        if (method.getReturnType() != void.class
+                || parameters.length < 5 || parameters.length > 6
                 || !Animator.class.isAssignableFrom(parameters[0])) {
             return false;
         }
@@ -2972,13 +3356,6 @@ public final class MainHook extends XposedModule {
                 + " forwardedClean=true forwardedImmediately=true");
     }
 
-    private void traceAntiBurnInPhotoSequence(String event) {
-        if (!consumeAntiBurnInTraceBudget()) {
-            return;
-        }
-        logInfo("Anti-burn-in photo " + event);
-    }
-
     private void traceAntiBurnInPhotoEventGate(int kind, String source) {
         if (!consumeAntiBurnInTraceBudget()) {
             return;
@@ -2987,107 +3364,29 @@ public final class MainHook extends XposedModule {
                 + kind + " source=" + source);
     }
 
+    private void traceAntiBurnInPhotoStateGate(String source) {
+        if (!consumeAntiBurnInTraceBudget()) {
+            return;
+        }
+        logInfo("Anti-burn-in photo state requested=false forwarded=true source=" + source);
+    }
+
+    private void traceAntiBurnInVideoLifecycle(String source) {
+        if (!consumeAntiBurnInTraceBudget()) {
+            return;
+        }
+        logInfo("Anti-burn-in video cell reapplied after " + source);
+    }
+
+    private void traceAntiBurnInVideoRestore(String source) {
+        if (!consumeAntiBurnInTraceBudget()) {
+            return;
+        }
+        logInfo("Anti-burn-in video cell restored after " + source);
+    }
+
     private boolean consumeAntiBurnInTraceBudget() {
         return antiBurnInTraceBudget.getAndUpdate(value -> value > 0 ? value - 1 : 0) > 0;
-    }
-
-    private static Method findMethodByNameAndSignature(
-            Class<?> type,
-            Class<?> returnType,
-            String... names
-    ) {
-        if (type == null) {
-            return null;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            Method fallback = null;
-            for (String name : names) {
-                for (Method method : current.getDeclaredMethods()) {
-                    Class<?>[] parameters = method.getParameterTypes();
-                    if (!method.getName().equals(name)
-                            || parameters.length != 1
-                            || parameters[0] != boolean.class
-                            || (returnType != null && method.getReturnType() != returnType)) {
-                        continue;
-                    }
-                    if (!method.isSynthetic()) {
-                        return method;
-                    }
-                    fallback = method;
-                }
-            }
-            if (fallback != null) {
-                return fallback;
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Method findMotionEventMethodByName(Class<?> type, String name) {
-        if (type == null || name == null) {
-            return null;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            for (Method method : current.getDeclaredMethods()) {
-                Class<?>[] parameters = method.getParameterTypes();
-                if (method.getName().equals(name)
-                        && parameters.length == 1
-                        && MotionEvent.class.isAssignableFrom(parameters[0])) {
-                    return method;
-                }
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Method findMotionEventMethod(Class<?> type) {
-        Method named = findMotionEventMethodByName(type, "LIZJ");
-        if (named == null) {
-            named = findMotionEventMethodByName(type, "LIZIZ");
-        }
-        if (named != null) {
-            return named;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            for (Method method : current.getDeclaredMethods()) {
-                Class<?>[] parameters = method.getParameterTypes();
-                if (parameters.length == 1
-                        && MotionEvent.class.isAssignableFrom(parameters[0])
-                        && (method.getReturnType() == boolean.class
-                        || method.getReturnType() == void.class)) {
-                    return method;
-                }
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Field findDetectorField(Class<?> type) {
-        Field known = findFieldByNames(type, "LLJLIL", "LJZI");
-        if (known != null && findMotionEventMethod(known.getType()) != null) {
-            return known;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            for (Field field : current.getDeclaredFields()) {
-                if (Modifier.isStatic(field.getModifiers())
-                        || field.getType().isPrimitive()) {
-                    continue;
-                }
-                if (findMotionEventMethod(field.getType()) != null) {
-                    field.setAccessible(true);
-                    return field;
-                }
-            }
-            current = current.getSuperclass();
-        }
-        return null;
     }
 
     private void logAntiBurnInFailure(String message, Throwable error) {
@@ -3587,7 +3886,7 @@ public final class MainHook extends XposedModule {
                         .intercept(chain -> filter.filterListResult(chain.proceed()));
             }
         } catch (ClassNotFoundException ignored) {
-            // The known 46.3.x path is obfuscated differently in other versions.
+            // The known 46.3.3 path is obfuscated differently in other versions.
         } catch (Throwable error) {
             logError("Unable to hook following feed transformation", error);
         }
@@ -3634,7 +3933,7 @@ public final class MainHook extends XposedModule {
                         });
             }
         } catch (ClassNotFoundException ignored) {
-            // This is an obfuscated 46.3.x implementation detail.
+            // This is an obfuscated 46.3.3 implementation detail.
         } catch (Throwable error) {
             logError("Unable to hook profile ad response", error);
         }
