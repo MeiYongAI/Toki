@@ -1,5 +1,7 @@
 # Toki
 
+[中文](README.md) | [English](README.en.md)
+
 Toki 是面向官方 TikTok 46.3.3 的 libxposed API 102 功能增强模块，仅作用于
 `com.zhiliaoapp.musically`。
 
