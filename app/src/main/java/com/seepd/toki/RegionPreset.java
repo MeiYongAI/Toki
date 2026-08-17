@@ -1,5 +1,7 @@
 package com.seepd.toki;
 
+import java.util.Locale;
+
 enum RegionPreset {
     US("US", "United States", "310260", "T-Mobile"),
     CA("CA", "Canada", "302720", "Rogers"),
@@ -112,6 +114,11 @@ enum RegionPreset {
         this.displayName = displayName;
         this.operator = operator;
         this.operatorName = operatorName;
+    }
+
+    String localizedDisplayName(Locale locale) {
+        String localizedName = new Locale("", code).getDisplayCountry(locale);
+        return localizedName.isEmpty() ? displayName : localizedName;
     }
 
     static RegionPreset fromCode(String code) {

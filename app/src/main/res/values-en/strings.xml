@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Toki</string>
-    <string name="module_description">A feature enhancement module for TikTok 46.3.x</string>
+    <string name="module_description">A feature enhancement module for TikTok 46.3.3</string>
     <string name="settings_title">Toki</string>
     <string name="enable_region_spoof">Spoof Region</string>
     <string name="enable_region_spoof_summary">Make TikTok recognize the device as being in the target region.</string>

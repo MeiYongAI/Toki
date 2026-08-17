@@ -267,7 +267,7 @@ private fun SettingsContent(
             SettingsGroup {
                 ValueSettingRow(
                     title = stringResource(R.string.region),
-                    value = "${state.region.displayName} (${state.region.code})",
+                    value = "${state.region.localizedDisplayName(Locale.getDefault())} (${state.region.code})",
                     onClick = { onDialog(SettingsDialog.REGION) },
                 )
                 GroupDivider()
@@ -628,10 +628,12 @@ private fun RegionDialog(
     val maxListHeight = (windowHeight - 220.dp)
         .coerceIn(96.dp, 320.dp)
     val normalizedQuery = query.trim().lowercase(Locale.ROOT)
-    val regions = remember(normalizedQuery) {
+    val locale = Locale.getDefault()
+    val regions = remember(normalizedQuery, locale) {
         RegionPreset.values().filter { preset ->
             normalizedQuery.isEmpty() ||
                 preset.displayName.lowercase(Locale.ROOT).contains(normalizedQuery) ||
+                preset.localizedDisplayName(locale).lowercase(Locale.ROOT).contains(normalizedQuery) ||
                 preset.code.lowercase(Locale.ROOT).contains(normalizedQuery) ||
                 preset.operatorName.lowercase(Locale.ROOT).contains(normalizedQuery)
         }
@@ -722,7 +724,7 @@ private fun RegionDialog(
                                     verticalArrangement = Arrangement.spacedBy(2.dp),
                                 ) {
                                     Text(
-                                        preset.displayName,
+                                        preset.localizedDisplayName(locale),
                                         style = MaterialTheme.typography.bodyLarge,
                                     )
                                     Text(
