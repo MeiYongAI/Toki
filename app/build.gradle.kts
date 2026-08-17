@@ -23,8 +23,8 @@ android {
         applicationId = "com.seepd.toki"
         minSdk = 26
         targetSdk = 36
-        versionCode = 416
-        versionName = "0.4.16"
+        versionCode = 417
+        versionName = "0.4.17"
 
     }
 

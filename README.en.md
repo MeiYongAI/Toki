@@ -2,7 +2,7 @@
 
 [English](README.en.md) | [中文](README.md)
 
-Toki is a libxposed API 102 enhancement module for the official TikTok 46.3.3.
+Toki is a libxposed API 102 enhancement module for the official TikTok 46.3.2 and 46.3.3.
 It only targets `com.zhiliaoapp.musically`.
 
 ## Features
@@ -27,7 +27,7 @@ It only targets `com.zhiliaoapp.musically`.
 
 - Android 8.0 or later
 - An LSPosed implementation that supports libxposed API 102
-- Official TikTok 46.3.3 with package name `com.zhiliaoapp.musically`. The module APK is
+- Official TikTok 46.3.2 or 46.3.3 with package name `com.zhiliaoapp.musically`. The module APK is
   architecture-independent.
 
 ## Installation

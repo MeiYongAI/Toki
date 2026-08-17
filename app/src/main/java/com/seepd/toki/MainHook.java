@@ -1,10 +1,12 @@
 package com.seepd.toki;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -102,6 +104,7 @@ public final class MainHook extends XposedModule {
     private volatile Method antiBurnInToastMessageMethod;
     private volatile Method antiBurnInToastLegacyMethod;
     private volatile Method antiBurnInToastShowMethod;
+    private volatile boolean antiBurnInToastUsesActivity;
     private volatile float antiBurnInCenterTolerancePx = 24f;
     private volatile float antiBurnInSpanTolerancePx = 8f;
 
@@ -208,7 +211,9 @@ public final class MainHook extends XposedModule {
 
     /** Restores the comment-page translation control in the supported official TikTok client. */
     private void installCommentTranslationButton(ClassLoader classLoader) {
-        installOfficialCommentTranslationButton(classLoader);
+        if (!installOfficialCommentTranslationButton(classLoader)) {
+            installTikTok4632CommentTranslationButton(classLoader);
+        }
     }
 
     /**
@@ -216,7 +221,7 @@ public final class MainHook extends XposedModule {
      * control. Track the cell-owned translation actions and expose them through a TuxIconView added
      * beside the existing close control.
      */
-    private void installOfficialCommentTranslationButton(ClassLoader classLoader) {
+    private boolean installOfficialCommentTranslationButton(ClassLoader classLoader) {
         try {
             Class<?> commentType = Class.forName(
                     "com.ss.android.ugc.aweme.comment.model.Comment", false, classLoader);
@@ -229,7 +234,7 @@ public final class MainHook extends XposedModule {
             Class<?> translationActionType = Class.forName("X.0nA8", false, classLoader);
             Class<?> translationServiceType = Class.forName("X.0oLG", false, classLoader);
 
-            Method bindComment = baseCommentCell.getDeclaredMethod("K6", commentItemType);
+            Method bindComment = findCommentBindingMethod(baseCommentCell, commentItemType);
             Field translationManager = baseCommentCell.getDeclaredField("LLJJIJI");
             Field boundComment = translationManagerType.getDeclaredField("LJIILJJIL");
             Field translationAction = translationManagerType.getDeclaredField("LIZLLL");
@@ -320,11 +325,101 @@ public final class MainHook extends XposedModule {
                         return result;
                     });
             logInfo("Enabled official TikTok 46.3.3 comment translation button hooks");
+            return true;
         } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException error) {
             logInfo("Official comment translation symbols unavailable: "
                     + error.getClass().getSimpleName() + ": " + error.getMessage());
+            return false;
         } catch (Throwable error) {
             logError("Unable to enable official comment translation button", error);
+            return false;
+        }
+    }
+
+    /**
+     * TikTok 46.3.2 binds comment cells with {@code X.0Tus} and exposes the native batch
+     * translator directly. It does not retain the 46.3.3 per-comment action object.
+     */
+    private void installTikTok4632CommentTranslationButton(ClassLoader classLoader) {
+        try {
+            Class<?> commentType = Class.forName(
+                    "com.ss.android.ugc.aweme.comment.model.Comment", false, classLoader);
+            Class<?> baseCommentCell = Class.forName(
+                    "com.ss.android.ugc.aweme.commentv2.commentlist.powercell.BaseCommentCell",
+                    false,
+                    classLoader);
+            Method getBoundComment = baseCommentCell.getDeclaredMethod("l6");
+            Method getAwemeId = commentType.getMethod("getAwemeId");
+            Method getCommentId = commentType.getMethod("getCid");
+            Method isTranslated = commentType.getMethod("isTranslated");
+
+            Class<?> actionBarType = Class.forName(
+                    "com.ss.android.ugc.aweme.commentv2.actionbar.CommentPageActionBarAssem",
+                    false,
+                    classLoader);
+            Class<?> contextSourceType = Class.forName(
+                    "com.ss.android.ugc.aweme.comment.model.CommentContextSource",
+                    false,
+                    classLoader);
+            Class<?> contextSourceKt = Class.forName(
+                    "com.ss.android.ugc.aweme.comment.model.CommentContextSourceKt",
+                    false,
+                    classLoader);
+            Class<?> awemeType = Class.forName(
+                    "com.ss.android.ugc.aweme.feed.model.Aweme", false, classLoader);
+            Class<?> tuxIconViewType = Class.forName(
+                    "com.bytedance.tux.icon.TuxIconView", false, classLoader);
+            Method onActionBarCreated = actionBarType.getDeclaredMethod("onViewCreated", View.class);
+            Method getCommentContext = actionBarType.getDeclaredMethod("cq");
+            Method getAweme = contextSourceKt.getMethod("aweme", contextSourceType);
+            Method getAid = awemeType.getMethod("getAid");
+            Field closeButton = actionBarType.getDeclaredField("LLJJLIIIJLLLLLLLZ");
+            Constructor<?> newTuxIconView = tuxIconViewType.getConstructor(Context.class);
+            Method setIconRes = tuxIconViewType.getMethod("setIconRes", int.class);
+            Method setIconWidth = tuxIconViewType.getMethod("setIconWidth", int.class);
+            Method setIconHeight = tuxIconViewType.getMethod("setIconHeight", int.class);
+            Method setTintColor = tuxIconViewType.getMethod("setTintColor", int.class);
+            Method setTintColorRes = tuxIconViewType.getMethod("setTintColorRes", int.class);
+
+            Class<?> batchTranslatorType = Class.forName("X.0l8b", false, classLoader);
+            Class<?> requestType = Class.forName("X.0l59", false, classLoader);
+            Method translateBatch = batchTranslatorType.getMethod(
+                    "LJFF", List.class, requestType, boolean.class);
+            Method resetBatch = batchTranslatorType.getMethod("LIZ", List.class);
+            BatchTranslationBridge batchBridge = new BatchTranslationBridge(
+                    null, null, null, null, null, translateBatch, resetBatch, null, false, true);
+
+            getBoundComment.setAccessible(true);
+            getCommentContext.setAccessible(true);
+            closeButton.setAccessible(true);
+            OfficialTranslationBridge bridge = new OfficialTranslationBridge(
+                    null, null, null, getAwemeId, getCommentId, isTranslated, null, null,
+                    null, null, getCommentContext, getAweme, getAid, closeButton,
+                    newTuxIconView, setIconRes, setIconWidth, setIconHeight, setTintColor,
+                    setTintColorRes, batchBridge);
+
+            hook(getBoundComment)
+                    .setId("toki-4632-comment-translation-current-comment")
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        captureTikTok4632CommentBinding(chain.getThisObject(), result, bridge);
+                        return result;
+                    });
+            hook(onActionBarCreated)
+                    .setId("toki-4632-comment-translation-action-bar")
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        Object root = chain.getArg(0);
+                        injectOfficialCommentTranslationButton(
+                                chain.getThisObject(), root instanceof View ? (View) root : null, bridge);
+                        return result;
+                    });
+            logInfo("Enabled official TikTok 46.3.2 comment translation button hooks");
+        } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException error) {
+            logInfo("TikTok 46.3.2 comment translation symbols unavailable: "
+                    + error.getClass().getSimpleName() + ": " + error.getMessage());
+        } catch (Throwable error) {
+            logError("Unable to enable TikTok 46.3.2 comment translation button", error);
         }
     }
 
@@ -373,7 +468,9 @@ public final class MainHook extends XposedModule {
                     getLoadedComments,
                     translateBatch,
                     resetBatch,
-                    requestMetadata);
+                    requestMetadata,
+                    true,
+                    false);
         } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException error) {
             logInfo("Native multi-comment translation bridge unavailable: "
                     + error.getClass().getSimpleName() + ": " + error.getMessage());
@@ -407,6 +504,36 @@ public final class MainHook extends XposedModule {
             }
         }
         throw new NoSuchMethodException(owner.getName() + '.' + name);
+    }
+
+    /**
+     * TikTok renames the comment-cell bind method between releases but retains its unique item
+     * parameter. Prefer the verified name and only fall back when the signature is unambiguous.
+     */
+    private static Method findCommentBindingMethod(Class<?> owner, Class<?> itemType)
+            throws NoSuchMethodException {
+        Method candidate = null;
+        for (Class<?> current = owner; current != null; current = current.getSuperclass()) {
+            for (Method method : current.getDeclaredMethods()) {
+                if (Modifier.isStatic(method.getModifiers()) || method.getParameterCount() != 1
+                        || method.getParameterTypes()[0] != itemType) {
+                    continue;
+                }
+                if ("K6".equals(method.getName())) {
+                    return method;
+                }
+                if (candidate != null) {
+                    throw new NoSuchMethodException(
+                            "Ambiguous comment binding method on " + owner.getName());
+                }
+                candidate = method;
+            }
+        }
+        if (candidate == null) {
+            throw new NoSuchMethodException(
+                    "Comment binding method on " + owner.getName() + " for " + itemType.getName());
+        }
+        return candidate;
     }
 
     private void captureOfficialCommentBinding(Object cell, OfficialTranslationBridge bridge) {
@@ -446,6 +573,37 @@ public final class MainHook extends XposedModule {
             }
         } catch (ReflectiveOperationException | RuntimeException error) {
             logOfficialTranslationFailure("Unable to capture a bound comment", error);
+        }
+    }
+
+    private void captureTikTok4632CommentBinding(
+            Object cell,
+            Object comment,
+            OfficialTranslationBridge bridge) {
+        try {
+            if (comment == null) {
+                return;
+            }
+            String awemeId = stringValue(bridge.getAwemeId.invoke(comment));
+            String commentId = stringValue(bridge.getCommentId.invoke(comment));
+            if (awemeId.isEmpty() || commentId.isEmpty()) {
+                return;
+            }
+            String key = commentKey(awemeId, commentId);
+            boolean translateNow;
+            List<BoundComment> bindings;
+            synchronized (officialTranslationLock) {
+                officialBoundComments.put(key, new BoundComment(key, awemeId, comment, null));
+                pruneOfficialCommentBindingsLocked();
+                translateNow = isOfficialTranslationActive(awemeId)
+                        && !Boolean.TRUE.equals(bridge.isTranslated.invoke(comment));
+                bindings = new ArrayList<>(officialBoundComments.values());
+            }
+            if (translateNow) {
+                translateOfficialLoadedComments(null, awemeId, bindings, bridge);
+            }
+        } catch (ReflectiveOperationException | RuntimeException error) {
+            logOfficialTranslationFailure("Unable to capture a TikTok 46.3.2 bound comment", error);
         }
     }
 
@@ -646,7 +804,7 @@ public final class MainHook extends XposedModule {
 
         int affected = translated
                 ? translateOfficialLoadedComments(actionBar, targetAwemeId, bindings, bridge)
-                : resetOfficialLoadedComments(actionBar, targetAwemeId, bridge);
+                : resetOfficialLoadedComments(actionBar, targetAwemeId, bindings, bridge);
         for (BoundComment binding : bindings) {
             Object comment = binding.comment.get();
             Object action = binding.action.get();
@@ -695,12 +853,15 @@ public final class MainHook extends XposedModule {
             return 0;
         }
         try {
-            List<Object> comments = getOfficialLoadedComments(actionBar, awemeId, bridge);
+            List<Object> comments = batch.useBoundComments
+                    ? getOfficialBoundComments(bindings, awemeId)
+                    : getOfficialLoadedComments(actionBar, awemeId, bridge);
             if (comments.isEmpty()) {
                 return 0;
             }
-            Object requestMetadata = findOfficialBatchRequestMetadata(bindings, batch);
-            if (requestMetadata == null) {
+            Object requestMetadata = batch.requiresRequestMetadata
+                    ? findOfficialBatchRequestMetadata(bindings, batch) : null;
+            if (batch.requiresRequestMetadata && requestMetadata == null) {
                 logInfo("Native multi-comment translation has no request metadata yet");
                 return 0;
             }
@@ -716,13 +877,16 @@ public final class MainHook extends XposedModule {
     private int resetOfficialLoadedComments(
             Object actionBar,
             String awemeId,
+            List<BoundComment> bindings,
             OfficialTranslationBridge bridge) {
         BatchTranslationBridge batch = bridge.batch;
         if (batch == null) {
             return 0;
         }
         try {
-            List<Object> comments = getOfficialLoadedComments(actionBar, awemeId, bridge);
+            List<Object> comments = batch.useBoundComments
+                    ? getOfficialBoundComments(bindings, awemeId)
+                    : getOfficialLoadedComments(actionBar, awemeId, bridge);
             if (comments.isEmpty()) {
                 return 0;
             }
@@ -764,6 +928,19 @@ public final class MainHook extends XposedModule {
         }
         // Never translate another page just because a stale/unknown aweme id had no match.
         return matchingComments;
+    }
+
+    private static List<Object> getOfficialBoundComments(
+            List<BoundComment> bindings,
+            String awemeId) {
+        List<Object> comments = new ArrayList<>();
+        for (BoundComment binding : bindings) {
+            Object comment = binding.comment.get();
+            if (comment != null && awemeId.equals(binding.awemeId)) {
+                comments.add(comment);
+            }
+        }
+        return comments;
     }
 
     private Object findOfficialBatchRequestMetadata(
@@ -1007,7 +1184,8 @@ public final class MainHook extends XposedModule {
         Iterator<Map.Entry<String, BoundComment>> iterator = officialBoundComments.entrySet().iterator();
         while (iterator.hasNext()) {
             BoundComment binding = iterator.next().getValue();
-            if (binding.comment.get() == null || binding.action.get() == null) {
+            // 46.3.2 uses the native batch API, so its bindings intentionally have no action.
+            if (binding.comment.get() == null) {
                 officialTranslationRequests.remove(binding.key);
                 iterator.remove();
             }
@@ -1333,6 +1511,8 @@ public final class MainHook extends XposedModule {
         final Method translateBatch;
         final Method resetBatch;
         final Field requestMetadata;
+        final boolean requiresRequestMetadata;
+        final boolean useBoundComments;
 
         BatchTranslationBridge(
                 Class<?> requestType,
@@ -1342,7 +1522,9 @@ public final class MainHook extends XposedModule {
                 Method getLoadedComments,
                 Method translateBatch,
                 Method resetBatch,
-                Field requestMetadata) {
+                Field requestMetadata,
+                boolean requiresRequestMetadata,
+                boolean useBoundComments) {
             this.requestType = requestType;
             this.getFragment = getFragment;
             this.getScope = getScope;
@@ -1351,6 +1533,8 @@ public final class MainHook extends XposedModule {
             this.translateBatch = translateBatch;
             this.resetBatch = resetBatch;
             this.requestMetadata = requestMetadata;
+            this.requiresRequestMetadata = requiresRequestMetadata;
+            this.useBoundComments = useBoundComments;
         }
     }
 
@@ -2005,7 +2189,6 @@ public final class MainHook extends XposedModule {
                     "com.ss.android.ugc.aweme.services.uikit.CreativeToastBuilder",
                     false,
                     classLoader);
-            Class<?> toastType = findClass(classLoader, "X.0wq4", "X.C1795960wq4");
             antiBurnInToastBuilderConstructor = builderType.getDeclaredConstructor();
             antiBurnInToastMessageMethod = builderType.getMethod("message", String.class);
             try {
@@ -2014,8 +2197,18 @@ public final class MainHook extends XposedModule {
             } catch (NoSuchMethodException ignored) {
                 antiBurnInToastLegacyMethod = null;
             }
-            antiBurnInToastShowMethod = toastType.getDeclaredMethod(
-                    "LIZLLL", View.class, int.class, builderType);
+            try {
+                Class<?> toastType = findClass(classLoader, "X.0wq4", "X.C1795960wq4");
+                antiBurnInToastShowMethod = toastType.getDeclaredMethod(
+                        "LIZLLL", View.class, int.class, builderType);
+                antiBurnInToastUsesActivity = false;
+            } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+                // Official TikTok 46.3.2 moved this entry point to the Activity-based helper.
+                Class<?> toastType = Class.forName("X.0qOz", false, classLoader);
+                antiBurnInToastShowMethod = toastType.getDeclaredMethod(
+                        "LIZ", Activity.class, int.class, builderType);
+                antiBurnInToastUsesActivity = true;
+            }
             antiBurnInToastBuilderConstructor.setAccessible(true);
             antiBurnInToastMessageMethod.setAccessible(true);
             if (antiBurnInToastLegacyMethod != null) {
@@ -2928,10 +3121,33 @@ public final class MainHook extends XposedModule {
             if (legacy != null) {
                 legacy.invoke(builder, true);
             }
-            show.invoke(null, anchor, 3047, builder);
+            Object host = anchor;
+            if (antiBurnInToastUsesActivity) {
+                Activity activity = findActivity(anchor.getContext());
+                if (activity == null) {
+                    return;
+                }
+                host = activity;
+            }
+            show.invoke(null, host, 3047, builder);
         } catch (Throwable error) {
             logAntiBurnInFailure("Unable to show anti-burn-in status toast", error);
         }
+    }
+
+    private static Activity findActivity(Context context) {
+        Context current = context;
+        while (current instanceof ContextWrapper) {
+            if (current instanceof Activity) {
+                return (Activity) current;
+            }
+            Context next = ((ContextWrapper) current).getBaseContext();
+            if (next == current) {
+                break;
+            }
+            current = next;
+        }
+        return current instanceof Activity ? (Activity) current : null;
     }
 
     private static Class<?> findClass(ClassLoader classLoader, String... names)
