@@ -7,6 +7,14 @@ import org.junit.Test
 
 class SettingsInputTest {
     @Test
+    fun gpsCoordinatesStayWithinValidRanges() {
+        assertEquals(25.0, SettingsInput.parseCoordinate("25.0", -90.0, 90.0))
+        assertEquals(-180.0, SettingsInput.parseCoordinate("-180", -180.0, 180.0))
+        assertEquals(null, SettingsInput.parseCoordinate("91", -90.0, 90.0))
+        assertEquals(null, SettingsInput.parseCoordinate("east", -180.0, 180.0))
+    }
+
+    @Test
     fun regionCatalogCoversGlobalPresets() {
         val presets = RegionPreset.values()
         assertTrue(presets.size >= 90)
@@ -24,11 +32,34 @@ class SettingsInputTest {
     }
 
     @Test
-    fun maximumMustBeGreaterThanMinimum() {
+    fun equalMinimumAndMaximumAreAllowed() {
         val result = SettingsInput.validateRange("1000", "1000")
 
+        assertEquals(NumericRange(1000, 1000), result.value)
+        assertNull(result.error)
+    }
+
+    @Test
+    fun compactMetricInputIsConvertedToExactCounts() {
+        val result = SettingsInput.validateRange("20K", "1.5M")
+
+        assertEquals(NumericRange(20_000, 1_500_000), result.value)
+        assertNull(result.error)
+    }
+
+    @Test
+    fun compactMetricInputRejectsFractionsWithoutAUnit() {
+        val result = SettingsInput.validateRange("1.5", "2K")
+
         assertNull(result.value)
-        assertEquals(RangeInputError.INVALID_ORDER, result.error)
+        assertEquals(RangeInputError.INVALID_MINIMUM, result.error)
+    }
+
+    @Test
+    fun metricSummaryUsesCompactUnits() {
+        assertEquals("842", SettingsInput.formatMetricCount(842))
+        assertEquals("20K", SettingsInput.formatMetricCount(20_000))
+        assertEquals("1.5M", SettingsInput.formatMetricCount(1_500_000))
     }
 
     @Test
@@ -83,5 +114,52 @@ class SettingsInputTest {
         assertEquals(1.5f, PlaybackSpeed.sanitize(1.5f))
         assertEquals(1.0f, PlaybackSpeed.sanitize(1.33f))
         assertEquals(1.0f, PlaybackSpeed.sanitize(Float.NaN))
+    }
+
+    @Test
+    fun pagePurificationDefaultsToShowingEveryControl() {
+        val state = SettingsDefaults.create()
+
+        assertTrue(
+            listOf(
+                state.hideAuthorInfo,
+                state.hideFollowButton,
+                state.hideVideoDescription,
+                state.hideVideoTags,
+                state.hideMusicTitle,
+                state.hideMusicCover,
+                state.hideLikeButton,
+                state.hideCommentButton,
+                state.hideFavoriteButton,
+                state.hideShareButton,
+                state.hideDuetButton,
+                state.hideStitchButton,
+                state.hideQuickDm,
+                state.hideStoryTags,
+                state.hideCollabLabel,
+                state.hideTako,
+                state.hideContentSearch,
+                state.hideTranslationControls,
+            ).none { it },
+        )
+    }
+
+    @Test
+    fun startupLoginSkipDefaultsToDisabled() {
+        assertTrue(!SettingsDefaults.create().skipStartupLogin)
+    }
+
+    @Test
+    fun globalNavigationPurificationDefaultsToShowingEveryControl() {
+        val state = SettingsDefaults.create()
+
+        assertTrue(
+            listOf(
+                state.hideTopNavigation,
+                state.hideSearchEntry,
+                state.hideBottomNavigation,
+                state.hideVideoProgressBar,
+            ).none { it },
+        )
     }
 }

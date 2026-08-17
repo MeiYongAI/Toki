@@ -1,18 +1,26 @@
 package com.seepd.toki
 
+import java.math.BigDecimal
+import java.math.RoundingMode
+
 internal data class SettingsUiState(
     val regionSpoof: Boolean,
     val region: RegionPreset,
+    val languageSpoof: Boolean,
+    val timeZoneSpoof: Boolean,
+    val skipStartupLogin: Boolean,
     val downloadRestrictions: Boolean,
     val hideFeedAds: Boolean,
     val hideLive: Boolean,
     val hideImages: Boolean,
+    val hideAiGenerated: Boolean,
+    val hideTrendingTopics: Boolean,
+    val hideContentClassification: Boolean,
     val forceRegion: Boolean,
     val hideLongPosts: Boolean,
     val filterViewsLikes: Boolean,
     val disableLoop: Boolean,
     val defaultPlaybackSpeed: Float,
-    val antiBurnIn: Boolean,
     val autoTranslateComments: Boolean,
     val videoLocation: String,
     val picLocation: String,
@@ -24,22 +32,52 @@ internal data class SettingsUiState(
     val viewsMax: Long?,
     val likesMin: Long,
     val likesMax: Long?,
+    val hideAuthorInfo: Boolean,
+    val hideFollowButton: Boolean,
+    val hideVideoDescription: Boolean,
+    val hideVideoTags: Boolean,
+    val hideMusicTitle: Boolean,
+    val hideMusicCover: Boolean,
+    val hideLikeButton: Boolean,
+    val hideCommentButton: Boolean,
+    val hideFavoriteButton: Boolean,
+    val hideShareButton: Boolean,
+    val hideDuetButton: Boolean,
+    val hideStitchButton: Boolean,
+    val hideQuickDm: Boolean,
+    val hideStoryTags: Boolean,
+    val hideCollabLabel: Boolean,
+    val hideTako: Boolean,
+    val hideContentSearch: Boolean,
+    val hideTopNavigation: Boolean,
+    val hideSearchEntry: Boolean,
+    val hideBottomNavigation: Boolean,
+    val hideVideoProgressBar: Boolean,
+    val hideTranslationControls: Boolean,
+    val gpsSpoof: Boolean,
+    val gpsLatitude: String,
+    val gpsLongitude: String,
 )
 
 internal object SettingsDefaults {
     fun create() = SettingsUiState(
         regionSpoof = false,
         region = RegionPreset.US,
+        languageSpoof = false,
+        timeZoneSpoof = false,
+        skipStartupLogin = false,
         downloadRestrictions = false,
         hideFeedAds = false,
         hideLive = false,
         hideImages = false,
+        hideAiGenerated = false,
+        hideTrendingTopics = false,
+        hideContentClassification = false,
         forceRegion = false,
         hideLongPosts = false,
         filterViewsLikes = false,
         disableLoop = false,
         defaultPlaybackSpeed = PlaybackSpeed.DEFAULT,
-        antiBurnIn = false,
         autoTranslateComments = false,
         videoLocation = "Movies/TikTok",
         picLocation = "Pictures/TikTok",
@@ -51,6 +89,31 @@ internal object SettingsDefaults {
         viewsMax = null,
         likesMin = 0,
         likesMax = null,
+        hideAuthorInfo = false,
+        hideFollowButton = false,
+        hideVideoDescription = false,
+        hideVideoTags = false,
+        hideMusicTitle = false,
+        hideMusicCover = false,
+        hideLikeButton = false,
+        hideCommentButton = false,
+        hideFavoriteButton = false,
+        hideShareButton = false,
+        hideDuetButton = false,
+        hideStitchButton = false,
+        hideQuickDm = false,
+        hideStoryTags = false,
+        hideCollabLabel = false,
+        hideTako = false,
+        hideContentSearch = false,
+        hideTopNavigation = false,
+        hideSearchEntry = false,
+        hideBottomNavigation = false,
+        hideVideoProgressBar = false,
+        hideTranslationControls = false,
+        gpsSpoof = false,
+        gpsLatitude = "0.0",
+        gpsLongitude = "0.0",
     )
 }
 
@@ -79,21 +142,63 @@ internal data class PathValidation(
 )
 
 internal object SettingsInput {
+    private val compactCountPattern = Regex("""^(\d+(?:\.\d+)?)([KMB])?$""")
+    private val groupedCompactCountPattern = Regex(
+        """^\d{1,3}(?:,\d{3})+(?:\.\d+)?[KMB]?$""",
+    )
+
+    fun parseCoordinate(value: String, minimum: Double, maximum: Double): Double? =
+        value.trim().toDoubleOrNull()?.takeIf { it.isFinite() && it in minimum..maximum }
+
     fun validateRange(minimum: String, maximum: String): RangeValidation {
-        val parsedMinimum = minimum.trim().toLongOrNull()
+        val parsedMinimum = parseMetricCount(minimum)
         if (parsedMinimum == null || parsedMinimum < 0) {
             return RangeValidation(error = RangeInputError.INVALID_MINIMUM)
         }
 
         val maximumText = maximum.trim()
-        val parsedMaximum = if (maximumText.isEmpty()) null else maximumText.toLongOrNull()
+        val parsedMaximum = if (maximumText.isEmpty()) null else parseMetricCount(maximumText)
         if (maximumText.isNotEmpty() && (parsedMaximum == null || parsedMaximum <= 0)) {
             return RangeValidation(error = RangeInputError.INVALID_MAXIMUM)
         }
-        if (parsedMaximum != null && parsedMaximum <= parsedMinimum) {
+        if (parsedMaximum != null && parsedMaximum < parsedMinimum) {
             return RangeValidation(error = RangeInputError.INVALID_ORDER)
         }
         return RangeValidation(value = NumericRange(parsedMinimum, parsedMaximum))
+    }
+
+    fun formatMetricCount(value: Long): String {
+        val (multiplier, suffix) = when {
+            value >= 1_000_000_000L -> 1_000_000_000L to "B"
+            value >= 1_000_000L -> 1_000_000L to "M"
+            value >= 1_000L -> 1_000L to "K"
+            else -> return value.toString()
+        }
+        val compact = BigDecimal.valueOf(value)
+            .divide(BigDecimal.valueOf(multiplier))
+            .setScale(1, RoundingMode.HALF_UP)
+            .stripTrailingZeros()
+            .toPlainString()
+        return compact + suffix
+    }
+
+    private fun parseMetricCount(value: String): Long? {
+        val trimmed = value.trim().uppercase()
+        if (trimmed.contains(',') && !groupedCompactCountPattern.matches(trimmed)) {
+            return null
+        }
+        val match = compactCountPattern.matchEntire(trimmed.replace(",", "")) ?: return null
+        val multiplier = when (match.groupValues[2]) {
+            "K" -> 1_000L
+            "M" -> 1_000_000L
+            "B" -> 1_000_000_000L
+            else -> 1L
+        }
+        return runCatching {
+            BigDecimal(match.groupValues[1])
+                .multiply(BigDecimal.valueOf(multiplier))
+                .longValueExact()
+        }.getOrNull()
     }
 
     fun validateDuration(value: String): Int? =

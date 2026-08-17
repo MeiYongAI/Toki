@@ -26,3 +26,5 @@ signing.properties
 
 # Local reverse-engineering notes are not part of the distributed module.
 /REVERSE_FINDINGS.md
+# Local tool output and reverse-engineering artifacts.
+/.codex

@@ -40,7 +40,12 @@ internal class SettingsViewModel(application: Application) : AndroidViewModel(ap
         if (mutableRestartStatus.value == RootRestartStatus.RUNNING) return
         mutableRestartStatus.value = RootRestartStatus.RUNNING
         viewModelScope.launch(Dispatchers.IO) {
-            mutableRestartStatus.value = RootActions.restartTikTok(getApplication())
+            val result = RootActions.restartTikTok(getApplication())
+            mutableRestartStatus.value = if (result == RootRestartStatus.SUCCESS) {
+                RootRestartStatus.IDLE
+            } else {
+                result
+            }
         }
     }
 

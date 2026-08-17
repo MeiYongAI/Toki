@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -29,24 +32,31 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Clear
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -54,15 +64,18 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -72,7 +85,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import java.text.NumberFormat
 import java.util.Locale
 
 private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
@@ -85,22 +97,118 @@ private enum class SettingsDialog {
     PLAYBACK_SPEED,
     VIEW_RANGE,
     LIKE_RANGE,
-    RESTART,
+    PAGE_PURIFICATION,
+    GPS_COORDINATES,
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+private enum class SettingsDestination(@param:StringRes val title: Int) {
+    GENERAL(R.string.settings_general),
+    FEED(R.string.settings_feed),
+    DOWNLOADS(R.string.settings_downloads),
+}
+
+private enum class PagePurificationOption(@param:StringRes val title: Int) {
+    AUTHOR_INFO(R.string.purify_author_info),
+    FOLLOW_BUTTON(R.string.purify_follow_button),
+    VIDEO_DESCRIPTION(R.string.purify_video_description),
+    VIDEO_TAGS(R.string.purify_video_tags),
+    MUSIC_TITLE(R.string.purify_music_title),
+    MUSIC_COVER(R.string.purify_music_cover),
+    LIKE_BUTTON(R.string.purify_like_button),
+    COMMENT_BUTTON(R.string.purify_comment_button),
+    FAVORITE_BUTTON(R.string.purify_favorite_button),
+    SHARE_BUTTON(R.string.purify_share_button),
+    DUET_BUTTON(R.string.purify_duet_button),
+    STITCH_BUTTON(R.string.purify_stitch_button),
+    QUICK_DM(R.string.purify_quick_dm),
+    STORY_TAGS(R.string.purify_story_tags),
+    COLLAB_LABEL(R.string.purify_collab_label),
+    TAKO(R.string.purify_tako),
+    CONTENT_SEARCH(R.string.purify_content_search),
+    TRANSLATION_CONTROLS(R.string.purify_translation_controls),
+    TOP_NAVIGATION(R.string.purify_top_navigation),
+    SEARCH_ENTRY(R.string.purify_search_entry),
+    BOTTOM_NAVIGATION(R.string.purify_bottom_navigation),
+    VIDEO_PROGRESS_BAR(R.string.purify_video_progress_bar),
+    ;
+
+    fun isSelected(state: SettingsUiState): Boolean = when (this) {
+        AUTHOR_INFO -> state.hideAuthorInfo
+        FOLLOW_BUTTON -> state.hideFollowButton
+        VIDEO_DESCRIPTION -> state.hideVideoDescription
+        VIDEO_TAGS -> state.hideVideoTags
+        MUSIC_TITLE -> state.hideMusicTitle
+        MUSIC_COVER -> state.hideMusicCover
+        LIKE_BUTTON -> state.hideLikeButton
+        COMMENT_BUTTON -> state.hideCommentButton
+        FAVORITE_BUTTON -> state.hideFavoriteButton
+        SHARE_BUTTON -> state.hideShareButton
+        DUET_BUTTON -> state.hideDuetButton
+        STITCH_BUTTON -> state.hideStitchButton
+        QUICK_DM -> state.hideQuickDm
+        STORY_TAGS -> state.hideStoryTags
+        COLLAB_LABEL -> state.hideCollabLabel
+        TAKO -> state.hideTako
+        CONTENT_SEARCH -> state.hideContentSearch
+        TRANSLATION_CONTROLS -> state.hideTranslationControls
+        TOP_NAVIGATION -> state.hideTopNavigation
+        SEARCH_ENTRY -> state.hideSearchEntry
+        BOTTOM_NAVIGATION -> state.hideBottomNavigation
+        VIDEO_PROGRESS_BAR -> state.hideVideoProgressBar
+    }
+
+    fun update(state: SettingsUiState, selected: Boolean): SettingsUiState = when (this) {
+        AUTHOR_INFO -> state.copy(hideAuthorInfo = selected)
+        FOLLOW_BUTTON -> state.copy(hideFollowButton = selected)
+        VIDEO_DESCRIPTION -> state.copy(hideVideoDescription = selected)
+        VIDEO_TAGS -> state.copy(hideVideoTags = selected)
+        MUSIC_TITLE -> state.copy(hideMusicTitle = selected)
+        MUSIC_COVER -> state.copy(hideMusicCover = selected)
+        LIKE_BUTTON -> state.copy(hideLikeButton = selected)
+        COMMENT_BUTTON -> state.copy(hideCommentButton = selected)
+        FAVORITE_BUTTON -> state.copy(hideFavoriteButton = selected)
+        SHARE_BUTTON -> state.copy(hideShareButton = selected)
+        DUET_BUTTON -> state.copy(hideDuetButton = selected)
+        STITCH_BUTTON -> state.copy(hideStitchButton = selected)
+        QUICK_DM -> state.copy(hideQuickDm = selected)
+        STORY_TAGS -> state.copy(hideStoryTags = selected)
+        COLLAB_LABEL -> state.copy(hideCollabLabel = selected)
+        TAKO -> state.copy(hideTako = selected)
+        CONTENT_SEARCH -> state.copy(hideContentSearch = selected)
+        TRANSLATION_CONTROLS -> state.copy(hideTranslationControls = selected)
+        TOP_NAVIGATION -> state.copy(hideTopNavigation = selected)
+        SEARCH_ENTRY -> state.copy(hideSearchEntry = selected)
+        BOTTOM_NAVIGATION -> state.copy(hideBottomNavigation = selected)
+        VIDEO_PROGRESS_BAR -> state.copy(hideVideoProgressBar = selected)
+    }
+}
+
 @Composable
 internal fun SettingsApp(
     state: SettingsUiState,
     onUpdate: ((SettingsUiState) -> SettingsUiState) -> Unit,
     restartStatus: RootRestartStatus,
     onRestartTikTok: () -> Unit,
-    onDismissRestart: () -> Unit,
+    onRestartStatusConsumed: () -> Unit,
 ) {
     var dialogName by rememberSaveable { mutableStateOf(SettingsDialog.NONE.name) }
-    var menuExpanded by remember { mutableStateOf(false) }
+    val restartSnackbarHostState = remember { SnackbarHostState() }
     val activeDialog = SettingsDialog.valueOf(dialogName)
     val closeDialog = { dialogName = SettingsDialog.NONE.name }
+    val restartMessage = when (restartStatus) {
+        RootRestartStatus.SUCCESS -> null
+        RootRestartStatus.NO_ROOT -> stringResource(R.string.restart_tiktok_no_root)
+        RootRestartStatus.FAILED -> stringResource(R.string.restart_tiktok_failed)
+        RootRestartStatus.TIMEOUT -> stringResource(R.string.restart_tiktok_timeout)
+        RootRestartStatus.IDLE,
+        RootRestartStatus.RUNNING -> null
+    }
+    LaunchedEffect(restartMessage) {
+        if (restartMessage != null) {
+            restartSnackbarHostState.showSnackbar(restartMessage)
+            onRestartStatusConsumed()
+        }
+    }
     val videoDirectoryPicker = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocumentTree(),
     ) { uri ->
@@ -122,54 +230,22 @@ internal fun SettingsApp(
             dialogName = SettingsDialog.MEDIA_DIRECTORY_ERROR.name
         }
     }
+    var destinationName by rememberSaveable { mutableStateOf(SettingsDestination.GENERAL.name) }
+    val destination = SettingsDestination.valueOf(destinationName)
+    val useNavigationRail = with(LocalDensity.current) {
+        LocalWindowInfo.current.containerSize.width.toDp() >= 600.dp
+    }
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.surface,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.settings_title),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 1,
-                    )
-                },
-                actions = {
-                    Box {
-                        IconButton(
-                            onClick = { menuExpanded = true },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.MoreVert,
-                                contentDescription = stringResource(R.string.more_options),
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = menuExpanded,
-                            onDismissRequest = { menuExpanded = false },
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.restart_tiktok)) },
-                                leadingIcon = {
-                                    Icon(Icons.Outlined.Refresh, contentDescription = null)
-                                },
-                                onClick = {
-                                    menuExpanded = false
-                                    onDismissRestart()
-                                    dialogName = SettingsDialog.RESTART.name
-                                },
-                            )
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
-            )
-        },
-    ) { contentPadding ->
+    SettingsNavigationLayout(
+        destination = destination,
+        useNavigationRail = useNavigationRail,
+        onDestinationSelected = { destinationName = it.name },
+        restartStatus = restartStatus,
+        onRestartTikTok = onRestartTikTok,
+        snackbarHostState = restartSnackbarHostState,
+    ) { contentModifier ->
         SettingsContent(
+            destination = destination,
             state = state,
             onUpdate = onUpdate,
             onDialog = { dialogName = it.name },
@@ -182,9 +258,7 @@ internal fun SettingsApp(
             onPickGifDirectory = {
                 gifDirectoryPicker.launch(initialMediaDirectoryUri(state.gifLocation))
             },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding),
+            modifier = contentModifier,
         )
     }
 
@@ -194,6 +268,17 @@ internal fun SettingsApp(
             selected = state.region,
             onSelect = {
                 onUpdate { current -> current.copy(region = it) }
+                closeDialog()
+            },
+            onDismiss = closeDialog,
+        )
+        SettingsDialog.GPS_COORDINATES -> GpsCoordinatesDialog(
+            initialLatitude = state.gpsLatitude,
+            initialLongitude = state.gpsLongitude,
+            onSave = { latitude, longitude ->
+                onUpdate { current ->
+                    current.copy(gpsLatitude = latitude, gpsLongitude = longitude)
+                }
                 closeDialog()
             },
             onDismiss = closeDialog,
@@ -241,19 +326,184 @@ internal fun SettingsApp(
             },
             onDismiss = closeDialog,
         )
-        SettingsDialog.RESTART -> RestartDialog(
-            status = restartStatus,
-            onConfirm = onRestartTikTok,
-            onDismiss = {
+        SettingsDialog.PAGE_PURIFICATION -> PagePurificationDialog(
+            state = state,
+            onSave = { selectedOptions ->
+                onUpdate { current ->
+                    PagePurificationOption.entries.fold(current) { updated, option ->
+                        option.update(updated, option in selectedOptions)
+                    }
+                }
                 closeDialog()
-                onDismissRestart()
             },
+            onDismiss = closeDialog,
         )
     }
 }
 
 @Composable
+private fun SettingsNavigationLayout(
+    destination: SettingsDestination,
+    useNavigationRail: Boolean,
+    onDestinationSelected: (SettingsDestination) -> Unit,
+    restartStatus: RootRestartStatus,
+    onRestartTikTok: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    content: @Composable (Modifier) -> Unit,
+) {
+    if (useNavigationRail) {
+        Row(Modifier.fillMaxSize()) {
+            SettingsNavigationRail(
+                destination = destination,
+                onDestinationSelected = onDestinationSelected,
+            )
+            SettingsScaffold(
+                modifier = Modifier.weight(1f),
+                destination = destination,
+                restartStatus = restartStatus,
+                onRestartTikTok = onRestartTikTok,
+                snackbarHostState = snackbarHostState,
+                content = content,
+            )
+        }
+    } else {
+        SettingsScaffold(
+            destination = destination,
+            restartStatus = restartStatus,
+            onRestartTikTok = onRestartTikTok,
+            snackbarHostState = snackbarHostState,
+            bottomBar = {
+                SettingsBottomNavigation(
+                    destination = destination,
+                    onDestinationSelected = onDestinationSelected,
+                )
+            },
+            content = content,
+        )
+    }
+}
+
+@Composable
+private fun SettingsBottomNavigation(
+    destination: SettingsDestination,
+    onDestinationSelected: (SettingsDestination) -> Unit,
+) {
+    NavigationBar {
+        SettingsDestination.entries.forEach { item ->
+            NavigationBarItem(
+                selected = item == destination,
+                onClick = { onDestinationSelected(item) },
+                icon = { SettingsDestinationIcon(item) },
+                label = { Text(stringResource(item.title)) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun SettingsNavigationRail(
+    destination: SettingsDestination,
+    onDestinationSelected: (SettingsDestination) -> Unit,
+) {
+    NavigationRail(modifier = Modifier.fillMaxHeight()) {
+        SettingsDestination.entries.forEach { item ->
+            NavigationRailItem(
+                selected = item == destination,
+                onClick = { onDestinationSelected(item) },
+                icon = { SettingsDestinationIcon(item) },
+                label = { Text(stringResource(item.title)) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun SettingsDestinationIcon(destination: SettingsDestination) {
+    val imageVector = when (destination) {
+        SettingsDestination.GENERAL -> Icons.Outlined.Settings
+        SettingsDestination.FEED -> Icons.Outlined.PlayArrow
+        SettingsDestination.DOWNLOADS -> Icons.AutoMirrored.Outlined.List
+    }
+    Icon(
+        imageVector = imageVector,
+        contentDescription = null,
+    )
+}
+
+@Composable
+private fun SettingsScaffold(
+    modifier: Modifier = Modifier,
+    destination: SettingsDestination,
+    restartStatus: RootRestartStatus,
+    onRestartTikTok: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    bottomBar: @Composable () -> Unit = {},
+    content: @Composable (Modifier) -> Unit,
+) {
+    Scaffold(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.surface,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            SettingsTopAppBar(
+                destination = destination,
+                restartStatus = restartStatus,
+                onRestartTikTok = onRestartTikTok,
+            )
+        },
+        bottomBar = bottomBar,
+    ) { contentPadding ->
+        content(
+            Modifier
+                .fillMaxSize()
+                .padding(contentPadding),
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsTopAppBar(
+    destination: SettingsDestination,
+    restartStatus: RootRestartStatus,
+    onRestartTikTok: () -> Unit,
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = stringResource(destination.title),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+            )
+        },
+        actions = {
+            IconButton(
+                enabled = restartStatus == RootRestartStatus.IDLE,
+                onClick = onRestartTikTok,
+            ) {
+                if (restartStatus == RootRestartStatus.RUNNING) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        strokeWidth = 2.dp,
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.Refresh,
+                        contentDescription = stringResource(R.string.restart_tiktok),
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    )
+}
+
+@Composable
 private fun SettingsContent(
+    destination: SettingsDestination,
     state: SettingsUiState,
     onUpdate: ((SettingsUiState) -> SettingsUiState) -> Unit,
     onDialog: (SettingsDialog) -> Unit,
@@ -262,12 +512,16 @@ private fun SettingsContent(
     onPickGifDirectory: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val locale = LocalLocale.current.platformLocale
     SettingsList(modifier) {
-        item(key = "common_group") {
-            SettingsGroup {
+        when (destination) {
+            SettingsDestination.GENERAL -> {
+                item(key = "common_group") {
+                    SettingsGroup {
+                SettingsSectionHeader(R.string.settings_section_region)
                 ValueSettingRow(
                     title = stringResource(R.string.region),
-                    value = "${state.region.localizedDisplayName(Locale.getDefault())} (${state.region.code})",
+                    value = "${state.region.localizedDisplayName(locale)} (${state.region.code})",
                     onClick = { onDialog(SettingsDialog.REGION) },
                 )
                 GroupDivider()
@@ -281,6 +535,33 @@ private fun SettingsContent(
                 )
                 GroupDivider()
                 SwitchSettingRow(
+                    title = stringResource(R.string.language_spoof),
+                    summary = stringResource(R.string.language_spoof_summary),
+                    checked = state.languageSpoof,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(languageSpoof = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.timezone_spoof),
+                    summary = stringResource(R.string.timezone_spoof_summary),
+                    checked = state.timeZoneSpoof,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(timeZoneSpoof = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.skip_startup_login),
+                    summary = stringResource(R.string.skip_startup_login_summary),
+                    checked = state.skipStartupLogin,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(skipStartupLogin = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
                     title = stringResource(R.string.force_region),
                     summary = stringResource(R.string.force_region_summary),
                     checked = state.forceRegion,
@@ -289,6 +570,22 @@ private fun SettingsContent(
                     },
                 )
                 GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.gps_spoof),
+                    summary = stringResource(R.string.gps_spoof_summary),
+                    checked = state.gpsSpoof,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(gpsSpoof = checked) }
+                    },
+                )
+                GroupDivider()
+                ValueSettingRow(
+                    title = stringResource(R.string.gps_coordinates),
+                    value = "${state.gpsLatitude}, ${state.gpsLongitude}",
+                    enabled = state.gpsSpoof,
+                    onClick = { onDialog(SettingsDialog.GPS_COORDINATES) },
+                )
+                SettingsSectionHeader(R.string.settings_section_playback)
                 SwitchSettingRow(
                     title = stringResource(R.string.auto_translate_comments),
                     summary = stringResource(R.string.auto_translate_comments_summary),
@@ -312,20 +609,14 @@ private fun SettingsContent(
                     value = formatPlaybackSpeed(state.defaultPlaybackSpeed),
                     onClick = { onDialog(SettingsDialog.PLAYBACK_SPEED) },
                 )
-                GroupDivider()
-                SwitchSettingRow(
-                    title = stringResource(R.string.anti_burn_in),
-                    summary = stringResource(R.string.anti_burn_in_summary),
-                    checked = state.antiBurnIn,
-                    onCheckedChange = { checked ->
-                        onUpdate { it.copy(antiBurnIn = checked) }
-                    },
-                )
+                    }
+                }
             }
-        }
 
-        item(key = "download_creation_group") {
-            SettingsGroup {
+            SettingsDestination.DOWNLOADS -> {
+                item(key = "download_creation_group") {
+                    SettingsGroup {
+                SettingsSectionHeader(R.string.settings_section_storage)
                 SwitchSettingRow(
                     title = stringResource(R.string.remove_download_restrictions),
                     summary = stringResource(R.string.remove_download_restrictions_summary),
@@ -352,7 +643,7 @@ private fun SettingsContent(
                     value = state.gifLocation,
                     onClick = onPickGifDirectory,
                 )
-                GroupDivider()
+                SettingsSectionHeader(R.string.settings_section_creation)
                 SwitchSettingRow(
                     title = stringResource(R.string.allow_duet),
                     summary = stringResource(R.string.allow_duet_summary),
@@ -370,12 +661,14 @@ private fun SettingsContent(
                         onUpdate { it.copy(allowStitch = checked) }
                     },
                 )
+                    }
+                }
             }
-        }
 
-        item(key = "filters_group") {
-            SettingsGroup {
-                GroupDivider()
+            SettingsDestination.FEED -> {
+                item(key = "filters_group") {
+                    SettingsGroup {
+                SettingsSectionHeader(R.string.settings_section_content_filter)
                 SwitchSettingRow(
                     title = stringResource(R.string.hide_feed_ads),
                     summary = stringResource(R.string.hide_feed_ads_summary),
@@ -404,6 +697,33 @@ private fun SettingsContent(
                 )
                 GroupDivider()
                 SwitchSettingRow(
+                    title = stringResource(R.string.hide_ai_generated),
+                    summary = stringResource(R.string.hide_ai_generated_summary),
+                    checked = state.hideAiGenerated,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(hideAiGenerated = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.hide_trending_topics),
+                    summary = stringResource(R.string.hide_trending_topics_summary),
+                    checked = state.hideTrendingTopics,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(hideTrendingTopics = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.hide_content_classification),
+                    summary = stringResource(R.string.hide_content_classification_summary),
+                    checked = state.hideContentClassification,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(hideContentClassification = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
                     title = stringResource(R.string.hide_long_posts),
                     summary = stringResource(R.string.hide_long_posts_summary),
                     checked = state.hideLongPosts,
@@ -414,11 +734,15 @@ private fun SettingsContent(
                 GroupDivider()
                 ValueSettingRow(
                     title = stringResource(R.string.long_post_seconds),
-                    value = stringResource(R.string.seconds_value, state.longPostSeconds),
+                    value = pluralStringResource(
+                        R.plurals.seconds_value,
+                        state.longPostSeconds,
+                        state.longPostSeconds,
+                    ),
                     enabled = state.hideLongPosts,
                     onClick = { onDialog(SettingsDialog.DURATION) },
                 )
-                GroupDivider()
+                SettingsSectionHeader(R.string.settings_section_metric_filter)
                 SwitchSettingRow(
                     title = stringResource(R.string.filter_views_likes),
                     summary = stringResource(R.string.filter_views_likes_summary),
@@ -441,9 +765,108 @@ private fun SettingsContent(
                     enabled = state.filterViewsLikes,
                     onClick = { onDialog(SettingsDialog.LIKE_RANGE) },
                 )
+                    }
+                }
+
+                item(key = "page_purification_group") {
+                    SettingsGroup {
+                        SettingsSectionHeader(R.string.settings_section_page_purification)
+                        ValueSettingRow(
+                            title = stringResource(R.string.page_purification_choose_items),
+                            value = pagePurificationSelectionSummary(state),
+                            onClick = { onDialog(SettingsDialog.PAGE_PURIFICATION) },
+                        )
+                    }
+                }
+
             }
         }
     }
+}
+
+@Composable
+private fun pagePurificationSelectionSummary(state: SettingsUiState): String {
+    val selectedCount = PagePurificationOption.entries.count { it.isSelected(state) }
+    return if (selectedCount == 0) {
+        stringResource(R.string.page_purification_none_selected)
+    } else {
+        pluralStringResource(
+            R.plurals.page_purification_selected_count,
+            selectedCount,
+            selectedCount,
+        )
+    }
+}
+
+@Composable
+private fun PagePurificationDialog(
+    state: SettingsUiState,
+    onSave: (Set<PagePurificationOption>) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val selectedOptions = remember(state) {
+        mutableStateListOf<PagePurificationOption>().apply {
+            addAll(PagePurificationOption.entries.filter { it.isSelected(state) })
+        }
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.page_purification)) },
+        text = {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 440.dp),
+            ) {
+                items(
+                    items = PagePurificationOption.entries,
+                    key = { option -> option.name },
+                ) { option ->
+                    val checked = option in selectedOptions
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 56.dp)
+                            .toggleable(
+                                value = checked,
+                                role = Role.Checkbox,
+                                onValueChange = { selected ->
+                                    if (selected) {
+                                        selectedOptions.add(option)
+                                    } else {
+                                        selectedOptions.remove(option)
+                                    }
+                                },
+                            )
+                            .semantics(mergeDescendants = true) {}
+                            .padding(horizontal = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(option.title),
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                        Checkbox(
+                            checked = checked,
+                            onCheckedChange = null,
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onSave(selectedOptions.toSet()) }) {
+                Text(stringResource(R.string.save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+    )
 }
 
 @Composable
@@ -458,8 +881,8 @@ private fun SettingsList(
                 .fillMaxWidth()
                 .align(Alignment.TopCenter),
             contentPadding = PaddingValues(
-                top = 4.dp,
-                bottom = 24.dp,
+                top = 0.dp,
+                bottom = 32.dp,
             ),
             verticalArrangement = Arrangement.Top,
         ) {
@@ -477,11 +900,19 @@ private fun SettingsGroup(content: @Composable ColumnScope.() -> Unit) {
 }
 
 @Composable
-private fun GroupDivider() {
-    HorizontalDivider(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f),
+private fun SettingsSectionHeader(@StringRes title: Int) {
+    Text(
+        text = stringResource(title),
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 8.dp),
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.Medium,
     )
+}
+
+@Composable
+private fun GroupDivider() {
+    Spacer(Modifier.height(8.dp))
 }
 
 @Composable
@@ -502,43 +933,56 @@ private fun SwitchSettingRow(
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
     }
-    Row(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .defaultMinSize(minHeight = if (summary == null) 56.dp else 72.dp)
-            .toggleable(
-                value = checked,
-                enabled = enabled,
-                role = Role.Switch,
-                onValueChange = onCheckedChange,
-            )
-            .semantics(mergeDescendants = true) {}
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(horizontal = 12.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = if (enabled) {
+            MaterialTheme.colorScheme.surfaceContainerLow
+        } else {
+            MaterialTheme.colorScheme.surfaceContainer
+        },
     ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                color = titleColor,
-            )
-            if (summary != null) {
-                Text(
-                    text = summary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = summaryColor,
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = if (summary == null) 60.dp else 80.dp)
+                .toggleable(
+                    value = checked,
+                    enabled = enabled,
+                    role = Role.Switch,
+                    onValueChange = onCheckedChange,
                 )
+                .semantics(mergeDescendants = true) {}
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                    color = titleColor,
+                )
+                if (summary != null) {
+                    Text(
+                        text = summary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = summaryColor,
+                    )
+                }
             }
+            Switch(
+                checked = checked,
+                onCheckedChange = null,
+                enabled = enabled,
+            )
         }
-        Switch(
-            checked = checked,
-            onCheckedChange = null,
-            enabled = enabled,
-        )
     }
 }
 
@@ -565,52 +1009,65 @@ private fun ValueSettingRow(
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
     }
-    Row(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .defaultMinSize(minHeight = if (summary == null) 64.dp else 80.dp)
-            .clickable(enabled = enabled, onClick = onClick)
-            .semantics(mergeDescendants = true) {
-                role = Role.Button
-            }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+            .padding(horizontal = 12.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = if (enabled) {
+            MaterialTheme.colorScheme.surfaceContainerLow
+        } else {
+            MaterialTheme.colorScheme.surfaceContainer
+        },
     ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = if (summary == null) 68.dp else 84.dp)
+                .clickable(enabled = enabled, onClick = onClick)
+                .semantics(mergeDescendants = true) {
+                    role = Role.Button
+                }
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                color = titleColor,
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyMedium,
-                color = valueColor,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            if (summary != null) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
                 Text(
-                    text = summary,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = summaryColor,
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                    color = titleColor,
                 )
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = valueColor,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (summary != null) {
+                    Text(
+                        text = summary,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = summaryColor,
+                    )
+                }
             }
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                contentDescription = null,
+                tint = if (enabled) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                },
+                modifier = Modifier.size(20.dp),
+            )
         }
-        Icon(
-            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-            contentDescription = null,
-            tint = if (enabled) {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-            },
-            modifier = Modifier.size(20.dp),
-        )
     }
 }
 
@@ -628,7 +1085,7 @@ private fun RegionDialog(
     val maxListHeight = (windowHeight - 220.dp)
         .coerceIn(96.dp, 320.dp)
     val normalizedQuery = query.trim().lowercase(Locale.ROOT)
-    val locale = Locale.getDefault()
+    val locale = LocalLocale.current.platformLocale
     val regions = remember(normalizedQuery, locale) {
         RegionPreset.values().filter { preset ->
             normalizedQuery.isEmpty() ||
@@ -683,7 +1140,11 @@ private fun RegionDialog(
                     singleLine = true,
                 )
                 Text(
-                    text = stringResource(R.string.region_result_count, regions.size),
+                    text = pluralStringResource(
+                        R.plurals.region_result_count,
+                        regions.size,
+                        regions.size,
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -740,6 +1201,77 @@ private fun RegionDialog(
             }
         },
         confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
+}
+
+@Composable
+private fun GpsCoordinatesDialog(
+    initialLatitude: String,
+    initialLongitude: String,
+    onSave: (String, String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var latitude by rememberSaveable(initialLatitude) { mutableStateOf(initialLatitude) }
+    var longitude by rememberSaveable(initialLongitude) { mutableStateOf(initialLongitude) }
+    val parsedLatitude = remember(latitude) {
+        SettingsInput.parseCoordinate(latitude, -90.0, 90.0)
+    }
+    val parsedLongitude = remember(longitude) {
+        SettingsInput.parseCoordinate(longitude, -180.0, 180.0)
+    }
+    val valid = parsedLatitude != null && parsedLongitude != null
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.gps_coordinates)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = latitude,
+                    onValueChange = { latitude = it.filter { char ->
+                        char.isDigit() || char == '-' || char == '.'
+                    } },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.gps_latitude)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    singleLine = true,
+                    isError = parsedLatitude == null,
+                    supportingText = {
+                        if (parsedLatitude == null) {
+                            Text(stringResource(R.string.gps_coordinate_invalid))
+                        }
+                    },
+                )
+                OutlinedTextField(
+                    value = longitude,
+                    onValueChange = { longitude = it.filter { char ->
+                        char.isDigit() || char == '-' || char == '.'
+                    } },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.gps_longitude)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    singleLine = true,
+                    isError = parsedLongitude == null,
+                    supportingText = {
+                        if (parsedLongitude == null) {
+                            Text(stringResource(R.string.gps_coordinate_invalid))
+                        }
+                    },
+                )
+            }
+        },
+        confirmButton = {
+            Button(enabled = valid, onClick = {
+                onSave(latitude.trim(), longitude.trim())
+            }) {
+                Text(stringResource(R.string.save))
+            }
+        },
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(android.R.string.cancel))
@@ -862,7 +1394,7 @@ private fun PlaybackSpeedDialog(
                             onClick = null,
                         )
                         Text(
-                            text = playbackSpeedOptionLabel(speed),
+                            text = formatPlaybackSpeed(speed),
                             modifier = Modifier.padding(start = 12.dp),
                             style = MaterialTheme.typography.bodyLarge,
                         )
@@ -879,6 +1411,7 @@ private fun PlaybackSpeedDialog(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RangeDialog(
     @StringRes title: Int,
@@ -903,37 +1436,34 @@ private fun RangeDialog(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
                     value = minimum,
-                    onValueChange = { minimum = it.filter(Char::isDigit) },
+                    onValueChange = { minimum = it },
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.minimum_value)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    placeholder = { Text("20K") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     singleLine = true,
                     isError = validation.error == RangeInputError.INVALID_MINIMUM,
                 )
                 OutlinedTextField(
                     value = maximum,
-                    onValueChange = { maximum = it.filter(Char::isDigit) },
+                    onValueChange = { maximum = it },
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.maximum_value_optional)) },
                     placeholder = { Text(stringResource(R.string.unlimited)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     singleLine = true,
                     isError = validation.error == RangeInputError.INVALID_MAXIMUM ||
                         validation.error == RangeInputError.INVALID_ORDER,
                 )
-                if (error != null) {
-                    Text(
-                        text = error,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                } else {
-                    Text(
-                        text = stringResource(R.string.range_rule),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                Text(
+                    text = error ?: stringResource(R.string.range_rule),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (error == null) {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    } else {
+                        MaterialTheme.colorScheme.error
+                    },
+                )
             }
         },
         confirmButton = {
@@ -953,67 +1483,6 @@ private fun RangeDialog(
 }
 
 @Composable
-private fun RestartDialog(
-    status: RootRestartStatus,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    val running = status == RootRestartStatus.RUNNING
-    AlertDialog(
-        onDismissRequest = { if (!running) onDismiss() },
-        title = {
-            Text(
-                when (status) {
-                    RootRestartStatus.IDLE -> stringResource(R.string.restart_tiktok_title)
-                    RootRestartStatus.RUNNING -> stringResource(R.string.restart_tiktok_running)
-                    RootRestartStatus.SUCCESS -> stringResource(R.string.restart_tiktok_success_title)
-                    RootRestartStatus.NO_ROOT -> stringResource(R.string.restart_tiktok_no_root_title)
-                    RootRestartStatus.FAILED -> stringResource(R.string.restart_tiktok_failed_title)
-                    RootRestartStatus.TIMEOUT -> stringResource(R.string.restart_tiktok_timeout_title)
-                },
-            )
-        },
-        text = {
-            when (status) {
-                RootRestartStatus.IDLE -> Text(stringResource(R.string.restart_tiktok_message))
-                RootRestartStatus.RUNNING -> Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp)
-                    Text(stringResource(R.string.restart_tiktok_running_message))
-                }
-                RootRestartStatus.SUCCESS -> Text(stringResource(R.string.restart_tiktok_success))
-                RootRestartStatus.NO_ROOT -> Text(stringResource(R.string.restart_tiktok_no_root))
-                RootRestartStatus.FAILED -> Text(stringResource(R.string.restart_tiktok_failed))
-                RootRestartStatus.TIMEOUT -> Text(stringResource(R.string.restart_tiktok_timeout))
-            }
-        },
-        confirmButton = {
-            when (status) {
-                RootRestartStatus.IDLE -> Button(onClick = onConfirm) {
-                    Text(stringResource(R.string.restart_tiktok_confirm))
-                }
-                RootRestartStatus.RUNNING -> Unit
-                RootRestartStatus.SUCCESS,
-                RootRestartStatus.NO_ROOT,
-                RootRestartStatus.FAILED,
-                RootRestartStatus.TIMEOUT -> TextButton(onClick = onDismiss) {
-                    Text(stringResource(android.R.string.ok))
-                }
-            }
-        },
-        dismissButton = {
-            if (status == RootRestartStatus.IDLE) {
-                TextButton(onClick = onDismiss) {
-                    Text(stringResource(android.R.string.cancel))
-                }
-            }
-        },
-    )
-}
-
-@Composable
 private fun rangeErrorText(error: RangeInputError?): String? = when (error) {
     RangeInputError.INVALID_MINIMUM -> stringResource(R.string.minimum_invalid_error)
     RangeInputError.INVALID_MAXIMUM -> stringResource(R.string.maximum_invalid_error)
@@ -1023,9 +1492,8 @@ private fun rangeErrorText(error: RangeInputError?): String? = when (error) {
 
 @Composable
 private fun formatRange(minimum: Long, maximum: Long?): String {
-    val formatter = remember { NumberFormat.getIntegerInstance() }
-    val upper = maximum?.let(formatter::format) ?: stringResource(R.string.unlimited)
-    return stringResource(R.string.range_value, formatter.format(minimum), upper)
+    val upper = maximum?.let(SettingsInput::formatMetricCount) ?: stringResource(R.string.unlimited)
+    return stringResource(R.string.range_value, SettingsInput.formatMetricCount(minimum), upper)
 }
 
 private fun formatPlaybackSpeed(speed: Float): String {
@@ -1039,10 +1507,3 @@ private fun formatPlaybackSpeed(speed: Float): String {
         else -> "1.0x"
     }
 }
-
-private fun playbackSpeedOptionLabel(speed: Float): String =
-    if (PlaybackSpeed.sanitize(speed) == PlaybackSpeed.DEFAULT) {
-        "关闭（1.0x）"
-    } else {
-        formatPlaybackSpeed(speed)
-    }

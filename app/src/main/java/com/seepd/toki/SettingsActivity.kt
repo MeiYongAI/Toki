@@ -22,7 +22,7 @@ class SettingsActivity : ComponentActivity() {
                     onUpdate = settingsViewModel::update,
                     restartStatus = restartStatus,
                     onRestartTikTok = settingsViewModel::restartTikTok,
-                    onDismissRestart = settingsViewModel::clearRestartStatus,
+                    onRestartStatusConsumed = settingsViewModel::clearRestartStatus,
                 )
             }
         }

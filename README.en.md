@@ -7,20 +7,24 @@ It only targets `com.zhiliaoapp.musically`.
 
 ## Features
 
-- Region spoofing: choose from presets with country or region codes and carrier information,
-  with an option to restrict the feed to the target region.
-- Download enhancements: remove download restrictions, prefer watermark-free URLs, and set
-  separate save locations for videos, images, and GIFs.
-- Feed filtering: hide ads, livestreams, photo posts, and long videos; filter by view or like
-  count.
+- Region and environment spoofing: choose region presets with country codes and carrier
+  information, and independently spoof GPS, system language, and system time zone.
+- Startup login prompt: close the dismissible prompt shown during startup without bypassing
+  login or verification.
+- Download enhancements: remove download restrictions, prefer watermark-free saving for all
+  videos, and set separate save locations for videos, images, and GIFs.
+- Feed filtering: hide ads, livestreams, photo posts, AI-generated content, trending-topic bars,
+  content ratings, and long videos; filter by view or like count.
 - Duet and Stitch: allow restricted content to be used for Duet or Stitch. When looping is
   disabled, playback pauses at the end and can be replayed with one tap.
 - Default playback speed: automatically apply 1.25x to 2.0x to each new video without
   overriding a manual speed choice for the current video.
 - Comment translation: show Translate and Revert controls in comments and preserve translation
   state across videos.
-- Anti burn-in: use a two-finger long press to toggle clear-screen mode while retaining zoom and
-  swipe-to-switch gestures.
+- Page purification: optionally hide author details, descriptions, music, action buttons,
+  optional entries, Tako, search, translation controls, and navigation bars from recommended
+  video pages.
+- Count ranges: enter full numbers or compact suffixes such as `20K` and `1.5M` directly.
 - Material 3 settings UI with dark mode and dynamic color support.
 
 ## Requirements
@@ -34,8 +38,8 @@ It only targets `com.zhiliaoapp.musically`.
 
 1. Download the APK from [Releases](https://github.com/MeiYongAI/Toki/releases/latest).
 2. Install it, enable Toki in LSPosed, and select the TikTok scope.
-3. Force-stop and reopen TikTok. Restart TikTok after changing settings for changes to take
-   effect.
+3. Tap the restart button in the settings app bar. Use it again after changing settings for
+   changes to take effect. Restart TikTok manually when Root access is unavailable.
 
 Toki does not request Root access except for the Restart TikTok action in its settings screen.
 

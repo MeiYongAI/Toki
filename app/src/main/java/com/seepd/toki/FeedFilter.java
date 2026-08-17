@@ -9,6 +9,7 @@ final class FeedFilter {
     private final boolean hideAds;
     private final boolean hideLive;
     private final boolean hideImages;
+    private final boolean hideAiGenerated;
     private final boolean forceRegion;
     private final boolean hideLongPosts;
     private final boolean filterViewsLikes;
@@ -23,6 +24,7 @@ final class FeedFilter {
         hideAds = config.hideFeedAds;
         hideLive = config.hideLive;
         hideImages = config.hideImages;
+        hideAiGenerated = config.hideAiGenerated;
         forceRegion = config.forceRegion;
         hideLongPosts = config.hideLongPosts;
         filterViewsLikes = config.filterViewsLikes;
@@ -39,18 +41,48 @@ final class FeedFilter {
             return;
         }
         try {
-            Method getItems = feedItemList.getClass().getMethod("getItems");
-            Object value = getItems.invoke(feedItemList);
+            Object value = readField(feedItemList, "items", "awemeList");
+            if (!(value instanceof List<?>)) {
+                Method getItems = feedItemList.getClass().getMethod("getItems");
+                value = getItems.invoke(feedItemList);
+            }
             if (!(value instanceof List<?>)) {
                 return;
             }
 
             Object filtered = filterListResult(value);
             if (filtered != value) {
-                feedItemList.getClass().getMethod("setItems", List.class).invoke(feedItemList, filtered);
+                replaceItems(feedItemList, (List<?>) value, (List<?>) filtered);
             }
-        } catch (ReflectiveOperationException ignored) {
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
             // TikTok model signatures change across versions; leave that response untouched.
+        }
+    }
+
+    /** Supports both List and concrete collection setters used across TikTok feed model versions. */
+    static boolean replaceItems(Object owner, List<?> original, List<?> replacement) {
+        for (Method method : owner.getClass().getMethods()) {
+            Class<?>[] parameters = method.getParameterTypes();
+            if (!"setItems".equals(method.getName())
+                    || parameters.length != 1
+                    || !parameters[0].isAssignableFrom(replacement.getClass())) {
+                continue;
+            }
+            try {
+                method.invoke(owner, replacement);
+                return true;
+            } catch (ReflectiveOperationException | RuntimeException ignored) {
+                // A different setter signature or the mutable-list fallback may still work.
+            }
+        }
+        try {
+            @SuppressWarnings("unchecked")
+            List<Object> mutableItems = (List<Object>) original;
+            mutableItems.clear();
+            mutableItems.addAll(replacement);
+            return true;
+        } catch (UnsupportedOperationException | ClassCastException ignored) {
+            return false;
         }
     }
 
@@ -59,13 +91,28 @@ final class FeedFilter {
             return value;
         }
         List<?> original = (List<?>) value;
-        ArrayList<Object> kept = new ArrayList<>(original.size());
-        for (Object item : original) {
+        int firstHiddenIndex = -1;
+        for (int index = 0; index < original.size(); index++) {
+            if (shouldHide(original.get(index))) {
+                firstHiddenIndex = index;
+                break;
+            }
+        }
+        if (firstHiddenIndex < 0) {
+            return value;
+        }
+
+        ArrayList<Object> kept = new ArrayList<>(original.size() - 1);
+        for (int index = 0; index < firstHiddenIndex; index++) {
+            kept.add(original.get(index));
+        }
+        for (int index = firstHiddenIndex + 1; index < original.size(); index++) {
+            Object item = original.get(index);
             if (!shouldHide(item)) {
                 kept.add(item);
             }
         }
-        return kept.size() == original.size() ? value : kept;
+        return kept;
     }
 
     void applyBanners(Object bannerList) {
@@ -90,14 +137,7 @@ final class FeedFilter {
             if (kept.size() == original.size()) {
                 return;
             }
-            try {
-                bannerList.getClass().getMethod("setItems", List.class).invoke(bannerList, kept);
-            } catch (ReflectiveOperationException ignored) {
-                @SuppressWarnings("unchecked")
-                List<Object> mutableItems = (List<Object>) original;
-                mutableItems.clear();
-                mutableItems.addAll(kept);
-            }
+            replaceItems(bannerList, original, kept);
         } catch (ReflectiveOperationException | RuntimeException ignored) {
             // Discover model signatures and mutability differ across versions.
         }
@@ -142,6 +182,9 @@ final class FeedFilter {
                 || callObject(item, "getPhotoModeImageInfo") != null)) {
             return true;
         }
+        if (hideAiGenerated && isAiGeneratedContent(item)) {
+            return true;
+        }
         if (forceRegion && shouldHideForRegion(item)) {
             return true;
         }
@@ -149,6 +192,17 @@ final class FeedFilter {
             return true;
         }
         return filterViewsLikes && shouldHideForCounts(item);
+    }
+
+    /** Uses TikTok's AIGC metadata rather than heuristics based on captions or video frames. */
+    static boolean isAiGeneratedContent(Object item) {
+        Object aigcInfo = callObject(item, "getAigcInfo");
+        if (callBoolean(aigcInfo, "isCreateByAI")
+                || callLong(aigcInfo, "getAIGCLabelType") > 0L) {
+            return true;
+        }
+        Object moderationAigcInfo = callObject(item, "getModerationAigcInfo");
+        return callLong(moderationAigcInfo, "getModerationAigcLabelType") > 0L;
     }
 
     private boolean shouldHideForRegion(Object item) {
@@ -175,7 +229,12 @@ final class FeedFilter {
         }
         long likes = callLong(statistics, "getDiggCount");
         long views = callLong(statistics, "getPlayCount");
-        return likes <= likesMin || likes >= likesMax || views <= viewsMin || views >= viewsMax;
+        return isOutsideInclusiveRange(likes, likesMin, likesMax)
+                || isOutsideInclusiveRange(views, viewsMin, viewsMax);
+    }
+
+    static boolean isOutsideInclusiveRange(long value, long minimum, long maximum) {
+        return value < minimum || value > maximum;
     }
 
     private static boolean callBoolean(Object target, String name) {
@@ -200,7 +259,40 @@ final class FeedFilter {
         try {
             return target.getClass().getMethod(name).invoke(target);
         } catch (ReflectiveOperationException | RuntimeException ignored) {
-            return null;
+            return readField(target, name, propertyName(name));
         }
+    }
+
+    /** TikTok feed models expose a mix of public getters and public/obfuscated fields. */
+    private static Object readField(Object target, String... names) {
+        Class<?> current = target.getClass();
+        while (current != null) {
+            for (String name : names) {
+                if (name == null || name.isEmpty()) {
+                    continue;
+                }
+                try {
+                    java.lang.reflect.Field field = current.getDeclaredField(name);
+                    field.setAccessible(true);
+                    return field.get(target);
+                } catch (NoSuchFieldException ignored) {
+                    // Try the next field name or superclass.
+                } catch (IllegalAccessException | RuntimeException ignored) {
+                    // This field cannot be read in the current TikTok build.
+                }
+            }
+            current = current.getSuperclass();
+        }
+        return null;
+    }
+
+    private static String propertyName(String accessorName) {
+        if (accessorName.startsWith("get") && accessorName.length() > 3) {
+            return Character.toLowerCase(accessorName.charAt(3)) + accessorName.substring(4);
+        }
+        if (accessorName.startsWith("is") && accessorName.length() > 2) {
+            return Character.toLowerCase(accessorName.charAt(2)) + accessorName.substring(3);
+        }
+        return accessorName;
     }
 }

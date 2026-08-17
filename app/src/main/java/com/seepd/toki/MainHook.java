@@ -1,25 +1,24 @@
 package com.seepd.toki;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.LocaleList;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,20 +31,21 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.WeakHashMap;
+import java.time.ZoneId;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.github.libxposed.api.XposedInterface;
 import io.github.libxposed.api.XposedModule;
 import io.github.libxposed.api.XposedModuleInterface.PackageReadyParam;
 
@@ -64,49 +64,20 @@ public final class MainHook extends XposedModule {
     private final AtomicBoolean loopPreventionManualPauseFailureLogged = new AtomicBoolean(false);
     private final AtomicBoolean defaultPlaybackSpeedAppliedLogged = new AtomicBoolean(false);
     private final AtomicBoolean defaultPlaybackSpeedFailureLogged = new AtomicBoolean(false);
-    private final AtomicBoolean antiBurnInPhotoTitleFailureLogged = new AtomicBoolean(false);
-    private final AtomicInteger antiBurnInTraceBudget = new AtomicInteger(0);
+    private final AtomicBoolean startupLoginClosedLogged = new AtomicBoolean(false);
+    private final AtomicBoolean pagePurificationVisibilityLogged = new AtomicBoolean(false);
+    private final AtomicBoolean globalNavigationPurificationVisibilityLogged = new AtomicBoolean(false);
     private final Object officialTranslationLock = new Object();
-    private final Object antiBurnInLock = new Object();
     private final LinkedHashMap<String, BoundComment> officialBoundComments = new LinkedHashMap<>();
     private final HashSet<String> officialTranslationRequests = new HashSet<>();
     private final WeakHashMap<Object, String> officialTranslatedActions = new WeakHashMap<>();
-    private final WeakHashMap<Object, AntiBurnInGestureTracker> antiBurnInGestures =
-            new WeakHashMap<>();
-    private final WeakHashMap<Object, PhotoUiRestoreTarget> antiBurnInPhotoUiRestoreTargets =
-            new WeakHashMap<>();
-    private final WeakHashMap<Object, PhotoStateRestoreTarget>
-            antiBurnInPhotoStateRestoreTargets = new WeakHashMap<>();
-    private final WeakHashMap<Object, Boolean> antiBurnInPhotoIntercepts =
-            new WeakHashMap<>();
-    private final WeakHashMap<Object, Boolean> antiBurnInHiddenVideoCells =
-            new WeakHashMap<>();
-    private final WeakHashMap<Object, Boolean> antiBurnInPausePanels = new WeakHashMap<>();
     private final WeakHashMap<Object, String> defaultPlaybackSpeedSourceIds = new WeakHashMap<>();
-    private final WeakHashMap<Object, Runnable> antiBurnInLongPressTasks = new WeakHashMap<>();
-    private final Handler antiBurnInHandler = new Handler(Looper.getMainLooper());
+    private final WeakHashMap<View, Boolean> globalNavigationObservedRoots = new WeakHashMap<>();
     private volatile Context translationStateContext;
     private volatile boolean officialTranslationEnabled;
     private volatile String officialCommentPageAwemeId;
     private volatile String officialTranslatedAwemeId;
-    private volatile Field antiBurnInDetectorField;
-    private volatile boolean antiBurnInDesiredState;
-    private volatile PhotoTitleVisibilityBridge antiBurnInPhotoTitleVisibilityBridge;
-    private volatile boolean antiBurnInPhotoTitleForcedHidden;
-    private volatile Method antiBurnInPhotoStateMethod;
-    private volatile Method antiBurnInVideoVisibilityMethod;
-    private volatile Method antiBurnInPauseResumeMethod;
-    private volatile Method antiBurnInCellCleanMethod;
-    private volatile int antiBurnInCellCleanModeArgument = 2;
-    private volatile Method antiBurnInPanelCleanMethod;
-    private volatile int antiBurnInPanelCleanModeArgument = 2;
-    private volatile Constructor<?> antiBurnInToastBuilderConstructor;
-    private volatile Method antiBurnInToastMessageMethod;
-    private volatile Method antiBurnInToastLegacyMethod;
-    private volatile Method antiBurnInToastShowMethod;
-    private volatile boolean antiBurnInToastUsesActivity;
-    private volatile float antiBurnInCenterTolerancePx = 24f;
-    private volatile float antiBurnInSpanTolerancePx = 8f;
+    private volatile long processAttachedAt;
 
     @Override
     public void onPackageReady(PackageReadyParam param) {
@@ -124,6 +95,7 @@ public final class MainHook extends XposedModule {
                         if (initialized.compareAndSet(false, true)) {
                             Object context = chain.getArg(0);
                             if (context instanceof Context) {
+                                processAttachedAt = SystemClock.elapsedRealtime();
                                 install(param.getClassLoader(), (Context) context);
                             }
                         }
@@ -138,18 +110,22 @@ public final class MainHook extends XposedModule {
         try {
             ModuleConfig config = loadModuleConfig(context);
             logInfo("Active for " + context.getPackageName());
-            logInfo("Hook revision: direct-ui-gates-2-loop-replay-frame-4-anti-burn-in-11-photo-gates");
+            logInfo("Hook revision: direct-ui-gates-2-loop-replay-frame-4");
             logInfo("Loop prevention setting: " + config.disableLoop);
             logInfo("Default playback speed: " + config.defaultPlaybackSpeed);
-            logInfo("Anti-burn-in setting: " + config.antiBurnIn);
             logInfo("Comment translation setting: " + config.autoTranslateComments);
-            if (config.antiBurnIn) {
-                logInfo("Installing anti-burn-in bridges");
-                installAntiBurnIn(classLoader, context);
-                logInfo("Anti-burn-in bridge installation complete");
-            }
             if (config.regionSpoof) {
                 installRegionSpoof(classLoader, config.region);
+            }
+            if (config.languageSpoof || config.timeZoneSpoof) {
+                installSystemEnvironmentSpoof(config);
+            }
+            if (config.skipStartupLogin) {
+                int installedTargets = installStartupLoginSkip(classLoader);
+                logInfo("Startup login skip hooks installed: " + installedTargets + " target(s)");
+            }
+            if (config.gpsSpoof) {
+                installGpsSpoof(config);
             }
             if (config.removeDownloadRestrictions) {
                 installDownloadPatches(classLoader);
@@ -178,7 +154,21 @@ public final class MainHook extends XposedModule {
             if (config.allowDuet || config.allowStitch) {
                 installReusePermissionPatches(classLoader, config);
             }
-            if (config.hideFeedAds || config.hideLive || config.hideImages || config.forceRegion
+            if (config.hasPagePurificationEnabled()) {
+                int installedTargets = installPagePurification(classLoader, config);
+                logInfo("Page purification hooks installed: " + installedTargets + " target(s)");
+            }
+            if (config.hasGlobalNavigationPurificationEnabled()) {
+                if (installGlobalNavigationPurification(config)) {
+                    logInfo("Global navigation purification listener installed");
+                }
+            }
+            if (config.hideTrendingTopics || config.hideContentClassification) {
+                int installedTargets = installVideoOverlayPurification(classLoader, config);
+                logInfo("Video overlay purification hooks installed: " + installedTargets + " target(s)");
+            }
+            if (config.hideFeedAds || config.hideLive || config.hideImages
+                    || config.hideAiGenerated || config.forceRegion
                     || config.hideLongPosts || config.filterViewsLikes) {
                 installFeedFilters(classLoader, config);
             }
@@ -207,6 +197,236 @@ public final class MainHook extends XposedModule {
         hookTelephony("getSimOperatorName", preset.operatorName);
         hookTelephony("getNetworkOperatorName", preset.operatorName);
         installRegionPayloadPatches(classLoader, preset);
+    }
+
+    private void installGpsSpoof(ModuleConfig config) {
+        int installed = 0;
+        installed += hookLocationCoordinate("getLatitude", config.gpsLatitude);
+        installed += hookLocationCoordinate("getLongitude", config.gpsLongitude);
+        logInfo("GPS spoof hooks installed: " + installed + " coordinate getter(s)");
+    }
+
+    private void installSystemEnvironmentSpoof(ModuleConfig config) {
+        Locale targetLocale = localeForRegion(config.region);
+        String targetTimeZone = timeZoneForRegion(config.region);
+        int installed = 0;
+        if (config.languageSpoof) {
+            installed += installLocaleSpoof(targetLocale);
+        }
+        if (config.timeZoneSpoof) {
+            installed += installTimeZoneSpoof(targetTimeZone);
+        }
+        logInfo("System environment spoof hooks installed: " + installed
+                + " target(s), locale=" + targetLocale.toLanguageTag()
+                + ", timeZone=" + targetTimeZone);
+    }
+
+    private int installLocaleSpoof(Locale target) {
+        int installed = 0;
+        for (Method method : Locale.class.getDeclaredMethods()) {
+            if (!"getDefault".equals(method.getName())
+                    || !Modifier.isStatic(method.getModifiers())
+                    || method.getReturnType() != Locale.class) {
+                continue;
+            }
+            try {
+                hook(method)
+                        .setId("toki-locale-default-" + method.getParameterCount())
+                        .intercept(chain -> target);
+                installed++;
+            } catch (Throwable error) {
+                logError("Unable to hook Locale#getDefault", error);
+            }
+        }
+        installed += hookLocaleListDefaults(target);
+        installed += hookConfigurationLocales(target);
+        return installed;
+    }
+
+    private int hookLocaleListDefaults(Locale target) {
+        int installed = 0;
+        LocaleList targetList = new LocaleList(target);
+        for (Method method : LocaleList.class.getDeclaredMethods()) {
+            if (!Modifier.isStatic(method.getModifiers())
+                    || method.getParameterCount() != 0
+                    || method.getReturnType() != LocaleList.class
+                    || !("getDefault".equals(method.getName())
+                    || "getAdjustedDefault".equals(method.getName()))) {
+                continue;
+            }
+            try {
+                hook(method)
+                        .setId("toki-locale-list-" + method.getName())
+                        .intercept(chain -> targetList);
+                installed++;
+            } catch (Throwable error) {
+                logError("Unable to hook LocaleList#" + method.getName(), error);
+            }
+        }
+        return installed;
+    }
+
+    private int hookConfigurationLocales(Locale target) {
+        int installed = 0;
+        for (Method method : Configuration.class.getDeclaredMethods()) {
+            if (method.getParameterCount() != 0) {
+                continue;
+            }
+            Object replacement = null;
+            if ("getLocale".equals(method.getName()) && method.getReturnType() == Locale.class) {
+                replacement = target;
+            } else if ("getLocales".equals(method.getName())
+                    && method.getReturnType() == LocaleList.class) {
+                replacement = new LocaleList(target);
+            }
+            if (replacement == null) {
+                continue;
+            }
+            try {
+                Object value = replacement;
+                hook(method)
+                        .setId("toki-configuration-" + method.getName())
+                        .intercept(chain -> value);
+                installed++;
+            } catch (Throwable error) {
+                logError("Unable to hook Configuration#" + method.getName(), error);
+            }
+        }
+        return installed;
+    }
+
+    private int installTimeZoneSpoof(String timeZoneId) {
+        int installed = 0;
+        TimeZone target = TimeZone.getTimeZone(timeZoneId);
+        for (Method method : TimeZone.class.getDeclaredMethods()) {
+            if (!"getDefault".equals(method.getName())
+                    || !Modifier.isStatic(method.getModifiers())
+                    || method.getParameterCount() != 0
+                    || method.getReturnType() != TimeZone.class) {
+                continue;
+            }
+            try {
+                hook(method)
+                        .setId("toki-timezone-default")
+                        .intercept(chain -> (TimeZone) target.clone());
+                installed++;
+            } catch (Throwable error) {
+                logError("Unable to hook TimeZone#getDefault", error);
+            }
+        }
+        try {
+            Method systemDefault = ZoneId.class.getDeclaredMethod("systemDefault");
+            ZoneId targetZone = ZoneId.of(timeZoneId);
+            hook(systemDefault)
+                    .setId("toki-zoneid-system-default")
+                    .intercept(chain -> targetZone);
+            installed++;
+        } catch (Throwable error) {
+            logError("Unable to hook ZoneId#systemDefault", error);
+        }
+        try {
+            Class<?> icuTimeZone = Class.forName("android.icu.util.TimeZone");
+            Method getDefault = icuTimeZone.getDeclaredMethod("getDefault");
+            Method getTimeZone = icuTimeZone.getDeclaredMethod("getTimeZone", String.class);
+            Object targetTimeZone = getTimeZone.invoke(null, timeZoneId);
+            hook(getDefault)
+                    .setId("toki-icu-timezone-default")
+                    .intercept(chain -> targetTimeZone);
+            installed++;
+        } catch (Throwable error) {
+            logError("Unable to hook ICU TimeZone#getDefault", error);
+        }
+        return installed;
+    }
+
+    private static Locale localeForRegion(RegionPreset preset) {
+        try {
+            Class<?> uLocaleType = Class.forName("android.icu.util.ULocale");
+            Method forLanguageTag = uLocaleType.getDeclaredMethod("forLanguageTag", String.class);
+            Method addLikelySubtags = uLocaleType.getDeclaredMethod("addLikelySubtags", uLocaleType);
+            Object regionLocale = forLanguageTag.invoke(null, "und-" + preset.code);
+            Object likelyLocale = addLikelySubtags.invoke(null, regionLocale);
+            Method getLanguage = uLocaleType.getDeclaredMethod("getLanguage");
+            String language = (String) getLanguage.invoke(likelyLocale);
+            if (language != null && !language.isEmpty()) {
+                return new Locale(language, preset.code);
+            }
+        } catch (Throwable ignored) {
+            // Fall back to English if ICU cannot infer a language for the region.
+        }
+        return Locale.US;
+    }
+
+    private static String timeZoneForRegion(RegionPreset preset) {
+        try {
+            Class<?> icuTimeZone = Class.forName("android.icu.util.TimeZone");
+            Method getAvailableIds = icuTimeZone.getDeclaredMethod("getAvailableIDs", String.class);
+            String[] ids = (String[]) getAvailableIds.invoke(null, preset.code);
+            if (ids != null && ids.length > 0 && ids[0] != null && !ids[0].isEmpty()) {
+                return ids[0];
+            }
+        } catch (Throwable ignored) {
+            // Fall back to UTC for regions without a timezone database entry.
+        }
+        return "UTC";
+    }
+
+    private int installStartupLoginSkip(ClassLoader classLoader) {
+        try {
+            Class<?> loginActivityClass = Class.forName(
+                    "com.ss.android.ugc.aweme.account.login.auth."
+                            + "I18nSignUpActivityWithNoAnimation",
+                    false,
+                    classLoader);
+            Method onCreate = loginActivityClass.getDeclaredMethod("onCreate", Bundle.class);
+            hook(onCreate)
+                    .setId("toki-skip-startup-login")
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        Object target = chain.getThisObject();
+                        long processAge = SystemClock.elapsedRealtime() - processAttachedAt;
+                        if (processAge >= 0L && processAge <= 20_000L
+                                && target instanceof Activity) {
+                            Activity activity = (Activity) target;
+                            activity.finish();
+                            activity.overridePendingTransition(0, 0);
+                            if (startupLoginClosedLogged.compareAndSet(false, true)) {
+                                logInfo("Closed startup login prompt");
+                            }
+                        }
+                        return result;
+                    });
+            return 1;
+        } catch (ClassNotFoundException ignored) {
+            logInfo("Startup login activity is unavailable in this TikTok build");
+            return 0;
+        } catch (NoSuchMethodException error) {
+            logError("Unable to find startup login Activity#onCreate(Bundle)", error);
+            return 0;
+        } catch (Throwable error) {
+            logError("Unable to install startup login skip hook", error);
+            return 0;
+        }
+    }
+
+    private int hookLocationCoordinate(String methodName, double value) {
+        int installed = 0;
+        for (Method method : Location.class.getDeclaredMethods()) {
+            if (!methodName.equals(method.getName())
+                    || method.getParameterCount() != 0
+                    || method.getReturnType() != double.class) {
+                continue;
+            }
+            try {
+                hook(method)
+                        .setId("toki-gps-" + methodName)
+                        .intercept(chain -> value);
+                installed++;
+            } catch (Throwable error) {
+                logError("Unable to hook Location#" + methodName, error);
+            }
+        }
+        return installed;
     }
 
     /** Restores the comment-page translation control in the supported official TikTok client. */
@@ -370,6 +590,7 @@ public final class MainHook extends XposedModule {
             Class<?> tuxIconViewType = Class.forName(
                     "com.bytedance.tux.icon.TuxIconView", false, classLoader);
             Method onActionBarCreated = actionBarType.getDeclaredMethod("onViewCreated", View.class);
+            Method onCommentPageReused = actionBarType.getDeclaredMethod("JU", awemeType);
             Method getCommentContext = actionBarType.getDeclaredMethod("cq");
             Method getAweme = contextSourceKt.getMethod("aweme", contextSourceType);
             Method getAid = awemeType.getMethod("getAid");
@@ -412,6 +633,24 @@ public final class MainHook extends XposedModule {
                         Object root = chain.getArg(0);
                         injectOfficialCommentTranslationButton(
                                 chain.getThisObject(), root instanceof View ? (View) root : null, bridge);
+                        return result;
+                    });
+            hook(onCommentPageReused)
+                    .setId("toki-4632-comment-translation-page-reused")
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        try {
+                            Object aweme = chain.getArg(0);
+                            String awemeId = aweme == null ? "" : stringValue(getAid.invoke(aweme));
+                            if (awemeId.isEmpty()) {
+                                resetOfficialCommentPageState();
+                            } else {
+                                observeOfficialCommentPage(awemeId);
+                            }
+                        } catch (ReflectiveOperationException | RuntimeException error) {
+                            logOfficialTranslationFailure(
+                                    "Unable to observe a reused TikTok 46.3.2 comment page", error);
+                        }
                         return result;
                     });
             logInfo("Enabled official TikTok 46.3.2 comment translation button hooks");
@@ -506,6 +745,22 @@ public final class MainHook extends XposedModule {
         throw new NoSuchMethodException(owner.getName() + '.' + name);
     }
 
+    /** Resolves a renamed instance method without weakening its parameter signature. */
+    private static Method findDeclaredMethod(
+            Class<?> owner,
+            Class<?>[] parameterTypes,
+            String... names) throws NoSuchMethodException {
+        NoSuchMethodException failure = null;
+        for (String name : names) {
+            try {
+                return owner.getDeclaredMethod(name, parameterTypes);
+            } catch (NoSuchMethodException error) {
+                failure = error;
+            }
+        }
+        throw failure == null ? new NoSuchMethodException(owner.getName()) : failure;
+    }
+
     /**
      * TikTok renames the comment-cell bind method between releases but retains its unique item
      * parameter. Prefer the verified name and only fall back when the signature is unambiguous.
@@ -589,18 +844,23 @@ public final class MainHook extends XposedModule {
             if (awemeId.isEmpty() || commentId.isEmpty()) {
                 return;
             }
+            // Comment cells can bind before the reused action bar publishes its new context.
+            observeOfficialCommentPage(awemeId);
             String key = commentKey(awemeId, commentId);
             boolean translateNow;
-            List<BoundComment> bindings;
+            BoundComment binding = new BoundComment(key, awemeId, comment, null);
             synchronized (officialTranslationLock) {
-                officialBoundComments.put(key, new BoundComment(key, awemeId, comment, null));
+                officialBoundComments.put(key, binding);
                 pruneOfficialCommentBindingsLocked();
                 translateNow = isOfficialTranslationActive(awemeId)
-                        && !Boolean.TRUE.equals(bridge.isTranslated.invoke(comment));
-                bindings = new ArrayList<>(officialBoundComments.values());
+                        && !Boolean.TRUE.equals(bridge.isTranslated.invoke(comment))
+                        && !officialTranslationRequests.contains(key);
             }
             if (translateNow) {
-                translateOfficialLoadedComments(null, awemeId, bindings, bridge);
+                // A rebind must never redispatch the entire visible list. New cells are queued
+                // individually; the native batch call claims the key before publishing loading UI.
+                translateOfficialLoadedComments(
+                        null, awemeId, Collections.singletonList(binding), bridge);
             }
         } catch (ReflectiveOperationException | RuntimeException error) {
             logOfficialTranslationFailure("Unable to capture a TikTok 46.3.2 bound comment", error);
@@ -852,10 +1112,14 @@ public final class MainHook extends XposedModule {
         if (batch == null) {
             return 0;
         }
+        List<Object> comments = new ArrayList<>();
         try {
-            List<Object> comments = batch.useBoundComments
+            comments = batch.useBoundComments
                     ? getOfficialBoundComments(bindings, awemeId)
                     : getOfficialLoadedComments(actionBar, awemeId, bridge);
+            if (batch.useBoundComments) {
+                comments = claimTikTok4632TranslationRequests(comments, awemeId, bridge);
+            }
             if (comments.isEmpty()) {
                 return 0;
             }
@@ -866,11 +1130,51 @@ public final class MainHook extends XposedModule {
                 return 0;
             }
             batch.translateBatch.invoke(null, comments, requestMetadata, false);
-            rememberOfficialTranslationRequests(comments, awemeId, bridge);
+            if (!batch.useBoundComments) {
+                rememberOfficialTranslationRequests(comments, awemeId, bridge);
+            }
             return comments.size();
         } catch (ReflectiveOperationException | RuntimeException error) {
+            if (batch.useBoundComments) {
+                releaseTikTok4632TranslationRequests(comments, awemeId, bridge);
+            }
             logOfficialTranslationFailure("Unable to request native multi-comment translation", error);
             return 0;
+        }
+    }
+
+    /** Claims requests before TikTok publishes its per-comment loading state and rebinds the cell. */
+    private List<Object> claimTikTok4632TranslationRequests(
+            List<Object> comments,
+            String awemeId,
+            OfficialTranslationBridge bridge) throws ReflectiveOperationException {
+        List<Object> claimed = new ArrayList<>();
+        synchronized (officialTranslationLock) {
+            for (Object comment : comments) {
+                String commentId = stringValue(bridge.getCommentId.invoke(comment));
+                if (!commentId.isEmpty() && officialTranslationRequests.add(commentKey(awemeId, commentId))) {
+                    claimed.add(comment);
+                }
+            }
+        }
+        return claimed;
+    }
+
+    private void releaseTikTok4632TranslationRequests(
+            List<Object> comments,
+            String awemeId,
+            OfficialTranslationBridge bridge) {
+        synchronized (officialTranslationLock) {
+            for (Object comment : comments) {
+                try {
+                    String commentId = stringValue(bridge.getCommentId.invoke(comment));
+                    if (!commentId.isEmpty()) {
+                        officialTranslationRequests.remove(commentKey(awemeId, commentId));
+                    }
+                } catch (ReflectiveOperationException | RuntimeException ignored) {
+                    // The request could not be identified, so retaining its guard is safer than looping.
+                }
+            }
         }
     }
 
@@ -1227,209 +1531,6 @@ public final class MainHook extends XposedModule {
             this.awemeId = awemeId;
             this.comment = new WeakReference<>(comment);
             this.action = new WeakReference<>(action);
-        }
-    }
-
-    private static final class PhotoUiRestoreTarget {
-        final WeakReference<Object> owner;
-        final PhotoClearEventBridge bridge;
-        final Method method;
-        final Object event;
-
-        PhotoUiRestoreTarget(
-                Object owner,
-                PhotoClearEventBridge bridge,
-                Method method,
-                Object event
-        ) {
-            this.owner = new WeakReference<>(owner);
-            this.bridge = bridge;
-            this.method = method;
-            this.event = event;
-        }
-    }
-
-    private static final class PhotoStateRestoreTarget {
-        final WeakReference<Object> owner;
-        final Method method;
-        final String source;
-
-        PhotoStateRestoreTarget(Object owner, Method method, String source) {
-            this.owner = new WeakReference<>(owner);
-            this.method = method;
-            this.source = source;
-        }
-    }
-
-    /**
-     * Reflects a TikTok ClearMode event (for example X.0RG4 in the photo pager or X.0RMM in the
-     * skylight overlay) so the module can replay an original exit event while the latch is on.
-     */
-    private static final class PhotoClearEventBridge {
-        final Constructor<?> constructor;
-        final Field clean;
-        final Field kind;
-        final Field source;
-        final Field page;
-        final Field extra;
-        final Field anchor;
-        final int constructorArity;
-
-        private PhotoClearEventBridge(
-                Constructor<?> constructor,
-                int constructorArity,
-                Field clean,
-                Field kind,
-                Field source,
-                Field page,
-                Field extra,
-                Field anchor
-        ) {
-            this.constructor = constructor;
-            this.constructorArity = constructorArity;
-            this.clean = clean;
-            this.kind = kind;
-            this.source = source;
-            this.page = page;
-            this.extra = extra;
-            this.anchor = anchor;
-        }
-
-        static PhotoClearEventBridge create(Class<?> eventType)
-                throws ReflectiveOperationException {
-            Constructor<?> constructor = null;
-            int arity = 0;
-            for (int candidateArity : new int[]{5, 4, 2}) {
-                try {
-                    if (candidateArity == 5) {
-                        constructor = eventType.getDeclaredConstructor(
-                                boolean.class,
-                                int.class,
-                                String.class,
-                                String.class,
-                                String.class);
-                    } else if (candidateArity == 4) {
-                        constructor = eventType.getDeclaredConstructor(
-                                boolean.class,
-                                int.class,
-                                String.class,
-                                String.class);
-                    } else {
-                        constructor = eventType.getDeclaredConstructor(
-                                int.class,
-                                String.class);
-                    }
-                    arity = candidateArity;
-                    break;
-                } catch (NoSuchMethodException ignored) {
-                    // Try the next known ClearMode constructor shape.
-                }
-            }
-            if (constructor == null) {
-                throw new NoSuchMethodException(
-                        "ClearMode event constructor on " + eventType.getName());
-            }
-            Field clean = eventType.getDeclaredField("LIZ");
-            Field kind = eventType.getDeclaredField("LIZIZ");
-            Field source = eventType.getDeclaredField("LIZJ");
-            Field page = eventType.getDeclaredField("LIZLLL");
-            Field extra = eventType.getDeclaredField("LJ");
-            Field anchor = eventType.getDeclaredField("LJFF");
-            constructor.setAccessible(true);
-            clean.setAccessible(true);
-            kind.setAccessible(true);
-            source.setAccessible(true);
-            page.setAccessible(true);
-            extra.setAccessible(true);
-            anchor.setAccessible(true);
-            return new PhotoClearEventBridge(
-                    constructor,
-                    arity,
-                    clean,
-                    kind,
-                    source,
-                    page,
-                    extra,
-                    anchor);
-        }
-
-        boolean isClean(Object event) {
-            try {
-                return clean.getBoolean(event);
-            } catch (IllegalAccessException | RuntimeException ignored) {
-                return false;
-            }
-        }
-
-        int kind(Object event) throws IllegalAccessException {
-            return kind.getInt(event);
-        }
-
-        String source(Object event) throws IllegalAccessException {
-            return (String) source.get(event);
-        }
-
-        Object copyWithClean(Object event, boolean cleanValue)
-                throws ReflectiveOperationException {
-            String sourceValue = source.get(event) instanceof String
-                    ? (String) source.get(event) : "";
-            String pageValue = page.get(event) instanceof String
-                    ? (String) page.get(event) : "";
-            String extraValue = extra.get(event) instanceof String
-                    ? (String) extra.get(event) : "";
-            Object replacement;
-            if (constructorArity == 5) {
-                replacement = constructor.newInstance(
-                        cleanValue,
-                        kind.getInt(event),
-                        sourceValue,
-                        pageValue,
-                        extraValue);
-            } else if (constructorArity == 4) {
-                replacement = constructor.newInstance(
-                        cleanValue,
-                        kind.getInt(event),
-                        sourceValue,
-                        pageValue);
-            } else {
-                replacement = constructor.newInstance(
-                        kind.getInt(event),
-                        sourceValue);
-            }
-            Object anchorValue = anchor.get(event);
-            if (anchorValue != null) {
-                anchor.set(replacement, anchorValue);
-            }
-            return replacement;
-        }
-    }
-
-    private static final class PhotoTitleVisibilityBridge {
-        final Class<?> serviceType;
-        final Method getServiceManager;
-        final Method getService;
-        final Method setVisible;
-
-        PhotoTitleVisibilityBridge(
-                Class<?> serviceType,
-                Method getServiceManager,
-                Method getService,
-                Method setVisible
-        ) {
-            this.serviceType = serviceType;
-            this.getServiceManager = getServiceManager;
-            this.getService = getService;
-            this.setVisible = setVisible;
-        }
-
-        boolean setVisible(boolean visible) throws ReflectiveOperationException {
-            Object serviceManager = getServiceManager.invoke(null);
-            Object service = getService.invoke(serviceManager, serviceType);
-            if (service == null) {
-                return false;
-            }
-            setVisible.invoke(service, visible);
-            return true;
         }
     }
 
@@ -1792,1378 +1893,6 @@ public final class MainHook extends XposedModule {
         return normalized.length() == 0 ? null : normalized.toString();
     }
 
-    /**
-     * Latches TikTok's own temporary two-finger clean state without consuming MotionEvents.
-     */
-    private void installAntiBurnIn(ClassLoader classLoader, Context context) {
-        antiBurnInTraceBudget.set(8);
-        float density = context.getResources().getDisplayMetrics().density;
-        if (Float.isFinite(density) && density > 0f) {
-            antiBurnInCenterTolerancePx = 12f * density;
-            antiBurnInSpanTolerancePx = 4f * density;
-        }
-        logInfo("Anti-burn-in stage: toast");
-        installAntiBurnInToastBridge(classLoader);
-        logInfo("Anti-burn-in stage: photo-gesture");
-        boolean photoGestureAvailable = installAntiBurnInPhotoGesture(classLoader);
-        logInfo("Anti-burn-in stage: pinch");
-        boolean pinchBridgeAvailable = installAntiBurnInPinchBridge(classLoader);
-        logInfo("Anti-burn-in stage: gesture");
-        boolean gestureAvailable = pinchBridgeAvailable && installAntiBurnInGesture();
-        logInfo("Anti-burn-in stage: clear-state");
-        boolean clearStateAvailable = installAntiBurnInClearStateGate(classLoader);
-        logInfo("Anti-burn-in stage: cell");
-        installAntiBurnInCellCleanBridge(classLoader);
-        logInfo("Anti-burn-in stage: panel");
-        installAntiBurnInPanelCleanBridge(classLoader);
-        logInfo("Core anti-burn-in bridges installed; scheduling remaining gates");
-        antiBurnInHandler.postDelayed(
-                () -> installDeferredAntiBurnInGates(
-                        classLoader,
-                        photoGestureAvailable,
-                        pinchBridgeAvailable,
-                        gestureAvailable,
-                        clearStateAvailable),
-                15_000L);
-    }
-
-    /**
-     * The remaining gates load feed/photo UI classes that TikTok touches heavily during startup.
-     * Installing them on the main looper shortly after launch keeps the module init thread short
-     * and avoids TikTok startup contention.
-     */
-    private void installDeferredAntiBurnInGates(
-            ClassLoader classLoader,
-            boolean photoGestureAvailable,
-            boolean pinchBridgeAvailable,
-            boolean gestureAvailable,
-            boolean clearStateAvailable
-    ) {
-        try {
-            logInfo("Anti-burn-in stage: video");
-            boolean videoVisibilityAvailable = installAntiBurnInVideoVisibilityGate(classLoader);
-            logInfo("Anti-burn-in stage: pause");
-            boolean pausePanelAvailable = installAntiBurnInPausePanelGate(classLoader);
-            logInfo("Anti-burn-in stage: photo-ui");
-            boolean photoUiGateAvailable = installAntiBurnInPhotoUiGate(classLoader);
-            logInfo("Anti-burn-in stage: photo-state");
-            boolean photoStateAvailable = installAntiBurnInPhotoStateGate(classLoader);
-            logInfo("Anti-burn-in bridges: cell=" + (antiBurnInCellCleanMethod != null)
-                    + ", panel=" + (antiBurnInPanelCleanMethod != null)
-                    + ", clearState=" + clearStateAvailable
-                    + ", video=" + videoVisibilityAvailable
-                    + ", pause=" + pausePanelAvailable
-                    + ", pinch=" + pinchBridgeAvailable
-                    + ", photoGesture=" + photoGestureAvailable
-                    + ", photoUi=" + photoUiGateAvailable
-                    + ", photoState=" + photoStateAvailable
-                    + ", mediaUi=cell-clean"
-                    + ", gesture=" + gestureAvailable);
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to finish anti-burn-in gate installation", error);
-        }
-    }
-
-    /** Keeps TikTok's own ClearMode state true while the gesture latch is enabled. */
-    private boolean installAntiBurnInClearStateGate(ClassLoader classLoader) {
-        try {
-            Class<?> type = Class.forName("X.0Qjw", false, classLoader);
-            Method query = findMethodInHierarchy(type, "LIZLLL");
-            if (query == null || (query.getReturnType() != boolean.class
-                    && query.getReturnType() != Boolean.class)) {
-                throw new NoSuchMethodException("X.0Qjw#LIZLLL()");
-            }
-            query.setAccessible(true);
-            hook(query)
-                    .setId("toki-anti-burn-in-clear-state")
-                    .intercept(chain -> antiBurnInDesiredState
-                            ? Boolean.TRUE
-                            : chain.proceed());
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("TikTok clear-mode state gate is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook TikTok clear-mode state", error);
-            return false;
-        }
-    }
-
-    private void installAntiBurnInCellCleanBridge(ClassLoader classLoader) {
-        try {
-            Class<?> type = Class.forName(
-                    "com.ss.android.ugc.feed.platform.cell.clean.CellCleanComponent",
-                    false,
-                    classLoader);
-            Method clean = findCleanVisibilityMethod(type, "El", "Il", "Ye", "Xe");
-            if (clean == null) {
-                throw new NoSuchMethodException("CellCleanComponent clean method");
-            }
-            Method onViewCreated = findLifecycleViewMethod(type, "onViewCreated", "lf", "ue");
-            Method onBind = null;
-            for (Method method : type.getDeclaredMethods()) {
-                Class<?>[] parameters = method.getParameterTypes();
-                if ("onBind".equals(method.getName())
-                        && method.getReturnType() == void.class
-                        && parameters.length == 1
-                        && !parameters[0].isPrimitive()) {
-                    onBind = method;
-                    break;
-                }
-            }
-            clean.setAccessible(true);
-            antiBurnInCellCleanMethod = clean;
-            antiBurnInCellCleanModeArgument = findCleanBooleanArgumentIndex(clean);
-
-            hook(clean)
-                    .setId("toki-anti-burn-in-cell-clean-gate")
-                    .intercept(chain -> {
-                        if (antiBurnInDesiredState) {
-                            Object[] arguments = new Object[clean.getParameterCount()];
-                            for (int i = 0; i < arguments.length; i++) {
-                                arguments[i] = chain.getArg(i);
-                            }
-                            Object requestedClean =
-                                    arguments[antiBurnInCellCleanModeArgument];
-                            arguments[antiBurnInCellCleanModeArgument] = Boolean.TRUE;
-                            forceCellCleanImmediately(clean, arguments);
-                            if (!Boolean.TRUE.equals(requestedClean)) {
-                                traceAntiBurnInCleanGate("cell", arguments[1], requestedClean);
-                            }
-                            return chain.proceed(arguments);
-                        }
-                        return chain.proceed();
-                    });
-            if (onViewCreated != null) {
-                onViewCreated.setAccessible(true);
-                hook(onViewCreated)
-                        .setId("toki-anti-burn-in-cell-clean-created")
-                        .intercept(chain -> {
-                            Object result = chain.proceed();
-                            Object component = chain.getThisObject();
-                            if (antiBurnInDesiredState) {
-                                invokeAntiBurnInCellClean(component, true);
-                            }
-                            return result;
-                        });
-            }
-            if (onBind != null) {
-                onBind.setAccessible(true);
-                hook(onBind)
-                        .setId("toki-anti-burn-in-cell-clean-bind")
-                        .intercept(chain -> {
-                            Object result = chain.proceed();
-                            if (antiBurnInDesiredState) {
-                                invokeAntiBurnInCellClean(chain.getThisObject(), true);
-                            }
-                            return result;
-                        });
-            }
-            logInfo("Cell clean lifecycle hooks: created=" + (onViewCreated != null)
-                    + ", bind=" + (onBind != null));
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Cell clean bridge is unavailable: " + error.getMessage());
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook TikTok cell clean state", error);
-        }
-    }
-
-    /**
-     * The panel clean method name varies across supported official builds. Guarding this owner
-     * prevents the top navigation and feed chrome from being restored by pause/page callbacks.
-     */
-    private void installAntiBurnInPanelCleanBridge(ClassLoader classLoader) {
-        try {
-            Class<?> type = Class.forName(
-                    "com.ss.android.ugc.feed.platform.panel.clean.FeedCleanComponent",
-                    false,
-                    classLoader);
-            Method clean = findCleanVisibilityMethod(type, "El", "Il", "Ye", "Xe");
-            if (clean == null) {
-                throw new NoSuchMethodException("FeedCleanComponent clean method");
-            }
-            Method onViewCreated = findLifecycleViewMethod(type, "onViewCreated", "lf", "ue");
-            clean.setAccessible(true);
-            antiBurnInPanelCleanMethod = clean;
-            antiBurnInPanelCleanModeArgument = findCleanBooleanArgumentIndex(clean);
-            hook(clean)
-                    .setId("toki-anti-burn-in-panel-clean-gate")
-                    .intercept(chain -> {
-                        if (antiBurnInDesiredState) {
-                            Object[] arguments = new Object[clean.getParameterCount()];
-                            for (int i = 0; i < arguments.length; i++) {
-                                arguments[i] = chain.getArg(i);
-                            }
-                            Object requestedClean =
-                                    arguments[antiBurnInPanelCleanModeArgument];
-                            arguments[antiBurnInPanelCleanModeArgument] = Boolean.TRUE;
-                            forceFeedCleanImmediately(clean, arguments);
-                            if (!Boolean.TRUE.equals(requestedClean)) {
-                                traceAntiBurnInCleanGate("panel", arguments[1], requestedClean);
-                            }
-                            return chain.proceed(arguments);
-                        }
-                        return chain.proceed();
-                    });
-            if (onViewCreated != null) {
-                onViewCreated.setAccessible(true);
-                hook(onViewCreated)
-                        .setId("toki-anti-burn-in-panel-clean-created")
-                        .intercept(chain -> {
-                            Object result = chain.proceed();
-                            Object component = chain.getThisObject();
-                            if (antiBurnInDesiredState) {
-                                invokeAntiBurnInPanelClean(component, true);
-                            }
-                            return result;
-                        });
-            }
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Feed panel clean bridge is unavailable: " + error.getMessage());
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook TikTok feed panel clean state", error);
-        }
-    }
-
-    /** Final visibility sink used by every ClearModePanel enter/exit path. */
-    private boolean installAntiBurnInVideoVisibilityGate(ClassLoader classLoader) {
-        try {
-            Class<?> type = Class.forName(
-                    "com.ss.android.ugc.aweme.feed.adapter.VideoViewCell",
-                    false,
-                    classLoader);
-            Method visibility = findMethodInHierarchy(
-                    type,
-                    new String[]{"LLJJIII", "ot"},
-                    boolean.class,
-                    boolean.class);
-            if (visibility == null || visibility.getReturnType() != void.class) {
-                throw new NoSuchMethodException("VideoViewCell visibility method");
-            }
-            visibility.setAccessible(true);
-            antiBurnInVideoVisibilityMethod = visibility;
-            hook(visibility)
-                    .setId("toki-anti-burn-in-video-visibility-gate")
-                    .intercept(chain -> {
-                        Object cell = chain.getThisObject();
-                        if (!antiBurnInDesiredState) {
-                            return chain.proceed();
-                        }
-                        rememberAntiBurnInHiddenVideoCell(cell);
-                        if (Boolean.TRUE.equals(chain.getArg(0))) {
-                            return chain.proceed();
-                        }
-                        traceAntiBurnInCleanGate("video", chain.getArg(1), chain.getArg(0));
-                        return chain.proceed(new Object[]{Boolean.TRUE, chain.getArg(1)});
-                    });
-
-            ArrayList<Method> lifecycleMethods = new ArrayList<>();
-            boolean reusedBindFound = false;
-            for (Method method : type.getDeclaredMethods()) {
-                Class<?>[] parameters = method.getParameterTypes();
-                boolean holderSelected = "LJIIZILJ".equals(method.getName())
-                        && parameters.length == 1
-                        && parameters[0] == int.class;
-                boolean holderState = "LLLILZLLLI".equals(method.getName())
-                        && parameters.length == 1
-                        && parameters[0] == int.class;
-                boolean reusedBind = "LLLLLJIL".equals(method.getName())
-                        && parameters.length == 3
-                        && !parameters[0].isPrimitive()
-                        && parameters[1] == int.class
-                        && parameters[2] == boolean.class;
-                if ((!holderSelected && !holderState && !reusedBind)
-                        || method.getReturnType() != void.class
-                        || method.isSynthetic()) {
-                    continue;
-                }
-                lifecycleMethods.add(method);
-                reusedBindFound |= reusedBind;
-            }
-            if (!reusedBindFound) {
-                for (Method method : type.getDeclaredMethods()) {
-                    Class<?>[] parameters = method.getParameterTypes();
-                    if (method.getReturnType() == void.class
-                            && parameters.length == 3
-                            && !parameters[0].isPrimitive()
-                            && parameters[1] == int.class
-                            && parameters[2] == boolean.class
-                            && !method.isSynthetic()) {
-                        lifecycleMethods.add(method);
-                        break;
-                    }
-                }
-            }
-
-            StringBuilder lifecycleNames = new StringBuilder();
-            int lifecycleIndex = 0;
-            for (Method method : lifecycleMethods) {
-                method.setAccessible(true);
-                String lifecycleName = method.getName();
-                hook(method)
-                        .setId("toki-anti-burn-in-video-lifecycle-" + lifecycleIndex)
-                        .intercept(chain -> {
-                            Object result = chain.proceed();
-                            Object cell = chain.getThisObject();
-                            if (antiBurnInDesiredState && cell != null) {
-                                rememberAntiBurnInHiddenVideoCell(cell);
-                                reapplyAntiBurnInVideoCell(
-                                        cell,
-                                        visibility,
-                                        lifecycleName);
-                                scheduleAntiBurnInVideoCellReapply(
-                                        cell,
-                                        visibility);
-                            } else if (cell != null
-                                    && isAntiBurnInHiddenVideoCell(cell)
-                                    && restoreAntiBurnInVideoCell(
-                                    cell,
-                                    visibility,
-                                    lifecycleName)) {
-                                forgetAntiBurnInHiddenVideoCell(cell);
-                            }
-                            return result;
-                        });
-                if (lifecycleNames.length() > 0) {
-                    lifecycleNames.append(',');
-                }
-                lifecycleNames.append(lifecycleName);
-                lifecycleIndex++;
-            }
-            logInfo("Video cell clean lifecycle hooks installed: "
-                    + lifecycleMethods.size() + " (" + lifecycleNames + ")");
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Video visibility gate is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook TikTok video visibility", error);
-            return false;
-        }
-    }
-
-    /** Stops the pause panel's delayed 300 ms restore after comments and other overlays close. */
-    private boolean installAntiBurnInPausePanelGate(ClassLoader classLoader) {
-        try {
-            Class<?> type = Class.forName(
-                    "com.ss.android.ugc.feed.platform.panel.pause.PausePanelComponent",
-                    false,
-                    classLoader);
-            Method resume = findMethodInHierarchy(
-                    type,
-                    new String[]{"ap", "Io"},
-                    boolean.class);
-            if (resume == null || resume.getReturnType() != void.class) {
-                throw new NoSuchMethodException("PausePanelComponent restore method");
-            }
-            resume.setAccessible(true);
-            antiBurnInPauseResumeMethod = resume;
-            hook(resume)
-                    .setId("toki-anti-burn-in-pause-panel-gate")
-                    .intercept(chain -> {
-                        if (!antiBurnInDesiredState) {
-                            return chain.proceed();
-                        }
-                        Object panel = chain.getThisObject();
-                        if (panel != null) {
-                            synchronized (antiBurnInLock) {
-                                antiBurnInPausePanels.put(panel, Boolean.TRUE);
-                            }
-                        }
-                        traceAntiBurnInCleanGate("pause", chain.getArg(0), Boolean.FALSE);
-                        return null;
-                    });
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Pause panel gate is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook TikTok pause panel restore", error);
-            return false;
-        }
-    }
-
-    private void installAntiBurnInToastBridge(ClassLoader classLoader) {
-        try {
-            Class<?> builderType = Class.forName(
-                    "com.ss.android.ugc.aweme.services.uikit.CreativeToastBuilder",
-                    false,
-                    classLoader);
-            antiBurnInToastBuilderConstructor = builderType.getDeclaredConstructor();
-            antiBurnInToastMessageMethod = builderType.getMethod("message", String.class);
-            try {
-                antiBurnInToastLegacyMethod = builderType.getMethod(
-                        "isTuxToastLegacy", boolean.class);
-            } catch (NoSuchMethodException ignored) {
-                antiBurnInToastLegacyMethod = null;
-            }
-            try {
-                Class<?> toastType = findClass(classLoader, "X.0wq4", "X.C1795960wq4");
-                antiBurnInToastShowMethod = toastType.getDeclaredMethod(
-                        "LIZLLL", View.class, int.class, builderType);
-                antiBurnInToastUsesActivity = false;
-            } catch (ClassNotFoundException | NoSuchMethodException ignored) {
-                // Official TikTok 46.3.2 moved this entry point to the Activity-based helper.
-                Class<?> toastType = Class.forName("X.0qOz", false, classLoader);
-                antiBurnInToastShowMethod = toastType.getDeclaredMethod(
-                        "LIZ", Activity.class, int.class, builderType);
-                antiBurnInToastUsesActivity = true;
-            }
-            antiBurnInToastBuilderConstructor.setAccessible(true);
-            antiBurnInToastMessageMethod.setAccessible(true);
-            if (antiBurnInToastLegacyMethod != null) {
-                antiBurnInToastLegacyMethod.setAccessible(true);
-            }
-            antiBurnInToastShowMethod.setAccessible(true);
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("TikTok native toast bridge is unavailable: " + error.getMessage());
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to prepare TikTok native toast bridge", error);
-        }
-    }
-
-    private boolean installAntiBurnInPinchBridge(ClassLoader classLoader) {
-        try {
-            Class<?> type = Class.forName(
-                    "com.ss.android.ugc.feed.platform.cell.pinch.PinchComponent",
-                    false,
-                    classLoader);
-            Method clean = findMethodInHierarchy(
-                    type,
-                    new String[]{"Sp", "Ap", "Mf", "zf"},
-                    long.class,
-                    boolean.class,
-                    boolean.class);
-            Field detector = findDetectorField(type);
-            if (clean == null || clean.getReturnType() != void.class || detector == null) {
-                throw new NoSuchMethodException("PinchComponent clean/detector fields");
-            }
-            clean.setAccessible(true);
-            detector.setAccessible(true);
-            antiBurnInDetectorField = detector;
-
-            hook(clean)
-                    .setId("toki-anti-burn-in-clean-latch")
-                    .intercept(chain -> {
-                        if (!antiBurnInDesiredState) {
-                            return chain.proceed();
-                        }
-                        Object requestedClean = chain.getArg(1);
-                        Object requestedImmediately = chain.getArg(2);
-                        if (Boolean.TRUE.equals(requestedClean)
-                                && Boolean.TRUE.equals(requestedImmediately)) {
-                            return chain.proceed();
-                        }
-                        Object[] arguments = new Object[clean.getParameterCount()];
-                        for (int i = 0; i < arguments.length; i++) {
-                            arguments[i] = chain.getArg(i);
-                        }
-                        arguments[1] = Boolean.TRUE;
-                        arguments[2] = Boolean.TRUE;
-                        traceAntiBurnInPinchGate(requestedClean, requestedImmediately);
-                        return chain.proceed(arguments);
-                    });
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Official pinch clean bridge is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook official pinch clean bridge", error);
-            return false;
-        }
-    }
-
-    /**
-     * Keeps photo chrome (pager overlays, page dots, skylight bubbles and top title tabs) hidden
-     * while the latch is enabled. TikTok's own ClearMode events are replayed on exit so the
-     * photo UI returns exactly to its previous state.
-     */
-    private boolean installAntiBurnInPhotoUiGate(ClassLoader classLoader) {
-        try {
-            Class<?> stateType = findClass(classLoader, "X.0SHn", "X.0Rsh");
-            Class<?> serviceManagerType = Class.forName(
-                    "com.ss.android.ugc.aweme.framework.services.ServiceManager",
-                    false,
-                    classLoader);
-            Class<?> homePageUiFrameServiceType = Class.forName(
-                    "com.ss.android.ugc.aweme.homepage.api.ui.HomePageUIFrameService",
-                    false,
-                    classLoader);
-            Method getServiceManager = serviceManagerType.getMethod("get");
-            Method getService = serviceManagerType.getMethod("getService", Class.class);
-            Method setTitleTabVisibility = homePageUiFrameServiceType.getMethod(
-                    "setTitleTabVisibility",
-                    boolean.class);
-            antiBurnInPhotoTitleVisibilityBridge = new PhotoTitleVisibilityBridge(
-                    homePageUiFrameServiceType,
-                    getServiceManager,
-                    getService,
-                    setTitleTabVisibility);
-
-            Class<?> holderType = Class.forName(
-                    "com.ss.android.ugc.aweme.ui.feed.subphoto.holders.PhotosViewHolderV3",
-                    false,
-                    classLoader);
-            Method update = findMethodInHierarchy(
-                    holderType,
-                    new String[]{"LJIJJLI", "LIZJ"},
-                    float.class,
-                    boolean.class,
-                    stateType,
-                    float.class,
-                    String.class);
-            if (update == null) {
-                throw new NoSuchMethodException(
-                        "PhotosViewHolderV3 clear-mode update method");
-            }
-            update.setAccessible(true);
-            hook(update)
-                    .setId("toki-anti-burn-in-photo-title-gate")
-                    .intercept(chain -> {
-                        Object result = chain.proceed();
-                        if (antiBurnInDesiredState) {
-                            setAntiBurnInPhotoTitleVisibility(false);
-                        }
-                        return result;
-                    });
-
-            Class<?> photoEventType = findClass(classLoader, "X.0RMM", "X.0RG4");
-            PhotoClearEventBridge photoBridge = PhotoClearEventBridge.create(photoEventType);
-            Class<?> pagerType = Class.forName(
-                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.PhotoSlideViewPagerComponent",
-                    false,
-                    classLoader);
-            Method clearModeUpdate = pagerType.getDeclaredMethod(
-                    "onClearModeEvent",
-                    photoEventType);
-            Field pendingPageEventField = pagerType.getDeclaredField("LLLIIL");
-            clearModeUpdate.setAccessible(true);
-            pendingPageEventField.setAccessible(true);
-            hook(clearModeUpdate)
-                    .setId("toki-anti-burn-in-photo-pager-ui-gate")
-                    .intercept(chain -> {
-                        Object event = chain.getArg(0);
-                        if (!antiBurnInDesiredState
-                                || event == null
-                                || photoBridge.isClean(event)) {
-                            return chain.proceed();
-                        }
-                        try {
-                            Object pager = chain.getThisObject();
-                            rememberAntiBurnInPhotoUiRestoreTarget(
-                                    photoBridge,
-                                    pager,
-                                    clearModeUpdate,
-                                    event);
-                            Object replacement = photoBridge.copyWithClean(event, true);
-                            if (pendingPageEventField.get(pager) == event) {
-                                pendingPageEventField.set(pager, replacement);
-                            }
-                            traceAntiBurnInPhotoEventGate(
-                                    photoBridge.kind(event),
-                                    photoBridge.source(event));
-                            return chain.proceed(new Object[]{replacement});
-                        } catch (Throwable error) {
-                            logAntiBurnInFailure(
-                                    "Unable to preserve photo pager UI state",
-                                    error);
-                            return chain.proceed();
-                        }
-                    });
-
-            int subscriberCount = 1;
-            subscriberCount += installAntiBurnInPhotoUiSubscriber(
-                    classLoader,
-                    photoEventType,
-                    photoBridge,
-                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.AbsPhotosDotIndicatorAssem",
-                    "dots") ? 1 : 0;
-            subscriberCount += installAntiBurnInPhotoUiSubscriber(
-                    classLoader,
-                    photoEventType,
-                    photoBridge,
-                    "com.ss.android.ugc.aweme.base.ui.assem.FeedSkylightBubbleAssem",
-                    "skylight-bubble") ? 1 : 0;
-            subscriberCount += installAntiBurnInPhotoUiSubscriber(
-                    classLoader,
-                    photoEventType,
-                    photoBridge,
-                    "com.ss.android.ugc.aweme.base.ui.assem.FYPSkylightDrawerAssem",
-                    "skylight-drawer") ? 1 : 0;
-            logInfo("Photo UI clear subscribers installed: " + subscriberCount + "/4");
-            return true;
-        } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException error) {
-            logInfo("Photo UI clean gate is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook photo UI clean state", error);
-            return false;
-        }
-    }
-
-    private boolean installAntiBurnInPhotoUiSubscriber(
-            ClassLoader classLoader,
-            Class<?> eventType,
-            PhotoClearEventBridge eventBridge,
-            String className,
-            String id
-    ) {
-        try {
-            Class<?> type = Class.forName(className, false, classLoader);
-            Method update = type.getDeclaredMethod("onClearModeEvent", eventType);
-            update.setAccessible(true);
-            hook(update)
-                    .setId("toki-anti-burn-in-photo-ui-" + id)
-                    .intercept(chain -> {
-                        Object event = chain.getArg(0);
-                        if (!antiBurnInDesiredState
-                                || event == null
-                                || eventBridge.isClean(event)) {
-                            return chain.proceed();
-                        }
-                        try {
-                            rememberAntiBurnInPhotoUiRestoreTarget(
-                                    eventBridge,
-                                    chain.getThisObject(),
-                                    update,
-                                    event);
-                            return chain.proceed(new Object[]{
-                                    eventBridge.copyWithClean(event, true)
-                            });
-                        } catch (Throwable error) {
-                            logAntiBurnInFailure(
-                                    "Unable to preserve photo UI subscriber " + id,
-                                    error);
-                            return chain.proceed();
-                        }
-                    });
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Photo UI subscriber is unavailable (" + id + "): " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook photo UI subscriber " + id, error);
-            return false;
-        }
-    }
-
-    /**
-     * Drives TikTok's own photo clear-mode owner. The photo slideshow does not enter or exit
-     * clear mode through PinchComponent; it uses PhotoGestureInterceptComponent#pp(String,
-     * boolean), which posts the photo ClearMode events consumed by the pager and dots.
-     */
-    private boolean installAntiBurnInPhotoStateGate(ClassLoader classLoader) {
-        try {
-            Class<?> type = Class.forName(
-                    "com.ss.android.ugc.aweme.ui.feed.photos.assem.PhotoGestureInterceptComponent",
-                    false,
-                    classLoader);
-            Method onViewCreated = findLifecycleViewMethod(type, "onViewCreated", "lf", "ue");
-            Method onTouchEvent = findMethodInHierarchy(
-                    type,
-                    "onTouchEvent",
-                    MotionEvent.class);
-            Method pp = findMethodInHierarchy(
-                    type,
-                    new String[]{"Zo", "pp"},
-                    String.class,
-                    boolean.class);
-            if (pp == null || pp.getReturnType() != void.class) {
-                throw new NoSuchMethodException(
-                        "PhotoGestureInterceptComponent#Zo/String, boolean)");
-            }
-            pp.setAccessible(true);
-            antiBurnInPhotoStateMethod = pp;
-            if (onTouchEvent != null) {
-                onTouchEvent.setAccessible(true);
-                hook(onTouchEvent)
-                        .setId("toki-anti-burn-in-photo-state-touch")
-                        .intercept(chain -> {
-                            Object result = chain.proceed();
-                            rememberAntiBurnInPhotoIntercept(chain.getThisObject());
-                            return result;
-                        });
-            }
-            if (onViewCreated != null) {
-                onViewCreated.setAccessible(true);
-                hook(onViewCreated)
-                        .setId("toki-anti-burn-in-photo-state-created")
-                        .intercept(chain -> {
-                            Object result = chain.proceed();
-                            rememberAntiBurnInPhotoIntercept(chain.getThisObject());
-                            return result;
-                        });
-            }
-            hook(pp)
-                    .setId("toki-anti-burn-in-photo-state-gate")
-                    .intercept(chain -> {
-                        Object component = chain.getThisObject();
-                        rememberAntiBurnInPhotoIntercept(component);
-                        if (!antiBurnInDesiredState
-                                || Boolean.TRUE.equals(chain.getArg(1))) {
-                            return chain.proceed();
-                        }
-                        String source = chain.getArg(0) instanceof String
-                                ? (String) chain.getArg(0) : "pinch";
-                        rememberAntiBurnInPhotoStateRestore(component, pp, source);
-                        traceAntiBurnInPhotoStateGate(source);
-                        return chain.proceed(new Object[]{
-                                chain.getArg(0),
-                                Boolean.TRUE
-                        });
-                    });
-            logInfo("Photo state gate hooks: created=" + (onViewCreated != null)
-                    + ", touch=" + (onTouchEvent != null));
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Photo state gate is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook TikTok photo state owner", error);
-            return false;
-        }
-    }
-
-    /** Observes the photo surface's own touch listener without replacing or consuming its events. */
-    private boolean installAntiBurnInPhotoGesture(ClassLoader classLoader) {
-        try {
-            Class<?> touchType = findClass(
-                    classLoader,
-                    "X.0v32",
-                    "X.0v2u",
-                    "X.ViewOnTouchListenerC1727040v2u");
-            Method touchDispatch = findPhotoTouchDispatch(touchType);
-            if (touchDispatch == null) {
-                throw new NoSuchMethodException(
-                        "No MotionEvent dispatch on " + touchType.getName());
-            }
-            int motionEventArg = antiBurnInMotionEventArgumentIndex(touchDispatch);
-            Field imageField = findViewField(
-                    touchType,
-                    "LLJILJIL",
-                    "LLJ",
-                    "LLIZLLLIL",
-                    "LL");
-            touchDispatch.setAccessible(true);
-            if (imageField != null) {
-                imageField.setAccessible(true);
-            }
-
-            hook(touchDispatch)
-                    .setId("toki-anti-burn-in-photo-gesture")
-                    .intercept(chain -> {
-                        Object touch = chain.getThisObject();
-                        MotionEvent event = chain.getArg(motionEventArg) instanceof MotionEvent
-                                ? (MotionEvent) chain.getArg(motionEventArg)
-                                : null;
-                        int eventAction = event == null ? -1 : event.getActionMasked();
-                        View toastAnchor = antiBurnInToastAnchor(touch, imageField);
-                        Boolean targetState = observeAntiBurnInGesture(touch, event);
-                        if (targetState != null) {
-                            requestAntiBurnInState(targetState, toastAnchor);
-                        }
-                        Object result = chain.proceed();
-                        if (eventAction == MotionEvent.ACTION_POINTER_DOWN) {
-                            scheduleAntiBurnInLongPress(touch, toastAnchor);
-                        }
-                        return result;
-                    });
-            return true;
-        } catch (ClassNotFoundException | NoSuchMethodException error) {
-            logInfo("Photo-mode pinch bridge is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook photo-mode pinch gesture", error);
-            return false;
-        }
-    }
-
-    private static Method findPhotoTouchDispatch(Class<?> type) {
-        Class<?> current = type;
-        while (current != null) {
-            try {
-                Method onTouch = current.getDeclaredMethod(
-                        "onTouch",
-                        View.class,
-                        MotionEvent.class);
-                if (!onTouch.isSynthetic()) {
-                    return onTouch;
-                }
-            } catch (NoSuchMethodException ignored) {
-                // Continue with the legacy dispatch name or a superclass.
-            }
-            current = current.getSuperclass();
-        }
-        return findMotionEventMethodByName(type, "LJIILJJIL");
-    }
-
-    private static int antiBurnInMotionEventArgumentIndex(Method method) {
-        Class<?>[] parameters = method.getParameterTypes();
-        for (int i = 0; i < parameters.length; i++) {
-            if (MotionEvent.class.isAssignableFrom(parameters[i])) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    private boolean installAntiBurnInGesture() {
-        try {
-            Field detectorField = antiBurnInDetectorField;
-            if (detectorField == null) {
-                throw new NoSuchMethodException("Pinch detector field is unavailable");
-            }
-            Class<?> type = detectorField.getType();
-            Method touch = findMotionEventMethod(type);
-            if (touch == null) {
-                throw new NoSuchMethodException("No MotionEvent method on " + type.getName());
-            }
-            Field toastAnchorField = findViewField(type, "LJIIZILJ", "LJIIL");
-            touch.setAccessible(true);
-            if (toastAnchorField != null) {
-                toastAnchorField.setAccessible(true);
-            }
-            hook(touch)
-                    .setId("toki-anti-burn-in-gesture-" + type.getName())
-                    .intercept(chain -> {
-                        Object detector = chain.getThisObject();
-                        MotionEvent event = chain.getArg(0) instanceof MotionEvent
-                                ? (MotionEvent) chain.getArg(0)
-                                : null;
-                        int eventAction = event == null ? -1 : event.getActionMasked();
-                        View toastAnchor = antiBurnInToastAnchor(detector, toastAnchorField);
-                        Boolean targetState = observeAntiBurnInGesture(detector, event);
-                        if (targetState != null) {
-                            requestAntiBurnInState(targetState, toastAnchor);
-                        }
-                        Object result = chain.proceed();
-                        boolean officialAccepted = !(result instanceof Boolean)
-                                || (Boolean) result;
-                        if (!officialAccepted) {
-                            cancelAntiBurnInGesture(detector);
-                            return result;
-                        }
-                        if (eventAction == MotionEvent.ACTION_POINTER_DOWN) {
-                            scheduleAntiBurnInLongPress(detector, toastAnchor);
-                        }
-                        return result;
-                    });
-            return true;
-        } catch (NoSuchMethodException error) {
-            logInfo("Official two-finger detector is unavailable: " + error.getMessage());
-            return false;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to hook official two-finger detector", error);
-            return false;
-        }
-    }
-
-    private Boolean observeAntiBurnInGesture(Object detector, MotionEvent event) {
-        if (detector == null || event == null) {
-            return null;
-        }
-        AntiBurnInGestureTracker tracker;
-        synchronized (antiBurnInLock) {
-            tracker = antiBurnInGestures.get(detector);
-            if (tracker == null) {
-                tracker = new AntiBurnInGestureTracker(
-                        antiBurnInCenterTolerancePx,
-                        antiBurnInSpanTolerancePx);
-                antiBurnInGestures.put(detector, tracker);
-            }
-
-            try {
-                int action = event.getActionMasked();
-                int pointerCount = event.getPointerCount();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        cancelAntiBurnInGestureLocked(detector, tracker);
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        if (pointerCount == 2) {
-                            tracker.down(
-                                    pointerCount,
-                                    event.getEventTime(),
-                                    event.getX(0),
-                                    event.getY(0),
-                                    event.getX(1),
-                                    event.getY(1),
-                                    antiBurnInDesiredState);
-                        } else {
-                            cancelAntiBurnInGestureLocked(detector, tracker);
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (pointerCount == 2) {
-                            tracker.move(
-                                    pointerCount,
-                                    event.getEventTime(),
-                                    event.getX(0),
-                                    event.getY(0),
-                                    event.getX(1),
-                                    event.getY(1));
-                            if (!tracker.isTracking()) {
-                                removeAntiBurnInLongPressTaskLocked(detector);
-                            }
-                        } else {
-                            cancelAntiBurnInGestureLocked(detector, tracker);
-                        }
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        if (pointerCount == 2) {
-                            tracker.move(
-                                    pointerCount,
-                                    event.getEventTime(),
-                                    event.getX(0),
-                                    event.getY(0),
-                                    event.getX(1),
-                                    event.getY(1));
-                            Boolean targetState = tracker.pointerUp(event.getEventTime());
-                            removeAntiBurnInLongPressTaskLocked(detector);
-                            return targetState;
-                        }
-                        cancelAntiBurnInGestureLocked(detector, tracker);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        cancelAntiBurnInGestureLocked(detector, tracker);
-                        break;
-                    default:
-                        break;
-                }
-            } catch (RuntimeException error) {
-                cancelAntiBurnInGestureLocked(detector, tracker);
-                logAntiBurnInFailure("Unable to inspect official touch event", error);
-            }
-        }
-        return null;
-    }
-
-    private void cancelAntiBurnInGesture(Object detector) {
-        synchronized (antiBurnInLock) {
-            AntiBurnInGestureTracker tracker = antiBurnInGestures.get(detector);
-            if (tracker != null) {
-                cancelAntiBurnInGestureLocked(detector, tracker);
-            }
-        }
-    }
-
-    private void cancelAntiBurnInGestureLocked(
-            Object detector,
-            AntiBurnInGestureTracker tracker
-    ) {
-        tracker.cancel();
-        removeAntiBurnInLongPressTaskLocked(detector);
-    }
-
-    private void removeAntiBurnInLongPressTaskLocked(Object detector) {
-        Runnable task = antiBurnInLongPressTasks.remove(detector);
-        if (task != null) {
-            antiBurnInHandler.removeCallbacks(task);
-        }
-    }
-
-    private void scheduleAntiBurnInLongPress(Object detector, View anchor) {
-        if (detector == null) {
-            return;
-        }
-        WeakReference<Object> detectorReference = new WeakReference<>(detector);
-        WeakReference<View> anchorReference = new WeakReference<>(anchor);
-        Runnable task = new Runnable() {
-            @Override
-            public void run() {
-                Object activeDetector = detectorReference.get();
-                if (activeDetector != null) {
-                    completeScheduledAntiBurnInLongPress(
-                            activeDetector,
-                            anchorReference.get(),
-                            this);
-                }
-            }
-        };
-        synchronized (antiBurnInLock) {
-            AntiBurnInGestureTracker tracker = antiBurnInGestures.get(detector);
-            if (tracker == null || !tracker.isTracking()) {
-                return;
-            }
-            // Replacing the task invalidates a stale callback from an earlier pointer sequence.
-            removeAntiBurnInLongPressTaskLocked(detector);
-            antiBurnInLongPressTasks.put(detector, task);
-        }
-        if (!antiBurnInHandler.postDelayed(
-                task,
-                AntiBurnInGestureTracker.LONG_PRESS_MILLIS)) {
-            synchronized (antiBurnInLock) {
-                if (antiBurnInLongPressTasks.get(detector) == task) {
-                    antiBurnInLongPressTasks.remove(detector);
-                }
-            }
-        }
-    }
-
-    private void completeScheduledAntiBurnInLongPress(
-            Object detector,
-            View anchor,
-            Runnable task
-    ) {
-        Boolean targetState;
-        synchronized (antiBurnInLock) {
-            if (antiBurnInLongPressTasks.get(detector) != task) {
-                return;
-            }
-            antiBurnInLongPressTasks.remove(detector);
-            AntiBurnInGestureTracker tracker = antiBurnInGestures.get(detector);
-            targetState = tracker == null
-                    ? null
-                    : tracker.longPress(SystemClock.uptimeMillis());
-        }
-        if (targetState != null) {
-            requestAntiBurnInState(targetState, anchor);
-        }
-    }
-
-    private static View antiBurnInToastAnchor(Object detector, Field field) {
-        if (detector == null || field == null) {
-            return null;
-        }
-        try {
-            Object value = field.get(detector);
-            return value instanceof View ? (View) value : null;
-        } catch (IllegalAccessException | RuntimeException ignored) {
-            return null;
-        }
-    }
-
-    private void requestAntiBurnInState(boolean enabled, View toastAnchor) {
-        setAntiBurnInDesiredState(enabled);
-        showAntiBurnInToast(toastAnchor, enabled);
-    }
-
-    /** Applies the latched state through TikTok's shared media clean-mode owners. */
-    private void setAntiBurnInDesiredState(boolean enabled) {
-        ArrayList<Object> pausePanels = new ArrayList<>();
-        ArrayList<PhotoUiRestoreTarget> photoTargets = new ArrayList<>();
-        ArrayList<PhotoStateRestoreTarget> photoStateTargets = new ArrayList<>();
-        synchronized (antiBurnInLock) {
-            antiBurnInDesiredState = enabled;
-            antiBurnInTraceBudget.set(enabled ? 10 : 4);
-            if (!enabled) {
-                for (Object panel : antiBurnInPausePanels.keySet()) {
-                    if (panel != null) {
-                        pausePanels.add(panel);
-                    }
-                }
-                antiBurnInPausePanels.clear();
-                photoTargets.addAll(antiBurnInPhotoUiRestoreTargets.values());
-                antiBurnInPhotoUiRestoreTargets.clear();
-                photoStateTargets.addAll(antiBurnInPhotoStateRestoreTargets.values());
-                antiBurnInPhotoStateRestoreTargets.clear();
-            }
-        }
-
-        Runnable apply = () -> applyAntiBurnInDesiredState(
-                enabled,
-                pausePanels,
-                photoTargets,
-                photoStateTargets);
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            apply.run();
-        } else {
-            antiBurnInHandler.post(apply);
-        }
-    }
-
-    private void applyAntiBurnInDesiredState(
-            boolean enabled,
-            List<Object> pausePanels,
-            List<PhotoUiRestoreTarget> photoTargets,
-            List<PhotoStateRestoreTarget> photoStateTargets
-    ) {
-        if (antiBurnInDesiredState != enabled) {
-            return;
-        }
-
-        int restoredPausePanels = 0;
-        int restoredPhotoOwners = 0;
-        if (enabled) {
-            setAntiBurnInPhotoTitleVisibility(false);
-            driveAntiBurnInPhotoState(true);
-        } else {
-            if (antiBurnInPauseResumeMethod != null) {
-                for (Object panel : pausePanels) {
-                    try {
-                        antiBurnInPauseResumeMethod.invoke(panel, false);
-                        restoredPausePanels++;
-                    } catch (Throwable error) {
-                        logAntiBurnInFailure("Unable to restore TikTok pause panel", error);
-                    }
-                }
-            }
-            for (PhotoUiRestoreTarget target : photoTargets) {
-                Object owner = target.owner.get();
-                if (owner == null) {
-                    continue;
-                }
-                try {
-                    Object restoreEvent = target.bridge.copyWithClean(target.event, false);
-                    target.method.invoke(owner, restoreEvent);
-                    restoredPhotoOwners++;
-                } catch (Throwable error) {
-                    logAntiBurnInFailure("Unable to restore TikTok photo UI", error);
-                }
-            }
-            for (PhotoStateRestoreTarget target : photoStateTargets) {
-                Object owner = target.owner.get();
-                if (owner == null) {
-                    continue;
-                }
-                try {
-                    target.method.invoke(owner, target.source, false);
-                } catch (Throwable error) {
-                    logAntiBurnInFailure("Unable to restore TikTok photo state", error);
-                }
-            }
-            driveAntiBurnInPhotoState(false);
-            setAntiBurnInPhotoTitleVisibility(true);
-        }
-
-        logInfo("Anti-burn-in mode changed: " + enabled
-                + " pauseRestores=" + restoredPausePanels
-                + " photoRestores=" + restoredPhotoOwners);
-    }
-
-    private void rememberAntiBurnInPhotoIntercept(Object component) {
-        if (component == null) {
-            return;
-        }
-        synchronized (antiBurnInLock) {
-            antiBurnInPhotoIntercepts.put(component, Boolean.TRUE);
-        }
-    }
-
-    private void rememberAntiBurnInPhotoStateRestore(
-            Object component,
-            Method pp,
-            String source
-    ) {
-        if (component == null || pp == null) {
-            return;
-        }
-        synchronized (antiBurnInLock) {
-            antiBurnInPhotoStateRestoreTargets.put(
-                    component,
-                    new PhotoStateRestoreTarget(component, pp, source));
-        }
-    }
-
-    /** Replays pp("toki", state) on every photo intercept owner seen so far. */
-    private void driveAntiBurnInPhotoState(boolean enabled) {
-        Method pp = antiBurnInPhotoStateMethod;
-        if (pp == null) {
-            return;
-        }
-        synchronized (antiBurnInLock) {
-            for (Object component : antiBurnInPhotoIntercepts.keySet()) {
-                if (component == null) {
-                    continue;
-                }
-                try {
-                    pp.invoke(component, "toki", enabled);
-                } catch (Throwable error) {
-                    logAntiBurnInFailure("Unable to drive TikTok photo clear state", error);
-                }
-            }
-        }
-    }
-
-    private void rememberAntiBurnInPhotoUiRestoreTarget(
-            PhotoClearEventBridge bridge,
-            Object owner,
-            Method method,
-            Object event
-    ) {
-        if (bridge == null || owner == null || method == null || event == null) {
-            return;
-        }
-        synchronized (antiBurnInLock) {
-            antiBurnInPhotoUiRestoreTargets.put(
-                    owner,
-                    new PhotoUiRestoreTarget(owner, bridge, method, event));
-        }
-    }
-
-    private void setAntiBurnInPhotoTitleVisibility(boolean visible) {
-        PhotoTitleVisibilityBridge bridge = antiBurnInPhotoTitleVisibilityBridge;
-        if (bridge == null || (visible && !antiBurnInPhotoTitleForcedHidden)) {
-            return;
-        }
-        try {
-            if (bridge.setVisible(visible)) {
-                antiBurnInPhotoTitleForcedHidden = !visible;
-            }
-        } catch (Throwable error) {
-            if (antiBurnInPhotoTitleFailureLogged.compareAndSet(false, true)) {
-                logAntiBurnInFailure("Unable to update the photo title tab", error);
-            }
-        }
-    }
-
-    private void rememberAntiBurnInHiddenVideoCell(Object cell) {
-        if (cell == null) {
-            return;
-        }
-        synchronized (antiBurnInLock) {
-            antiBurnInHiddenVideoCells.put(cell, Boolean.TRUE);
-        }
-    }
-
-    private boolean isAntiBurnInHiddenVideoCell(Object cell) {
-        synchronized (antiBurnInLock) {
-            return antiBurnInHiddenVideoCells.containsKey(cell);
-        }
-    }
-
-    private void forgetAntiBurnInHiddenVideoCell(Object cell) {
-        synchronized (antiBurnInLock) {
-            antiBurnInHiddenVideoCells.remove(cell);
-        }
-    }
-
-    private boolean restoreAntiBurnInVideoCell(
-            Object cell,
-            Method visibility,
-            String source
-    ) {
-        if (antiBurnInDesiredState || cell == null) {
-            return false;
-        }
-        try {
-            visibility.invoke(cell, false, false);
-            traceAntiBurnInVideoRestore(source);
-            return true;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to restore TikTok video cell state", error);
-            return false;
-        }
-    }
-
-    private void reapplyAntiBurnInVideoCell(
-            Object cell,
-            Method visibility,
-            String source
-    ) {
-        if (!antiBurnInDesiredState || cell == null) {
-            return;
-        }
-        try {
-            visibility.invoke(cell, true, false);
-            traceAntiBurnInVideoLifecycle(source);
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to reapply TikTok video cell clean state", error);
-        }
-    }
-
-    private void scheduleAntiBurnInVideoCellReapply(
-            Object cell,
-            Method visibility
-    ) {
-        WeakReference<Object> cellReference = new WeakReference<>(cell);
-        antiBurnInHandler.post(() -> {
-            Object activeCell = cellReference.get();
-            if (activeCell != null) {
-                reapplyAntiBurnInVideoCell(
-                        activeCell,
-                        visibility,
-                        "next-loop");
-            }
-        });
-    }
-
-    private boolean invokeAntiBurnInCellClean(Object component, boolean clean) {
-        Method method = antiBurnInCellCleanMethod;
-        if (component == null || method == null) {
-            return false;
-        }
-        try {
-            method.invoke(component, antiBurnInCellCleanArguments(method, clean));
-            return true;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to apply TikTok cell clean state", error);
-            return false;
-        }
-    }
-
-    private boolean invokeAntiBurnInPanelClean(Object component, boolean clean) {
-        Method method = antiBurnInPanelCleanMethod;
-        if (component == null || method == null) {
-            return false;
-        }
-        try {
-            method.invoke(component, antiBurnInFeedCleanArguments(method, clean));
-            return true;
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to apply TikTok feed panel clean state", error);
-            return false;
-        }
-    }
-
-    private void showAntiBurnInToast(View anchor, boolean enabled) {
-        Constructor<?> constructor = antiBurnInToastBuilderConstructor;
-        Method message = antiBurnInToastMessageMethod;
-        Method legacy = antiBurnInToastLegacyMethod;
-        Method show = antiBurnInToastShowMethod;
-        if (anchor == null || constructor == null || message == null || show == null) {
-            return;
-        }
-        try {
-            Object builder = constructor.newInstance();
-            message.invoke(builder, enabled ? "防烧屏已开启" : "防烧屏已关闭");
-            if (legacy != null) {
-                legacy.invoke(builder, true);
-            }
-            Object host = anchor;
-            if (antiBurnInToastUsesActivity) {
-                Activity activity = findActivity(anchor.getContext());
-                if (activity == null) {
-                    return;
-                }
-                host = activity;
-            }
-            show.invoke(null, host, 3047, builder);
-        } catch (Throwable error) {
-            logAntiBurnInFailure("Unable to show anti-burn-in status toast", error);
-        }
-    }
-
-    private static Activity findActivity(Context context) {
-        Context current = context;
-        while (current instanceof ContextWrapper) {
-            if (current instanceof Activity) {
-                return (Activity) current;
-            }
-            Context next = ((ContextWrapper) current).getBaseContext();
-            if (next == current) {
-                break;
-            }
-            current = next;
-        }
-        return current instanceof Activity ? (Activity) current : null;
-    }
-
-    private static Class<?> findClass(ClassLoader classLoader, String... names)
-            throws ClassNotFoundException {
-        ClassNotFoundException failure = null;
-        for (String name : names) {
-            try {
-                return Class.forName(name, false, classLoader);
-            } catch (ClassNotFoundException error) {
-                failure = error;
-            }
-        }
-        throw failure == null ? new ClassNotFoundException() : failure;
-    }
-
-    /** Finds a private/generated field on a TikTok class or one of its Assem superclasses. */
     private static Field findField(Class<?> type, String name) {
         Class<?> current = type;
         while (current != null) {
@@ -3176,33 +1905,6 @@ public final class MainHook extends XposedModule {
             } catch (RuntimeException error) {
                 return null;
             }
-        }
-        return null;
-    }
-
-    private static Method findMethodInHierarchy(
-            Class<?> type,
-            String name,
-            Class<?>... parameters
-    ) {
-        return findMethodInHierarchy(type, new String[]{name}, parameters);
-    }
-
-    private static Method findMethodInHierarchy(
-            Class<?> type,
-            String[] names,
-            Class<?>... parameters
-    ) {
-        Class<?> current = type;
-        while (current != null) {
-            for (String name : names) {
-                try {
-                    return current.getDeclaredMethod(name, parameters);
-                } catch (NoSuchMethodException ignored) {
-                    // Continue with the next known name or superclass.
-                }
-            }
-            current = current.getSuperclass();
         }
         return null;
     }
@@ -3258,355 +1960,6 @@ public final class MainHook extends XposedModule {
             current = current.getSuperclass();
         }
         return null;
-    }
-
-    private static Method findMethodByNameAndParameter(
-            Class<?> type,
-            Class<?> parameter,
-            String... names
-    ) {
-        if (type == null || parameter == null) {
-            return null;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            Method fallback = null;
-            for (String name : names) {
-                for (Method method : current.getDeclaredMethods()) {
-                    Class<?>[] parameters = method.getParameterTypes();
-                    if (!method.getName().equals(name)
-                            || parameters.length != 1
-                            || !parameter.isAssignableFrom(parameters[0])
-                            && !parameters[0].isAssignableFrom(parameter)) {
-                        continue;
-                    }
-                    if (!method.isSynthetic()) {
-                        return method;
-                    }
-                    fallback = method;
-                }
-            }
-            if (fallback != null) {
-                return fallback;
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Method findLifecycleViewMethod(
-            Class<?> type,
-            String... names
-    ) {
-        if (type == null) {
-            return null;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            Method fallback = null;
-            for (String name : names) {
-                for (Method method : current.getDeclaredMethods()) {
-                    Class<?>[] parameters = method.getParameterTypes();
-                    if (!method.getName().equals(name)
-                            || parameters.length != 1
-                            || !View.class.isAssignableFrom(parameters[0])) {
-                        continue;
-                    }
-                    if (!method.isSynthetic()) {
-                        return method;
-                    }
-                    fallback = method;
-                }
-            }
-            if (fallback != null) {
-                return fallback;
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Method findMotionEventMethod(Class<?> type) {
-        Method named = findMotionEventMethodByName(type, "LIZJ");
-        if (named == null) {
-            named = findMotionEventMethodByName(type, "LIZIZ");
-        }
-        if (named != null) {
-            return named;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            for (Method method : current.getDeclaredMethods()) {
-                Class<?>[] parameters = method.getParameterTypes();
-                if (parameters.length == 1
-                        && MotionEvent.class.isAssignableFrom(parameters[0])
-                        && (method.getReturnType() == boolean.class
-                        || method.getReturnType() == void.class)) {
-                    return method;
-                }
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Method findMotionEventMethodByName(Class<?> type, String name) {
-        Class<?> current = type;
-        while (current != null) {
-            for (Method method : current.getDeclaredMethods()) {
-                Class<?>[] parameters = method.getParameterTypes();
-                if (name.equals(method.getName())
-                        && parameters.length == 1
-                        && MotionEvent.class.isAssignableFrom(parameters[0])
-                        && (method.getReturnType() == boolean.class
-                        || method.getReturnType() == void.class)) {
-                    return method;
-                }
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Field findDetectorField(Class<?> type) {
-        Field known = findField(type, "LLJLIL");
-        if (known != null && findMotionEventMethod(known.getType()) != null) {
-            return known;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            for (Field field : current.getDeclaredFields()) {
-                if (Modifier.isStatic(field.getModifiers()) || field.getType().isPrimitive()) {
-                    continue;
-                }
-                if (findMotionEventMethod(field.getType()) != null) {
-                    field.setAccessible(true);
-                    return field;
-                }
-            }
-            current = current.getSuperclass();
-        }
-        return null;
-    }
-
-    private static Field findViewField(Class<?> type, String... names) {
-        for (String name : names) {
-            Field field = findField(type, name);
-            if (field != null && View.class.isAssignableFrom(field.getType())) {
-                return field;
-            }
-        }
-        return null;
-    }
-
-    private static Method findCleanVisibilityMethod(
-            Class<?> type,
-            String... names
-    ) {
-        if (type == null) {
-            return null;
-        }
-        Class<?> current = type;
-        while (current != null) {
-            Method fallback = null;
-            for (String name : names) {
-                for (Method method : current.getDeclaredMethods()) {
-                    if (!method.getName().equals(name) || !isCleanVisibilitySignature(method)) {
-                        continue;
-                    }
-                    if (!method.isSynthetic()) {
-                        return method;
-                    }
-                    fallback = method;
-                }
-            }
-            if (fallback != null) {
-                return fallback;
-            }
-            current = current.getSuperclass();
-        }
-
-        Method candidate = null;
-        current = type;
-        while (current != null) {
-            for (Method method : current.getDeclaredMethods()) {
-                if (method.isSynthetic() || !isCleanVisibilitySignature(method)) {
-                    continue;
-                }
-                if (candidate != null) {
-                    return null;
-                }
-                candidate = method;
-            }
-            current = current.getSuperclass();
-        }
-        return candidate;
-    }
-
-    private static boolean isCleanVisibilitySignature(Method method) {
-        Class<?>[] parameters = method.getParameterTypes();
-        if (method.getReturnType() != void.class
-                || parameters.length < 5 || parameters.length > 6
-                || !Animator.class.isAssignableFrom(parameters[0])) {
-            return false;
-        }
-        int booleanCount = 0;
-        for (int i = 1; i < parameters.length; i++) {
-            if (parameters[i] == boolean.class || parameters[i] == Boolean.class) {
-                booleanCount++;
-            } else if (i != 1 || parameters[i] != String.class) {
-                return false;
-            }
-        }
-        return booleanCount == 4;
-    }
-
-    private static int findCleanBooleanArgumentIndex(Method method) {
-        Class<?>[] parameters = method.getParameterTypes();
-        for (int i = 1; i < parameters.length; i++) {
-            if (parameters[i] == boolean.class || parameters[i] == Boolean.class) {
-                return i;
-            }
-        }
-        return 1;
-    }
-
-    private static Object[] antiBurnInCellCleanArguments(Method method, boolean clean) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        Object[] arguments = new Object[parameterTypes.length];
-        int cleanIndex = findCleanBooleanArgumentIndex(method);
-        for (int i = 0; i < parameterTypes.length; i++) {
-            Class<?> parameter = parameterTypes[i];
-            if (parameter == boolean.class || parameter == Boolean.class) {
-                arguments[i] = i == cleanIndex ? clean : Boolean.TRUE;
-            } else if (parameter == String.class) {
-                arguments[i] = "tokiAntiBurnIn";
-            } else {
-                arguments[i] = null;
-            }
-        }
-        forceCellCleanImmediately(method, arguments);
-        return arguments;
-    }
-
-    private static Object[] antiBurnInFeedCleanArguments(Method method, boolean clean) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        Object[] arguments = new Object[parameterTypes.length];
-        int cleanIndex = findCleanBooleanArgumentIndex(method);
-        int booleanOffset = 0;
-        for (int i = 0; i < parameterTypes.length; i++) {
-            Class<?> parameter = parameterTypes[i];
-            if (parameter == boolean.class || parameter == Boolean.class) {
-                if (i == cleanIndex) {
-                    arguments[i] = clean;
-                } else {
-                    booleanOffset++;
-                    arguments[i] = booleanOffset <= 2;
-                }
-            } else if (parameter == String.class) {
-                arguments[i] = "tokiAntiBurnIn";
-            } else {
-                arguments[i] = null;
-            }
-        }
-        forceFeedCleanImmediately(method, arguments);
-        return arguments;
-    }
-
-    private static void forceCellCleanImmediately(Method method, Object[] arguments) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        for (int i = parameterTypes.length - 1; i >= 0; i--) {
-            if (parameterTypes[i] == boolean.class || parameterTypes[i] == Boolean.class) {
-                arguments[i] = Boolean.TRUE;
-                return;
-            }
-        }
-    }
-
-    private static void forceFeedCleanImmediately(Method method, Object[] arguments) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        int cleanIndex = findCleanBooleanArgumentIndex(method);
-        for (int i = cleanIndex + 1; i < parameterTypes.length; i++) {
-            if (parameterTypes[i] == boolean.class || parameterTypes[i] == Boolean.class) {
-                arguments[i] = Boolean.TRUE;
-                return;
-            }
-        }
-    }
-
-    private void traceAntiBurnInCleanGate(Object owner, Object source, Object requestedClean) {
-        if (!consumeAntiBurnInTraceBudget()) {
-            return;
-        }
-        StringBuilder caller = new StringBuilder();
-        for (StackTraceElement frame : Thread.currentThread().getStackTrace()) {
-            String className = frame.getClassName();
-            if (!(className.startsWith("com.ss.android.")
-                    || className.startsWith("X.")
-                    || className.startsWith("Y."))) {
-                continue;
-            }
-            if (caller.length() > 0) {
-                caller.append(" <- ");
-            }
-            caller.append(className).append('.').append(frame.getMethodName());
-            if (caller.length() >= 200) {
-                break;
-            }
-        }
-        logInfo("Anti-burn-in clean gate owner=" + owner
-                + " source=" + source
-                + " requested=" + requestedClean
-                + " caller=" + caller);
-    }
-
-    private void traceAntiBurnInPinchGate(
-            Object requestedClean,
-            Object requestedImmediately
-    ) {
-        if (!consumeAntiBurnInTraceBudget()) {
-            return;
-        }
-        logInfo("Anti-burn-in pinch gate requestedClean=" + requestedClean
-                + " requestedImmediately=" + requestedImmediately
-                + " forwardedClean=true forwardedImmediately=true");
-    }
-
-    private void traceAntiBurnInPhotoEventGate(int kind, String source) {
-        if (!consumeAntiBurnInTraceBudget()) {
-            return;
-        }
-        logInfo("Anti-burn-in photo clear event requested=false forwarded=true type="
-                + kind + " source=" + source);
-    }
-
-    private void traceAntiBurnInPhotoStateGate(String source) {
-        if (!consumeAntiBurnInTraceBudget()) {
-            return;
-        }
-        logInfo("Anti-burn-in photo state requested=false forwarded=true source=" + source);
-    }
-
-    private void traceAntiBurnInVideoLifecycle(String source) {
-        if (!consumeAntiBurnInTraceBudget()) {
-            return;
-        }
-        logInfo("Anti-burn-in video cell reapplied after " + source);
-    }
-
-    private void traceAntiBurnInVideoRestore(String source) {
-        if (!consumeAntiBurnInTraceBudget()) {
-            return;
-        }
-        logInfo("Anti-burn-in video cell restored after " + source);
-    }
-
-    private boolean consumeAntiBurnInTraceBudget() {
-        return antiBurnInTraceBudget.getAndUpdate(value -> value > 0 ? value - 1 : 0) > 0;
-    }
-
-    private void logAntiBurnInFailure(String message, Throwable error) {
-        logError(message, error);
     }
 
     /** Forces the feed video engine's loop flag off when the user enables prevention. */
@@ -3773,15 +2126,25 @@ public final class MainHook extends XposedModule {
                     false,
                     classLoader);
             Method completionMethod = type.getDeclaredMethod("onPlayCompleted", String.class);
-            Method currentAwemeMethod = type.getDeclaredMethod("LLJI");
-            Method currentHolderMethod = type.getDeclaredMethod("LLJZIJLIL");
-            Method holderForSourceMethod = type.getDeclaredMethod("LJJIJL", String.class);
-            Method manualPauseMethod = type.getDeclaredMethod(
-                    "qk",
-                    awemeType,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class);
+            Method currentAwemeMethod = findDeclaredMethod(
+                    type, new Class<?>[0], "LJJIZ", "LLJI");
+            Method currentHolderMethod = findDeclaredMethod(
+                    type, new Class<?>[0], "LLII", "LLJZIJLIL");
+            Method holderForSourceMethod = findDeclaredMethod(
+                    type, new Class<?>[]{String.class}, "LJJIJL");
+            Method manualPauseMethod = findDeclaredMethod(
+                    type,
+                    new Class<?>[]{awemeType, boolean.class, boolean.class, boolean.class},
+                    "lk",
+                    "qk");
+            Method pauseStateMethod;
+            try {
+                pauseStateMethod = type.getDeclaredMethod("LLZLLLL", int.class);
+                pauseStateMethod.setAccessible(true);
+            } catch (NoSuchMethodException ignored) {
+                pauseStateMethod = null;
+            }
+            final Method markPausedMethod = pauseStateMethod;
             Method seekToReplayFrameMethod = type.getDeclaredMethod("LJIILL", float.class);
             Method getAwemeAidMethod = awemeType.getMethod("getAid");
             if (manualPauseMethod.getReturnType() != void.class) {
@@ -3827,6 +2190,11 @@ public final class MainHook extends XposedModule {
                                     Boolean.TRUE,
                                     Boolean.FALSE,
                                     Boolean.FALSE);
+                            // Stream completion does not always dispatch onPausePlay(), leaving the
+                            // tap handler in its playing state. State value 2 maps to paused (3).
+                            if (markPausedMethod != null) {
+                                markPausedMethod.invoke(controller, 2);
+                            }
                             // Keep TikTok's real paused state, then render the frame from which replay starts.
                             seekToReplayFrameMethod.invoke(controller, 0.0f);
                             if (loopPreventionManualPauseLogged.compareAndSet(false, true)) {
@@ -3972,6 +2340,357 @@ public final class MainHook extends XposedModule {
         } catch (Throwable error) {
             logError("Unable to hook loop setter on " + className, error);
             return false;
+        }
+    }
+
+    private int installPagePurification(ClassLoader classLoader, ModuleConfig config) {
+        int installed = 0;
+        if (config.hideAuthorInfo) {
+            installed += installComponentVisibilityHooks(classLoader, "author-info",
+                    "com.ss.android.ugc.aweme.feed.assem.avatar.FeedAvatarAssemWrap",
+                    "com.ss.android.ugc.aweme.feed.assem.avatar.FeedAvatarDefaultAssem",
+                    "com.ss.android.ugc.aweme.feed.assem.videoauthorinfo.VideoAuthorInfoRelationAssem");
+        }
+        if (config.hideFollowButton) {
+            installed += installComponentVisibilityHooks(classLoader, "follow-button",
+                    "com.ss.android.ugc.aweme.feed.assem.relationbtn.VideoRelationBtnAssem",
+                    "com.ss.android.ugc.aweme.feed.assem.relationbtn.VideoRelationBtnAssemV2");
+        }
+        if (config.hideVideoDescription) {
+            installed += installComponentVisibilityHooks(classLoader, "video-description",
+                    "com.ss.android.ugc.aweme.feed.assem.desc.VideoDescAssem");
+        }
+        if (config.hideVideoTags) {
+            installed += installComponentVisibilityHooks(classLoader, "video-tags",
+                    "com.ss.android.ugc.aweme.feed.assem.desc.VideoDescTagAssem");
+        }
+        if (config.hideMusicTitle) {
+            installed += installComponentVisibilityHooks(classLoader, "music-title",
+                    "com.ss.android.ugc.aweme.feed.assem.music.VideoMusicTitleAssem");
+        }
+        if (config.hideMusicCover) {
+            installed += installComponentVisibilityHooks(classLoader, "music-cover",
+                    "com.ss.android.ugc.aweme.feed.assem.music.VideoMusicCoverAssem");
+        }
+        if (config.hideLikeButton) {
+            installed += installComponentVisibilityHooks(classLoader, "like-button",
+                    "com.ss.android.ugc.aweme.feed.assem.digg.VideoDiggAssem");
+        }
+        if (config.hideCommentButton) {
+            installed += installComponentVisibilityHooks(classLoader, "comment-button",
+                    "com.ss.android.ugc.aweme.feed.assem.videocomment.VideoCommentAssem");
+        }
+        if (config.hideFavoriteButton) {
+            installed += installComponentVisibilityHooks(classLoader, "favorite-button",
+                    "com.ss.android.ugc.aweme.feed.favorite.VideoFavoriteAssem");
+        }
+        if (config.hideShareButton) {
+            installed += installComponentVisibilityHooks(classLoader, "share-button",
+                    "com.ss.android.ugc.aweme.feed.assem.share.VideoShareAssem");
+        }
+        if (config.hideDuetButton) {
+            installed += installComponentVisibilityHooks(classLoader, "duet-button",
+                    "com.ss.android.ugc.aweme.feed.assem.duetbutton.VideoDuetButtonAssem");
+        }
+        if (config.hideStitchButton) {
+            installed += installComponentVisibilityHooks(classLoader, "stitch-button",
+                    "com.ss.android.ugc.aweme.feed.assem.stitchbutton.VideoStitchButtonAssem");
+        }
+        if (config.hideQuickDm) {
+            installed += installComponentVisibilityHooks(classLoader, "quick-dm",
+                    "com.ss.android.ugc.aweme.feed.assem.quickreply.MUFQuickDMBoxAssem",
+                    "com.ss.android.ugc.aweme.feed.assem.quickreply.MUFQuickDMBoxAssemV2",
+                    "com.ss.android.ugc.aweme.feed.assem.story.QuickDMEntranceAssem",
+                    "com.ss.android.ugc.aweme.feed.assem.story.QuickDMEntranceAssemV2");
+        }
+        if (config.hideStoryTags) {
+            installed += installComponentVisibilityHooks(classLoader, "story-tags",
+                    "com.ss.android.ugc.aweme.feed.assem.story.FeedStoryTagAssem",
+                    "com.ss.android.ugc.aweme.feed.assem.story.FeedStoryTagAssemV2");
+        }
+        if (config.hideCollabLabel) {
+            installed += installComponentVisibilityHooks(classLoader, "collab-label",
+                    "com.ss.android.ugc.aweme.feed.assem.collab.CollabInFeedLabelAssem");
+        }
+        if (config.hideTako) {
+            installed += installComponentVisibilityHooks(classLoader, "tako",
+                    "com.ss.android.ugc.aweme.feed.assem.tikbot.TakoAssem");
+        }
+        if (config.hideContentSearch) {
+            installed += installContentSearchVisibilityHooks(classLoader);
+        }
+        if (config.hideTranslationControls) {
+            installed += installComponentVisibilityHooks(classLoader, "translation-controls",
+                    "com.ss.android.ugc.aweme.translation.ui.TranslationControlsAssem");
+        }
+        return installed;
+    }
+
+    /** Removes the feed payloads that cause TikTok to render visual and similar-content search. */
+    private int installContentSearchVisibilityHooks(ClassLoader classLoader) {
+        return installAwemePayloadRemovalHooks(
+                classLoader,
+                "content-search",
+                "getSmartSearchInfo",
+                "getVisualSearchInfo"
+        );
+    }
+
+    private int installVideoOverlayPurification(ClassLoader classLoader, ModuleConfig config) {
+        int installed = 0;
+        if (config.hideTrendingTopics) {
+            installed += installAwemePayloadRemovalHooks(
+                    classLoader,
+                    "trending-topics",
+                    "getTrendingBar",
+                    "getTrendingBarFYP"
+            );
+        }
+        if (config.hideContentClassification) {
+            installed += installAwemePayloadRemovalHooks(
+                    classLoader,
+                    "content-classification",
+                    "getContentClassificationMaskInfo"
+            );
+        }
+        return installed;
+    }
+
+    /** Removes optional Aweme payloads before TikTok creates their corresponding overlay. */
+    private int installAwemePayloadRemovalHooks(
+            ClassLoader classLoader,
+            String targetName,
+            String... getterNames
+    ) {
+        try {
+            Class<?> awemeType = Class.forName(
+                    "com.ss.android.ugc.aweme.feed.model.Aweme", false, classLoader);
+            int installed = 0;
+            for (String getterName : getterNames) {
+                try {
+                    Method getter = awemeType.getMethod(getterName);
+                    hook(getter)
+                            .setId("toki-purify-" + targetName + "-" + getterName)
+                            .intercept(chain -> null);
+                    installed++;
+                } catch (NoSuchMethodException ignored) {
+                    // The payload has been removed or renamed in this TikTok version.
+                }
+            }
+            return installed;
+        } catch (ClassNotFoundException error) {
+            logError("Unable to resolve Aweme payloads for " + targetName, error);
+            return 0;
+        } catch (Throwable error) {
+            logError("Unable to remove Aweme payloads for " + targetName, error);
+            return 0;
+        }
+    }
+
+    private int installComponentVisibilityHooks(
+            ClassLoader classLoader,
+            String targetName,
+            String... classNames
+    ) {
+        int installed = 0;
+        for (String className : classNames) {
+            try {
+                Class<?> type = Class.forName(className, false, classLoader);
+                Method contentViewMethod = findComponentContentViewMethod(type);
+                for (Method method : type.getDeclaredMethods()) {
+                    boolean viewCreated = "onViewCreated".equals(method.getName())
+                            && method.getParameterCount() == 1
+                            && View.class.isAssignableFrom(method.getParameterTypes()[0]);
+                    boolean binding = "onBind".equals(method.getName())
+                            && method.getParameterCount() == 1
+                            && !method.isBridge();
+                    if (!viewCreated && !binding) {
+                        continue;
+                    }
+                    method.setAccessible(true);
+                    final Method viewMethod = contentViewMethod;
+                    final String source = className + "#" + method.getName();
+                    hook(method)
+                            .setId("toki-purify-" + targetName + "-" + installed)
+                            .intercept(chain -> {
+                                Object result = chain.proceed();
+                                hideComponentView(chain.getThisObject(), chain.getArg(0), viewMethod);
+                                if (pagePurificationVisibilityLogged.compareAndSet(false, true)) {
+                                    logInfo("Page purification active via " + source);
+                                }
+                                return result;
+                            });
+                    installed++;
+                }
+            } catch (ClassNotFoundException ignored) {
+                // TikTok changes some optional component variants between releases.
+            } catch (Throwable error) {
+                logError("Unable to hide page purification target " + className, error);
+            }
+        }
+        return installed;
+    }
+
+    private static void hideComponentView(
+            Object component,
+            Object lifecycleArgument,
+            Method contentViewMethod
+    ) {
+        View lifecycleView = lifecycleArgument instanceof View ? (View) lifecycleArgument : null;
+        View contentView = null;
+        if (contentViewMethod != null) {
+            try {
+                Object value = contentViewMethod.invoke(component);
+                if (value instanceof View) {
+                    contentView = (View) value;
+                }
+            } catch (ReflectiveOperationException | RuntimeException ignored) {
+                // The lifecycle view remains a safe fallback when the base component changes.
+            }
+        }
+        if (contentView != null) {
+            contentView.setVisibility(View.GONE);
+        }
+        if (lifecycleView != null && lifecycleView != contentView) {
+            lifecycleView.setVisibility(View.GONE);
+        }
+    }
+
+    private static Method findComponentContentViewMethod(Class<?> type) {
+        for (String name : new String[]{"getContentView", "LJJIJLIJ"}) {
+            Method method = findInheritedNoArgMethod(type, name);
+            if (method != null && View.class.isAssignableFrom(method.getReturnType())) {
+                return method;
+            }
+        }
+        for (Class<?> current = type; current != null; current = current.getSuperclass()) {
+            for (Method method : current.getDeclaredMethods()) {
+                if (method.getParameterCount() == 0
+                        && !Modifier.isStatic(method.getModifiers())
+                        && View.class.isAssignableFrom(method.getReturnType())) {
+                    method.setAccessible(true);
+                    return method;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Method findInheritedNoArgMethod(Class<?> type, String name) {
+        for (Class<?> current = type; current != null; current = current.getSuperclass()) {
+            try {
+                Method method = current.getDeclaredMethod(name);
+                method.setAccessible(true);
+                return method;
+            } catch (NoSuchMethodException ignored) {
+                // Continue to the base component where getContentView is declared.
+            }
+        }
+        return null;
+    }
+
+    private boolean installGlobalNavigationPurification(ModuleConfig config) {
+        try {
+            Method onResume = Activity.class.getDeclaredMethod("onResume");
+            onResume.setAccessible(true);
+            hook(onResume)
+                    .setId("toki-global-navigation-purification")
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        Object activity = chain.getThisObject();
+                        if (activity instanceof Activity) {
+                            observeGlobalNavigation((Activity) activity, config);
+                        }
+                        return result;
+                    });
+            return true;
+        } catch (Throwable error) {
+            logError("Unable to install global navigation purification", error);
+            return false;
+        }
+    }
+
+    private void observeGlobalNavigation(Activity activity, ModuleConfig config) {
+        View decorView;
+        try {
+            decorView = activity.getWindow().getDecorView();
+        } catch (RuntimeException ignored) {
+            return;
+        }
+        if (decorView == null || globalNavigationObservedRoots.put(decorView, Boolean.TRUE) != null) {
+            return;
+        }
+
+        GlobalNavigationViewIds viewIds = GlobalNavigationViewIds.from(decorView);
+        applyGlobalNavigationPurification(decorView, config, viewIds);
+        ViewTreeObserver observer = decorView.getViewTreeObserver();
+        if (observer.isAlive()) {
+            observer.addOnGlobalLayoutListener(
+                    () -> applyGlobalNavigationPurification(decorView, config, viewIds));
+        }
+    }
+
+    private void applyGlobalNavigationPurification(
+            View root,
+            ModuleConfig config,
+            GlobalNavigationViewIds viewIds
+    ) {
+        if (config.hideTopNavigation) {
+            hideViewById(root, viewIds.topNavigation);
+        }
+        if (config.hideSearchEntry) {
+            hideViewById(root, viewIds.searchEntry);
+        }
+        if (config.hideBottomNavigation) {
+            hideViewById(root, viewIds.bottomNavigation);
+        }
+        if (config.hideVideoProgressBar) {
+            hideViewById(root, viewIds.videoProgressBar);
+        }
+        if (globalNavigationPurificationVisibilityLogged.compareAndSet(false, true)) {
+            logInfo("Global navigation purification active");
+        }
+    }
+
+    private static void hideViewById(View root, int resourceId) {
+        if (resourceId == 0) {
+            return;
+        }
+        View target = root.findViewById(resourceId);
+        if (target != null) {
+            target.setVisibility(View.GONE);
+        }
+    }
+
+    private static final class GlobalNavigationViewIds {
+        final int topNavigation;
+        final int searchEntry;
+        final int bottomNavigation;
+        final int videoProgressBar;
+
+        private GlobalNavigationViewIds(
+                int topNavigation,
+                int searchEntry,
+                int bottomNavigation,
+                int videoProgressBar
+        ) {
+            this.topNavigation = topNavigation;
+            this.searchEntry = searchEntry;
+            this.bottomNavigation = bottomNavigation;
+            this.videoProgressBar = videoProgressBar;
+        }
+
+        static GlobalNavigationViewIds from(View root) {
+            return new GlobalNavigationViewIds(
+                    viewId(root, "tyu"),
+                    viewId(root, "jvu"),
+                    viewId(root, "o3o"),
+                    viewId(root, "video_seek_bar"));
+        }
+
+        private static int viewId(View root, String resourceName) {
+            return root.getResources().getIdentifier(
+                    resourceName, "id", ModuleConfig.TARGET_PACKAGE);
         }
     }
 
