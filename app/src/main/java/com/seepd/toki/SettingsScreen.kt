@@ -1,9 +1,5 @@
 package com.seepd.toki
 
-import android.net.Uri
-import android.provider.DocumentsContract
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -87,18 +83,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.util.Locale
 
-private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
-
 private enum class SettingsDialog {
     NONE,
     REGION,
-    MEDIA_DIRECTORY_ERROR,
+    MEDIA_DIRECTORY,
     DURATION,
     PLAYBACK_SPEED,
     VIEW_RANGE,
     LIKE_RANGE,
     PAGE_PURIFICATION,
     GPS_COORDINATES,
+}
+
+private enum class MediaDirectoryTarget {
+    VIDEO,
+    PICTURE,
+    GIF,
 }
 
 private enum class SettingsDestination(@param:StringRes val title: Int) {
@@ -192,6 +192,9 @@ internal fun SettingsApp(
     onRestartStatusConsumed: () -> Unit,
 ) {
     var dialogName by rememberSaveable { mutableStateOf(SettingsDialog.NONE.name) }
+    var mediaDirectoryTargetName by rememberSaveable {
+        mutableStateOf(MediaDirectoryTarget.VIDEO.name)
+    }
     val restartSnackbarHostState = remember { SnackbarHostState() }
     val activeDialog = SettingsDialog.valueOf(dialogName)
     val closeDialog = { dialogName = SettingsDialog.NONE.name }
@@ -209,26 +212,9 @@ internal fun SettingsApp(
             onRestartStatusConsumed()
         }
     }
-    val videoDirectoryPicker = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenDocumentTree(),
-    ) { uri ->
-        updateMediaDirectory(uri, onUpdate, { state, path -> state.copy(videoLocation = path) }) {
-            dialogName = SettingsDialog.MEDIA_DIRECTORY_ERROR.name
-        }
-    }
-    val pictureDirectoryPicker = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenDocumentTree(),
-    ) { uri ->
-        updateMediaDirectory(uri, onUpdate, { state, path -> state.copy(picLocation = path) }) {
-            dialogName = SettingsDialog.MEDIA_DIRECTORY_ERROR.name
-        }
-    }
-    val gifDirectoryPicker = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenDocumentTree(),
-    ) { uri ->
-        updateMediaDirectory(uri, onUpdate, { state, path -> state.copy(gifLocation = path) }) {
-            dialogName = SettingsDialog.MEDIA_DIRECTORY_ERROR.name
-        }
+    val openMediaDirectory = { target: MediaDirectoryTarget ->
+        mediaDirectoryTargetName = target.name
+        dialogName = SettingsDialog.MEDIA_DIRECTORY.name
     }
     var destinationName by rememberSaveable { mutableStateOf(SettingsDestination.GENERAL.name) }
     val destination = SettingsDestination.valueOf(destinationName)
@@ -249,15 +235,9 @@ internal fun SettingsApp(
             state = state,
             onUpdate = onUpdate,
             onDialog = { dialogName = it.name },
-            onPickVideoDirectory = {
-                videoDirectoryPicker.launch(initialMediaDirectoryUri(state.videoLocation))
-            },
-            onPickPictureDirectory = {
-                pictureDirectoryPicker.launch(initialMediaDirectoryUri(state.picLocation))
-            },
-            onPickGifDirectory = {
-                gifDirectoryPicker.launch(initialMediaDirectoryUri(state.gifLocation))
-            },
+            onPickVideoDirectory = { openMediaDirectory(MediaDirectoryTarget.VIDEO) },
+            onPickPictureDirectory = { openMediaDirectory(MediaDirectoryTarget.PICTURE) },
+            onPickGifDirectory = { openMediaDirectory(MediaDirectoryTarget.GIF) },
             modifier = contentModifier,
         )
     }
@@ -283,9 +263,34 @@ internal fun SettingsApp(
             },
             onDismiss = closeDialog,
         )
-        SettingsDialog.MEDIA_DIRECTORY_ERROR -> MediaDirectoryErrorDialog(
-            onDismiss = closeDialog,
-        )
+        SettingsDialog.MEDIA_DIRECTORY -> {
+            val target = MediaDirectoryTarget.valueOf(mediaDirectoryTargetName)
+            val currentPath = when (target) {
+                MediaDirectoryTarget.VIDEO -> state.videoLocation
+                MediaDirectoryTarget.PICTURE -> state.picLocation
+                MediaDirectoryTarget.GIF -> state.gifLocation
+            }
+            val title = when (target) {
+                MediaDirectoryTarget.VIDEO -> stringResource(R.string.video_location)
+                MediaDirectoryTarget.PICTURE -> stringResource(R.string.pic_location)
+                MediaDirectoryTarget.GIF -> stringResource(R.string.gif_location)
+            }
+            MediaDirectoryDialog(
+                title = title,
+                initialPath = currentPath,
+                onSave = { path ->
+                    onUpdate { current ->
+                        when (target) {
+                            MediaDirectoryTarget.VIDEO -> current.copy(videoLocation = path)
+                            MediaDirectoryTarget.PICTURE -> current.copy(picLocation = path)
+                            MediaDirectoryTarget.GIF -> current.copy(gifLocation = path)
+                        }
+                    }
+                    closeDialog()
+                },
+                onDismiss = closeDialog,
+            )
+        }
         SettingsDialog.DURATION -> DurationDialog(
             initialValue = state.longPostSeconds,
             onSave = { seconds ->
@@ -1281,49 +1286,56 @@ private fun GpsCoordinatesDialog(
 }
 
 @Composable
-private fun MediaDirectoryErrorDialog(onDismiss: () -> Unit) {
+private fun MediaDirectoryDialog(
+    title: String,
+    initialPath: String,
+    onSave: (String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var path by rememberSaveable(initialPath) { mutableStateOf(initialPath) }
+    val validation = remember(path) { SettingsInput.normalizeMediaDirectory(path) }
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.media_directory_error_title)) },
-        text = { Text(stringResource(R.string.media_directory_error_message)) },
+        title = { Text(title) },
+        text = {
+            OutlinedTextField(
+                value = path,
+                onValueChange = { path = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(R.string.media_directory_path)) },
+                placeholder = { Text(stringResource(R.string.media_directory_example)) },
+                supportingText = {
+                    Text(
+                        if (validation.error == null) {
+                            stringResource(R.string.media_directory_hint)
+                        } else {
+                            stringResource(R.string.media_directory_invalid)
+                        },
+                    )
+                },
+                isError = validation.error != null,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { validation.value?.let(onSave) },
+                ),
+                singleLine = true,
+            )
+        },
         confirmButton = {
+            Button(
+                enabled = validation.value != null,
+                onClick = { validation.value?.let(onSave) },
+            ) {
+                Text(stringResource(R.string.save))
+            }
+        },
+        dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(android.R.string.ok))
+                Text(stringResource(android.R.string.cancel))
             }
         },
     )
-}
-
-private fun initialMediaDirectoryUri(relativePath: String): Uri? {
-    val normalizedPath = SettingsInput.normalizeMediaDirectory(relativePath).value ?: return null
-    return DocumentsContract.buildDocumentUri(
-        EXTERNAL_STORAGE_AUTHORITY,
-        "primary:$normalizedPath",
-    )
-}
-
-private fun updateMediaDirectory(
-    uri: Uri?,
-    onUpdate: ((SettingsUiState) -> SettingsUiState) -> Unit,
-    transform: (SettingsUiState, String) -> SettingsUiState,
-    onInvalid: () -> Unit,
-) {
-    if (uri == null) {
-        return
-    }
-
-    val documentId = if (uri.authority == EXTERNAL_STORAGE_AUTHORITY) {
-        runCatching { DocumentsContract.getTreeDocumentId(uri) }.getOrNull()
-    } else {
-        null
-    }
-    val relativePath = documentId?.let(SettingsInput::mediaDirectoryFromDocumentId)
-    if (relativePath == null) {
-        onInvalid()
-        return
-    }
-
-    onUpdate { current -> transform(current, relativePath) }
 }
 
 @Composable

@@ -2,6 +2,14 @@
 
 [English](#changelog) | [中文](#中文)
 
+## 0.4.19
+
+- Added compatibility for the comment-translation control and playback-completion handling on official TikTok 46.4.3.
+- Fixed custom video, image, and GIF save locations on TikTok 46.3.2 and 46.4.3 by intercepting TikTok's MediaStore insertion bridge.
+- Replaced the Android system directory picker with a built-in relative shared-storage path editor.
+- Extended trending-topic and promotional-overlay purification for TikTok 46.4.3.
+- Known issue: view-count and like-count filtering remains unreliable on TikTok 46.4.3 and may let some out-of-range videos through.
+
 ## 0.4.18
 
 - Reworked the Material 3 settings screen and organized features into General, Feed, and Downloads sections.
@@ -49,6 +57,14 @@
 - Added the Root-based Restart TikTok action.
 
 ## 中文
+
+### 0.4.19
+
+- 适配官方 TikTok 46.4.3 的评论翻译控件与播放完成处理。
+- 通过拦截 TikTok 的 MediaStore 写入桥，修复 TikTok 46.3.2 与 46.4.3 的视频、图片和 GIF 自定义保存位置。
+- 移除 Android 系统目录选择器，改用内置的共享存储相对路径编辑框。
+- 扩展 TikTok 46.4.3 的热点话题与推广浮层净化兼容。
+- 已知问题：TikTok 46.4.3 的播放量与点赞数筛选仍不可靠，少数范围外视频可能漏过过滤。
 
 ### 0.4.18
 

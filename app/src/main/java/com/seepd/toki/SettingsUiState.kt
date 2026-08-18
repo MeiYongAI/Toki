@@ -224,17 +224,4 @@ internal object SettingsInput {
         return PathValidation(value = segments.joinToString("/"))
     }
 
-    fun mediaDirectoryFromDocumentId(documentId: String): String? {
-        val separatorIndex = documentId.indexOf(':')
-        if (separatorIndex <= 0) {
-            return null
-        }
-
-        val volumeName = documentId.substring(0, separatorIndex)
-        if (!volumeName.equals("primary", ignoreCase = true)) {
-            return null
-        }
-
-        return normalizeMediaDirectory(documentId.substring(separatorIndex + 1)).value
-    }
 }

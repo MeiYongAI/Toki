@@ -2,7 +2,7 @@
 
 [English](#toki) | [中文](#中文) | [Changelog](CHANGELOG.md) | [更新日志](CHANGELOG.md#中文)
 
-Toki is a libxposed API 102 enhancement module for the official TikTok 46.3.2 and 46.3.3.
+Toki is a libxposed API 102 enhancement module for the official TikTok 46.3.2, 46.3.3, and 46.4.3.
 It only targets `com.zhiliaoapp.musically`.
 
 ## Features
@@ -27,11 +27,16 @@ It only targets `com.zhiliaoapp.musically`.
 - Count ranges: enter full numbers or compact suffixes such as `20K` and `1.5M` directly.
 - Material 3 settings UI with dark mode and dynamic color support.
 
+## Known Issues
+
+- View-count and like-count filtering is not fully reliable on TikTok 46.4.3. Some videos
+  outside the configured ranges may still appear.
+
 ## Requirements
 
 - Android 8.0 or later
 - An LSPosed implementation that supports libxposed API 102
-- Official TikTok 46.3.2 or 46.3.3 with package name `com.zhiliaoapp.musically`. The module APK is
+- Official TikTok 46.3.2, 46.3.3, or 46.4.3 with package name `com.zhiliaoapp.musically`. The module APK is
   architecture-independent.
 
 ## Installation
@@ -84,7 +89,7 @@ compatibility; make sure your use complies with local law and the applicable ter
 
 ## 中文
 
-Toki 是面向官方 TikTok 46.3.2 与 46.3.3 的 libxposed API 102 功能增强模块，仅作用于
+Toki 是面向官方 TikTok 46.3.2、46.3.3 与 46.4.3 的 libxposed API 102 功能增强模块，仅作用于
 `com.zhiliaoapp.musically`。
 
 ### 功能
@@ -100,11 +105,15 @@ Toki 是面向官方 TikTok 46.3.2 与 46.3.3 的 libxposed API 102 功能增强
 - 数量范围：支持直接输入完整数字或 `20K`、`1.5M` 等数量后缀。
 - Material 3 设置界面，支持深色模式与动态配色。
 
+### 已知问题
+
+- TikTok 46.4.3 的播放量与点赞数筛选尚未完全可靠，少数范围外视频仍可能出现。
+
 ### 环境要求
 
 - Android 8.0 或更高版本
 - 支持 libxposed API 102 的 LSPosed 实现
-- 官方 TikTok 46.3.2 或 46.3.3，包名 `com.zhiliaoapp.musically`；模块 APK 不区分设备架构
+- 官方 TikTok 46.3.2、46.3.3 或 46.4.3，包名 `com.zhiliaoapp.musically`；模块 APK 不区分设备架构
 
 ### 安装
 

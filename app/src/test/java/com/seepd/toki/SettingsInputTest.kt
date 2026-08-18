@@ -71,6 +71,14 @@ class SettingsInputTest {
     }
 
     @Test
+    fun relativeMediaDirectoryIsNormalizedForSharedStorage() {
+        val result = SettingsInput.normalizeMediaDirectory(" Movies\\TikTok//Saved/ ")
+
+        assertEquals("Movies/TikTok/Saved", result.value)
+        assertNull(result.error)
+    }
+
+    @Test
     fun uriAndParentSegmentsAreRejected() {
         val uri = SettingsInput.normalizeMediaDirectory("content://downloads/TikTok")
         val parent = SettingsInput.normalizeMediaDirectory("Movies/../TikTok")
@@ -79,27 +87,6 @@ class SettingsInputTest {
         assertEquals(PathInputError.ABSOLUTE, uri.error)
         assertEquals(PathInputError.INVALID_SEGMENT, parent.error)
         assertEquals(PathInputError.ABSOLUTE, windows.error)
-    }
-
-    @Test
-    fun primaryStorageDocumentIdBecomesMediaDirectory() {
-        assertEquals(
-            "Movies/TikTok",
-            SettingsInput.mediaDirectoryFromDocumentId("primary:Movies/TikTok"),
-        )
-        assertEquals(
-            "Pictures/My App",
-            SettingsInput.mediaDirectoryFromDocumentId("PRIMARY:Pictures/My App"),
-        )
-    }
-
-    @Test
-    fun unsupportedDocumentIdsAreRejected() {
-        assertNull(SettingsInput.mediaDirectoryFromDocumentId("primary:"))
-        assertNull(SettingsInput.mediaDirectoryFromDocumentId("1234-5678:Movies/TikTok"))
-        assertNull(SettingsInput.mediaDirectoryFromDocumentId("Movies/TikTok"))
-        assertNull(SettingsInput.mediaDirectoryFromDocumentId(":Movies/TikTok"))
-        assertNull(SettingsInput.mediaDirectoryFromDocumentId("primary:Movies/../TikTok"))
     }
 
     @Test

@@ -131,7 +131,7 @@ public final class MainHook extends XposedModule {
                 installDownloadPatches(classLoader);
             }
             // The save-directory fields are independent from download permission bypassing.
-            installOfficialDownloadLocationHook(config);
+            installOfficialDownloadLocationHook(classLoader, config);
             if (config.disableLoop) {
                 logInfo("Installing loop-prevention bridge");
                 int installedTargets = installLoopPrevention(classLoader);
@@ -431,8 +431,196 @@ public final class MainHook extends XposedModule {
 
     /** Restores the comment-page translation control in the supported official TikTok client. */
     private void installCommentTranslationButton(ClassLoader classLoader) {
-        if (!installOfficialCommentTranslationButton(classLoader)) {
+        if (hasStableCommentTranslationRuntime(classLoader)) {
+            // Unknown minor builds must never be sent through an obsolete obfuscated bridge.
+            installTikTok464CommentTranslationButton(classLoader);
+        } else if (isModernTikTokVersion()) {
+            logInfo("Comment translation bridge unavailable for this TikTok build; "
+                    + "obsolete translation hooks were skipped");
+        } else if (!installOfficialCommentTranslationButton(classLoader)) {
             installTikTok4632CommentTranslationButton(classLoader);
+        }
+    }
+
+    private boolean isModernTikTokVersion() {
+        Context context = translationStateContext;
+        if (context == null) {
+            return true;
+        }
+        try {
+            String versionName = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0).versionName;
+            if (versionName == null) {
+                return true;
+            }
+            String[] segments = versionName.split("\\.");
+            int major = segments.length > 0 ? Integer.parseInt(segments[0]) : 0;
+            int minor = segments.length > 1 ? Integer.parseInt(segments[1]) : 0;
+            return major > 46 || (major == 46 && minor >= 4);
+        } catch (RuntimeException ignored) {
+            return true;
+        } catch (android.content.pm.PackageManager.NameNotFoundException ignored) {
+            return true;
+        }
+    }
+
+    private static boolean hasStableCommentTranslationRuntime(ClassLoader classLoader) {
+        try {
+            Class<?> commentType = Class.forName(
+                    "com.ss.android.ugc.aweme.comment.model.Comment", false, classLoader);
+            Class<?> baseCommentCell = Class.forName(
+                    "com.ss.android.ugc.aweme.commentv2.commentlist.powercell.BaseCommentCell",
+                    false,
+                    classLoader);
+            Class.forName(
+                    "com.ss.android.ugc.aweme.translation.service.ITranslationService",
+                    false,
+                    classLoader);
+            Class.forName(
+                    "com.ss.android.ugc.aweme.commentv2.actionbar.CommentPageActionBarAssem",
+                    false,
+                    classLoader);
+            findCommentTranslationMembers(baseCommentCell, commentType);
+            return true;
+        } catch (ClassNotFoundException ignored) {
+            return false;
+        } catch (NoSuchFieldException ignored) {
+            return false;
+        }
+    }
+
+    /**
+     * Uses public translation interfaces and structural discovery for obfuscated comment-cell
+     * members. The same path therefore survives ordinary TikTok minor-version renaming.
+     */
+    private boolean installTikTok464CommentTranslationButton(ClassLoader classLoader) {
+        try {
+            Class<?> commentType = Class.forName(
+                    "com.ss.android.ugc.aweme.comment.model.Comment", false, classLoader);
+            Class<?> baseCommentCell = Class.forName(
+                    "com.ss.android.ugc.aweme.commentv2.commentlist.powercell.BaseCommentCell",
+                    false,
+                    classLoader);
+            TranslationBindingMembers bindingMembers = findCommentTranslationMembers(
+                    baseCommentCell, commentType);
+
+            Class<?> actionBarType = Class.forName(
+                    "com.ss.android.ugc.aweme.commentv2.actionbar.CommentPageActionBarAssem",
+                    false,
+                    classLoader);
+            Class<?> contextSourceType = Class.forName(
+                    "com.ss.android.ugc.aweme.comment.model.CommentContextSource",
+                    false,
+                    classLoader);
+            Class<?> contextSourceKt = Class.forName(
+                    "com.ss.android.ugc.aweme.comment.model.CommentContextSourceKt",
+                    false,
+                    classLoader);
+            Class<?> awemeType = Class.forName(
+                    "com.ss.android.ugc.aweme.feed.model.Aweme", false, classLoader);
+            Class<?> tuxIconViewType = Class.forName(
+                    "com.bytedance.tux.icon.TuxIconView", false, classLoader);
+            Class<?> translationServiceInterface = Class.forName(
+                    "com.ss.android.ugc.aweme.translation.service.ITranslationService",
+                    false,
+                    classLoader);
+            Class<?> serviceManagerType = Class.forName(
+                    "com.ss.android.ugc.aweme.framework.services.ServiceManager",
+                    false,
+                    classLoader);
+
+            Method getAwemeId = commentType.getMethod("getAwemeId");
+            Method getCommentId = commentType.getMethod("getCid");
+            Method isTranslated = commentType.getMethod("isTranslated");
+            Field translationManager = bindingMembers.manager;
+            Field boundComment = bindingMembers.comment;
+            Field translationAction = bindingMembers.action;
+            Method translate = bindingMembers.translate;
+            Method resetTranslate = bindingMembers.reset;
+            Method onActionBarCreated = actionBarType.getDeclaredMethod("onViewCreated", View.class);
+            Method getCommentContext = findNoArgMethodReturningType(actionBarType, contextSourceType);
+            Method getAweme = contextSourceKt.getMethod("aweme", contextSourceType);
+            Method getAid = awemeType.getMethod("getAid");
+            // A missing close-icon member should never prevent injection into the provided root.
+            Field closeButton = findField(actionBarType, "LLJJLIIIJLLLLLLLZ");
+            Method isTranslatable = findCommentTranslatabilityMethod(
+                    translationServiceInterface, commentType);
+            Method setTranslation = findPreferredMethodBySignature(
+                    translationServiceInterface,
+                    void.class,
+                    new Class<?>[]{commentType, boolean.class},
+                    "LJJJJZI",
+                    "setTranslation",
+                    "setCommentTranslation");
+            Method getServiceManager = serviceManagerType.getMethod("get");
+            Method getService = serviceManagerType.getMethod("getService", Class.class);
+            Constructor<?> newTuxIconView = tuxIconViewType.getConstructor(Context.class);
+            Method setIconRes = tuxIconViewType.getMethod("setIconRes", int.class);
+            Method setIconWidth = tuxIconViewType.getMethod("setIconWidth", int.class);
+            Method setIconHeight = tuxIconViewType.getMethod("setIconHeight", int.class);
+            Method setTintColor = tuxIconViewType.getMethod("setTintColor", int.class);
+            Method setTintColorRes = tuxIconViewType.getMethod("setTintColorRes", int.class);
+
+            translationManager.setAccessible(true);
+            boundComment.setAccessible(true);
+            translationAction.setAccessible(true);
+            if (getCommentContext != null) {
+                getCommentContext.setAccessible(true);
+            }
+            setTranslation.setAccessible(true);
+
+            OfficialTranslationBridge bridge = new OfficialTranslationBridge(
+                    translationManager,
+                    boundComment,
+                    translationAction,
+                    getAwemeId,
+                    getCommentId,
+                    isTranslated,
+                    translate,
+                    resetTranslate,
+                    null,
+                    null,
+                    getCommentContext,
+                    getAweme,
+                    getAid,
+                    closeButton,
+                    newTuxIconView,
+                    setIconRes,
+                    setIconWidth,
+                    setIconHeight,
+                    setTintColor,
+                    setTintColorRes,
+                    null,
+                    new DirectTranslationBridge(
+                            null,
+                            setTranslation,
+                            isTranslatable,
+                            getServiceManager,
+                            getService,
+                            translationServiceInterface));
+
+            int bindHooks = hookTikTok464CommentBindingMethods(baseCommentCell, bridge);
+            if (bindHooks == 0) {
+                throw new NoSuchMethodException("BaseCommentCell#onBindItemView/Q6/K6(*)");
+            }
+            hook(onActionBarCreated)
+                    .setId("toki-464-comment-translation-action-bar")
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        Object root = chain.getArg(0);
+                        injectOfficialCommentTranslationButton(
+                                chain.getThisObject(), root instanceof View ? (View) root : null, bridge);
+                        return result;
+                    });
+            logInfo("Enabled official TikTok 46.4.3 comment translation button hooks");
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException error) {
+            logInfo("Stable comment translation symbols unavailable: "
+                    + error.getClass().getSimpleName() + ": " + error.getMessage());
+            return false;
+        } catch (Throwable error) {
+            logError("Unable to enable TikTok 46.4.3 comment translation button", error);
+            return false;
         }
     }
 
@@ -526,7 +714,8 @@ public final class MainHook extends XposedModule {
                     setIconHeight,
                     setTintColor,
                     setTintColorRes,
-                    batchBridge);
+                    batchBridge,
+                    null);
 
             hook(bindComment)
                     .setId("toki-official-comment-translation-bind")
@@ -617,7 +806,7 @@ public final class MainHook extends XposedModule {
                     null, null, null, getAwemeId, getCommentId, isTranslated, null, null,
                     null, null, getCommentContext, getAweme, getAid, closeButton,
                     newTuxIconView, setIconRes, setIconWidth, setIconHeight, setTintColor,
-                    setTintColorRes, batchBridge);
+                    setTintColorRes, batchBridge, null);
 
             hook(getBoundComment)
                     .setId("toki-4632-comment-translation-current-comment")
@@ -791,6 +980,237 @@ public final class MainHook extends XposedModule {
         return candidate;
     }
 
+    private int hookTikTok464CommentBindingMethods(
+            Class<?> baseCommentCell,
+            OfficialTranslationBridge bridge) {
+        int bindHooks = 0;
+        for (Method method : baseCommentCell.getDeclaredMethods()) {
+            String name = method.getName();
+            boolean supportedName = "onBindItemView".equals(name)
+                    || "Q6".equals(name)
+                    || "K6".equals(name);
+            if (!supportedName
+                    || method.getParameterCount() != 1
+                    || Modifier.isStatic(method.getModifiers())
+                    || (("Q6".equals(name) || "K6".equals(name))
+                    && method.getReturnType() != void.class)) {
+                continue;
+            }
+            method.setAccessible(true);
+            final int hookIndex = bindHooks++;
+            hook(method)
+                    .setId("toki-464-comment-translation-bind-" + hookIndex)
+                    .intercept(chain -> {
+                        Object result = chain.proceed();
+                        captureTikTok464CommentBinding(chain.getThisObject(), bridge);
+                        return result;
+                    });
+        }
+        return bindHooks;
+    }
+
+    /** Finds the current cell's Comment and native translation action by their stable shape. */
+    private static TranslationBindingMembers findCommentTranslationMembers(
+            Class<?> baseCommentCell,
+            Class<?> commentType) throws NoSuchFieldException {
+        // Prefer the verified 46.4.x holder when present, then fall back to structural discovery.
+        for (Class<?> current = baseCommentCell; current != null; current = current.getSuperclass()) {
+            for (Field managerField : current.getDeclaredFields()) {
+                if (!"LLJJIJI".equals(managerField.getName())) {
+                    continue;
+                }
+                TranslationBindingMembers preferred = createTranslationBindingMembers(
+                        managerField, commentType);
+                if (preferred != null) {
+                    return preferred;
+                }
+            }
+        }
+        for (Class<?> current = baseCommentCell; current != null; current = current.getSuperclass()) {
+            for (Field managerField : current.getDeclaredFields()) {
+                if (Modifier.isStatic(managerField.getModifiers()) || managerField.getType().isPrimitive()) {
+                    continue;
+                }
+                TranslationBindingMembers discovered = createTranslationBindingMembers(
+                        managerField, commentType);
+                if (discovered != null) {
+                    return discovered;
+                }
+            }
+        }
+        throw new NoSuchFieldException("Comment translation manager/action on "
+                + baseCommentCell.getName());
+    }
+
+    private static TranslationBindingMembers createTranslationBindingMembers(
+            Field managerField,
+            Class<?> commentType) {
+        if (Modifier.isStatic(managerField.getModifiers()) || managerField.getType().isPrimitive()) {
+            return null;
+        }
+        Field commentField = findFieldByType(managerField.getType(), commentType);
+        if (commentField == null) {
+            return null;
+        }
+        for (Class<?> managerType = managerField.getType(); managerType != null;
+                managerType = managerType.getSuperclass()) {
+            for (Field actionField : managerType.getDeclaredFields()) {
+                if (Modifier.isStatic(actionField.getModifiers())
+                        || actionField.getType().isPrimitive()) {
+                    continue;
+                }
+                Method translate = findNoArgVoidMethod(actionField.getType(), "translate");
+                Method reset = findNoArgVoidMethod(actionField.getType(), "resetTranslate", "LIZJ");
+                if (translate == null || reset == null) {
+                    continue;
+                }
+                managerField.setAccessible(true);
+                commentField.setAccessible(true);
+                actionField.setAccessible(true);
+                return new TranslationBindingMembers(
+                        managerField, commentField, actionField, translate, reset);
+            }
+        }
+        return null;
+    }
+
+    private static Field findFieldByType(Class<?> owner, Class<?> expectedType) {
+        for (Class<?> current = owner; current != null; current = current.getSuperclass()) {
+            for (Field field : current.getDeclaredFields()) {
+                if (!Modifier.isStatic(field.getModifiers())
+                        && expectedType.isAssignableFrom(field.getType())) {
+                    field.setAccessible(true);
+                    return field;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Method findNoArgVoidMethod(Class<?> type, String... names) {
+        if (type == null) {
+            return null;
+        }
+        for (String name : names) {
+            for (Method method : type.getMethods()) {
+                if (name.equals(method.getName())
+                        && method.getParameterCount() == 0
+                        && method.getReturnType() == void.class) {
+                    method.setAccessible(true);
+                    return method;
+                }
+            }
+            for (Class<?> current = type; current != null; current = current.getSuperclass()) {
+                for (Method method : current.getDeclaredMethods()) {
+                    if (name.equals(method.getName())
+                            && method.getParameterCount() == 0
+                            && method.getReturnType() == void.class) {
+                        method.setAccessible(true);
+                        return method;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Method findNoArgMethodReturningType(Class<?> owner, Class<?> returnType) {
+        Method candidate = null;
+        for (Class<?> current = owner; current != null; current = current.getSuperclass()) {
+            for (Method method : current.getDeclaredMethods()) {
+                if (Modifier.isStatic(method.getModifiers())
+                        || method.getParameterCount() != 0
+                        || method.getReturnType() != returnType) {
+                    continue;
+                }
+                if (candidate != null) {
+                    return null;
+                }
+                method.setAccessible(true);
+                candidate = method;
+            }
+        }
+        return candidate;
+    }
+
+    private static Method findUniqueMethodBySignature(
+            Class<?> owner,
+            Class<?> returnType,
+            Class<?>... parameterTypes) throws NoSuchMethodException {
+        Method candidate = null;
+        for (Method method : owner.getMethods()) {
+            if (method.getReturnType() != returnType
+                    || method.getParameterCount() != parameterTypes.length) {
+                continue;
+            }
+            Class<?>[] actualParameters = method.getParameterTypes();
+            boolean matches = true;
+            for (int index = 0; index < parameterTypes.length; index++) {
+                if (actualParameters[index] != parameterTypes[index]) {
+                    matches = false;
+                    break;
+                }
+            }
+            if (!matches) {
+                continue;
+            }
+            if (candidate != null) {
+                throw new NoSuchMethodException("Ambiguous translation method on "
+                        + owner.getName());
+            }
+            method.setAccessible(true);
+            candidate = method;
+        }
+        if (candidate == null) {
+            throw new NoSuchMethodException("Translation method on " + owner.getName());
+        }
+        return candidate;
+    }
+
+    private static Method findCommentTranslatabilityMethod(
+            Class<?> owner,
+            Class<?> commentType) throws NoSuchMethodException {
+        return findPreferredMethodBySignature(
+                owner,
+                boolean.class,
+                new Class<?>[]{commentType},
+                "LJIILJJIL",
+                "isTranslatable",
+                "canTranslate",
+                "isCommentTranslatable");
+    }
+
+    private static Method findPreferredMethodBySignature(
+            Class<?> owner,
+            Class<?> returnType,
+            Class<?>[] parameterTypes,
+            String... preferredNames) throws NoSuchMethodException {
+        for (String preferredName : preferredNames) {
+            for (Method method : owner.getMethods()) {
+                if (preferredName.equals(method.getName())
+                        && method.getReturnType() == returnType
+                        && hasExactParameters(method, parameterTypes)) {
+                    method.setAccessible(true);
+                    return method;
+                }
+            }
+        }
+        return findUniqueMethodBySignature(owner, returnType, parameterTypes);
+    }
+
+    private static boolean hasExactParameters(Method method, Class<?>[] parameterTypes) {
+        Class<?>[] actualParameters = method.getParameterTypes();
+        if (actualParameters.length != parameterTypes.length) {
+            return false;
+        }
+        for (int index = 0; index < parameterTypes.length; index++) {
+            if (actualParameters[index] != parameterTypes[index]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void captureOfficialCommentBinding(Object cell, OfficialTranslationBridge bridge) {
         try {
             Object manager = bridge.translationManager.get(cell);
@@ -867,6 +1287,45 @@ public final class MainHook extends XposedModule {
         }
     }
 
+    private void captureTikTok464CommentBinding(
+            Object cell,
+            OfficialTranslationBridge bridge) {
+        try {
+            Object manager = bridge.translationManager.get(cell);
+            if (manager == null) {
+                return;
+            }
+            Object comment = bridge.boundComment.get(manager);
+            Object action = bridge.translationAction.get(manager);
+            if (comment == null || action == null) {
+                return;
+            }
+            String awemeId = stringValue(bridge.getAwemeId.invoke(comment));
+            String commentId = stringValue(bridge.getCommentId.invoke(comment));
+            if (awemeId.isEmpty() || commentId.isEmpty()) {
+                return;
+            }
+            observeOfficialCommentPage(awemeId);
+            String key = commentKey(awemeId, commentId);
+            boolean translateNow;
+            synchronized (officialTranslationLock) {
+                officialBoundComments.put(
+                        key, new BoundComment(key, awemeId, comment, action));
+                pruneOfficialCommentBindingsLocked();
+                translateNow = isOfficialTranslationActive(awemeId)
+                        && !Boolean.TRUE.equals(bridge.isTranslated.invoke(comment))
+                        && officialTranslationRequests.add(key);
+            }
+            if (translateNow && !translateOfficialComment(comment, action, bridge)) {
+                synchronized (officialTranslationLock) {
+                    officialTranslationRequests.remove(key);
+                }
+            }
+        } catch (ReflectiveOperationException | RuntimeException error) {
+            logOfficialTranslationFailure("Unable to capture a TikTok 46.4.3 bound comment", error);
+        }
+    }
+
     private void observeOfficialCommentPage(String awemeId) {
         if (awemeId == null || awemeId.isEmpty()) {
             return;
@@ -933,7 +1392,9 @@ public final class MainHook extends XposedModule {
             View actionBarRoot,
             OfficialTranslationBridge bridge) {
         try {
-            View closeButton = (View) bridge.closeButton.get(actionBar);
+            View closeButton = bridge.closeButton == null
+                    ? null
+                    : (View) bridge.closeButton.get(actionBar);
             ViewGroup host = findOfficialTranslationButtonHost(closeButton, actionBarRoot);
             if (host == null) {
                 return;
@@ -1075,7 +1536,7 @@ public final class MainHook extends XposedModule {
                 boolean shouldInvoke;
                 synchronized (officialTranslationLock) {
                     shouldInvoke = officialTranslationRequests.add(binding.key);
-                    if (shouldInvoke) {
+                    if (shouldInvoke && !bridge.usesDirectTranslationService()) {
                         markOfficialTranslatedActionLocked(action, binding.key);
                     }
                 }
@@ -1088,12 +1549,13 @@ public final class MainHook extends XposedModule {
                 } else {
                     synchronized (officialTranslationLock) {
                         officialTranslationRequests.remove(binding.key);
-                        if (binding.key.equals(officialTranslatedActions.get(action))) {
+                        if (!bridge.usesDirectTranslationService()
+                                && binding.key.equals(officialTranslatedActions.get(action))) {
                             officialTranslatedActions.remove(action);
                         }
                     }
                 }
-            } else if (invokeOfficialCommentAction(bridge.resetTranslate, action)) {
+            } else if (resetOfficialComment(comment, action, bridge)) {
                 affected++;
             }
         }
@@ -1291,6 +1753,15 @@ public final class MainHook extends XposedModule {
             Object action,
             OfficialTranslationBridge bridge) {
         try {
+            if (bridge.usesDirectTranslationService()) {
+                Object service = resolveDirectTranslationService(bridge);
+                if (service == null
+                        || !Boolean.TRUE.equals(bridge.directIsTranslatable.invoke(service, comment))) {
+                    return false;
+                }
+                bridge.directSetTranslation.invoke(service, comment, Boolean.TRUE);
+                return invokeOfficialCommentAction(bridge.translate, action);
+            }
             Object service = bridge.translationService.get(null);
             if (service == null
                     || !Boolean.TRUE.equals(bridge.isTranslatable.invoke(service, comment))) {
@@ -1301,6 +1772,42 @@ public final class MainHook extends XposedModule {
             logOfficialTranslationFailure("Unable to check comment translation eligibility", error);
             return false;
         }
+    }
+
+    private boolean resetOfficialComment(
+            Object comment,
+            Object action,
+            OfficialTranslationBridge bridge) {
+        try {
+            if (bridge.usesDirectTranslationService()) {
+                Object service = resolveDirectTranslationService(bridge);
+                if (service == null) {
+                    return false;
+                }
+                bridge.directSetTranslation.invoke(service, comment, Boolean.FALSE);
+                return invokeOfficialCommentAction(bridge.resetTranslate, action);
+            }
+            return invokeOfficialCommentAction(bridge.resetTranslate, action);
+        } catch (ReflectiveOperationException | RuntimeException error) {
+            logOfficialTranslationFailure("Unable to restore native comment translation", error);
+            return false;
+        }
+    }
+
+    private static Object resolveDirectTranslationService(OfficialTranslationBridge bridge)
+            throws ReflectiveOperationException {
+        if (bridge.directTranslationService != null) {
+            return bridge.directTranslationService.get(null);
+        }
+        if (bridge.directServiceManagerGetter == null
+                || bridge.directServiceGetter == null
+                || bridge.directServiceInterface == null) {
+            return null;
+        }
+        Object serviceManager = bridge.directServiceManagerGetter.invoke(null);
+        return serviceManager == null
+                ? null
+                : bridge.directServiceGetter.invoke(serviceManager, bridge.directServiceInterface);
     }
 
     private boolean invokeOfficialCommentAction(Method actionMethod, Object action) {
@@ -1317,6 +1824,9 @@ public final class MainHook extends XposedModule {
             Object actionBar,
             OfficialTranslationBridge bridge) {
         try {
+            if (bridge.getCommentContext == null) {
+                return "";
+            }
             Object contextSource = bridge.getCommentContext.invoke(actionBar);
             if (contextSource == null) {
                 return "";
@@ -1534,6 +2044,51 @@ public final class MainHook extends XposedModule {
         }
     }
 
+    private static final class TranslationBindingMembers {
+        final Field manager;
+        final Field comment;
+        final Field action;
+        final Method translate;
+        final Method reset;
+
+        TranslationBindingMembers(
+                Field manager,
+                Field comment,
+                Field action,
+                Method translate,
+                Method reset) {
+            this.manager = manager;
+            this.comment = comment;
+            this.action = action;
+            this.translate = translate;
+            this.reset = reset;
+        }
+    }
+
+    private static final class DirectTranslationBridge {
+        final Field service;
+        final Method setTranslation;
+        final Method isTranslatable;
+        final Method serviceManagerGetter;
+        final Method serviceGetter;
+        final Class<?> serviceInterface;
+
+        DirectTranslationBridge(
+                Field service,
+                Method setTranslation,
+                Method isTranslatable,
+                Method serviceManagerGetter,
+                Method serviceGetter,
+                Class<?> serviceInterface) {
+            this.service = service;
+            this.setTranslation = setTranslation;
+            this.isTranslatable = isTranslatable;
+            this.serviceManagerGetter = serviceManagerGetter;
+            this.serviceGetter = serviceGetter;
+            this.serviceInterface = serviceInterface;
+        }
+    }
+
     private static final class OfficialTranslationBridge {
         final Field translationManager;
         final Field boundComment;
@@ -1556,6 +2111,12 @@ public final class MainHook extends XposedModule {
         final Method setTintColor;
         final Method setTintColorRes;
         final BatchTranslationBridge batch;
+        final Field directTranslationService;
+        final Method directSetTranslation;
+        final Method directIsTranslatable;
+        final Method directServiceManagerGetter;
+        final Method directServiceGetter;
+        final Class<?> directServiceInterface;
 
         OfficialTranslationBridge(
                 Field translationManager,
@@ -1578,7 +2139,8 @@ public final class MainHook extends XposedModule {
                 Method setIconHeight,
                 Method setTintColor,
                 Method setTintColorRes,
-                BatchTranslationBridge batch) {
+                BatchTranslationBridge batch,
+                DirectTranslationBridge direct) {
             this.translationManager = translationManager;
             this.boundComment = boundComment;
             this.translationAction = translationAction;
@@ -1600,6 +2162,21 @@ public final class MainHook extends XposedModule {
             this.setTintColor = setTintColor;
             this.setTintColorRes = setTintColorRes;
             this.batch = batch;
+            this.directTranslationService = direct == null ? null : direct.service;
+            this.directSetTranslation = direct == null ? null : direct.setTranslation;
+            this.directIsTranslatable = direct == null ? null : direct.isTranslatable;
+            this.directServiceManagerGetter = direct == null ? null : direct.serviceManagerGetter;
+            this.directServiceGetter = direct == null ? null : direct.serviceGetter;
+            this.directServiceInterface = direct == null ? null : direct.serviceInterface;
+        }
+
+        boolean usesDirectTranslationService() {
+            return directSetTranslation != null
+                    && directIsTranslatable != null
+                    && (directTranslationService != null
+                    || (directServiceManagerGetter != null
+                    && directServiceGetter != null
+                    && directServiceInterface != null));
         }
     }
 
@@ -1746,12 +2323,14 @@ public final class MainHook extends XposedModule {
         hookNoWatermarkDownloadAddress(classLoader);
     }
 
-    /**
-     * Official TikTok 46.3.3 writes a saved item through ContentResolver with
-     * RELATIVE_PATH set to DCIM/Camera. Intercept this stable framework boundary to apply the
-     * configured media directory.
-     */
-    private void installOfficialDownloadLocationHook(ModuleConfig config) {
+    /** Official TikTok 46.3.x and 46.4.x save media to DCIM/Camera via MediaStore. */
+    private void installOfficialDownloadLocationHook(
+            ClassLoader classLoader, ModuleConfig config) {
+        int bridgeHooks = installMediaInsertBridge(
+                classLoader, "X.183b", "X.132D", config, "46.3");
+        bridgeHooks += installMediaInsertBridge(
+                classLoader, "X.0yn6", "X.0wj1", config, "46.4");
+
         int installed = 0;
         for (Method method : ContentResolver.class.getDeclaredMethods()) {
             Class<?>[] parameterTypes = method.getParameterTypes();
@@ -1777,7 +2356,46 @@ public final class MainHook extends XposedModule {
                 logError("Unable to hook ContentResolver#insert(" + parameterTypes.length + ")", error);
             }
         }
-        logInfo("Official download location hook installed (" + installed + " insert variants)");
+        logInfo("Official download location hooks installed (" + bridgeHooks
+                + " TikTok bridge, " + installed + " framework insert variants)");
+    }
+
+    private int installMediaInsertBridge(
+            ClassLoader classLoader,
+            String className,
+            String metadataClassName,
+            ModuleConfig config,
+            String version
+    ) {
+        try {
+            Class<?> type = Class.forName(className, false, classLoader);
+            Class<?> metadataType = Class.forName(metadataClassName, false, classLoader);
+            Method method = type.getDeclaredMethod(
+                    "LJJIJLIJ",
+                    ContentResolver.class,
+                    Uri.class,
+                    ContentValues.class,
+                    metadataType);
+            hook(method)
+                    .setId("toki-media-insert-bridge-" + version)
+                    .intercept(chain -> {
+                        Object collection = chain.getArg(1);
+                        Object values = chain.getArg(2);
+                        if (collection instanceof Uri && values instanceof ContentValues) {
+                            rewriteOfficialDownloadLocation(
+                                    (Uri) collection, (ContentValues) values, config);
+                        }
+                        return chain.proceed();
+                    });
+            return 1;
+        } catch (ClassNotFoundException ignored) {
+            // Only one bridge exists in a supported TikTok version.
+        } catch (NoSuchMethodException ignored) {
+            // The bridge signature changed in this TikTok version.
+        } catch (Throwable error) {
+            logError("Unable to hook TikTok " + version + " media insert bridge", error);
+        }
+        return 0;
     }
 
     private void rewriteOfficialDownloadLocation(
@@ -2127,14 +2745,15 @@ public final class MainHook extends XposedModule {
                     classLoader);
             Method completionMethod = type.getDeclaredMethod("onPlayCompleted", String.class);
             Method currentAwemeMethod = findDeclaredMethod(
-                    type, new Class<?>[0], "LJJIZ", "LLJI");
+                    type, new Class<?>[0], "LIZIZ", "LJJIZ", "LLJI");
             Method currentHolderMethod = findDeclaredMethod(
-                    type, new Class<?>[0], "LLII", "LLJZIJLIL");
+                    type, new Class<?>[0], "LLL", "LLII", "LLJZIJLIL");
             Method holderForSourceMethod = findDeclaredMethod(
                     type, new Class<?>[]{String.class}, "LJJIJL");
             Method manualPauseMethod = findDeclaredMethod(
                     type,
                     new Class<?>[]{awemeType, boolean.class, boolean.class, boolean.class},
+                    "jk",
                     "lk",
                     "qk");
             Method pauseStateMethod;
@@ -2443,7 +3062,9 @@ public final class MainHook extends XposedModule {
                     classLoader,
                     "trending-topics",
                     "getTrendingBar",
-                    "getTrendingBarFYP"
+                    "getTrendingBarFYP",
+                    "getHotSearchInfo",
+                    "getDouDiscountMixInfo"
             );
         }
         if (config.hideContentClassification) {
@@ -2807,6 +3428,7 @@ public final class MainHook extends XposedModule {
             hookProfileAdResponses(classLoader, filter);
         }
     }
+
 
     private void hookFollowingFeedResults(ClassLoader classLoader, FeedFilter filter) {
         try {

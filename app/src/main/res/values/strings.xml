@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Toki</string>
-    <string name="module_description">面向 TikTok 46.3.2 与 46.3.3 的功能增强模块</string>
+    <string name="module_description">面向 TikTok 46.3.2、46.3.3 与 46.4.3 的功能增强模块</string>
     <string name="settings_general">常规</string>
     <string name="settings_feed">信息流</string>
     <string name="settings_downloads">下载</string>
@@ -101,8 +101,10 @@
     <string name="restart_tiktok_timeout">45 秒内未完成 Root 授权，请确认弹窗后重试。</string>
     <string name="save">保存</string>
     <string name="cancel">取消</string>
-    <string name="media_directory_error_title">无法使用此文件夹</string>
-    <string name="media_directory_error_message">请选择内部共享存储中的子文件夹。暂不支持存储根目录、SD 卡或云端目录。</string>
+    <string name="media_directory_path">共享存储相对路径</string>
+    <string name="media_directory_example">例如 Movies/TikTok</string>
+    <string name="media_directory_hint">从内部共享存储根目录开始填写，无需输入 /storage/emulated/0。</string>
+    <string name="media_directory_invalid">请输入有效的相对路径，例如 Movies/TikTok。</string>
     <string name="views_range">播放量范围</string>
     <string name="likes_range">点赞数范围</string>
     <string name="range_value">%1$s 至 %2$s</string>
