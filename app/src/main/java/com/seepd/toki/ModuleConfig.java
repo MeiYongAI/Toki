@@ -23,6 +23,8 @@ final class ModuleConfig {
     static final String KEY_FORCE_REGION = "force_region";
     static final String KEY_HIDE_LONG_POSTS = "hide_long_posts";
     static final String KEY_FILTER_VIEWS_LIKES = "filter_views_likes";
+    static final String KEY_DISABLE_OFFLINE_COLD_CACHE_WITH_NETWORK =
+            "disable_offline_cold_cache_with_network";
     static final String KEY_DISABLE_LOOP = "disable_loop";
     static final String KEY_DEFAULT_PLAYBACK_SPEED = "default_playback_speed";
     static final String KEY_AUTO_TRANSLATE_COMMENTS = "auto_translate_comments";
@@ -37,6 +39,10 @@ final class ModuleConfig {
     static final String KEY_VIEWS_MAX = "views_max";
     static final String KEY_LIKES_MIN = "likes_min";
     static final String KEY_LIKES_MAX = "likes_max";
+    static final String KEY_VIEWS_MIN_INPUT = "views_min_input";
+    static final String KEY_VIEWS_MAX_INPUT = "views_max_input";
+    static final String KEY_LIKES_MIN_INPUT = "likes_min_input";
+    static final String KEY_LIKES_MAX_INPUT = "likes_max_input";
     static final String KEY_HIDE_AUTHOR_INFO = "hide_author_info";
     static final String KEY_HIDE_FOLLOW_BUTTON = "hide_follow_button";
     static final String KEY_HIDE_VIDEO_DESCRIPTION = "hide_video_description";
@@ -90,6 +96,7 @@ final class ModuleConfig {
     final boolean forceRegion;
     final boolean hideLongPosts;
     final boolean filterViewsLikes;
+    final boolean disableOfflineColdCacheWithNetwork;
     final boolean disableLoop;
     final float defaultPlaybackSpeed;
     final boolean autoTranslateComments;
@@ -135,7 +142,7 @@ final class ModuleConfig {
                  boolean hideFeedAds, boolean hideLive, boolean hideImages,
                  boolean hideAiGenerated, boolean hideTrendingTopics,
                  boolean hideContentClassification, boolean forceRegion, boolean hideLongPosts,
-                 boolean filterViewsLikes,
+                 boolean filterViewsLikes, boolean disableOfflineColdCacheWithNetwork,
                  boolean disableLoop, float defaultPlaybackSpeed, boolean autoTranslateComments,
                  String videoLocation, String picLocation, String gifLocation,
                  boolean allowDuet, boolean allowStitch,
@@ -164,6 +171,7 @@ final class ModuleConfig {
         this.forceRegion = forceRegion;
         this.hideLongPosts = hideLongPosts;
         this.filterViewsLikes = filterViewsLikes;
+        this.disableOfflineColdCacheWithNetwork = disableOfflineColdCacheWithNetwork;
         this.disableLoop = disableLoop;
         this.defaultPlaybackSpeed = PlaybackSpeed.sanitize(defaultPlaybackSpeed);
         this.autoTranslateComments = autoTranslateComments;
@@ -244,6 +252,7 @@ final class ModuleConfig {
                 preferences.getBoolean(KEY_FORCE_REGION, false),
                 preferences.getBoolean(KEY_HIDE_LONG_POSTS, false),
                 preferences.getBoolean(KEY_FILTER_VIEWS_LIKES, false),
+                preferences.getBoolean(KEY_DISABLE_OFFLINE_COLD_CACHE_WITH_NETWORK, false),
                 preferences.getBoolean(KEY_DISABLE_LOOP, false),
                 preferences.getFloat(KEY_DEFAULT_PLAYBACK_SPEED, DEFAULT_PLAYBACK_SPEED),
                 preferences.getBoolean(KEY_AUTO_TRANSLATE_COMMENTS, false),
@@ -287,7 +296,8 @@ final class ModuleConfig {
 
     static ModuleConfig defaults() {
         return new ModuleConfig(false, RegionPreset.US, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, PlaybackSpeed.DEFAULT, false,
+                false, false, false, false, false, false, false, false,
+                PlaybackSpeed.DEFAULT, false,
                 "Movies/TikTok", "Pictures/TikTok", "Movies/TikTok",
                 false, false,
                 60, 0, Long.MAX_VALUE, 0, Long.MAX_VALUE,

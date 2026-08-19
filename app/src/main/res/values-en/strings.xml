@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Toki</string>
-    <string name="module_description">A feature enhancement module for TikTok 46.3.2, 46.3.3, and 46.4.3</string>
+    <string name="module_description">A feature enhancement module implemented and tested for TikTok 46.4.3</string>
     <string name="settings_general">General</string>
     <string name="settings_feed">Feed</string>
     <string name="settings_downloads">Downloads</string>
@@ -91,6 +91,8 @@
     <string name="hide_long_posts">Hide Long Videos</string>
     <string name="hide_long_posts_summary">Hide videos exceeding the set duration.</string>
     <string name="long_post_seconds">Maximum Duration</string>
+    <string name="disable_offline_cold_cache_with_network">Disable Offline Cold Cache on Network</string>
+    <string name="disable_offline_cold_cache_with_network_summary">Prevent TikTok from using offline-mode cold cache while a network is available.</string>
     <string name="filter_views_likes">Filter by Views and Likes</string>
     <string name="filter_views_likes_summary">Only show videos within the set range.</string>
     <string name="disable_loop">Disable Looping</string>

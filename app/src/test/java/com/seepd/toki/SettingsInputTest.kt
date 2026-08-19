@@ -41,9 +41,9 @@ class SettingsInputTest {
 
     @Test
     fun compactMetricInputIsConvertedToExactCounts() {
-        val result = SettingsInput.validateRange("20K", "1.5M")
+        val result = SettingsInput.validateRange("10k", "1.5M")
 
-        assertEquals(NumericRange(20_000, 1_500_000), result.value)
+        assertEquals(NumericRange(10_000, 1_500_000, "10k", "1.5M"), result.value)
         assertNull(result.error)
     }
 
@@ -56,10 +56,11 @@ class SettingsInputTest {
     }
 
     @Test
-    fun metricSummaryUsesCompactUnits() {
-        assertEquals("842", SettingsInput.formatMetricCount(842))
-        assertEquals("20K", SettingsInput.formatMetricCount(20_000))
-        assertEquals("1.5M", SettingsInput.formatMetricCount(1_500_000))
+    fun metricInputKeepsTheUsersExactText() {
+        val result = SettingsInput.validateRange("10k", "")
+
+        assertEquals("10k", result.value?.minimumInput)
+        assertEquals("", result.value?.maximumInput)
     }
 
     @Test

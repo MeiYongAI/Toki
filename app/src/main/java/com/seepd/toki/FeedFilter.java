@@ -115,52 +115,6 @@ final class FeedFilter {
         return kept;
     }
 
-    void applyBanners(Object bannerList) {
-        if (!hideAds || bannerList == null) {
-            return;
-        }
-        try {
-            Object value = callObject(bannerList, "getItems");
-            if (!(value instanceof List<?>)) {
-                value = bannerList.getClass().getField("items").get(bannerList);
-            }
-            if (!(value instanceof List<?>)) {
-                return;
-            }
-            List<?> original = (List<?>) value;
-            ArrayList<Object> kept = new ArrayList<>(original.size());
-            for (Object banner : original) {
-                if (!callBoolean(banner, "isAd")) {
-                    kept.add(banner);
-                }
-            }
-            if (kept.size() == original.size()) {
-                return;
-            }
-            replaceItems(bannerList, original, kept);
-        } catch (ReflectiveOperationException | RuntimeException ignored) {
-            // Discover model signatures and mutability differ across versions.
-        }
-    }
-
-    void clearProfileAds(Object result) {
-        if (!hideAds || result == null
-                || !"com.ss.android.ugc.aweme.commercialize.profile.impl.ad.CommerceProfileAdResponse"
-                .equals(result.getClass().getName())) {
-            return;
-        }
-        try {
-            java.lang.reflect.Field field = result.getClass().getDeclaredField("awemeList");
-            field.setAccessible(true);
-            Object value = field.get(result);
-            if (value instanceof List<?>) {
-                ((List<?>) value).clear();
-            }
-        } catch (ReflectiveOperationException | RuntimeException ignored) {
-            // The profile-ad response is version-specific and may expose an immutable list.
-        }
-    }
-
     private boolean shouldHide(Object item) {
         if (item == null) {
             return false;

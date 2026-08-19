@@ -2,6 +2,17 @@
 
 [English](#changelog) | [中文](#中文)
 
+## 0.4.20
+
+- Set official TikTok 46.4.3 as the sole implementation, testing, and maintenance target.
+- Other TikTok versions are outside the support scope and receive no version-specific compatibility work.
+- Removed 46.3.x download-location and comment-translation compatibility code.
+- Split hook installation into isolated feature classes while keeping one module APK and entry point.
+- Extended TikTok 46.4.3 For You filtering to feed dispatch and cache-backed list insertion paths.
+- Preserved the exact text entered in view-count and like-count range fields while keeping numeric filtering unchanged.
+- Added an option to disable offline cold-cache use when a network is available.
+- Kept the known 46.4.3 view-count and like-count filtering limitation explicit.
+
 ## 0.4.19
 
 - Added compatibility for the comment-translation control and playback-completion handling on official TikTok 46.4.3.
@@ -57,6 +68,17 @@
 - Added the Root-based Restart TikTok action.
 
 ## 中文
+
+### 0.4.20
+
+- 将官方 TikTok 46.4.3 设为唯一的实现、测试与维护目标。
+- 其他 TikTok 版本不在支持范围内，不再提供针对版本的专门适配。
+- 移除 46.3.x 保存位置和评论翻译兼容代码。
+- 将 Hook 按功能拆分为相互隔离的代码类，同时保持单一模块 APK 和入口。
+- 将 TikTok 46.4.3 推荐页过滤扩展到信息流消息分发和缓存列表插入路径。
+- 保留播放量与点赞数范围输入的原始文本，过滤计算仍使用解析后的数值。
+- 增加联网时禁用离线冷缓存的选项。
+- 继续明确记录 46.4.3 播放量与点赞数筛选的已知限制。
 
 ### 0.4.19
 

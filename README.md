@@ -1,8 +1,8 @@
 # Toki
 
-[English](#toki) | [中文](#中文) | [Changelog](CHANGELOG.md) | [更新日志](CHANGELOG.md#中文)
+[English](#toki) | [中文](#中文) | [Changelog](CHANGELOG.md) | [更新日志](CHANGELOG.md#中文) | [Telegram](https://t.me/toki_lsposed)
 
-Toki is a libxposed API 102 enhancement module for the official TikTok 46.3.2, 46.3.3, and 46.4.3.
+Toki is a libxposed API 102 enhancement module implemented and tested for official TikTok 46.4.3.
 It only targets `com.zhiliaoapp.musically`.
 
 ## Features
@@ -25,6 +25,7 @@ It only targets `com.zhiliaoapp.musically`.
   optional entries, Tako, search, translation controls, and navigation bars from recommended
   video pages.
 - Count ranges: enter full numbers or compact suffixes such as `20K` and `1.5M` directly.
+- Metric range fields preserve the exact text entered while filtering uses the parsed count.
 - Material 3 settings UI with dark mode and dynamic color support.
 
 ## Known Issues
@@ -36,8 +37,9 @@ It only targets `com.zhiliaoapp.musically`.
 
 - Android 8.0 or later
 - An LSPosed implementation that supports libxposed API 102
-- Official TikTok 46.3.2, 46.3.3, or 46.4.3 with package name `com.zhiliaoapp.musically`. The module APK is
-  architecture-independent.
+- Official TikTok 46.4.3 with package name `com.zhiliaoapp.musically`. Other versions are outside
+  the support scope and receive no version-specific compatibility work or guarantees.
+- The module APK is architecture-independent.
 
 ## Installation
 
@@ -47,6 +49,8 @@ It only targets `com.zhiliaoapp.musically`.
    changes to take effect. Restart TikTok manually when Root access is unavailable.
 
 Toki does not request Root access except for the Restart TikTok action in its settings screen.
+
+Community: [Telegram group](https://t.me/toki_lsposed)
 
 ## Privacy
 
@@ -89,8 +93,8 @@ compatibility; make sure your use complies with local law and the applicable ter
 
 ## 中文
 
-Toki 是面向官方 TikTok 46.3.2、46.3.3 与 46.4.3 的 libxposed API 102 功能增强模块，仅作用于
-`com.zhiliaoapp.musically`。
+Toki 是面向官方 TikTok 46.4.3 实现并完成测试的 libxposed API 102 功能增强模块，仅作用于
+`com.zhiliaoapp.musically`。其他版本不在支持范围内，不提供专门适配或兼容保证。
 
 ### 功能
 
@@ -103,6 +107,7 @@ Toki 是面向官方 TikTok 46.3.2、46.3.3 与 46.4.3 的 libxposed API 102 功
 - 评论翻译：评论区显示“翻译/还原”按钮，并跨视频保持翻译状态。
 - 页面净化：可按需隐藏推荐视频页中的作者、文案、音乐、互动按钮、Tako、搜索入口、翻译控件和导航栏。
 - 数量范围：支持直接输入完整数字或 `20K`、`1.5M` 等数量后缀。
+- 数据筛选输入会保留用户输入的原始文本，过滤时使用解析后的数值。
 - Material 3 设置界面，支持深色模式与动态配色。
 
 ### 已知问题
@@ -113,7 +118,8 @@ Toki 是面向官方 TikTok 46.3.2、46.3.3 与 46.4.3 的 libxposed API 102 功
 
 - Android 8.0 或更高版本
 - 支持 libxposed API 102 的 LSPosed 实现
-- 官方 TikTok 46.3.2、46.3.3 或 46.4.3，包名 `com.zhiliaoapp.musically`；模块 APK 不区分设备架构
+- 官方 TikTok 46.4.3，包名 `com.zhiliaoapp.musically`；其他版本不在支持范围内
+- 模块 APK 不区分设备架构
 
 ### 安装
 
@@ -122,6 +128,8 @@ Toki 是面向官方 TikTok 46.3.2、46.3.3 与 46.4.3 的 libxposed API 102 功
 3. 在设置页右上角点击重启按钮；每次修改设置后也可一键重启使其生效。没有 Root 权限时，请手动重启 TikTok。
 
 除设置页内的“重启 TikTok”外，模块不会主动申请 Root 权限。
+
+交流：[Telegram 群组](https://t.me/toki_lsposed)
 
 ### 隐私
 

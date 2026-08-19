@@ -42,6 +42,10 @@ internal class SettingsRepository(context: Context) {
             ModuleConfig.KEY_FILTER_VIEWS_LIKES,
             false,
         ),
+        disableOfflineColdCacheWithNetwork = preferences.getBoolean(
+            ModuleConfig.KEY_DISABLE_OFFLINE_COLD_CACHE_WITH_NETWORK,
+            false,
+        ),
         disableLoop = preferences.getBoolean(ModuleConfig.KEY_DISABLE_LOOP, false),
         defaultPlaybackSpeed = PlaybackSpeed.sanitize(
             preferences.getFloat(
@@ -63,6 +67,24 @@ internal class SettingsRepository(context: Context) {
         viewsMax = optionalPositiveLong(ModuleConfig.KEY_VIEWS_MAX),
         likesMin = nonNegativeLong(ModuleConfig.KEY_LIKES_MIN, 0),
         likesMax = optionalPositiveLong(ModuleConfig.KEY_LIKES_MAX),
+        viewsMinInput = metricInput(
+            ModuleConfig.KEY_VIEWS_MIN_INPUT,
+            ModuleConfig.KEY_VIEWS_MIN,
+            "0",
+        ),
+        viewsMaxInput = metricMaximumInput(
+            ModuleConfig.KEY_VIEWS_MAX_INPUT,
+            ModuleConfig.KEY_VIEWS_MAX,
+        ),
+        likesMinInput = metricInput(
+            ModuleConfig.KEY_LIKES_MIN_INPUT,
+            ModuleConfig.KEY_LIKES_MIN,
+            "0",
+        ),
+        likesMaxInput = metricMaximumInput(
+            ModuleConfig.KEY_LIKES_MAX_INPUT,
+            ModuleConfig.KEY_LIKES_MAX,
+        ),
         hideAuthorInfo = preferences.getBoolean(ModuleConfig.KEY_HIDE_AUTHOR_INFO, false),
         hideFollowButton = preferences.getBoolean(ModuleConfig.KEY_HIDE_FOLLOW_BUTTON, false),
         hideVideoDescription = preferences.getBoolean(ModuleConfig.KEY_HIDE_VIDEO_DESCRIPTION, false),
@@ -147,6 +169,10 @@ internal class SettingsRepository(context: Context) {
         .putBoolean(ModuleConfig.KEY_FORCE_REGION, state.forceRegion)
         .putBoolean(ModuleConfig.KEY_HIDE_LONG_POSTS, state.hideLongPosts)
         .putBoolean(ModuleConfig.KEY_FILTER_VIEWS_LIKES, state.filterViewsLikes)
+        .putBoolean(
+            ModuleConfig.KEY_DISABLE_OFFLINE_COLD_CACHE_WITH_NETWORK,
+            state.disableOfflineColdCacheWithNetwork,
+        )
         .putBoolean(ModuleConfig.KEY_DISABLE_LOOP, state.disableLoop)
         .putFloat(
             ModuleConfig.KEY_DEFAULT_PLAYBACK_SPEED,
@@ -163,6 +189,10 @@ internal class SettingsRepository(context: Context) {
         .putString(ModuleConfig.KEY_VIEWS_MAX, (state.viewsMax ?: Long.MAX_VALUE).toString())
         .putString(ModuleConfig.KEY_LIKES_MIN, state.likesMin.toString())
         .putString(ModuleConfig.KEY_LIKES_MAX, (state.likesMax ?: Long.MAX_VALUE).toString())
+        .putString(ModuleConfig.KEY_VIEWS_MIN_INPUT, state.viewsMinInput)
+        .putString(ModuleConfig.KEY_VIEWS_MAX_INPUT, state.viewsMaxInput)
+        .putString(ModuleConfig.KEY_LIKES_MIN_INPUT, state.likesMinInput)
+        .putString(ModuleConfig.KEY_LIKES_MAX_INPUT, state.likesMaxInput)
         .putBoolean(ModuleConfig.KEY_HIDE_AUTHOR_INFO, state.hideAuthorInfo)
         .putBoolean(ModuleConfig.KEY_HIDE_FOLLOW_BUTTON, state.hideFollowButton)
         .putBoolean(ModuleConfig.KEY_HIDE_VIDEO_DESCRIPTION, state.hideVideoDescription)
@@ -207,6 +237,18 @@ internal class SettingsRepository(context: Context) {
         preferences.getString(key, null)
             ?.toLongOrNull()
             ?.takeIf { it > 0 && it != Long.MAX_VALUE }
+
+    private fun metricInput(inputKey: String, valueKey: String, fallback: String): String =
+        preferences.getString(inputKey, null)
+            ?: preferences.getString(valueKey, fallback)
+            ?: fallback
+
+    private fun metricMaximumInput(inputKey: String, valueKey: String): String {
+        preferences.getString(inputKey, null)?.let { return it }
+        return preferences.getString(valueKey, null)
+            ?.takeUnless { it == Long.MAX_VALUE.toString() }
+            .orEmpty()
+    }
 
     private companion object {
         const val TAG = "TokiSettings"

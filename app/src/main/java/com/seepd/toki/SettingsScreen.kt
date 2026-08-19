@@ -309,11 +309,16 @@ internal fun SettingsApp(
         )
         SettingsDialog.VIEW_RANGE -> RangeDialog(
             title = R.string.views_range,
-            initialMinimum = state.viewsMin,
-            initialMaximum = state.viewsMax,
+            initialMinimum = state.viewsMinInput,
+            initialMaximum = state.viewsMaxInput,
             onSave = { range ->
                 onUpdate { current ->
-                    current.copy(viewsMin = range.minimum, viewsMax = range.maximum)
+                    current.copy(
+                        viewsMin = range.minimum,
+                        viewsMax = range.maximum,
+                        viewsMinInput = range.minimumInput,
+                        viewsMaxInput = range.maximumInput,
+                    )
                 }
                 closeDialog()
             },
@@ -321,11 +326,16 @@ internal fun SettingsApp(
         )
         SettingsDialog.LIKE_RANGE -> RangeDialog(
             title = R.string.likes_range,
-            initialMinimum = state.likesMin,
-            initialMaximum = state.likesMax,
+            initialMinimum = state.likesMinInput,
+            initialMaximum = state.likesMaxInput,
             onSave = { range ->
                 onUpdate { current ->
-                    current.copy(likesMin = range.minimum, likesMax = range.maximum)
+                    current.copy(
+                        likesMin = range.minimum,
+                        likesMax = range.maximum,
+                        likesMinInput = range.minimumInput,
+                        likesMaxInput = range.maximumInput,
+                    )
                 }
                 closeDialog()
             },
@@ -747,6 +757,17 @@ private fun SettingsContent(
                     enabled = state.hideLongPosts,
                     onClick = { onDialog(SettingsDialog.DURATION) },
                 )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.disable_offline_cold_cache_with_network),
+                    summary = stringResource(
+                        R.string.disable_offline_cold_cache_with_network_summary,
+                    ),
+                    checked = state.disableOfflineColdCacheWithNetwork,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(disableOfflineColdCacheWithNetwork = checked) }
+                    },
+                )
                 SettingsSectionHeader(R.string.settings_section_metric_filter)
                 SwitchSettingRow(
                     title = stringResource(R.string.filter_views_likes),
@@ -759,14 +780,14 @@ private fun SettingsContent(
                 GroupDivider()
                 ValueSettingRow(
                     title = stringResource(R.string.views_range),
-                    value = formatRange(state.viewsMin, state.viewsMax),
+                    value = formatRange(state.viewsMinInput, state.viewsMaxInput),
                     enabled = state.filterViewsLikes,
                     onClick = { onDialog(SettingsDialog.VIEW_RANGE) },
                 )
                 GroupDivider()
                 ValueSettingRow(
                     title = stringResource(R.string.likes_range),
-                    value = formatRange(state.likesMin, state.likesMax),
+                    value = formatRange(state.likesMinInput, state.likesMaxInput),
                     enabled = state.filterViewsLikes,
                     onClick = { onDialog(SettingsDialog.LIKE_RANGE) },
                 )
@@ -1427,15 +1448,13 @@ private fun PlaybackSpeedDialog(
 @Composable
 private fun RangeDialog(
     @StringRes title: Int,
-    initialMinimum: Long,
-    initialMaximum: Long?,
+    initialMinimum: String,
+    initialMaximum: String,
     onSave: (NumericRange) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var minimum by rememberSaveable(initialMinimum) { mutableStateOf(initialMinimum.toString()) }
-    var maximum by rememberSaveable(initialMaximum) {
-        mutableStateOf(initialMaximum?.toString().orEmpty())
-    }
+    var minimum by rememberSaveable(initialMinimum) { mutableStateOf(initialMinimum) }
+    var maximum by rememberSaveable(initialMaximum) { mutableStateOf(initialMaximum) }
     val validation = remember(minimum, maximum) {
         SettingsInput.validateRange(minimum, maximum)
     }
@@ -1503,9 +1522,9 @@ private fun rangeErrorText(error: RangeInputError?): String? = when (error) {
 }
 
 @Composable
-private fun formatRange(minimum: Long, maximum: Long?): String {
-    val upper = maximum?.let(SettingsInput::formatMetricCount) ?: stringResource(R.string.unlimited)
-    return stringResource(R.string.range_value, SettingsInput.formatMetricCount(minimum), upper)
+private fun formatRange(minimum: String, maximum: String): String {
+    val upper = maximum.ifBlank { stringResource(R.string.unlimited) }
+    return stringResource(R.string.range_value, minimum, upper)
 }
 
 private fun formatPlaybackSpeed(speed: Float): String {

@@ -1,7 +1,6 @@
 package com.seepd.toki
 
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 internal data class SettingsUiState(
     val regionSpoof: Boolean,
@@ -19,6 +18,7 @@ internal data class SettingsUiState(
     val forceRegion: Boolean,
     val hideLongPosts: Boolean,
     val filterViewsLikes: Boolean,
+    val disableOfflineColdCacheWithNetwork: Boolean,
     val disableLoop: Boolean,
     val defaultPlaybackSpeed: Float,
     val autoTranslateComments: Boolean,
@@ -32,6 +32,10 @@ internal data class SettingsUiState(
     val viewsMax: Long?,
     val likesMin: Long,
     val likesMax: Long?,
+    val viewsMinInput: String,
+    val viewsMaxInput: String,
+    val likesMinInput: String,
+    val likesMaxInput: String,
     val hideAuthorInfo: Boolean,
     val hideFollowButton: Boolean,
     val hideVideoDescription: Boolean,
@@ -76,6 +80,7 @@ internal object SettingsDefaults {
         forceRegion = false,
         hideLongPosts = false,
         filterViewsLikes = false,
+        disableOfflineColdCacheWithNetwork = false,
         disableLoop = false,
         defaultPlaybackSpeed = PlaybackSpeed.DEFAULT,
         autoTranslateComments = false,
@@ -89,6 +94,10 @@ internal object SettingsDefaults {
         viewsMax = null,
         likesMin = 0,
         likesMax = null,
+        viewsMinInput = "0",
+        viewsMaxInput = "",
+        likesMinInput = "0",
+        likesMaxInput = "",
         hideAuthorInfo = false,
         hideFollowButton = false,
         hideVideoDescription = false,
@@ -117,7 +126,12 @@ internal object SettingsDefaults {
     )
 }
 
-internal data class NumericRange(val minimum: Long, val maximum: Long?)
+internal data class NumericRange(
+    val minimum: Long,
+    val maximum: Long?,
+    val minimumInput: String = minimum.toString(),
+    val maximumInput: String = maximum?.toString().orEmpty(),
+)
 
 internal enum class RangeInputError {
     INVALID_MINIMUM,
@@ -164,22 +178,9 @@ internal object SettingsInput {
         if (parsedMaximum != null && parsedMaximum < parsedMinimum) {
             return RangeValidation(error = RangeInputError.INVALID_ORDER)
         }
-        return RangeValidation(value = NumericRange(parsedMinimum, parsedMaximum))
-    }
-
-    fun formatMetricCount(value: Long): String {
-        val (multiplier, suffix) = when {
-            value >= 1_000_000_000L -> 1_000_000_000L to "B"
-            value >= 1_000_000L -> 1_000_000L to "M"
-            value >= 1_000L -> 1_000L to "K"
-            else -> return value.toString()
-        }
-        val compact = BigDecimal.valueOf(value)
-            .divide(BigDecimal.valueOf(multiplier))
-            .setScale(1, RoundingMode.HALF_UP)
-            .stripTrailingZeros()
-            .toPlainString()
-        return compact + suffix
+        return RangeValidation(
+            value = NumericRange(parsedMinimum, parsedMaximum, minimum, maximum),
+        )
     }
 
     private fun parseMetricCount(value: String): Long? {
