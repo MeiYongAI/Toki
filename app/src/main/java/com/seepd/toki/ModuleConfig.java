@@ -60,6 +60,7 @@ final class ModuleConfig {
     static final String KEY_HIDE_COLLAB_LABEL = "hide_collab_label";
     static final String KEY_HIDE_TAKO = "hide_tako";
     static final String KEY_HIDE_CONTENT_SEARCH = "hide_content_search";
+    static final String KEY_HIDE_STATUS_BAR = "hide_status_bar";
     static final String KEY_HIDE_TOP_NAVIGATION = "hide_top_navigation";
     static final String KEY_HIDE_SEARCH_ENTRY = "hide_search_entry";
     static final String KEY_HIDE_BOTTOM_NAVIGATION = "hide_bottom_navigation";
@@ -127,6 +128,7 @@ final class ModuleConfig {
     final boolean hideCollabLabel;
     final boolean hideTako;
     final boolean hideContentSearch;
+    final boolean hideStatusBar;
     final boolean hideTopNavigation;
     final boolean hideSearchEntry;
     final boolean hideBottomNavigation;
@@ -152,7 +154,8 @@ final class ModuleConfig {
                  boolean hideLikeButton, boolean hideCommentButton, boolean hideFavoriteButton,
                  boolean hideShareButton, boolean hideDuetButton, boolean hideStitchButton,
                  boolean hideQuickDm, boolean hideStoryTags, boolean hideCollabLabel,
-                 boolean hideTako, boolean hideContentSearch, boolean hideTopNavigation, boolean hideSearchEntry,
+                 boolean hideTako, boolean hideContentSearch, boolean hideStatusBar,
+                 boolean hideTopNavigation, boolean hideSearchEntry,
                  boolean hideBottomNavigation, boolean hideVideoProgressBar,
                  boolean hideTranslationControls, boolean gpsSpoof,
                  double gpsLatitude, double gpsLongitude) {
@@ -202,6 +205,7 @@ final class ModuleConfig {
         this.hideCollabLabel = hideCollabLabel;
         this.hideTako = hideTako;
         this.hideContentSearch = hideContentSearch;
+        this.hideStatusBar = hideStatusBar;
         this.hideTopNavigation = hideTopNavigation;
         this.hideSearchEntry = hideSearchEntry;
         this.hideBottomNavigation = hideBottomNavigation;
@@ -283,6 +287,7 @@ final class ModuleConfig {
                 preferences.getBoolean(KEY_HIDE_COLLAB_LABEL, false),
                 preferences.getBoolean(KEY_HIDE_TAKO, false),
                 preferences.getBoolean(KEY_HIDE_CONTENT_SEARCH, false),
+                preferences.getBoolean(KEY_HIDE_STATUS_BAR, false),
                 preferences.getBoolean(KEY_HIDE_TOP_NAVIGATION, false),
                 preferences.getBoolean(KEY_HIDE_SEARCH_ENTRY, false),
                 loadBottomNavigationHidden(preferences),
@@ -303,7 +308,7 @@ final class ModuleConfig {
                 60, 0, Long.MAX_VALUE, 0, Long.MAX_VALUE,
                  false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false,
-                 false, false, false, false, false, false,
+                 false, false, false, false, false, false, false,
                  false, 0.0, 0.0);
     }
 
@@ -316,7 +321,8 @@ final class ModuleConfig {
     }
 
     boolean hasGlobalNavigationPurificationEnabled() {
-        return hideTopNavigation || hideSearchEntry || hideBottomNavigation || hideVideoProgressBar;
+        return hideStatusBar || hideTopNavigation || hideSearchEntry
+                || hideBottomNavigation || hideVideoProgressBar;
     }
 
     static boolean loadBottomNavigationHidden(SharedPreferences preferences) {

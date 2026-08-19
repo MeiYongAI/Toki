@@ -126,6 +126,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
     TAKO(R.string.purify_tako),
     CONTENT_SEARCH(R.string.purify_content_search),
     TRANSLATION_CONTROLS(R.string.purify_translation_controls),
+    STATUS_BAR(R.string.purify_status_bar),
     TOP_NAVIGATION(R.string.purify_top_navigation),
     SEARCH_ENTRY(R.string.purify_search_entry),
     BOTTOM_NAVIGATION(R.string.purify_bottom_navigation),
@@ -151,6 +152,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
         TAKO -> state.hideTako
         CONTENT_SEARCH -> state.hideContentSearch
         TRANSLATION_CONTROLS -> state.hideTranslationControls
+        STATUS_BAR -> state.hideStatusBar
         TOP_NAVIGATION -> state.hideTopNavigation
         SEARCH_ENTRY -> state.hideSearchEntry
         BOTTOM_NAVIGATION -> state.hideBottomNavigation
@@ -176,6 +178,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
         TAKO -> state.copy(hideTako = selected)
         CONTENT_SEARCH -> state.copy(hideContentSearch = selected)
         TRANSLATION_CONTROLS -> state.copy(hideTranslationControls = selected)
+        STATUS_BAR -> state.copy(hideStatusBar = selected)
         TOP_NAVIGATION -> state.copy(hideTopNavigation = selected)
         SEARCH_ENTRY -> state.copy(hideSearchEntry = selected)
         BOTTOM_NAVIGATION -> state.copy(hideBottomNavigation = selected)

@@ -102,6 +102,7 @@ internal class SettingsRepository(context: Context) {
         hideCollabLabel = preferences.getBoolean(ModuleConfig.KEY_HIDE_COLLAB_LABEL, false),
         hideTako = preferences.getBoolean(ModuleConfig.KEY_HIDE_TAKO, false),
         hideContentSearch = preferences.getBoolean(ModuleConfig.KEY_HIDE_CONTENT_SEARCH, false),
+        hideStatusBar = preferences.getBoolean(ModuleConfig.KEY_HIDE_STATUS_BAR, false),
         hideTopNavigation = preferences.getBoolean(ModuleConfig.KEY_HIDE_TOP_NAVIGATION, false),
         hideSearchEntry = preferences.getBoolean(ModuleConfig.KEY_HIDE_SEARCH_ENTRY, false),
         hideBottomNavigation = ModuleConfig.loadBottomNavigationHidden(preferences),
@@ -210,6 +211,7 @@ internal class SettingsRepository(context: Context) {
         .putBoolean(ModuleConfig.KEY_HIDE_COLLAB_LABEL, state.hideCollabLabel)
         .putBoolean(ModuleConfig.KEY_HIDE_TAKO, state.hideTako)
         .putBoolean(ModuleConfig.KEY_HIDE_CONTENT_SEARCH, state.hideContentSearch)
+        .putBoolean(ModuleConfig.KEY_HIDE_STATUS_BAR, state.hideStatusBar)
         .putBoolean(ModuleConfig.KEY_HIDE_TOP_NAVIGATION, state.hideTopNavigation)
         .putBoolean(ModuleConfig.KEY_HIDE_SEARCH_ENTRY, state.hideSearchEntry)
         .putBoolean(ModuleConfig.KEY_HIDE_BOTTOM_NAVIGATION, state.hideBottomNavigation)

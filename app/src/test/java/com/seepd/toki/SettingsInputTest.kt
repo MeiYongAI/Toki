@@ -128,6 +128,7 @@ class SettingsInputTest {
                 state.hideTako,
                 state.hideContentSearch,
                 state.hideTranslationControls,
+                state.hideStatusBar,
             ).none { it },
         )
     }
@@ -147,6 +148,7 @@ class SettingsInputTest {
                 state.hideSearchEntry,
                 state.hideBottomNavigation,
                 state.hideVideoProgressBar,
+                state.hideStatusBar,
             ).none { it },
         )
     }

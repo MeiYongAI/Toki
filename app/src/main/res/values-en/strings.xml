@@ -72,6 +72,7 @@
     <string name="purify_tako">Tako Entry</string>
     <string name="purify_content_search">Content Search Entry</string>
     <string name="purify_translation_controls">View Original / Show Translation</string>
+    <string name="purify_status_bar">System Status Bar</string>
     <string name="purify_top_navigation">Top Navigation Bar</string>
     <string name="purify_search_entry">Search Entry</string>
     <string name="purify_bottom_navigation">Bottom Navigation Bar</string>

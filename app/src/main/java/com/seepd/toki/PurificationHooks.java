@@ -1,10 +1,13 @@
 package com.seepd.toki;
 
 import android.app.Activity;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -15,6 +18,7 @@ import io.github.libxposed.api.XposedModule;
 
 /** Installs component, video overlay, and global navigation purification hooks. */
 final class PurificationHooks extends HookFeature {
+    private static final String MAIN_ACTIVITY = "com.ss.android.ugc.aweme.main.MainActivity";
     private final AtomicBoolean visibilityLogged = new AtomicBoolean(false);
     private final AtomicBoolean globalVisibilityLogged = new AtomicBoolean(false);
     private final WeakHashMap<View, Boolean> observedRoots = new WeakHashMap<>();
@@ -304,19 +308,23 @@ final class PurificationHooks extends HookFeature {
         }
 
         GlobalNavigationViewIds viewIds = GlobalNavigationViewIds.from(decorView);
-        applyGlobalNavigationPurification(decorView, config, viewIds);
+        applyGlobalNavigationPurification(activity, decorView, config, viewIds);
         ViewTreeObserver observer = decorView.getViewTreeObserver();
         if (observer.isAlive()) {
-            observer.addOnGlobalLayoutListener(
-                    () -> applyGlobalNavigationPurification(decorView, config, viewIds));
+            observer.addOnGlobalLayoutListener(() ->
+                    applyGlobalNavigationPurification(activity, decorView, config, viewIds));
         }
     }
 
     private void applyGlobalNavigationPurification(
+            Activity activity,
             View root,
             ModuleConfig config,
             GlobalNavigationViewIds viewIds
     ) {
+        if (config.hideStatusBar && MAIN_ACTIVITY.equals(activity.getClass().getName())) {
+            hideStatusBar(activity);
+        }
         if (config.hideTopNavigation) {
             hideViewById(root, viewIds.topNavigation);
         }
@@ -332,6 +340,25 @@ final class PurificationHooks extends HookFeature {
         if (globalVisibilityLogged.compareAndSet(false, true)) {
             logInfo("Global navigation purification active");
         }
+    }
+
+    private static void hideStatusBar(Activity activity) {
+        View decorView = activity.getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsController controller = decorView.getWindowInsetsController();
+            if (controller != null) {
+                controller.setSystemBarsBehavior(
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                controller.hide(WindowInsets.Type.statusBars());
+            }
+            return;
+        }
+
+        int flags = decorView.getSystemUiVisibility()
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        decorView.setSystemUiVisibility(flags);
     }
 
     private static void hideViewById(View root, int resourceId) {

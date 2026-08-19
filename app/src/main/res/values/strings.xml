@@ -70,6 +70,7 @@
     <string name="purify_tako">Tako 入口</string>
     <string name="purify_content_search">内容搜索入口</string>
     <string name="purify_translation_controls">查看原内容/显示翻译</string>
+    <string name="purify_status_bar">手机系统状态栏</string>
     <string name="purify_top_navigation">顶部导航栏</string>
     <string name="purify_search_entry">搜索入口</string>
     <string name="purify_bottom_navigation">底部导航栏</string>

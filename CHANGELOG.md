@@ -2,6 +2,12 @@
 
 [English](#changelog) | [中文](#中文)
 
+## 0.4.21
+
+- Added an optional page-purification control to hide the system status bar on TikTok's main video pages.
+- Applied the status-bar control only to TikTok 46.4.3's `MainActivity` and kept it active across layout updates.
+- Used Android's `WindowInsetsController` on Android 11+ with a legacy system-UI fallback for Android 8–10.
+
 ## 0.4.20
 
 - Set official TikTok 46.4.3 as the sole implementation, testing, and maintenance target.
@@ -67,6 +73,12 @@
 - Added the Root-based Restart TikTok action.
 
 ## 中文
+
+### 0.4.21
+
+- 新增页面净化选项，可隐藏 TikTok 主视频页面的手机系统状态栏。
+- 状态栏功能仅作用于 TikTok 46.4.3 的 `MainActivity`，并在页面布局更新后保持生效。
+- Android 11 及以上使用 `WindowInsetsController`，Android 8–10 使用兼容性的系统 UI 标记。
 
 ### 0.4.20
 

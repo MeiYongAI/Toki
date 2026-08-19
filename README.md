@@ -22,8 +22,8 @@ It only targets `com.zhiliaoapp.musically`.
 - Comment translation: show Translate and Revert controls in comments and preserve translation
   state across videos.
 - Page purification: optionally hide author details, descriptions, music, action buttons,
-  optional entries, Tako, search, translation controls, and navigation bars from recommended
-  video pages.
+  optional entries, Tako, search, translation controls, the system status bar, and navigation
+  bars from recommended video pages.
 - Count ranges: enter full numbers or compact suffixes such as `20K` and `1.5M` directly.
 - Metric range fields preserve the exact text entered while filtering uses the parsed count.
 - Material 3 settings UI with dark mode and dynamic color support.
@@ -110,7 +110,7 @@ Toki 是面向官方 TikTok 46.4.3 实现并完成测试的 libxposed API 102 �
 - 合拍与拼接：允许受限内容合拍或拼接；关闭循环播放后视频进入暂停状态，单击即可重播。
 - 默认播放速度：为新视频自动应用 1.25x–2.0x，不覆盖当前视频内手动选择的倍速。
 - 评论翻译：评论区显示“翻译/还原”按钮，并跨视频保持翻译状态。
-- 页面净化：可按需隐藏推荐视频页中的作者、文案、音乐、互动按钮、Tako、搜索入口、翻译控件和导航栏。
+- 页面净化：可按需隐藏推荐视频页中的作者、文案、音乐、互动按钮、Tako、搜索入口、翻译控件、手机系统状态栏和导航栏。
 - 数量范围：支持直接输入完整数字或 `20K`、`1.5M` 等数量后缀。
 - 数据筛选输入会保留用户输入的原始文本，过滤时使用解析后的数值。
 - Material 3 设置界面，支持深色模式与动态配色。
