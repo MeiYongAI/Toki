@@ -110,6 +110,7 @@ class SettingsInputTest {
 
         assertTrue(
             listOf(
+                state.hideAuthorAvatar,
                 state.hideAuthorInfo,
                 state.hideFollowButton,
                 state.hideVideoDescription,
@@ -125,8 +126,12 @@ class SettingsInputTest {
                 state.hideQuickDm,
                 state.hideStoryTags,
                 state.hideCollabLabel,
+                state.hideCommercialLabels,
+                state.hideCreativeToolAnchors,
+                state.hideIncentiveShare,
                 state.hideTako,
                 state.hideContentSearch,
+                state.hideSafetyWarning,
                 state.hideTranslationControls,
                 state.hideStatusBar,
             ).none { it },
@@ -136,6 +141,16 @@ class SettingsInputTest {
     @Test
     fun startupLoginSkipDefaultsToDisabled() {
         assertTrue(!SettingsDefaults.create().skipStartupLogin)
+    }
+
+    @Test
+    fun alwaysShowVideoProgressBarDefaultsToDisabled() {
+        assertTrue(!SettingsDefaults.create().alwaysShowVideoProgressBar)
+    }
+
+    @Test
+    fun authorLocationDefaultsToHidden() {
+        assertTrue(!SettingsDefaults.create().showAuthorLocation)
     }
 
     @Test
@@ -149,6 +164,7 @@ class SettingsInputTest {
                 state.hideBottomNavigation,
                 state.hideVideoProgressBar,
                 state.hideStatusBar,
+                state.hideLiveEntry,
             ).none { it },
         )
     }

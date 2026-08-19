@@ -10,6 +10,7 @@
     <string name="settings_section_creation">Creation</string>
     <string name="settings_section_content_filter">Content Filtering</string>
     <string name="settings_section_metric_filter">Metrics Filtering</string>
+    <string name="settings_section_feed_display">Feed Display</string>
     <string name="settings_section_page_purification">Page Purification</string>
     <string name="enable_region_spoof">Spoof Region</string>
     <string name="enable_region_spoof_summary">Make TikTok recognize the device as being in the target region.</string>
@@ -54,7 +55,8 @@
         <item quantity="one">%1$d selected</item>
         <item quantity="other">%1$d selected</item>
     </plurals>
-    <string name="purify_author_info">Avatar and Author Info</string>
+    <string name="purify_author_avatar">Author Avatar</string>
+    <string name="purify_author_info">Author Info</string>
     <string name="purify_follow_button">Follow Button</string>
     <string name="purify_video_description">Video Description</string>
     <string name="purify_video_tags">Video Tags</string>
@@ -69,10 +71,16 @@
     <string name="purify_quick_dm">Quick DM</string>
     <string name="purify_story_tags">Story Tags</string>
     <string name="purify_collab_label">Collaboration Label</string>
+    <string name="purify_commercial_labels">Commercial and Promotion Labels</string>
+    <string name="purify_creative_tool_anchors">Creative Tools and Template Entrances</string>
+    <string name="purify_movie_anime_anchors">Movie and Anime Entrances</string>
+    <string name="purify_incentive_share">Sharing and Creator Incentives</string>
     <string name="purify_tako">Tako Entry</string>
     <string name="purify_content_search">Content Search Entry</string>
+    <string name="purify_safety_warning">Activity Safety Warning</string>
     <string name="purify_translation_controls">View Original / Show Translation</string>
     <string name="purify_status_bar">System Status Bar</string>
+    <string name="purify_live_entry">Top-left LIVE Entry</string>
     <string name="purify_top_navigation">Top Navigation Bar</string>
     <string name="purify_search_entry">Search Entry</string>
     <string name="purify_bottom_navigation">Bottom Navigation Bar</string>
@@ -87,8 +95,8 @@
     <string name="hide_ai_generated_summary">Hide videos marked by TikTok as AI-generated.</string>
     <string name="hide_trending_topics">Hide Trending Topic Bars</string>
     <string name="hide_trending_topics_summary">Hide dynamic trending-topic bars while browsing videos. The video remains visible.</string>
-    <string name="hide_content_classification">Hide Content Rating</string>
-    <string name="hide_content_classification_summary">Hide content-evaluation and age-suitability overlays on videos.</string>
+    <string name="hide_content_classification">Hide Video Feedback Surveys</string>
+    <string name="hide_content_classification_summary">Hide feedback surveys such as “How do you feel about the video you just watched?”.</string>
     <string name="hide_long_posts">Hide Long Videos</string>
     <string name="hide_long_posts_summary">Hide videos exceeding the set duration.</string>
     <string name="long_post_seconds">Maximum Duration</string>
@@ -96,8 +104,12 @@
     <string name="disable_offline_cold_cache_with_network_summary">Prevent TikTok from using offline-mode cold cache while a network is available.</string>
     <string name="filter_views_likes">Filter by Views and Likes</string>
     <string name="filter_views_likes_summary">Only show videos within the set range.</string>
+    <string name="show_author_location">Show Author Location</string>
+    <string name="show_author_location_summary">Show the author region code returned by TikTok beside the author name.</string>
     <string name="disable_loop">Disable Looping</string>
     <string name="disable_loop_summary">Stop at the last frame when the video ends instead of automatically replaying.</string>
+    <string name="always_show_video_progress_bar">Always Show Video Progress Bar</string>
+    <string name="always_show_video_progress_bar_summary">Remove the progress-bar hiding rule for standard videos shorter than 30 seconds. The Page Purification hide option takes priority.</string>
     <string name="default_playback_speed">Default Playback Speed</string>
     <string name="default_playback_speed_dialog_title">Select Default Playback Speed</string>
     <string name="restart_tiktok">Restart TikTok</string>

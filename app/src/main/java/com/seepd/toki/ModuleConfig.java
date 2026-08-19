@@ -26,6 +26,9 @@ final class ModuleConfig {
     static final String KEY_DISABLE_OFFLINE_COLD_CACHE_WITH_NETWORK =
             "disable_offline_cold_cache_with_network";
     static final String KEY_DISABLE_LOOP = "disable_loop";
+    static final String KEY_ALWAYS_SHOW_VIDEO_PROGRESS_BAR =
+            "always_show_video_progress_bar";
+    static final String KEY_SHOW_AUTHOR_LOCATION = "show_author_location";
     static final String KEY_DEFAULT_PLAYBACK_SPEED = "default_playback_speed";
     static final String KEY_AUTO_TRANSLATE_COMMENTS = "auto_translate_comments";
     static final String KEY_COMMENT_TRANSLATION_ACTIVE = "comment_translation_active";
@@ -43,6 +46,7 @@ final class ModuleConfig {
     static final String KEY_VIEWS_MAX_INPUT = "views_max_input";
     static final String KEY_LIKES_MIN_INPUT = "likes_min_input";
     static final String KEY_LIKES_MAX_INPUT = "likes_max_input";
+    static final String KEY_HIDE_AUTHOR_AVATAR = "hide_author_avatar";
     static final String KEY_HIDE_AUTHOR_INFO = "hide_author_info";
     static final String KEY_HIDE_FOLLOW_BUTTON = "hide_follow_button";
     static final String KEY_HIDE_VIDEO_DESCRIPTION = "hide_video_description";
@@ -58,9 +62,15 @@ final class ModuleConfig {
     static final String KEY_HIDE_QUICK_DM = "hide_quick_dm";
     static final String KEY_HIDE_STORY_TAGS = "hide_story_tags";
     static final String KEY_HIDE_COLLAB_LABEL = "hide_collab_label";
+    static final String KEY_HIDE_COMMERCIAL_LABELS = "hide_commercial_labels";
+    static final String KEY_HIDE_CREATIVE_TOOL_ANCHORS = "hide_creative_tool_anchors";
+    static final String KEY_HIDE_MOVIE_ANIME_ANCHORS = "hide_movie_anime_anchors";
+    static final String KEY_HIDE_INCENTIVE_SHARE = "hide_incentive_share";
     static final String KEY_HIDE_TAKO = "hide_tako";
     static final String KEY_HIDE_CONTENT_SEARCH = "hide_content_search";
+    static final String KEY_HIDE_SAFETY_WARNING = "hide_safety_warning";
     static final String KEY_HIDE_STATUS_BAR = "hide_status_bar";
+    static final String KEY_HIDE_LIVE_ENTRY = "hide_live_entry";
     static final String KEY_HIDE_TOP_NAVIGATION = "hide_top_navigation";
     static final String KEY_HIDE_SEARCH_ENTRY = "hide_search_entry";
     static final String KEY_HIDE_BOTTOM_NAVIGATION = "hide_bottom_navigation";
@@ -99,6 +109,8 @@ final class ModuleConfig {
     final boolean filterViewsLikes;
     final boolean disableOfflineColdCacheWithNetwork;
     final boolean disableLoop;
+    final boolean alwaysShowVideoProgressBar;
+    final boolean showAuthorLocation;
     final float defaultPlaybackSpeed;
     final boolean autoTranslateComments;
     final String videoLocation;
@@ -111,6 +123,7 @@ final class ModuleConfig {
     final long viewsMax;
     final long likesMin;
     final long likesMax;
+    final boolean hideAuthorAvatar;
     final boolean hideAuthorInfo;
     final boolean hideFollowButton;
     final boolean hideVideoDescription;
@@ -126,9 +139,15 @@ final class ModuleConfig {
     final boolean hideQuickDm;
     final boolean hideStoryTags;
     final boolean hideCollabLabel;
+    final boolean hideCommercialLabels;
+    final boolean hideCreativeToolAnchors;
+    final boolean hideMovieAnimeAnchors;
+    final boolean hideIncentiveShare;
     final boolean hideTako;
     final boolean hideContentSearch;
+    final boolean hideSafetyWarning;
     final boolean hideStatusBar;
+    final boolean hideLiveEntry;
     final boolean hideTopNavigation;
     final boolean hideSearchEntry;
     final boolean hideBottomNavigation;
@@ -145,16 +164,24 @@ final class ModuleConfig {
                  boolean hideAiGenerated, boolean hideTrendingTopics,
                  boolean hideContentClassification, boolean forceRegion, boolean hideLongPosts,
                  boolean filterViewsLikes, boolean disableOfflineColdCacheWithNetwork,
-                 boolean disableLoop, float defaultPlaybackSpeed, boolean autoTranslateComments,
+                 boolean disableLoop, boolean alwaysShowVideoProgressBar,
+                 boolean showAuthorLocation,
+                 float defaultPlaybackSpeed, boolean autoTranslateComments,
                  String videoLocation, String picLocation, String gifLocation,
                  boolean allowDuet, boolean allowStitch,
                  int longPostSeconds, long viewsMin, long viewsMax, long likesMin, long likesMax,
-                 boolean hideAuthorInfo, boolean hideFollowButton, boolean hideVideoDescription,
+                 boolean hideAuthorAvatar, boolean hideAuthorInfo,
+                 boolean hideFollowButton, boolean hideVideoDescription,
                  boolean hideVideoTags, boolean hideMusicTitle, boolean hideMusicCover,
                  boolean hideLikeButton, boolean hideCommentButton, boolean hideFavoriteButton,
                  boolean hideShareButton, boolean hideDuetButton, boolean hideStitchButton,
                  boolean hideQuickDm, boolean hideStoryTags, boolean hideCollabLabel,
-                 boolean hideTako, boolean hideContentSearch, boolean hideStatusBar,
+                 boolean hideCommercialLabels, boolean hideCreativeToolAnchors,
+                 boolean hideMovieAnimeAnchors,
+                 boolean hideIncentiveShare, boolean hideTako, boolean hideContentSearch,
+                 boolean hideSafetyWarning,
+                 boolean hideStatusBar,
+                 boolean hideLiveEntry,
                  boolean hideTopNavigation, boolean hideSearchEntry,
                  boolean hideBottomNavigation, boolean hideVideoProgressBar,
                  boolean hideTranslationControls, boolean gpsSpoof,
@@ -176,6 +203,8 @@ final class ModuleConfig {
         this.filterViewsLikes = filterViewsLikes;
         this.disableOfflineColdCacheWithNetwork = disableOfflineColdCacheWithNetwork;
         this.disableLoop = disableLoop;
+        this.alwaysShowVideoProgressBar = alwaysShowVideoProgressBar;
+        this.showAuthorLocation = showAuthorLocation;
         this.defaultPlaybackSpeed = PlaybackSpeed.sanitize(defaultPlaybackSpeed);
         this.autoTranslateComments = autoTranslateComments;
         this.videoLocation = nonEmpty(videoLocation, "Movies/TikTok");
@@ -188,6 +217,7 @@ final class ModuleConfig {
         this.viewsMax = viewsMax;
         this.likesMin = likesMin;
         this.likesMax = likesMax;
+        this.hideAuthorAvatar = hideAuthorAvatar;
         this.hideAuthorInfo = hideAuthorInfo;
         this.hideFollowButton = hideFollowButton;
         this.hideVideoDescription = hideVideoDescription;
@@ -203,9 +233,15 @@ final class ModuleConfig {
         this.hideQuickDm = hideQuickDm;
         this.hideStoryTags = hideStoryTags;
         this.hideCollabLabel = hideCollabLabel;
+        this.hideCommercialLabels = hideCommercialLabels;
+        this.hideCreativeToolAnchors = hideCreativeToolAnchors;
+        this.hideMovieAnimeAnchors = hideMovieAnimeAnchors;
+        this.hideIncentiveShare = hideIncentiveShare;
         this.hideTako = hideTako;
         this.hideContentSearch = hideContentSearch;
+        this.hideSafetyWarning = hideSafetyWarning;
         this.hideStatusBar = hideStatusBar;
+        this.hideLiveEntry = hideLiveEntry;
         this.hideTopNavigation = hideTopNavigation;
         this.hideSearchEntry = hideSearchEntry;
         this.hideBottomNavigation = hideBottomNavigation;
@@ -258,6 +294,8 @@ final class ModuleConfig {
                 preferences.getBoolean(KEY_FILTER_VIEWS_LIKES, false),
                 preferences.getBoolean(KEY_DISABLE_OFFLINE_COLD_CACHE_WITH_NETWORK, false),
                 preferences.getBoolean(KEY_DISABLE_LOOP, false),
+                preferences.getBoolean(KEY_ALWAYS_SHOW_VIDEO_PROGRESS_BAR, false),
+                preferences.getBoolean(KEY_SHOW_AUTHOR_LOCATION, false),
                 preferences.getFloat(KEY_DEFAULT_PLAYBACK_SPEED, DEFAULT_PLAYBACK_SPEED),
                 preferences.getBoolean(KEY_AUTO_TRANSLATE_COMMENTS, false),
                 preferences.getString(KEY_VIDEO_LOCATION, "Movies/TikTok"),
@@ -270,6 +308,7 @@ final class ModuleConfig {
                 positiveLong(preferences.getString(KEY_VIEWS_MAX, Long.toString(Long.MAX_VALUE)), Long.MAX_VALUE),
                 nonNegativeLong(preferences.getString(KEY_LIKES_MIN, "0"), 0),
                 positiveLong(preferences.getString(KEY_LIKES_MAX, Long.toString(Long.MAX_VALUE)), Long.MAX_VALUE),
+                loadAuthorAvatarHidden(preferences),
                 preferences.getBoolean(KEY_HIDE_AUTHOR_INFO, false),
                 preferences.getBoolean(KEY_HIDE_FOLLOW_BUTTON, false),
                 preferences.getBoolean(KEY_HIDE_VIDEO_DESCRIPTION, false),
@@ -285,9 +324,15 @@ final class ModuleConfig {
                 preferences.getBoolean(KEY_HIDE_QUICK_DM, false),
                 preferences.getBoolean(KEY_HIDE_STORY_TAGS, false),
                 preferences.getBoolean(KEY_HIDE_COLLAB_LABEL, false),
+                preferences.getBoolean(KEY_HIDE_COMMERCIAL_LABELS, false),
+                preferences.getBoolean(KEY_HIDE_CREATIVE_TOOL_ANCHORS, false),
+                preferences.getBoolean(KEY_HIDE_MOVIE_ANIME_ANCHORS, false),
+                preferences.getBoolean(KEY_HIDE_INCENTIVE_SHARE, false),
                 preferences.getBoolean(KEY_HIDE_TAKO, false),
                 preferences.getBoolean(KEY_HIDE_CONTENT_SEARCH, false),
+                preferences.getBoolean(KEY_HIDE_SAFETY_WARNING, false),
                 preferences.getBoolean(KEY_HIDE_STATUS_BAR, false),
+                preferences.getBoolean(KEY_HIDE_LIVE_ENTRY, false),
                 preferences.getBoolean(KEY_HIDE_TOP_NAVIGATION, false),
                 preferences.getBoolean(KEY_HIDE_SEARCH_ENTRY, false),
                 loadBottomNavigationHidden(preferences),
@@ -301,27 +346,35 @@ final class ModuleConfig {
 
     static ModuleConfig defaults() {
         return new ModuleConfig(false, RegionPreset.US, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false,
-                PlaybackSpeed.DEFAULT, false,
+                 false, false, false, false, false, false, false, false, false,
+                false, PlaybackSpeed.DEFAULT, false,
                 "Movies/TikTok", "Pictures/TikTok", "Movies/TikTok",
                 false, false,
-                60, 0, Long.MAX_VALUE, 0, Long.MAX_VALUE,
+                 60, 0, Long.MAX_VALUE, 0, Long.MAX_VALUE,
+                  false, false, false, false, false, false, false, false, false,
+                 false, false, false,
                  false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false,
-                 false, false, false, false, false, false, false,
-                 false, 0.0, 0.0);
+                 false, false, false, false, false, false, false, false, false,
+                 false, false, 0.0, 0.0);
     }
 
-    boolean hasPagePurificationEnabled() {
-        return hideAuthorInfo || hideFollowButton || hideVideoDescription || hideVideoTags
+    boolean hasComponentPurificationEnabled() {
+        return hideAuthorAvatar || hideAuthorInfo || hideFollowButton
+                || hideVideoDescription || hideVideoTags
                 || hideMusicTitle || hideMusicCover || hideLikeButton || hideCommentButton
                 || hideFavoriteButton || hideShareButton || hideDuetButton || hideStitchButton
-                || hideQuickDm || hideStoryTags || hideCollabLabel || hideTako || hideContentSearch
-                || hideTranslationControls;
+                || hideQuickDm || hideStoryTags || hideCollabLabel
+                || hideTako || hideTranslationControls;
+    }
+
+    boolean hasFeedOverlayPurificationEnabled() {
+        return hideTrendingTopics || hideContentClassification || hideContentSearch
+                || hideCommercialLabels || hideCreativeToolAnchors || hideMovieAnimeAnchors
+                || hideIncentiveShare || hideSafetyWarning;
     }
 
     boolean hasGlobalNavigationPurificationEnabled() {
-        return hideStatusBar || hideTopNavigation || hideSearchEntry
+        return hideStatusBar || hideLiveEntry || hideTopNavigation || hideSearchEntry
                 || hideBottomNavigation || hideVideoProgressBar;
     }
 
@@ -334,6 +387,13 @@ final class ModuleConfig {
                 || preferences.getBoolean(KEY_LEGACY_HIDE_BOTTOM_CREATE, false)
                 || preferences.getBoolean(KEY_LEGACY_HIDE_BOTTOM_INBOX, false)
                 || preferences.getBoolean(KEY_LEGACY_HIDE_BOTTOM_PROFILE, false);
+    }
+
+    static boolean loadAuthorAvatarHidden(SharedPreferences preferences) {
+        if (preferences.contains(KEY_HIDE_AUTHOR_AVATAR)) {
+            return preferences.getBoolean(KEY_HIDE_AUTHOR_AVATAR, false);
+        }
+        return preferences.getBoolean(KEY_HIDE_AUTHOR_INFO, false);
     }
 
     private static int positiveInt(String value, int fallback) {

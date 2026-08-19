@@ -108,6 +108,7 @@ private enum class SettingsDestination(@param:StringRes val title: Int) {
 }
 
 private enum class PagePurificationOption(@param:StringRes val title: Int) {
+    AUTHOR_AVATAR(R.string.purify_author_avatar),
     AUTHOR_INFO(R.string.purify_author_info),
     FOLLOW_BUTTON(R.string.purify_follow_button),
     VIDEO_DESCRIPTION(R.string.purify_video_description),
@@ -123,10 +124,16 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
     QUICK_DM(R.string.purify_quick_dm),
     STORY_TAGS(R.string.purify_story_tags),
     COLLAB_LABEL(R.string.purify_collab_label),
+    COMMERCIAL_LABELS(R.string.purify_commercial_labels),
+    CREATIVE_TOOL_ANCHORS(R.string.purify_creative_tool_anchors),
+    MOVIE_ANIME_ANCHORS(R.string.purify_movie_anime_anchors),
+    INCENTIVE_SHARE(R.string.purify_incentive_share),
     TAKO(R.string.purify_tako),
     CONTENT_SEARCH(R.string.purify_content_search),
+    SAFETY_WARNING(R.string.purify_safety_warning),
     TRANSLATION_CONTROLS(R.string.purify_translation_controls),
     STATUS_BAR(R.string.purify_status_bar),
+    LIVE_ENTRY(R.string.purify_live_entry),
     TOP_NAVIGATION(R.string.purify_top_navigation),
     SEARCH_ENTRY(R.string.purify_search_entry),
     BOTTOM_NAVIGATION(R.string.purify_bottom_navigation),
@@ -134,6 +141,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
     ;
 
     fun isSelected(state: SettingsUiState): Boolean = when (this) {
+        AUTHOR_AVATAR -> state.hideAuthorAvatar
         AUTHOR_INFO -> state.hideAuthorInfo
         FOLLOW_BUTTON -> state.hideFollowButton
         VIDEO_DESCRIPTION -> state.hideVideoDescription
@@ -149,10 +157,16 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
         QUICK_DM -> state.hideQuickDm
         STORY_TAGS -> state.hideStoryTags
         COLLAB_LABEL -> state.hideCollabLabel
+        COMMERCIAL_LABELS -> state.hideCommercialLabels
+        CREATIVE_TOOL_ANCHORS -> state.hideCreativeToolAnchors
+        MOVIE_ANIME_ANCHORS -> state.hideMovieAnimeAnchors
+        INCENTIVE_SHARE -> state.hideIncentiveShare
         TAKO -> state.hideTako
         CONTENT_SEARCH -> state.hideContentSearch
+        SAFETY_WARNING -> state.hideSafetyWarning
         TRANSLATION_CONTROLS -> state.hideTranslationControls
         STATUS_BAR -> state.hideStatusBar
+        LIVE_ENTRY -> state.hideLiveEntry
         TOP_NAVIGATION -> state.hideTopNavigation
         SEARCH_ENTRY -> state.hideSearchEntry
         BOTTOM_NAVIGATION -> state.hideBottomNavigation
@@ -160,6 +174,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
     }
 
     fun update(state: SettingsUiState, selected: Boolean): SettingsUiState = when (this) {
+        AUTHOR_AVATAR -> state.copy(hideAuthorAvatar = selected)
         AUTHOR_INFO -> state.copy(hideAuthorInfo = selected)
         FOLLOW_BUTTON -> state.copy(hideFollowButton = selected)
         VIDEO_DESCRIPTION -> state.copy(hideVideoDescription = selected)
@@ -175,10 +190,16 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
         QUICK_DM -> state.copy(hideQuickDm = selected)
         STORY_TAGS -> state.copy(hideStoryTags = selected)
         COLLAB_LABEL -> state.copy(hideCollabLabel = selected)
+        COMMERCIAL_LABELS -> state.copy(hideCommercialLabels = selected)
+        CREATIVE_TOOL_ANCHORS -> state.copy(hideCreativeToolAnchors = selected)
+        MOVIE_ANIME_ANCHORS -> state.copy(hideMovieAnimeAnchors = selected)
+        INCENTIVE_SHARE -> state.copy(hideIncentiveShare = selected)
         TAKO -> state.copy(hideTako = selected)
         CONTENT_SEARCH -> state.copy(hideContentSearch = selected)
+        SAFETY_WARNING -> state.copy(hideSafetyWarning = selected)
         TRANSLATION_CONTROLS -> state.copy(hideTranslationControls = selected)
         STATUS_BAR -> state.copy(hideStatusBar = selected)
+        LIVE_ENTRY -> state.copy(hideLiveEntry = selected)
         TOP_NAVIGATION -> state.copy(hideTopNavigation = selected)
         SEARCH_ENTRY -> state.copy(hideSearchEntry = selected)
         BOTTOM_NAVIGATION -> state.copy(hideBottomNavigation = selected)
@@ -622,6 +643,15 @@ private fun SettingsContent(
                     },
                 )
                 GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.always_show_video_progress_bar),
+                    summary = stringResource(R.string.always_show_video_progress_bar_summary),
+                    checked = state.alwaysShowVideoProgressBar,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(alwaysShowVideoProgressBar = checked) }
+                    },
+                )
+                GroupDivider()
                 ValueSettingRow(
                     title = stringResource(R.string.default_playback_speed),
                     value = formatPlaybackSpeed(state.defaultPlaybackSpeed),
@@ -794,6 +824,20 @@ private fun SettingsContent(
                     enabled = state.filterViewsLikes,
                     onClick = { onDialog(SettingsDialog.LIKE_RANGE) },
                 )
+                    }
+                }
+
+                item(key = "feed_display_group") {
+                    SettingsGroup {
+                        SettingsSectionHeader(R.string.settings_section_feed_display)
+                        SwitchSettingRow(
+                            title = stringResource(R.string.show_author_location),
+                            summary = stringResource(R.string.show_author_location_summary),
+                            checked = state.showAuthorLocation,
+                            onCheckedChange = { checked ->
+                                onUpdate { it.copy(showAuthorLocation = checked) }
+                            },
+                        )
                     }
                 }
 

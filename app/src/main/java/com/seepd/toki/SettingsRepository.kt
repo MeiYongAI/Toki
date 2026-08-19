@@ -47,6 +47,14 @@ internal class SettingsRepository(context: Context) {
             false,
         ),
         disableLoop = preferences.getBoolean(ModuleConfig.KEY_DISABLE_LOOP, false),
+        alwaysShowVideoProgressBar = preferences.getBoolean(
+            ModuleConfig.KEY_ALWAYS_SHOW_VIDEO_PROGRESS_BAR,
+            false,
+        ),
+        showAuthorLocation = preferences.getBoolean(
+            ModuleConfig.KEY_SHOW_AUTHOR_LOCATION,
+            false,
+        ),
         defaultPlaybackSpeed = PlaybackSpeed.sanitize(
             preferences.getFloat(
                 ModuleConfig.KEY_DEFAULT_PLAYBACK_SPEED,
@@ -85,6 +93,7 @@ internal class SettingsRepository(context: Context) {
             ModuleConfig.KEY_LIKES_MAX_INPUT,
             ModuleConfig.KEY_LIKES_MAX,
         ),
+        hideAuthorAvatar = ModuleConfig.loadAuthorAvatarHidden(preferences),
         hideAuthorInfo = preferences.getBoolean(ModuleConfig.KEY_HIDE_AUTHOR_INFO, false),
         hideFollowButton = preferences.getBoolean(ModuleConfig.KEY_HIDE_FOLLOW_BUTTON, false),
         hideVideoDescription = preferences.getBoolean(ModuleConfig.KEY_HIDE_VIDEO_DESCRIPTION, false),
@@ -100,9 +109,30 @@ internal class SettingsRepository(context: Context) {
         hideQuickDm = preferences.getBoolean(ModuleConfig.KEY_HIDE_QUICK_DM, false),
         hideStoryTags = preferences.getBoolean(ModuleConfig.KEY_HIDE_STORY_TAGS, false),
         hideCollabLabel = preferences.getBoolean(ModuleConfig.KEY_HIDE_COLLAB_LABEL, false),
+        hideCommercialLabels = preferences.getBoolean(
+            ModuleConfig.KEY_HIDE_COMMERCIAL_LABELS,
+            false,
+        ),
+        hideCreativeToolAnchors = preferences.getBoolean(
+            ModuleConfig.KEY_HIDE_CREATIVE_TOOL_ANCHORS,
+            false,
+        ),
+        hideMovieAnimeAnchors = preferences.getBoolean(
+            ModuleConfig.KEY_HIDE_MOVIE_ANIME_ANCHORS,
+            false,
+        ),
+        hideIncentiveShare = preferences.getBoolean(
+            ModuleConfig.KEY_HIDE_INCENTIVE_SHARE,
+            false,
+        ),
         hideTako = preferences.getBoolean(ModuleConfig.KEY_HIDE_TAKO, false),
         hideContentSearch = preferences.getBoolean(ModuleConfig.KEY_HIDE_CONTENT_SEARCH, false),
+        hideSafetyWarning = preferences.getBoolean(
+            ModuleConfig.KEY_HIDE_SAFETY_WARNING,
+            false,
+        ),
         hideStatusBar = preferences.getBoolean(ModuleConfig.KEY_HIDE_STATUS_BAR, false),
+        hideLiveEntry = preferences.getBoolean(ModuleConfig.KEY_HIDE_LIVE_ENTRY, false),
         hideTopNavigation = preferences.getBoolean(ModuleConfig.KEY_HIDE_TOP_NAVIGATION, false),
         hideSearchEntry = preferences.getBoolean(ModuleConfig.KEY_HIDE_SEARCH_ENTRY, false),
         hideBottomNavigation = ModuleConfig.loadBottomNavigationHidden(preferences),
@@ -175,6 +205,11 @@ internal class SettingsRepository(context: Context) {
             state.disableOfflineColdCacheWithNetwork,
         )
         .putBoolean(ModuleConfig.KEY_DISABLE_LOOP, state.disableLoop)
+        .putBoolean(
+            ModuleConfig.KEY_ALWAYS_SHOW_VIDEO_PROGRESS_BAR,
+            state.alwaysShowVideoProgressBar,
+        )
+        .putBoolean(ModuleConfig.KEY_SHOW_AUTHOR_LOCATION, state.showAuthorLocation)
         .putFloat(
             ModuleConfig.KEY_DEFAULT_PLAYBACK_SPEED,
             PlaybackSpeed.sanitize(state.defaultPlaybackSpeed),
@@ -194,6 +229,7 @@ internal class SettingsRepository(context: Context) {
         .putString(ModuleConfig.KEY_VIEWS_MAX_INPUT, state.viewsMaxInput)
         .putString(ModuleConfig.KEY_LIKES_MIN_INPUT, state.likesMinInput)
         .putString(ModuleConfig.KEY_LIKES_MAX_INPUT, state.likesMaxInput)
+        .putBoolean(ModuleConfig.KEY_HIDE_AUTHOR_AVATAR, state.hideAuthorAvatar)
         .putBoolean(ModuleConfig.KEY_HIDE_AUTHOR_INFO, state.hideAuthorInfo)
         .putBoolean(ModuleConfig.KEY_HIDE_FOLLOW_BUTTON, state.hideFollowButton)
         .putBoolean(ModuleConfig.KEY_HIDE_VIDEO_DESCRIPTION, state.hideVideoDescription)
@@ -209,9 +245,21 @@ internal class SettingsRepository(context: Context) {
         .putBoolean(ModuleConfig.KEY_HIDE_QUICK_DM, state.hideQuickDm)
         .putBoolean(ModuleConfig.KEY_HIDE_STORY_TAGS, state.hideStoryTags)
         .putBoolean(ModuleConfig.KEY_HIDE_COLLAB_LABEL, state.hideCollabLabel)
+        .putBoolean(ModuleConfig.KEY_HIDE_COMMERCIAL_LABELS, state.hideCommercialLabels)
+        .putBoolean(
+            ModuleConfig.KEY_HIDE_CREATIVE_TOOL_ANCHORS,
+            state.hideCreativeToolAnchors,
+        )
+        .putBoolean(
+            ModuleConfig.KEY_HIDE_MOVIE_ANIME_ANCHORS,
+            state.hideMovieAnimeAnchors,
+        )
+        .putBoolean(ModuleConfig.KEY_HIDE_INCENTIVE_SHARE, state.hideIncentiveShare)
         .putBoolean(ModuleConfig.KEY_HIDE_TAKO, state.hideTako)
         .putBoolean(ModuleConfig.KEY_HIDE_CONTENT_SEARCH, state.hideContentSearch)
+        .putBoolean(ModuleConfig.KEY_HIDE_SAFETY_WARNING, state.hideSafetyWarning)
         .putBoolean(ModuleConfig.KEY_HIDE_STATUS_BAR, state.hideStatusBar)
+        .putBoolean(ModuleConfig.KEY_HIDE_LIVE_ENTRY, state.hideLiveEntry)
         .putBoolean(ModuleConfig.KEY_HIDE_TOP_NAVIGATION, state.hideTopNavigation)
         .putBoolean(ModuleConfig.KEY_HIDE_SEARCH_ENTRY, state.hideSearchEntry)
         .putBoolean(ModuleConfig.KEY_HIDE_BOTTOM_NAVIGATION, state.hideBottomNavigation)

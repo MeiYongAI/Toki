@@ -10,6 +10,7 @@
     <string name="settings_section_creation">创作</string>
     <string name="settings_section_content_filter">内容过滤</string>
     <string name="settings_section_metric_filter">数据筛选</string>
+    <string name="settings_section_feed_display">信息显示</string>
     <string name="settings_section_page_purification">页面净化</string>
     <string name="enable_region_spoof">地区伪装</string>
     <string name="enable_region_spoof_summary">让 TikTok 将设备识别为目标地区。</string>
@@ -52,7 +53,8 @@
     <plurals name="page_purification_selected_count">
         <item quantity="other">已选择 %1$d 项</item>
     </plurals>
-    <string name="purify_author_info">头像与作者信息</string>
+    <string name="purify_author_avatar">作者头像</string>
+    <string name="purify_author_info">作者信息</string>
     <string name="purify_follow_button">关注按钮</string>
     <string name="purify_video_description">视频文案</string>
     <string name="purify_video_tags">视频标签</string>
@@ -67,10 +69,16 @@
     <string name="purify_quick_dm">快捷私信</string>
     <string name="purify_story_tags">Story 标签</string>
     <string name="purify_collab_label">协作标签</string>
+    <string name="purify_commercial_labels">商业合作与推广标识</string>
+    <string name="purify_creative_tool_anchors">创作工具与模板入口</string>
+    <string name="purify_movie_anime_anchors">影视与动漫入口</string>
+    <string name="purify_incentive_share">分享与创作者激励</string>
     <string name="purify_tako">Tako 入口</string>
     <string name="purify_content_search">内容搜索入口</string>
+    <string name="purify_safety_warning">活动伤害警告</string>
     <string name="purify_translation_controls">查看原内容/显示翻译</string>
     <string name="purify_status_bar">手机系统状态栏</string>
+    <string name="purify_live_entry">左上角直播入口</string>
     <string name="purify_top_navigation">顶部导航栏</string>
     <string name="purify_search_entry">搜索入口</string>
     <string name="purify_bottom_navigation">底部导航栏</string>
@@ -85,8 +93,8 @@
     <string name="hide_ai_generated_summary">仅屏蔽 TikTok 标记为 AI 生成的视频。</string>
     <string name="hide_trending_topics">隐藏热点话题条</string>
     <string name="hide_trending_topics_summary">隐藏刷视频时出现的热点话题条，不影响视频本身。</string>
-    <string name="hide_content_classification">隐藏内容评级提示</string>
-    <string name="hide_content_classification_summary">隐藏视频上的内容评价和适龄观看提示。</string>
+    <string name="hide_content_classification">隐藏视频评价问卷</string>
+    <string name="hide_content_classification_summary">隐藏“如何评价刚刚观看过的视频？”这类反馈问卷。</string>
     <string name="hide_long_posts">过滤长视频</string>
     <string name="hide_long_posts_summary">隐藏超过设定时长的视频。</string>
     <string name="long_post_seconds">最长时长</string>
@@ -94,8 +102,12 @@
     <string name="disable_offline_cold_cache_with_network_summary">网络可用时阻止 TikTok 使用离线模式冷缓存。</string>
     <string name="filter_views_likes">播放量与点赞筛选</string>
     <string name="filter_views_likes_summary">只显示落在设定范围内的视频。</string>
+    <string name="show_author_location">显示作者位置</string>
+    <string name="show_author_location_summary">在作者昵称旁显示 TikTok 返回的作者地区代码。</string>
     <string name="disable_loop">禁止循环播放</string>
     <string name="disable_loop_summary">视频结束后停留在最后一帧，不再自动重播。</string>
+    <string name="always_show_video_progress_bar">总是显示视频进度条</string>
+    <string name="always_show_video_progress_bar_summary">移除普通视频短于 30 秒时隐藏进度条的限制。与页面净化中的隐藏选项同时开启时，以隐藏为准。</string>
     <string name="default_playback_speed">默认播放速度</string>
     <string name="default_playback_speed_dialog_title">选择默认播放速度</string>
     <string name="restart_tiktok">重启 TikTok</string>

@@ -2,6 +2,15 @@
 
 [English](#changelog) | [中文](#中文)
 
+## 0.4.22
+
+- Added an option to keep the video progress bar visible on standard videos shorter than 30 seconds; the existing hide-progress-bar option takes priority.
+- Added optional author-location display with the matching country flag and region code beside the author name.
+- Split author-avatar and author-information purification into independent controls.
+- Updated TikTok 46.4.3 purification paths for the LIVE entry, search entry, top and bottom navigation, music title, and video feedback surveys.
+- Added grouped purification controls for commercial and promotion labels, creative tools and templates, movie and anime entrances, sharing and creator incentives, and activity safety warnings.
+- Moved feed payload, label, anchor, survey, and warning gates into a dedicated hook module and removed stale decompiler aliases and obsolete warning paths.
+
 ## 0.4.21
 
 - Added an optional page-purification control to hide the system status bar on TikTok's main video pages.
@@ -73,6 +82,15 @@
 - Added the Root-based Restart TikTok action.
 
 ## 中文
+
+### 0.4.22
+
+- 新增“总是显示视频进度条”，移除普通视频短于 30 秒时隐藏进度条的限制；与隐藏进度条同时开启时，以隐藏为准。
+- 新增作者位置显示，可在作者昵称旁显示对应国家/地区旗帜和地区代码。
+- 将作者头像与作者信息拆分为两个独立的页面净化选项。
+- 更新 TikTok 46.4.3 的直播入口、搜索入口、顶部与底部导航栏、音乐标题和视频评价问卷净化路径。
+- 新增商业合作与推广、创作工具与模板、影视与动漫、分享与创作者激励、活动伤害警告等分类型净化选项。
+- 将 Feed 数据、标识、锚点、问卷和警告 Hook 整理到独立模块，并清除反编译伪包名与失效的旧警告路径。
 
 ### 0.4.21
 

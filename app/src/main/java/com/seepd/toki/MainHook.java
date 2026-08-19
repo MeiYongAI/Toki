@@ -57,6 +57,9 @@ public final class MainHook extends XposedModule {
             logInfo("Implementation and test target: " + TESTED_TIKTOK_VERSION);
             logInfo("Hook revision: direct-ui-gates-2-loop-replay-frame-4");
             logInfo("Loop prevention setting: " + config.disableLoop);
+            logInfo("Always show video progress bar setting: "
+                    + config.alwaysShowVideoProgressBar);
+            logInfo("Show author location setting: " + config.showAuthorLocation);
             logInfo("Default playback speed: " + config.defaultPlaybackSpeed);
             logInfo("Comment translation setting: " + config.autoTranslateComments);
             logInfo("Disable offline cold cache with network setting: "
@@ -92,6 +95,22 @@ public final class MainHook extends XposedModule {
             PlaybackHooks playbackHooks = new PlaybackHooks(this);
             installFeature("default playback speed", () ->
                     playbackHooks.installDefaultSpeed(classLoader));
+            if (config.alwaysShowVideoProgressBar && !config.hideVideoProgressBar) {
+                installFeature("always-visible video progress bar", () -> {
+                    int installedTargets = playbackHooks.installAlwaysShowProgressBar(classLoader);
+                    logInfo("Always-visible progress-bar hooks installed: "
+                            + installedTargets + "/1 target(s)");
+                });
+            } else if (config.alwaysShowVideoProgressBar) {
+                logInfo("Always-visible progress bar skipped because the hide option takes priority");
+            }
+            if (config.showAuthorLocation) {
+                installFeature("author location", () -> {
+                    int installedTargets = new AuthorLocationHooks(this).install(classLoader);
+                    logInfo("Author-location hooks installed: "
+                            + installedTargets + " target(s)");
+                });
+            }
             if (config.autoTranslateComments) {
                 Context applicationContext = context.getApplicationContext();
                 Context stateContext = applicationContext == null ? context : applicationContext;
@@ -106,24 +125,30 @@ public final class MainHook extends XposedModule {
                 installFeature("reuse permissions", () ->
                         new ReusePermissionHooks(this).install(classLoader, config));
             }
-            if (config.hasPagePurificationEnabled()) {
+            if (config.hasComponentPurificationEnabled()) {
                 installFeature("page purification", () -> {
-                    int installedTargets = purificationHooks.install(classLoader, config);
+                    int installedTargets = purificationHooks.installComponents(
+                            classLoader,
+                            config);
                     logInfo("Page purification hooks installed: "
+                            + installedTargets + " target(s)");
+                });
+            }
+            if (config.hasFeedOverlayPurificationEnabled()) {
+                installFeature("feed overlay purification", () -> {
+                    int installedTargets = new FeedOverlayHooks(this).install(
+                            classLoader,
+                            config);
+                    logInfo("Feed overlay purification hooks installed: "
                             + installedTargets + " target(s)");
                 });
             }
             if (config.hasGlobalNavigationPurificationEnabled()) {
                 installFeature("global navigation purification", () -> {
-                    if (purificationHooks.installGlobalNavigation(config)) {
-                        logInfo("Global navigation purification listener installed");
-                    }
-                });
-            }
-            if (config.hideTrendingTopics || config.hideContentClassification) {
-                installFeature("video overlay purification", () -> {
-                    int installedTargets = purificationHooks.installVideoOverlay(classLoader, config);
-                    logInfo("Video overlay purification hooks installed: "
+                    int installedTargets = purificationHooks.installGlobalNavigation(
+                            classLoader,
+                            config);
+                    logInfo("Global navigation purification hooks installed: "
                             + installedTargets + " target(s)");
                 });
             }

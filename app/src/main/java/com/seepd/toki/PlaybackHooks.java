@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.github.libxposed.api.XposedModule;
 
-/** Handles loop prevention and the configured default playback speed. */
+/** Handles loop prevention, progress-bar visibility, and the configured playback speed. */
 final class PlaybackHooks extends HookFeature {
     private final AtomicBoolean configInvocationLogged = new AtomicBoolean(false);
     private final AtomicBoolean engineInvocationLogged = new AtomicBoolean(false);
@@ -129,6 +129,27 @@ final class PlaybackHooks extends HookFeature {
             installedTargets++;
         }
         return installedTargets;
+    }
+
+    /** Uses TikTok's persistent seek-bar style without changing video eligibility checks. */
+    int installAlwaysShowProgressBar(ClassLoader classLoader) {
+        try {
+            Class<?> type = Class.forName("X.12vF", false, classLoader);
+            Method target = type.getDeclaredMethod("LJIIJJI", boolean.class);
+            if (target.getReturnType() != int.class) {
+                throw new NoSuchMethodException("X.12vF#LJIIJJI(boolean): int");
+            }
+            target.setAccessible(true);
+            hook(target)
+                    .setId("toki-always-show-progress-bar-short-video-4643")
+                    .intercept(chain -> 0);
+            return 1;
+        } catch (ClassNotFoundException ignored) {
+            return 0;
+        } catch (Throwable error) {
+            logError("Unable to remove the 46.4.3 short-video progress-bar limit", error);
+            return 0;
+        }
     }
 
     /**

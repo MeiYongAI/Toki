@@ -8,6 +8,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import android.widget.HorizontalScrollView;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -16,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.github.libxposed.api.XposedModule;
 
-/** Installs component, video overlay, and global navigation purification hooks. */
+/** Installs view-level component and global navigation purification hooks. */
 final class PurificationHooks extends HookFeature {
     private static final String MAIN_ACTIVITY = "com.ss.android.ugc.aweme.main.MainActivity";
     private final AtomicBoolean visibilityLogged = new AtomicBoolean(false);
@@ -27,12 +28,15 @@ final class PurificationHooks extends HookFeature {
         super(module);
     }
 
-    int install(ClassLoader classLoader, ModuleConfig config) {
+    int installComponents(ClassLoader classLoader, ModuleConfig config) {
         int installed = 0;
+        if (config.hideAuthorAvatar) {
+            installed += installComponentVisibilityHooks(classLoader, "author-avatar",
+                    "com.ss.android.ugc.aweme.feed.assem.avatar.FeedAvatarAssemWrap",
+                    "com.ss.android.ugc.aweme.feed.assem.avatar.FeedAvatarDefaultAssem");
+        }
         if (config.hideAuthorInfo) {
             installed += installComponentVisibilityHooks(classLoader, "author-info",
-                    "com.ss.android.ugc.aweme.feed.assem.avatar.FeedAvatarAssemWrap",
-                    "com.ss.android.ugc.aweme.feed.assem.avatar.FeedAvatarDefaultAssem",
                     "com.ss.android.ugc.aweme.feed.assem.videoauthorinfo.VideoAuthorInfoRelationAssem");
         }
         if (config.hideFollowButton) {
@@ -49,8 +53,7 @@ final class PurificationHooks extends HookFeature {
                     "com.ss.android.ugc.aweme.feed.assem.desc.VideoDescTagAssem");
         }
         if (config.hideMusicTitle) {
-            installed += installComponentVisibilityHooks(classLoader, "music-title",
-                    "com.ss.android.ugc.aweme.feed.assem.music.VideoMusicTitleAssem");
+            installed += installMusicTitleVisibilityHook(classLoader);
         }
         if (config.hideMusicCover) {
             installed += installComponentVisibilityHooks(classLoader, "music-cover",
@@ -100,9 +103,6 @@ final class PurificationHooks extends HookFeature {
             installed += installComponentVisibilityHooks(classLoader, "tako",
                     "com.ss.android.ugc.aweme.feed.assem.tikbot.TakoAssem");
         }
-        if (config.hideContentSearch) {
-            installed += installContentSearchVisibilityHooks(classLoader);
-        }
         if (config.hideTranslationControls) {
             installed += installComponentVisibilityHooks(classLoader, "translation-controls",
                     "com.ss.android.ugc.aweme.translation.ui.TranslationControlsAssem");
@@ -110,7 +110,35 @@ final class PurificationHooks extends HookFeature {
         return installed;
     }
 
-    boolean installGlobalNavigation(ModuleConfig config) {
+    /** Prevents TikTok 46.4.3 from restoring the top-left LIVE entry during feed transitions. */
+    private int installLiveEntryVisibilityHook(ClassLoader classLoader) {
+        try {
+            Class<?> generatorType = Class.forName(
+                    "com.bytedance.tiktok.homepage.mainfragment.toolbar.LiveIconGenerator",
+                    false,
+                    classLoader);
+            Method visibilityMethod = generatorType.getDeclaredMethod("LJIIIZ", boolean.class);
+            if (visibilityMethod.getReturnType() != void.class) {
+                throw new NoSuchMethodException("LiveIconGenerator#LJIIIZ(boolean): void");
+            }
+            visibilityMethod.setAccessible(true);
+            hook(visibilityMethod)
+                    .setId("toki-purify-live-entry-generator-4643")
+                    .intercept(chain -> chain.proceed(new Object[]{false}));
+            return 1;
+        } catch (ClassNotFoundException ignored) {
+            // The verified 46.4.3 live-entry controller is absent in this process.
+            return 0;
+        } catch (Throwable error) {
+            logError("Unable to prevent 46.4.3 LIVE entry restoration", error);
+            return 0;
+        }
+    }
+
+    int installGlobalNavigation(ClassLoader classLoader, ModuleConfig config) {
+        int installed = config.hideLiveEntry
+                ? installLiveEntryVisibilityHook(classLoader)
+                : 0;
         try {
             Method onResume = Activity.class.getDeclaredMethod("onResume");
             onResume.setAccessible(true);
@@ -124,73 +152,10 @@ final class PurificationHooks extends HookFeature {
                         }
                         return result;
                     });
-            return true;
+            return installed + 1;
         } catch (Throwable error) {
             logError("Unable to install global navigation purification", error);
-            return false;
-        }
-    }
-
-    /** Removes the feed payloads that cause TikTok to render visual and similar-content search. */
-    private int installContentSearchVisibilityHooks(ClassLoader classLoader) {
-        return installAwemePayloadRemovalHooks(
-                classLoader,
-                "content-search",
-                "getSmartSearchInfo",
-                "getVisualSearchInfo"
-        );
-    }
-
-    int installVideoOverlay(ClassLoader classLoader, ModuleConfig config) {
-        int installed = 0;
-        if (config.hideTrendingTopics) {
-            installed += installAwemePayloadRemovalHooks(
-                    classLoader,
-                    "trending-topics",
-                    "getTrendingBar",
-                    "getTrendingBarFYP",
-                    "getHotSearchInfo",
-                    "getDouDiscountMixInfo"
-            );
-        }
-        if (config.hideContentClassification) {
-            installed += installAwemePayloadRemovalHooks(
-                    classLoader,
-                    "content-classification",
-                    "getContentClassificationMaskInfo"
-            );
-        }
-        return installed;
-    }
-
-    /** Removes optional Aweme payloads before TikTok creates their corresponding overlay. */
-    private int installAwemePayloadRemovalHooks(
-            ClassLoader classLoader,
-            String targetName,
-            String... getterNames
-    ) {
-        try {
-            Class<?> awemeType = Class.forName(
-                    "com.ss.android.ugc.aweme.feed.model.Aweme", false, classLoader);
-            int installed = 0;
-            for (String getterName : getterNames) {
-                try {
-                    Method getter = awemeType.getMethod(getterName);
-                    hook(getter)
-                            .setId("toki-purify-" + targetName + "-" + getterName)
-                            .intercept(chain -> null);
-                    installed++;
-                } catch (NoSuchMethodException ignored) {
-                    // The payload has been removed or renamed in this TikTok version.
-                }
-            }
             return installed;
-        } catch (ClassNotFoundException error) {
-            logError("Unable to resolve Aweme payloads for " + targetName, error);
-            return 0;
-        } catch (Throwable error) {
-            logError("Unable to remove Aweme payloads for " + targetName, error);
-            return 0;
         }
     }
 
@@ -236,6 +201,33 @@ final class PurificationHooks extends HookFeature {
             }
         }
         return installed;
+    }
+
+    /** Forces the 46.4.3 music-title controller to keep its root hidden. */
+    private int installMusicTitleVisibilityHook(ClassLoader classLoader) {
+        try {
+            Class<?> type = Class.forName(
+                    "com.ss.android.ugc.aweme.feed.assem.music.VideoMusicTitleAssem",
+                    false,
+                    classLoader);
+            // JADX renders this obfuscated method as m47347mr; the runtime name is mr.
+            Method visibility = type.getDeclaredMethod("mr", int.class);
+            if (visibility.getReturnType() != void.class
+                    || Modifier.isStatic(visibility.getModifiers())) {
+                throw new NoSuchMethodException(
+                        "VideoMusicTitleAssem#mr(int): void");
+            }
+            visibility.setAccessible(true);
+            hook(visibility)
+                    .setId("toki-purify-music-title-visibility-4643")
+                    .intercept(chain -> chain.proceed(new Object[]{8}));
+            return 1;
+        } catch (ClassNotFoundException ignored) {
+            return 0;
+        } catch (Throwable error) {
+            logError("Unable to hide 46.4.3 music title", error);
+            return 0;
+        }
     }
 
     private static void hideComponentView(
@@ -325,11 +317,14 @@ final class PurificationHooks extends HookFeature {
         if (config.hideStatusBar && MAIN_ACTIVITY.equals(activity.getClass().getName())) {
             hideStatusBar(activity);
         }
+        if (config.hideLiveEntry) {
+            hideViewById(root, viewIds.liveEntry);
+        }
         if (config.hideTopNavigation) {
-            hideViewById(root, viewIds.topNavigation);
+            hideTopNavigation(root, viewIds.topNavigationHost);
         }
         if (config.hideSearchEntry) {
-            hideViewById(root, viewIds.searchEntry);
+            hideViewByIdAfterLayout(root, viewIds.searchEntry);
         }
         if (config.hideBottomNavigation) {
             hideViewById(root, viewIds.bottomNavigation);
@@ -371,19 +366,60 @@ final class PurificationHooks extends HookFeature {
         }
     }
 
+    private static void hideViewByIdAfterLayout(View root, int resourceId) {
+        hideViewById(root, resourceId);
+        if (resourceId != 0) {
+            root.post(() -> hideViewById(root, resourceId));
+        }
+    }
+
+    private static void hideTopNavigation(View root, int hostId) {
+        View host = hostId == 0 ? null : root.findViewById(hostId);
+        if (!(host instanceof ViewGroup)) {
+            return;
+        }
+        ViewGroup hostGroup = (ViewGroup) host;
+        for (int index = 0; index < hostGroup.getChildCount(); index++) {
+            View child = hostGroup.getChildAt(index);
+            if (containsHorizontalScrollView(child)) {
+                child.setVisibility(View.GONE);
+                return;
+            }
+        }
+    }
+
+    private static boolean containsHorizontalScrollView(View view) {
+        if (view instanceof HorizontalScrollView) {
+            return true;
+        }
+        if (!(view instanceof ViewGroup)) {
+            return false;
+        }
+        ViewGroup group = (ViewGroup) view;
+        for (int index = 0; index < group.getChildCount(); index++) {
+            if (containsHorizontalScrollView(group.getChildAt(index))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static final class GlobalNavigationViewIds {
-        final int topNavigation;
+        final int liveEntry;
+        final int topNavigationHost;
         final int searchEntry;
         final int bottomNavigation;
         final int videoProgressBar;
 
         private GlobalNavigationViewIds(
-                int topNavigation,
+                int liveEntry,
+                int topNavigationHost,
                 int searchEntry,
                 int bottomNavigation,
                 int videoProgressBar
         ) {
-            this.topNavigation = topNavigation;
+            this.liveEntry = liveEntry;
+            this.topNavigationHost = topNavigationHost;
             this.searchEntry = searchEntry;
             this.bottomNavigation = bottomNavigation;
             this.videoProgressBar = videoProgressBar;
@@ -391,9 +427,10 @@ final class PurificationHooks extends HookFeature {
 
         static GlobalNavigationViewIds from(View root) {
             return new GlobalNavigationViewIds(
-                    viewId(root, "tyu"),
-                    viewId(root, "jvu"),
-                    viewId(root, "o3o"),
+                    viewId(root, "jyx"),
+                    viewId(root, "u3t"),
+                    viewId(root, "jz0"),
+                    viewId(root, "o7b"),
                     viewId(root, "video_seek_bar"));
         }
 

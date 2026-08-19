@@ -17,13 +17,14 @@ It only targets `com.zhiliaoapp.musically`.
   content ratings, and long videos; filter by view or like count.
 - Duet and Stitch: allow restricted content to be used for Duet or Stitch. When looping is
   disabled, playback pauses at the end and can be replayed with one tap.
-- Default playback speed: automatically apply 1.25x to 2.0x to each new video without
-  overriding a manual speed choice for the current video.
+- Playback controls: automatically apply 1.25x to 2.0x to each new video without overriding a
+  manual speed choice, and optionally keep the progress bar visible on videos under 30 seconds.
+- Feed display: optionally show the author's region code with its matching country flag.
 - Comment translation: show Translate and Revert controls in comments and preserve translation
   state across videos.
-- Page purification: optionally hide author details, descriptions, music, action buttons,
-  optional entries, Tako, search, translation controls, the system status bar, and navigation
-  bars from recommended video pages.
+- Page purification: independently hide author avatar and information, descriptions, music,
+  action buttons, navigation, search, LIVE, commercial and creative entrances, feedback surveys,
+  safety warnings, Tako, translation controls, and the system status bar.
 - Count ranges: enter full numbers or compact suffixes such as `20K` and `1.5M` directly.
 - Metric range fields preserve the exact text entered while filtering uses the parsed count.
 - Material 3 settings UI with dark mode and dynamic color support.
@@ -108,9 +109,10 @@ Toki 是面向官方 TikTok 46.4.3 实现并完成测试的 libxposed API 102 �
 - 下载增强：解除下载限制，所有视频优先使用无水印地址，可分别设置视频、图片和 GIF 保存目录。
 - 信息流过滤：隐藏广告、直播、图文帖、AI 生成内容、热点话题条、内容评级提示和长视频，并按播放量/点赞数过滤。
 - 合拍与拼接：允许受限内容合拍或拼接；关闭循环播放后视频进入暂停状态，单击即可重播。
-- 默认播放速度：为新视频自动应用 1.25x–2.0x，不覆盖当前视频内手动选择的倍速。
+- 播放控制：为新视频自动应用 1.25x–2.0x，不覆盖当前视频内手动选择的倍速，并可让短于 30 秒的视频始终显示进度条。
+- 信息显示：可在作者昵称旁显示对应国家/地区旗帜和地区代码。
 - 评论翻译：评论区显示“翻译/还原”按钮，并跨视频保持翻译状态。
-- 页面净化：可按需隐藏推荐视频页中的作者、文案、音乐、互动按钮、Tako、搜索入口、翻译控件、手机系统状态栏和导航栏。
+- 页面净化：可分别隐藏作者头像与信息、文案、音乐、互动按钮、导航、搜索、直播、商业与创作入口、评价问卷、伤害警告、Tako、翻译控件和手机系统状态栏。
 - 数量范围：支持直接输入完整数字或 `20K`、`1.5M` 等数量后缀。
 - 数据筛选输入会保留用户输入的原始文本，过滤时使用解析后的数值。
 - Material 3 设置界面，支持深色模式与动态配色。
