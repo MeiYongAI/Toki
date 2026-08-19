@@ -11,7 +11,6 @@
 - Extended TikTok 46.4.3 For You filtering to feed dispatch and cache-backed list insertion paths.
 - Preserved the exact text entered in view-count and like-count range fields while keeping numeric filtering unchanged.
 - Added an option to disable offline cold-cache use when a network is available.
-- Kept the known 46.4.3 view-count and like-count filtering limitation explicit.
 
 ## 0.4.19
 
@@ -78,7 +77,6 @@
 - 将 TikTok 46.4.3 推荐页过滤扩展到信息流消息分发和缓存列表插入路径。
 - 保留播放量与点赞数范围输入的原始文本，过滤计算仍使用解析后的数值。
 - 增加联网时禁用离线冷缓存的选项。
-- 继续明确记录 46.4.3 播放量与点赞数筛选的已知限制。
 
 ### 0.4.19
 

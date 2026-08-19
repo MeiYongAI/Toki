@@ -28,11 +28,6 @@ It only targets `com.zhiliaoapp.musically`.
 - Metric range fields preserve the exact text entered while filtering uses the parsed count.
 - Material 3 settings UI with dark mode and dynamic color support.
 
-## Known Issues
-
-- View-count and like-count filtering is not fully reliable on TikTok 46.4.3. Some videos
-  outside the configured ranges may still appear.
-
 ## Requirements
 
 - Android 8.0 or later
@@ -119,10 +114,6 @@ Toki 是面向官方 TikTok 46.4.3 实现并完成测试的 libxposed API 102 �
 - 数量范围：支持直接输入完整数字或 `20K`、`1.5M` 等数量后缀。
 - 数据筛选输入会保留用户输入的原始文本，过滤时使用解析后的数值。
 - Material 3 设置界面，支持深色模式与动态配色。
-
-### 已知问题
-
-- TikTok 46.4.3 的播放量与点赞数筛选尚未完全可靠，少数范围外视频仍可能出现。
 
 ### 环境要求
 
