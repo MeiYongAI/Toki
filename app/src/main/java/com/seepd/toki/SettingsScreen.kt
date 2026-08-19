@@ -30,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
@@ -70,12 +71,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -83,8 +86,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.util.Locale
 
+private const val GITHUB_URL = "https://github.com/MeiYongAI/Toki"
+private const val TELEGRAM_URL = "https://t.me/toki_lsposed"
+private const val ISSUE_URL =
+    "https://github.com/MeiYongAI/Toki/issues/new?template=bug_report.yml"
+
 private enum class SettingsDialog {
     NONE,
+    LANGUAGE,
+    CLEAR_TIKTOK_CACHE,
+    RESET_SETTINGS,
     REGION,
     MEDIA_DIRECTORY,
     DURATION,
@@ -102,6 +113,7 @@ private enum class MediaDirectoryTarget {
 }
 
 private enum class SettingsDestination(@param:StringRes val title: Int) {
+    HOME(R.string.settings_home),
     GENERAL(R.string.settings_general),
     FEED(R.string.settings_feed),
     DOWNLOADS(R.string.settings_downloads),
@@ -127,6 +139,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
     COMMERCIAL_LABELS(R.string.purify_commercial_labels),
     CREATIVE_TOOL_ANCHORS(R.string.purify_creative_tool_anchors),
     MOVIE_ANIME_ANCHORS(R.string.purify_movie_anime_anchors),
+    GAME_ANCHORS(R.string.purify_game_anchors),
     INCENTIVE_SHARE(R.string.purify_incentive_share),
     TAKO(R.string.purify_tako),
     CONTENT_SEARCH(R.string.purify_content_search),
@@ -160,6 +173,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
         COMMERCIAL_LABELS -> state.hideCommercialLabels
         CREATIVE_TOOL_ANCHORS -> state.hideCreativeToolAnchors
         MOVIE_ANIME_ANCHORS -> state.hideMovieAnimeAnchors
+        GAME_ANCHORS -> state.hideGameAnchors
         INCENTIVE_SHARE -> state.hideIncentiveShare
         TAKO -> state.hideTako
         CONTENT_SEARCH -> state.hideContentSearch
@@ -193,6 +207,7 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
         COMMERCIAL_LABELS -> state.copy(hideCommercialLabels = selected)
         CREATIVE_TOOL_ANCHORS -> state.copy(hideCreativeToolAnchors = selected)
         MOVIE_ANIME_ANCHORS -> state.copy(hideMovieAnimeAnchors = selected)
+        GAME_ANCHORS -> state.copy(hideGameAnchors = selected)
         INCENTIVE_SHARE -> state.copy(hideIncentiveShare = selected)
         TAKO -> state.copy(hideTako = selected)
         CONTENT_SEARCH -> state.copy(hideContentSearch = selected)
@@ -210,10 +225,16 @@ private enum class PagePurificationOption(@param:StringRes val title: Int) {
 @Composable
 internal fun SettingsApp(
     state: SettingsUiState,
+    homeState: HomeUiState,
     onUpdate: ((SettingsUiState) -> SettingsUiState) -> Unit,
-    restartStatus: RootRestartStatus,
+    restartStatus: RootActionStatus,
+    cacheClearStatus: RootActionStatus,
     onRestartTikTok: () -> Unit,
+    onClearTikTokCache: () -> Unit,
     onRestartStatusConsumed: () -> Unit,
+    onCacheClearStatusConsumed: () -> Unit,
+    onLanguageSelected: (AppLanguage) -> Unit,
+    onResetSettings: () -> Unit,
 ) {
     var dialogName by rememberSaveable { mutableStateOf(SettingsDialog.NONE.name) }
     var mediaDirectoryTargetName by rememberSaveable {
@@ -223,12 +244,12 @@ internal fun SettingsApp(
     val activeDialog = SettingsDialog.valueOf(dialogName)
     val closeDialog = { dialogName = SettingsDialog.NONE.name }
     val restartMessage = when (restartStatus) {
-        RootRestartStatus.SUCCESS -> null
-        RootRestartStatus.NO_ROOT -> stringResource(R.string.restart_tiktok_no_root)
-        RootRestartStatus.FAILED -> stringResource(R.string.restart_tiktok_failed)
-        RootRestartStatus.TIMEOUT -> stringResource(R.string.restart_tiktok_timeout)
-        RootRestartStatus.IDLE,
-        RootRestartStatus.RUNNING -> null
+        RootActionStatus.SUCCESS -> stringResource(R.string.restart_tiktok_success)
+        RootActionStatus.NO_ROOT -> stringResource(R.string.root_access_required)
+        RootActionStatus.FAILED -> stringResource(R.string.restart_tiktok_failed)
+        RootActionStatus.TIMEOUT -> stringResource(R.string.root_action_timeout)
+        RootActionStatus.IDLE,
+        RootActionStatus.RUNNING -> null
     }
     LaunchedEffect(restartMessage) {
         if (restartMessage != null) {
@@ -236,11 +257,25 @@ internal fun SettingsApp(
             onRestartStatusConsumed()
         }
     }
+    val cacheClearMessage = when (cacheClearStatus) {
+        RootActionStatus.SUCCESS -> stringResource(R.string.clear_tiktok_cache_success)
+        RootActionStatus.NO_ROOT -> stringResource(R.string.root_access_required)
+        RootActionStatus.FAILED -> stringResource(R.string.clear_tiktok_cache_failed)
+        RootActionStatus.TIMEOUT -> stringResource(R.string.root_action_timeout)
+        RootActionStatus.IDLE,
+        RootActionStatus.RUNNING -> null
+    }
+    LaunchedEffect(cacheClearMessage) {
+        if (cacheClearMessage != null) {
+            restartSnackbarHostState.showSnackbar(cacheClearMessage)
+            onCacheClearStatusConsumed()
+        }
+    }
     val openMediaDirectory = { target: MediaDirectoryTarget ->
         mediaDirectoryTargetName = target.name
         dialogName = SettingsDialog.MEDIA_DIRECTORY.name
     }
-    var destinationName by rememberSaveable { mutableStateOf(SettingsDestination.GENERAL.name) }
+    var destinationName by rememberSaveable { mutableStateOf(SettingsDestination.HOME.name) }
     val destination = SettingsDestination.valueOf(destinationName)
     val useNavigationRail = with(LocalDensity.current) {
         LocalWindowInfo.current.containerSize.width.toDp() >= 600.dp
@@ -250,15 +285,17 @@ internal fun SettingsApp(
         destination = destination,
         useNavigationRail = useNavigationRail,
         onDestinationSelected = { destinationName = it.name },
-        restartStatus = restartStatus,
-        onRestartTikTok = onRestartTikTok,
         snackbarHostState = restartSnackbarHostState,
     ) { contentModifier ->
         SettingsContent(
             destination = destination,
             state = state,
+            homeState = homeState,
+            restartStatus = restartStatus,
+            cacheClearStatus = cacheClearStatus,
             onUpdate = onUpdate,
             onDialog = { dialogName = it.name },
+            onRestartTikTok = onRestartTikTok,
             onPickVideoDirectory = { openMediaDirectory(MediaDirectoryTarget.VIDEO) },
             onPickPictureDirectory = { openMediaDirectory(MediaDirectoryTarget.PICTURE) },
             onPickGifDirectory = { openMediaDirectory(MediaDirectoryTarget.GIF) },
@@ -268,6 +305,34 @@ internal fun SettingsApp(
 
     when (activeDialog) {
         SettingsDialog.NONE -> Unit
+        SettingsDialog.LANGUAGE -> LanguageDialog(
+            selected = homeState.language,
+            onSelect = { language ->
+                closeDialog()
+                onLanguageSelected(language)
+            },
+            onDismiss = closeDialog,
+        )
+        SettingsDialog.CLEAR_TIKTOK_CACHE -> ConfirmationDialog(
+            title = R.string.clear_tiktok_cache,
+            message = R.string.clear_tiktok_cache_confirmation,
+            confirmLabel = R.string.clear_cache,
+            onConfirm = {
+                closeDialog()
+                onClearTikTokCache()
+            },
+            onDismiss = closeDialog,
+        )
+        SettingsDialog.RESET_SETTINGS -> ConfirmationDialog(
+            title = R.string.reset_settings,
+            message = R.string.reset_settings_confirmation,
+            confirmLabel = R.string.reset,
+            onConfirm = {
+                closeDialog()
+                onResetSettings()
+            },
+            onDismiss = closeDialog,
+        )
         SettingsDialog.REGION -> RegionDialog(
             selected = state.region,
             onSelect = {
@@ -385,8 +450,6 @@ private fun SettingsNavigationLayout(
     destination: SettingsDestination,
     useNavigationRail: Boolean,
     onDestinationSelected: (SettingsDestination) -> Unit,
-    restartStatus: RootRestartStatus,
-    onRestartTikTok: () -> Unit,
     snackbarHostState: SnackbarHostState,
     content: @Composable (Modifier) -> Unit,
 ) {
@@ -399,8 +462,6 @@ private fun SettingsNavigationLayout(
             SettingsScaffold(
                 modifier = Modifier.weight(1f),
                 destination = destination,
-                restartStatus = restartStatus,
-                onRestartTikTok = onRestartTikTok,
                 snackbarHostState = snackbarHostState,
                 content = content,
             )
@@ -408,8 +469,6 @@ private fun SettingsNavigationLayout(
     } else {
         SettingsScaffold(
             destination = destination,
-            restartStatus = restartStatus,
-            onRestartTikTok = onRestartTikTok,
             snackbarHostState = snackbarHostState,
             bottomBar = {
                 SettingsBottomNavigation(
@@ -459,6 +518,7 @@ private fun SettingsNavigationRail(
 @Composable
 private fun SettingsDestinationIcon(destination: SettingsDestination) {
     val imageVector = when (destination) {
+        SettingsDestination.HOME -> Icons.Outlined.Home
         SettingsDestination.GENERAL -> Icons.Outlined.Settings
         SettingsDestination.FEED -> Icons.Outlined.PlayArrow
         SettingsDestination.DOWNLOADS -> Icons.AutoMirrored.Outlined.List
@@ -473,8 +533,6 @@ private fun SettingsDestinationIcon(destination: SettingsDestination) {
 private fun SettingsScaffold(
     modifier: Modifier = Modifier,
     destination: SettingsDestination,
-    restartStatus: RootRestartStatus,
-    onRestartTikTok: () -> Unit,
     snackbarHostState: SnackbarHostState,
     bottomBar: @Composable () -> Unit = {},
     content: @Composable (Modifier) -> Unit,
@@ -484,11 +542,7 @@ private fun SettingsScaffold(
         containerColor = MaterialTheme.colorScheme.surface,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            SettingsTopAppBar(
-                destination = destination,
-                restartStatus = restartStatus,
-                onRestartTikTok = onRestartTikTok,
-            )
+            SettingsTopAppBar(destination = destination)
         },
         bottomBar = bottomBar,
     ) { contentPadding ->
@@ -504,8 +558,6 @@ private fun SettingsScaffold(
 @Composable
 private fun SettingsTopAppBar(
     destination: SettingsDestination,
-    restartStatus: RootRestartStatus,
-    onRestartTikTok: () -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -515,24 +567,6 @@ private fun SettingsTopAppBar(
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
             )
-        },
-        actions = {
-            IconButton(
-                enabled = restartStatus == RootRestartStatus.IDLE,
-                onClick = onRestartTikTok,
-            ) {
-                if (restartStatus == RootRestartStatus.RUNNING) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp,
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Outlined.Refresh,
-                        contentDescription = stringResource(R.string.restart_tiktok),
-                    )
-                }
-            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -544,16 +578,111 @@ private fun SettingsTopAppBar(
 private fun SettingsContent(
     destination: SettingsDestination,
     state: SettingsUiState,
+    homeState: HomeUiState,
+    restartStatus: RootActionStatus,
+    cacheClearStatus: RootActionStatus,
     onUpdate: ((SettingsUiState) -> SettingsUiState) -> Unit,
     onDialog: (SettingsDialog) -> Unit,
+    onRestartTikTok: () -> Unit,
     onPickVideoDirectory: () -> Unit,
     onPickPictureDirectory: () -> Unit,
     onPickGifDirectory: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val locale = LocalLocale.current.platformLocale
+    val uriHandler = LocalUriHandler.current
+    val rootActionRunning = restartStatus == RootActionStatus.RUNNING ||
+        cacheClearStatus == RootActionStatus.RUNNING
     SettingsList(modifier) {
         when (destination) {
+            SettingsDestination.HOME -> {
+                item(key = "home_status_group") {
+                    SettingsGroup {
+                        SettingsSectionHeader(R.string.home_module_status)
+                        StatusSettingRow(
+                            title = stringResource(R.string.home_lsposed_service),
+                            value = if (homeState.moduleConnected) {
+                                stringResource(R.string.home_status_connected)
+                            } else {
+                                stringResource(R.string.home_status_disconnected)
+                            },
+                            positive = homeState.moduleConnected,
+                        )
+                        GroupDivider()
+                        StatusSettingRow(
+                            title = "TikTok",
+                            value = tikTokStatusText(homeState),
+                            positive = homeState.tikTokInstalled &&
+                                homeState.tikTokVersion == ModuleConfig.TESTED_TIKTOK_VERSION,
+                        )
+                    }
+                }
+
+                item(key = "home_actions_group") {
+                    SettingsGroup {
+                        SettingsSectionHeader(R.string.home_quick_actions)
+                        HomeActionRow(
+                            title = stringResource(R.string.restart_tiktok),
+                            summary = stringResource(R.string.restart_tiktok_summary),
+                            icon = Icons.Outlined.Refresh,
+                            running = restartStatus == RootActionStatus.RUNNING,
+                            enabled = homeState.tikTokInstalled && !rootActionRunning,
+                            onClick = onRestartTikTok,
+                        )
+                        GroupDivider()
+                        HomeActionRow(
+                            title = stringResource(R.string.clear_tiktok_cache),
+                            summary = stringResource(R.string.clear_tiktok_cache_summary),
+                            icon = Icons.Outlined.Clear,
+                            running = cacheClearStatus == RootActionStatus.RUNNING,
+                            enabled = homeState.tikTokInstalled && !rootActionRunning,
+                            onClick = { onDialog(SettingsDialog.CLEAR_TIKTOK_CACHE) },
+                        )
+                    }
+                }
+
+                item(key = "home_settings_group") {
+                    SettingsGroup {
+                        SettingsSectionHeader(R.string.home_toki_settings)
+                        ValueSettingRow(
+                            title = stringResource(R.string.app_language),
+                            value = appLanguageLabel(homeState.language),
+                            onClick = { onDialog(SettingsDialog.LANGUAGE) },
+                        )
+                        GroupDivider()
+                        HomeActionRow(
+                            title = stringResource(R.string.reset_settings),
+                            summary = stringResource(R.string.reset_settings_summary),
+                            icon = Icons.Outlined.Refresh,
+                            onClick = { onDialog(SettingsDialog.RESET_SETTINGS) },
+                        )
+                    }
+                }
+
+                item(key = "home_project_group") {
+                    SettingsGroup {
+                        SettingsSectionHeader(R.string.home_project)
+                        ValueSettingRow(
+                            title = "GitHub",
+                            value = "MeiYongAI/Toki",
+                            onClick = { uriHandler.openUri(GITHUB_URL) },
+                        )
+                        GroupDivider()
+                        ValueSettingRow(
+                            title = "Telegram",
+                            value = "@toki_lsposed",
+                            onClick = { uriHandler.openUri(TELEGRAM_URL) },
+                        )
+                        GroupDivider()
+                        ValueSettingRow(
+                            title = stringResource(R.string.report_issue),
+                            value = "GitHub Issues",
+                            onClick = { uriHandler.openUri(ISSUE_URL) },
+                        )
+                    }
+                }
+            }
+
             SettingsDestination.GENERAL -> {
                 item(key = "common_group") {
                     SettingsGroup {
@@ -858,6 +987,26 @@ private fun SettingsContent(
 }
 
 @Composable
+private fun tikTokStatusText(state: HomeUiState): String {
+    if (!state.tikTokInstalled) {
+        return stringResource(R.string.home_tiktok_not_installed)
+    }
+    val version = state.tikTokVersion ?: stringResource(R.string.home_version_unknown)
+    return if (state.tikTokVersion == ModuleConfig.TESTED_TIKTOK_VERSION) {
+        stringResource(R.string.home_tiktok_tested_version, version)
+    } else {
+        stringResource(R.string.home_tiktok_untested_version, version)
+    }
+}
+
+@Composable
+private fun appLanguageLabel(language: AppLanguage): String = when (language) {
+    AppLanguage.SYSTEM -> stringResource(R.string.app_language_system)
+    AppLanguage.ENGLISH -> "English"
+    AppLanguage.CHINESE -> "中文"
+}
+
+@Composable
 private fun pagePurificationSelectionSummary(state: SettingsUiState): String {
     val selectedCount = PagePurificationOption.entries.count { it.isSelected(state) }
     return if (selectedCount == 0) {
@@ -943,6 +1092,78 @@ private fun PagePurificationDialog(
 }
 
 @Composable
+private fun LanguageDialog(
+    selected: AppLanguage,
+    onSelect: (AppLanguage) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.app_language)) },
+        text = {
+            Column(Modifier.selectableGroup()) {
+                AppLanguage.entries.forEach { language ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 56.dp)
+                            .selectable(
+                                selected = language == selected,
+                                role = Role.RadioButton,
+                                onClick = { onSelect(language) },
+                            )
+                            .semantics(mergeDescendants = true) {}
+                            .padding(horizontal = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        RadioButton(
+                            selected = language == selected,
+                            onClick = null,
+                        )
+                        Text(
+                            text = appLanguageLabel(language),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+    )
+}
+
+@Composable
+private fun ConfirmationDialog(
+    @StringRes title: Int,
+    @StringRes message: Int,
+    @StringRes confirmLabel: Int,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(title)) },
+        text = { Text(stringResource(message)) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(stringResource(confirmLabel))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+    )
+}
+
+@Composable
 private fun SettingsList(
     modifier: Modifier = Modifier,
     content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit,
@@ -986,6 +1207,124 @@ private fun SettingsSectionHeader(@StringRes title: Int) {
 @Composable
 private fun GroupDivider() {
     Spacer(Modifier.height(8.dp))
+}
+
+@Composable
+private fun StatusSettingRow(
+    title: String,
+    value: String,
+    positive: Boolean,
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 64.dp)
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Text(
+                text = title,
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Medium,
+            )
+            Text(
+                text = value,
+                color = if (positive) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.error
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun HomeActionRow(
+    title: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    summary: String? = null,
+    running: Boolean = false,
+    enabled: Boolean = true,
+) {
+    val contentColor = if (enabled) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    }
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = if (summary == null) 64.dp else 76.dp)
+                .clickable(enabled = enabled && !running, onClick = onClick)
+                .semantics(mergeDescendants = true) { role = Role.Button }
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = if (enabled) MaterialTheme.colorScheme.primary else contentColor,
+                modifier = Modifier.size(24.dp),
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = title,
+                    color = contentColor,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                )
+                if (summary != null) {
+                    Text(
+                        text = summary,
+                        color = if (enabled) {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+            if (running) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp,
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = if (enabled) MaterialTheme.colorScheme.primary else contentColor,
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+        }
+    }
 }
 
 @Composable

@@ -128,6 +128,8 @@ class SettingsInputTest {
                 state.hideCollabLabel,
                 state.hideCommercialLabels,
                 state.hideCreativeToolAnchors,
+                state.hideMovieAnimeAnchors,
+                state.hideGameAnchors,
                 state.hideIncentiveShare,
                 state.hideTako,
                 state.hideContentSearch,

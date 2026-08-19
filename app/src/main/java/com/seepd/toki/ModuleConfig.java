@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 final class ModuleConfig {
     static final String TARGET_PACKAGE = "com.zhiliaoapp.musically";
+    static final String TESTED_TIKTOK_VERSION = "46.4.3";
     static final String PREFS = "module_settings";
     static final String KEY_REGION_SPOOF = "region_spoof";
     static final String KEY_REGION = "region";
@@ -65,6 +66,7 @@ final class ModuleConfig {
     static final String KEY_HIDE_COMMERCIAL_LABELS = "hide_commercial_labels";
     static final String KEY_HIDE_CREATIVE_TOOL_ANCHORS = "hide_creative_tool_anchors";
     static final String KEY_HIDE_MOVIE_ANIME_ANCHORS = "hide_movie_anime_anchors";
+    static final String KEY_HIDE_GAME_ANCHORS = "hide_game_anchors";
     static final String KEY_HIDE_INCENTIVE_SHARE = "hide_incentive_share";
     static final String KEY_HIDE_TAKO = "hide_tako";
     static final String KEY_HIDE_CONTENT_SEARCH = "hide_content_search";
@@ -142,6 +144,7 @@ final class ModuleConfig {
     final boolean hideCommercialLabels;
     final boolean hideCreativeToolAnchors;
     final boolean hideMovieAnimeAnchors;
+    final boolean hideGameAnchors;
     final boolean hideIncentiveShare;
     final boolean hideTako;
     final boolean hideContentSearch;
@@ -178,6 +181,7 @@ final class ModuleConfig {
                  boolean hideQuickDm, boolean hideStoryTags, boolean hideCollabLabel,
                  boolean hideCommercialLabels, boolean hideCreativeToolAnchors,
                  boolean hideMovieAnimeAnchors,
+                 boolean hideGameAnchors,
                  boolean hideIncentiveShare, boolean hideTako, boolean hideContentSearch,
                  boolean hideSafetyWarning,
                  boolean hideStatusBar,
@@ -236,6 +240,7 @@ final class ModuleConfig {
         this.hideCommercialLabels = hideCommercialLabels;
         this.hideCreativeToolAnchors = hideCreativeToolAnchors;
         this.hideMovieAnimeAnchors = hideMovieAnimeAnchors;
+        this.hideGameAnchors = hideGameAnchors;
         this.hideIncentiveShare = hideIncentiveShare;
         this.hideTako = hideTako;
         this.hideContentSearch = hideContentSearch;
@@ -327,6 +332,7 @@ final class ModuleConfig {
                 preferences.getBoolean(KEY_HIDE_COMMERCIAL_LABELS, false),
                 preferences.getBoolean(KEY_HIDE_CREATIVE_TOOL_ANCHORS, false),
                 preferences.getBoolean(KEY_HIDE_MOVIE_ANIME_ANCHORS, false),
+                preferences.getBoolean(KEY_HIDE_GAME_ANCHORS, false),
                 preferences.getBoolean(KEY_HIDE_INCENTIVE_SHARE, false),
                 preferences.getBoolean(KEY_HIDE_TAKO, false),
                 preferences.getBoolean(KEY_HIDE_CONTENT_SEARCH, false),
@@ -355,7 +361,7 @@ final class ModuleConfig {
                  false, false, false,
                  false, false, false, false, false, false, false, false,
                  false, false, false, false, false, false, false, false, false,
-                 false, false, 0.0, 0.0);
+                 false, false, false, 0.0, 0.0);
     }
 
     boolean hasComponentPurificationEnabled() {
@@ -370,6 +376,7 @@ final class ModuleConfig {
     boolean hasFeedOverlayPurificationEnabled() {
         return hideTrendingTopics || hideContentClassification || hideContentSearch
                 || hideCommercialLabels || hideCreativeToolAnchors || hideMovieAnimeAnchors
+                || hideGameAnchors
                 || hideIncentiveShare || hideSafetyWarning;
     }
 

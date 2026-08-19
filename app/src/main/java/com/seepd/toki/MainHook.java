@@ -13,7 +13,6 @@ import io.github.libxposed.api.XposedModuleInterface.PackageReadyParam;
 /** Modern libxposed entry point. It is loaded only in the selected TikTok process. */
 public final class MainHook extends XposedModule {
     private static final String TAG = "Toki";
-    private static final String TESTED_TIKTOK_VERSION = "46.4.3";
     private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     @Override
@@ -51,10 +50,11 @@ public final class MainHook extends XposedModule {
             ModuleConfig config = loadModuleConfig(context);
             logInfo("Active for " + context.getPackageName());
             logInfo("TikTok version: " + (versionName == null ? "unknown" : versionName));
-            if (!TESTED_TIKTOK_VERSION.equals(versionName)) {
+            if (!ModuleConfig.TESTED_TIKTOK_VERSION.equals(versionName)) {
                 logInfo("This TikTok version is outside the supported target");
             }
-            logInfo("Implementation and test target: " + TESTED_TIKTOK_VERSION);
+            logInfo("Implementation and test target: "
+                    + ModuleConfig.TESTED_TIKTOK_VERSION);
             logInfo("Hook revision: direct-ui-gates-2-loop-replay-frame-4");
             logInfo("Loop prevention setting: " + config.disableLoop);
             logInfo("Always show video progress bar setting: "

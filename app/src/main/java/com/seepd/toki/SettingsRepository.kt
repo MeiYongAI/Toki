@@ -121,6 +121,10 @@ internal class SettingsRepository(context: Context) {
             ModuleConfig.KEY_HIDE_MOVIE_ANIME_ANCHORS,
             false,
         ),
+        hideGameAnchors = preferences.getBoolean(
+            ModuleConfig.KEY_HIDE_GAME_ANCHORS,
+            false,
+        ),
         hideIncentiveShare = preferences.getBoolean(
             ModuleConfig.KEY_HIDE_INCENTIVE_SHARE,
             false,
@@ -153,19 +157,31 @@ internal class SettingsRepository(context: Context) {
         write(preferences.edit(), state).apply()
     }
 
-    fun connectRemote(onConnected: () -> Unit) {
+    fun reset(): SettingsUiState {
+        val defaults = SettingsDefaults.create()
+        write(preferences.edit().clear(), defaults).commit()
+        return defaults
+    }
+
+    fun connectRemote(
+        onConnected: () -> Unit,
+        onDisconnected: () -> Unit,
+    ) {
         XposedServiceHelper.registerListener(object : XposedServiceHelper.OnServiceListener {
             override fun onServiceBind(service: XposedService) {
                 try {
                     remotePreferences = service.getRemotePreferences(ModuleConfig.PREFS)
                     onConnected()
                 } catch (error: RuntimeException) {
+                    remotePreferences = null
+                    onDisconnected()
                     Log.e(TAG, "Unable to open LSPosed remote preferences", error)
                 }
             }
 
             override fun onServiceDied(service: XposedService) {
                 remotePreferences = null
+                onDisconnected()
             }
         })
     }
@@ -254,6 +270,7 @@ internal class SettingsRepository(context: Context) {
             ModuleConfig.KEY_HIDE_MOVIE_ANIME_ANCHORS,
             state.hideMovieAnimeAnchors,
         )
+        .putBoolean(ModuleConfig.KEY_HIDE_GAME_ANCHORS, state.hideGameAnchors)
         .putBoolean(ModuleConfig.KEY_HIDE_INCENTIVE_SHARE, state.hideIncentiveShare)
         .putBoolean(ModuleConfig.KEY_HIDE_TAKO, state.hideTako)
         .putBoolean(ModuleConfig.KEY_HIDE_CONTENT_SEARCH, state.hideContentSearch)

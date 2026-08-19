@@ -50,7 +50,8 @@ final class FeedOverlayHooks extends HookFeature {
         if (config.hideIncentiveShare) {
             installed += installIncentiveStandardButtonGate(classLoader);
         }
-        if (config.hideCreativeToolAnchors || config.hideMovieAnimeAnchors) {
+        if (config.hideCreativeToolAnchors || config.hideMovieAnimeAnchors
+                || config.hideGameAnchors) {
             installed += installAnchorSelectionGate(classLoader, config);
         }
         if (config.hideSafetyWarning) {
@@ -420,7 +421,9 @@ final class FeedOverlayHooks extends HookFeature {
 
     private static boolean shouldHideAnchorKey(String key, ModuleConfig config) {
         return (config.hideCreativeToolAnchors && isCreativeToolAnchorKey(key))
-                || (config.hideMovieAnimeAnchors && "anchor_movie_tok".equals(key));
+                || (config.hideMovieAnimeAnchors && "anchor_movie_tok".equals(key))
+                || (config.hideGameAnchors
+                && ("anchor_game".equals(key) || "anchor_tiktok_game".equals(key)));
     }
 
     private static boolean isCreativeToolAnchorKey(String key) {

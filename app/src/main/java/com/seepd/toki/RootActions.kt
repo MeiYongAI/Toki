@@ -4,7 +4,7 @@ import android.content.Context
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-internal enum class RootRestartStatus {
+internal enum class RootActionStatus {
     IDLE,
     RUNNING,
     SUCCESS,
@@ -20,11 +20,17 @@ internal object RootActions {
     private const val EXIT_STOP_FAILED = 12
     private const val EXIT_START_FAILED = 13
     private const val EXIT_PROCESS_MISSING = 14
+    private const val EXIT_CACHE_CLEAR_FAILED = 15
 
     /** Resolves the launcher in the app process, then performs only the privileged actions as root. */
-    fun restartTikTok(context: Context): RootRestartStatus {
-        val target = findLaunchTarget(context) ?: return RootRestartStatus.FAILED
+    fun restartTikTok(context: Context): RootActionStatus {
+        val target = findLaunchTarget(context) ?: return RootActionStatus.FAILED
         return restartTikTok(target, ProcessRootCommandExecutor)
+    }
+
+    fun clearTikTokCache(context: Context): RootActionStatus {
+        if (!isTikTokInstalled(context)) return RootActionStatus.FAILED
+        return clearTikTokCache(ProcessRootCommandExecutor)
     }
 
     private fun findLaunchTarget(context: Context): LaunchTarget? {
@@ -42,21 +48,29 @@ internal object RootActions {
     internal fun restartTikTok(
         target: LaunchTarget?,
         executor: RootCommandExecutor,
-    ): RootRestartStatus {
-        target ?: return RootRestartStatus.FAILED
-        return when (val result = executor.execute(buildCommand(target), ROOT_TIMEOUT_SECONDS)) {
-            RootCommandResult.Unavailable -> RootRestartStatus.NO_ROOT
-            RootCommandResult.Timeout -> RootRestartStatus.TIMEOUT
-            RootCommandResult.Interrupted -> RootRestartStatus.FAILED
-            is RootCommandResult.Completed -> when (result.exitCode) {
-                0 -> RootRestartStatus.SUCCESS
-                1, 255, EXIT_NOT_ROOT -> RootRestartStatus.NO_ROOT
-                else -> RootRestartStatus.FAILED
-            }
+    ): RootActionStatus {
+        target ?: return RootActionStatus.FAILED
+        return execute(buildRestartCommand(target), executor)
+    }
+
+    internal fun clearTikTokCache(executor: RootCommandExecutor): RootActionStatus =
+        execute(buildClearCacheCommand(), executor)
+
+    private fun execute(
+        command: String,
+        executor: RootCommandExecutor,
+    ): RootActionStatus = when (val result = executor.execute(command, ROOT_TIMEOUT_SECONDS)) {
+        RootCommandResult.Unavailable -> RootActionStatus.NO_ROOT
+        RootCommandResult.Timeout -> RootActionStatus.TIMEOUT
+        RootCommandResult.Interrupted -> RootActionStatus.FAILED
+        is RootCommandResult.Completed -> when (result.exitCode) {
+            0 -> RootActionStatus.SUCCESS
+            1, 255, EXIT_NOT_ROOT -> RootActionStatus.NO_ROOT
+            else -> RootActionStatus.FAILED
         }
     }
 
-    internal fun buildCommand(target: LaunchTarget): String {
+    internal fun buildRestartCommand(target: LaunchTarget): String {
         val packageName = shellQuote(target.packageName)
         val componentName = shellQuote(target.componentName)
         return "if [ \"$(/system/bin/id -u)\" != \"0\" ]; then exit $EXIT_NOT_ROOT; fi; " +
@@ -69,6 +83,21 @@ internal object RootActions {
             "/system/bin/pidof $packageName >/dev/null 2>&1 " +
             "|| exit $EXIT_PROCESS_MISSING"
     }
+
+    internal fun buildClearCacheCommand(): String {
+        val packageName = shellQuote(ModuleConfig.TARGET_PACKAGE)
+        return "if [ \"$(/system/bin/id -u)\" != \"0\" ]; then exit $EXIT_NOT_ROOT; fi; " +
+            "/system/bin/pm path --user current $packageName >/dev/null 2>&1 " +
+            "|| exit $EXIT_PACKAGE_MISSING; " +
+            "/system/bin/am force-stop --user current $packageName >/dev/null 2>&1 " +
+            "|| exit $EXIT_STOP_FAILED; " +
+            "/system/bin/pm clear --user current --cache-only $packageName >/dev/null 2>&1 " +
+            "|| exit $EXIT_CACHE_CLEAR_FAILED"
+    }
+
+    private fun isTikTokInstalled(context: Context): Boolean = runCatching {
+        context.packageManager.getPackageInfo(ModuleConfig.TARGET_PACKAGE, 0)
+    }.isSuccess
 
     private fun shellQuote(value: String): String =
         "'${value.replace("'", "'\\''")}'"

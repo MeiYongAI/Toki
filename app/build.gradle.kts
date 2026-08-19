@@ -23,8 +23,8 @@ android {
         applicationId = "com.seepd.toki"
         minSdk = 26
         targetSdk = 36
-        versionCode = 422
-        versionName = "0.4.22"
+        versionCode = 423
+        versionName = "0.4.23"
 
     }
 
@@ -57,6 +57,12 @@ android {
 
     buildFeatures {
         compose = true
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
     }
 
     // TikTok's private implementation classes are intentionally accessed by

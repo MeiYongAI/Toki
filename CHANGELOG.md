@@ -2,6 +2,14 @@
 
 [English](#changelog) | [中文](#中文)
 
+## 0.4.23
+
+- Added a Home dashboard as the default destination with LSPosed service status and the installed TikTok version.
+- Moved the Root-based TikTok restart action to Home and added Root-only cache clearing that preserves accounts, settings, drafts, and app data.
+- Added manual interface language switching between Follow System, English, and Chinese, plus an action to reset all Toki settings.
+- Added direct GitHub, Telegram, and issue-report links and expanded navigation to Home, General, Feed, and Downloads.
+- Added an independent page-purification control for game-related entrances.
+
 ## 0.4.22
 
 - Added an option to keep the video progress bar visible on standard videos shorter than 30 seconds; the existing hide-progress-bar option takes priority.
@@ -82,6 +90,14 @@
 - Added the Root-based Restart TikTok action.
 
 ## 中文
+
+### 0.4.23
+
+- 新增首页并设为默认页面，可查看 LSPosed 服务状态与已安装的 TikTok 版本。
+- 将基于 Root 的 TikTok 重启操作移至首页，并新增仅清除缓存的 Root 操作；账号、设置、草稿和应用数据均会保留。
+- 新增界面语言手动切换，可选择跟随系统、English 或中文，并可一键重置全部 Toki 配置。
+- 新增 GitHub、Telegram 与问题反馈直达入口，导航扩展为首页、常规、信息流和下载。
+- 新增独立的游戏相关入口页面净化选项。
 
 ### 0.4.22
 

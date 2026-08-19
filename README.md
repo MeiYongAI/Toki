@@ -23,11 +23,15 @@ It only targets `com.zhiliaoapp.musically`.
 - Comment translation: show Translate and Revert controls in comments and preserve translation
   state across videos.
 - Page purification: independently hide author avatar and information, descriptions, music,
-  action buttons, navigation, search, LIVE, commercial and creative entrances, feedback surveys,
-  safety warnings, Tako, translation controls, and the system status bar.
+  action buttons, navigation, search, LIVE, commercial, creative, movie, anime, and game
+  entrances, feedback surveys, safety warnings, Tako, translation controls, and the system
+  status bar.
 - Count ranges: enter full numbers or compact suffixes such as `20K` and `1.5M` directly.
 - Metric range fields preserve the exact text entered while filtering uses the parsed count.
-- Material 3 settings UI with dark mode and dynamic color support.
+- Home dashboard: view LSPosed service and TikTok version status, restart TikTok, clear only its
+  cache with Root, reset Toki settings, and open the project community and issue tracker.
+- Material 3 settings UI with dark mode, dynamic color, and manual Follow System, English, and
+  Chinese language switching.
 
 ## Requirements
 
@@ -41,10 +45,11 @@ It only targets `com.zhiliaoapp.musically`.
 
 1. Download the APK from [Releases](https://github.com/MeiYongAI/Toki/releases/latest).
 2. Install it, enable Toki in LSPosed, and select the TikTok scope.
-3. Tap the restart button in the settings app bar. Use it again after changing settings for
-   changes to take effect. Restart TikTok manually when Root access is unavailable.
+3. Open Home in Toki and tap Restart TikTok after changing settings. Restart TikTok manually when
+   Root access is unavailable.
 
-Toki does not request Root access except for the Restart TikTok action in its settings screen.
+Root is used only when you explicitly choose Restart TikTok or Clear TikTok Cache on Home. Cache
+clearing preserves TikTok accounts, settings, drafts, and app data.
 
 Community: [Telegram group](https://t.me/toki_lsposed)
 
@@ -112,10 +117,13 @@ Toki 是面向官方 TikTok 46.4.3 实现并完成测试的 libxposed API 102 �
 - 播放控制：为新视频自动应用 1.25x–2.0x，不覆盖当前视频内手动选择的倍速，并可让短于 30 秒的视频始终显示进度条。
 - 信息显示：可在作者昵称旁显示对应国家/地区旗帜和地区代码。
 - 评论翻译：评论区显示“翻译/还原”按钮，并跨视频保持翻译状态。
-- 页面净化：可分别隐藏作者头像与信息、文案、音乐、互动按钮、导航、搜索、直播、商业与创作入口、评价问卷、伤害警告、Tako、翻译控件和手机系统状态栏。
+- 页面净化：可分别隐藏作者头像与信息、文案、音乐、互动按钮、导航、搜索、直播、商业推广、
+  创作工具、影视动漫与游戏入口、评价问卷、伤害警告、Tako、翻译控件和手机系统状态栏。
 - 数量范围：支持直接输入完整数字或 `20K`、`1.5M` 等数量后缀。
 - 数据筛选输入会保留用户输入的原始文本，过滤时使用解析后的数值。
-- Material 3 设置界面，支持深色模式与动态配色。
+- 首页：查看 LSPosed 服务与 TikTok 版本状态，使用 Root 重启 TikTok 或仅清除其缓存，重置
+  Toki 配置，并打开项目社区和问题反馈页面。
+- Material 3 设置界面，支持深色模式、动态配色，以及跟随系统、English 和中文三种界面语言。
 
 ### 环境要求
 
@@ -128,9 +136,10 @@ Toki 是面向官方 TikTok 46.4.3 实现并完成测试的 libxposed API 102 �
 
 1. 从 [Releases](https://github.com/MeiYongAI/Toki/releases/latest) 下载 APK。
 2. 安装后在 LSPosed 中启用 Toki，并勾选 TikTok 作用域。
-3. 在设置页右上角点击重启按钮；每次修改设置后也可一键重启使其生效。没有 Root 权限时，请手动重启 TikTok。
+3. 修改设置后，可在 Toki 首页点击“重启 TikTok”使设置生效。没有 Root 权限时，请手动重启 TikTok。
 
-除设置页内的“重启 TikTok”外，模块不会主动申请 Root 权限。
+只有在首页主动选择“重启 TikTok”或“清除 TikTok 缓存”时才会使用 Root；清除缓存不会删除
+TikTok 账号、设置、草稿或应用数据。
 
 交流：[Telegram 群组](https://t.me/toki_lsposed)
 
