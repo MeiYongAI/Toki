@@ -1,0 +1,146 @@
+name: 错误报告 / Bug Report
+description: 报告可稳定复现的功能异常、崩溃或 Hook 失效
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。Toki 仅基于官方 TikTok 46.4.3 实现和测试；其他 TikTok 版本不提供兼容保证。
+
+        提交前请搜索现有 Issue，并在修改设置后完整重启 TikTok。使用帮助和无法确认的问题可先在 Telegram 群交流。
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: 提交前确认 / Prerequisites
+      options:
+        - label: 我使用的是最新发布版 Toki，而不是旧版或自行修改的构建。
+          required: true
+        - label: 我使用官方 TikTok 46.4.3，包名为 `com.zhiliaoapp.musically`。
+          required: true
+        - label: 我已搜索现有 Issue，确认没有内容相同的报告。
+          required: true
+        - label: 我已在修改设置后完整重启 TikTok，并再次复现问题。
+          required: true
+
+  - type: input
+    id: toki_version
+    attributes:
+      label: Toki 版本 / Toki version
+      description: 可在应用信息或 GitHub Release 中查看。
+      placeholder: 例如 0.4.20
+    validations:
+      required: true
+
+  - type: input
+    id: tiktok_version
+    attributes:
+      label: TikTok 版本 / TikTok version
+      placeholder: 46.4.3
+    validations:
+      required: true
+
+  - type: input
+    id: android_device
+    attributes:
+      label: Android 与设备 / Android and device
+      description: 请同时填写 Android 版本、设备型号和系统版本。
+      placeholder: 例如 Android 13，Xiaomi 12X，HyperOS 1.0
+    validations:
+      required: true
+
+  - type: input
+    id: lsposed_environment
+    attributes:
+      label: LSPosed 环境 / LSPosed environment
+      description: 填写所用实现、版本以及框架管理器版本。
+      placeholder: 例如 LSPosed 1.9.2，API 102
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature
+    attributes:
+      label: 相关功能 / Affected feature
+      options:
+        - 信息流过滤 / Feed filtering
+        - 播放控制 / Playback
+        - 下载与保存位置 / Downloads and save locations
+        - 评论翻译 / Comment translation
+        - 页面净化 / Page purification
+        - 地区、语言、时区或 GPS / Region and environment
+        - 启动与登录提示 / Startup prompt
+        - 设置界面或重启操作 / Settings or restart action
+        - 其他 / Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: enabled_settings
+    attributes:
+      label: 已启用的相关设置 / Relevant settings
+      description: 只需列出与问题有关的开关和值；数据筛选请写出完整范围。
+      placeholder: |
+        播放量范围：10k 至不限
+        点赞数范围：0 至不限
+        联网时禁用离线冷缓存：开启
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述 / Problem description
+      description: 说明发生了什么、出现频率，以及问题从何时开始。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 复现步骤 / Steps to reproduce
+      placeholder: |
+        1. 打开 Toki 并启用……
+        2. 完整重启 TikTok
+        3. 进入……
+        4. 出现……
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期结果 / Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果 / Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: LSPosed 模块日志 / LSPosed module logs
+      description: 从 LSPosed 管理器的模块日志中截取 Toki 相关部分。请删除账号、设备标识、Cookie、Token 和其他隐私信息。
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: media
+    attributes:
+      label: 截图或录屏 / Screenshots or recordings
+      description: 可直接拖入文件。请遮挡用户名、头像、私信和其他个人信息。
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: 补充信息 / Additional context
+      description: 可填写是否在关闭其他模块后复现、是否只有冷启动出现等信息。
+

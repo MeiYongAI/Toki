@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Telegram 群组 / Telegram Group
+    url: https://t.me/toki_lsposed
+    about: 使用交流、问题确认和一般讨论；可复现的 Bug 请使用上方错误报告表单。

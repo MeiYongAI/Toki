@@ -52,6 +52,16 @@ Toki does not request Root access except for the Restart TikTok action in its se
 
 Community: [Telegram group](https://t.me/toki_lsposed)
 
+## Reporting Issues
+
+- Use the [Bug Report form](https://github.com/MeiYongAI/Toki/issues/new?template=bug_report.yml)
+  for reproducible failures. Include the Toki, TikTok, Android, device, and LSPosed versions,
+  exact reproduction steps, relevant settings, and sanitized LSPosed module logs.
+- Use the [Feature Request form](https://github.com/MeiYongAI/Toki/issues/new?template=feature_request.yml)
+  for concrete improvements based on an actual use case.
+- Use the [Telegram group](https://t.me/toki_lsposed) for general discussion and help identifying
+  a problem before filing it. Do not post account data, tokens, cookies, or unredacted private logs.
+
 ## Privacy
 
 Toki declares no network permissions and contains no analytics, telemetry, remote updates, or
@@ -130,6 +140,14 @@ Toki 是面向官方 TikTok 46.4.3 实现并完成测试的 libxposed API 102 �
 除设置页内的“重启 TikTok”外，模块不会主动申请 Root 权限。
 
 交流：[Telegram 群组](https://t.me/toki_lsposed)
+
+### 问题反馈
+
+- 可稳定复现的异常请使用 [错误报告表单](https://github.com/MeiYongAI/Toki/issues/new?template=bug_report.yml)，
+  并填写 Toki、TikTok、Android、设备和 LSPosed 版本、完整复现步骤、相关设置及已脱敏的模块日志。
+- 有明确使用场景的改进建议请使用 [功能建议表单](https://github.com/MeiYongAI/Toki/issues/new?template=feature_request.yml)。
+- 一般交流或尚未确认的问题可先在 [Telegram 群组](https://t.me/toki_lsposed)讨论。
+  请勿公开账号资料、Token、Cookie 或未经脱敏的私人日志。
 
 ### 隐私
 
