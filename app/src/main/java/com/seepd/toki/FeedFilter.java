@@ -2,7 +2,9 @@ package com.seepd.toki;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /** Filters the stable public TikTok feed model without changing request or account code. */
 final class FeedFilter {
@@ -19,6 +21,7 @@ final class FeedFilter {
     private final long viewsMax;
     private final long likesMin;
     private final long likesMax;
+    private final List<String> blockedKeywords;
 
     FeedFilter(ModuleConfig config) {
         hideAds = config.hideFeedAds;
@@ -34,6 +37,7 @@ final class FeedFilter {
         viewsMax = config.viewsMax;
         likesMin = config.likesMin;
         likesMax = config.likesMax;
+        blockedKeywords = parseKeywords(config.keywordBlacklist);
     }
 
     void apply(Object feedItemList) {
@@ -115,7 +119,7 @@ final class FeedFilter {
         return kept;
     }
 
-    private boolean shouldHide(Object item) {
+    boolean shouldHide(Object item) {
         if (item == null) {
             return false;
         }
@@ -145,7 +149,54 @@ final class FeedFilter {
         if (hideLongPosts && shouldHideLongPost(item)) {
             return true;
         }
-        return filterViewsLikes && shouldHideForCounts(item);
+        if (filterViewsLikes && shouldHideForCounts(item)) {
+            return true;
+        }
+        return !blockedKeywords.isEmpty() && shouldHideForKeywords(item);
+    }
+
+    static List<String> parseKeywords(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        String[] parts = input.split("[,\\n\\r]+");
+        List<String> list = new ArrayList<>();
+        for (String part : parts) {
+            String trimmed = part.trim().toLowerCase(Locale.ROOT);
+            if (!trimmed.isEmpty()) {
+                list.add(trimmed);
+            }
+        }
+        return list;
+    }
+
+    private boolean shouldHideForKeywords(Object item) {
+        Object descObj = callObject(item, "getDesc");
+        if (descObj instanceof String) {
+            String desc = ((String) descObj).toLowerCase(Locale.ROOT);
+            for (String keyword : blockedKeywords) {
+                if (desc.contains(keyword)) {
+                    return true;
+                }
+            }
+        }
+        Object textExtraObj = callObject(item, "getTextExtra");
+        if (textExtraObj instanceof List<?>) {
+            for (Object extra : (List<?>) textExtraObj) {
+                if (extra != null) {
+                    Object hashtagName = callObject(extra, "getHashtagName");
+                    if (hashtagName instanceof String) {
+                        String tag = ((String) hashtagName).toLowerCase(Locale.ROOT);
+                        for (String keyword : blockedKeywords) {
+                            if (tag.contains(keyword) || ("#" + tag).contains(keyword)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /** Uses TikTok's AIGC metadata rather than heuristics based on captions or video frames. */

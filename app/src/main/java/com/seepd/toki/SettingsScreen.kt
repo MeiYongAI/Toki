@@ -104,6 +104,7 @@ private enum class SettingsDialog {
     LIKE_RANGE,
     PAGE_PURIFICATION,
     GPS_COORDINATES,
+    KEYWORD_BLACKLIST,
 }
 
 private enum class MediaDirectoryTarget {
@@ -438,6 +439,14 @@ internal fun SettingsApp(
                         option.update(updated, option in selectedOptions)
                     }
                 }
+                closeDialog()
+            },
+            onDismiss = closeDialog,
+        )
+        SettingsDialog.KEYWORD_BLACKLIST -> KeywordBlacklistDialog(
+            initialValue = state.keywordBlacklist,
+            onSave = { blacklist ->
+                onUpdate { current -> current.copy(keywordBlacklist = blacklist) }
                 closeDialog()
             },
             onDismiss = closeDialog,
@@ -786,6 +795,42 @@ private fun SettingsContent(
                     value = formatPlaybackSpeed(state.defaultPlaybackSpeed),
                     onClick = { onDialog(SettingsDialog.PLAYBACK_SPEED) },
                 )
+                SettingsSectionHeader(R.string.settings_section_privacy)
+                SwitchSettingRow(
+                    title = stringResource(R.string.ghost_mode_stories),
+                    summary = stringResource(R.string.ghost_mode_stories_summary),
+                    checked = state.ghostModeStories,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(ghostModeStories = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.ghost_mode_dm_read),
+                    summary = stringResource(R.string.ghost_mode_dm_read_summary),
+                    checked = state.ghostModeDmRead,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(ghostModeDmRead = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.ghost_mode_typing),
+                    summary = stringResource(R.string.ghost_mode_typing_summary),
+                    checked = state.ghostModeTyping,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(ghostModeTyping = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.block_telemetry),
+                    summary = stringResource(R.string.block_telemetry_summary),
+                    checked = state.blockTelemetry,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(blockTelemetry = checked) }
+                    },
+                )
                     }
                 }
             }
@@ -836,6 +881,15 @@ private fun SettingsContent(
                     checked = state.allowStitch,
                     onCheckedChange = { checked ->
                         onUpdate { it.copy(allowStitch = checked) }
+                    },
+                )
+                GroupDivider()
+                SwitchSettingRow(
+                    title = stringResource(R.string.avatar_hd),
+                    summary = stringResource(R.string.avatar_hd_summary),
+                    checked = state.avatarHd,
+                    onCheckedChange = { checked ->
+                        onUpdate { it.copy(avatarHd = checked) }
                     },
                 )
                     }
@@ -898,6 +952,16 @@ private fun SettingsContent(
                     onCheckedChange = { checked ->
                         onUpdate { it.copy(hideContentClassification = checked) }
                     },
+                )
+                GroupDivider()
+                ValueSettingRow(
+                    title = stringResource(R.string.keyword_blacklist),
+                    value = if (state.keywordBlacklist.isBlank()) {
+                        stringResource(R.string.keyword_blacklist_none)
+                    } else {
+                        state.keywordBlacklist.replace("\n", ", ")
+                    },
+                    onClick = { onDialog(SettingsDialog.KEYWORD_BLACKLIST) },
                 )
                 GroupDivider()
                 SwitchSettingRow(
@@ -1925,3 +1989,46 @@ private fun formatPlaybackSpeed(speed: Float): String {
         else -> "1.0x"
     }
 }
+
+@Composable
+private fun KeywordBlacklistDialog(
+    initialValue: String,
+    onSave: (String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var value by rememberSaveable(initialValue) { mutableStateOf(initialValue) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.keyword_blacklist)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.keyword_blacklist_dialog_desc),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 12.dp),
+                )
+                OutlinedTextField(
+                    value = value,
+                    onValueChange = { value = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.keyword_blacklist_label)) },
+                    placeholder = { Text(stringResource(R.string.keyword_blacklist_hint)) },
+                    minLines = 3,
+                    maxLines = 6,
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onSave(value.trim()) }) {
+                Text(stringResource(R.string.save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
+}
+

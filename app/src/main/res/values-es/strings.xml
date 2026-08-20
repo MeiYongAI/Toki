@@ -167,4 +167,21 @@
     <string name="minimum_invalid_error">El mínimo debe ser un número mayor o igual que 0. Se admiten K, M y B.</string>
     <string name="maximum_invalid_error">El máximo debe ser un número mayor que 0. Se admiten K, M y B, o déjalo en blanco para ilimitado.</string>
     <string name="range_order_error">El valor máximo debe ser mayor o igual que el valor mínimo</string>
+    <string name="settings_section_privacy">Privacidad y Modo Fantasma</string>
+    <string name="ghost_mode_stories">Historias anónimas</string>
+    <string name="ghost_mode_stories_summary">Ver historias de otros usuarios sin aparecer en su lista de visualizaciones.</string>
+    <string name="ghost_mode_dm_read">Lectura de mensajes invisible</string>
+    <string name="ghost_mode_dm_read_summary">Abrir y leer mensajes directos sin enviar confirmación de lectura ni visto.</string>
+    <string name="ghost_mode_typing">Ocultar «Escribiendo...»</string>
+    <string name="ghost_mode_typing_summary">No mostrar a la otra persona cuando estás escribiendo un mensaje directo.</string>
+    <string name="block_telemetry">Bloquear analíticas y telemetría</string>
+    <string name="block_telemetry_summary">Interceptar y anular el registro de eventos y telemetría de ByteDance (AppLog, SensorsData).</string>
+    <string name="keyword_blacklist">Filtro de palabras clave (Lista negra)</string>
+    <string name="keyword_blacklist_summary">Oculta vídeos cuyas descripciones o etiquetas coincidan con tu lista negra.</string>
+    <string name="keyword_blacklist_dialog_desc">Introduce las palabras clave o hashtags que deseas bloquear, separados por comas o saltos de línea:</string>
+    <string name="keyword_blacklist_label">Palabras clave bloqueadas</string>
+    <string name="keyword_blacklist_hint">Ejemplo: spoiler, cripto, política</string>
+    <string name="keyword_blacklist_none">Sin palabras bloqueadas</string>
+    <string name="avatar_hd">Descarga de avatar en HD</string>
+    <string name="avatar_hd_summary">Mantén pulsada la foto de perfil en el feed para descargarla en máxima calidad.</string>
 </resources>

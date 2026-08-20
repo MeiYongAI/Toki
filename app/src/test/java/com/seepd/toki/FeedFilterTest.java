@@ -50,6 +50,37 @@ public final class FeedFilterTest {
         assertFalse(FeedFilter.isAiGeneratedContent(new AiContent(false, 0, 0)));
     }
 
+    @Test
+    public void keywordBlacklistParsesMultipleSeparators() {
+        List<String> keywords = FeedFilter.parseKeywords("spoiler, crypto\npolitics\r\n ads ");
+        assertTrue(keywords.contains("spoiler"));
+        assertTrue(keywords.contains("crypto"));
+        assertTrue(keywords.contains("politics"));
+        assertTrue(keywords.contains("ads"));
+        assertFalse(FeedFilter.parseKeywords("").contains("any"));
+    }
+
+    @Test
+    public void keywordBlacklistFiltersMatchingDescriptions() {
+        ModuleConfig config = ModuleConfig.withKeywordBlacklist("crypto, spoiler");
+        FeedFilter filter = new FeedFilter(config);
+        assertTrue(filter.shouldHide(new FeedItemModel("Great crypto investment advice!")));
+        assertTrue(filter.shouldHide(new FeedItemModel("Major movie SPOILER alert")));
+        assertFalse(filter.shouldHide(new FeedItemModel("Cute cat playing with a toy")));
+    }
+
+    public static final class FeedItemModel {
+        private final String desc;
+
+        FeedItemModel(String desc) {
+            this.desc = desc;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
+
     public static final class ConcreteListModel {
         ArrayList<Object> items;
 

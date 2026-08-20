@@ -86,9 +86,15 @@ final class ModuleConfig {
     static final String KEY_GPS_SPOOF = "gps_spoof";
     static final String KEY_GPS_LATITUDE = "gps_latitude";
     static final String KEY_GPS_LONGITUDE = "gps_longitude";
+    static final String KEY_KEYWORD_BLACKLIST = "keyword_blacklist";
+    static final String KEY_BLOCK_TELEMETRY = "block_telemetry";
+    static final String KEY_GHOST_MODE_STORIES = "ghost_mode_stories";
+    static final String KEY_GHOST_MODE_DM_READ = "ghost_mode_dm_read";
+    static final String KEY_GHOST_MODE_TYPING = "ghost_mode_typing";
+    static final String KEY_AVATAR_HD = "avatar_hd";
     static final float DEFAULT_PLAYBACK_SPEED = PlaybackSpeed.DEFAULT;
 
-    private static final Uri SETTINGS_URI = Uri.parse("content://com.seepd.toki.settings");
+    private static final String SETTINGS_URI_STRING = "content://com.seepd.toki.settings";
     private static final String METHOD_GET_COMMENT_TRANSLATION_STATE =
             "getCommentTranslationState";
     private static final String METHOD_SET_COMMENT_TRANSLATION_STATE =
@@ -159,6 +165,12 @@ final class ModuleConfig {
     final boolean gpsSpoof;
     final double gpsLatitude;
     final double gpsLongitude;
+    final String keywordBlacklist;
+    final boolean blockTelemetry;
+    final boolean ghostModeStories;
+    final boolean ghostModeDmRead;
+    final boolean ghostModeTyping;
+    final boolean avatarHd;
 
     ModuleConfig(boolean regionSpoof, RegionPreset region, boolean languageSpoof,
                  boolean timeZoneSpoof, boolean skipStartupLogin,
@@ -189,7 +201,10 @@ final class ModuleConfig {
                  boolean hideTopNavigation, boolean hideSearchEntry,
                  boolean hideBottomNavigation, boolean hideVideoProgressBar,
                  boolean hideTranslationControls, boolean gpsSpoof,
-                 double gpsLatitude, double gpsLongitude) {
+                 double gpsLatitude, double gpsLongitude,
+                 String keywordBlacklist, boolean blockTelemetry,
+                 boolean ghostModeStories, boolean ghostModeDmRead,
+                 boolean ghostModeTyping, boolean avatarHd) {
         this.regionSpoof = regionSpoof;
         this.region = region;
         this.languageSpoof = languageSpoof;
@@ -255,12 +270,19 @@ final class ModuleConfig {
         this.gpsSpoof = gpsSpoof;
         this.gpsLatitude = clampCoordinate(gpsLatitude, -90.0, 90.0, 0.0);
         this.gpsLongitude = clampCoordinate(gpsLongitude, -180.0, 180.0, 0.0);
+        this.keywordBlacklist = keywordBlacklist == null ? "" : keywordBlacklist.trim();
+        this.blockTelemetry = blockTelemetry;
+        this.ghostModeStories = ghostModeStories;
+        this.ghostModeDmRead = ghostModeDmRead;
+        this.ghostModeTyping = ghostModeTyping;
+        this.avatarHd = avatarHd;
     }
 
     static boolean loadCommentTranslationActive(Context context) {
         try {
+            Uri uri = Uri.parse(SETTINGS_URI_STRING);
             Bundle result = context.getContentResolver().call(
-                    SETTINGS_URI, METHOD_GET_COMMENT_TRANSLATION_STATE, null, null);
+                    uri, METHOD_GET_COMMENT_TRANSLATION_STATE, null, null);
             return result != null
                     && result.getBoolean(KEY_COMMENT_TRANSLATION_ACTIVE, false);
         } catch (RuntimeException ignored) {
@@ -270,10 +292,11 @@ final class ModuleConfig {
 
     static boolean saveCommentTranslationActive(Context context, boolean active) {
         try {
+            Uri uri = Uri.parse(SETTINGS_URI_STRING);
             Bundle extras = new Bundle();
             extras.putBoolean(KEY_COMMENT_TRANSLATION_ACTIVE, active);
             Bundle result = context.getContentResolver().call(
-                    SETTINGS_URI, METHOD_SET_COMMENT_TRANSLATION_STATE, null, extras);
+                    uri, METHOD_SET_COMMENT_TRANSLATION_STATE, null, extras);
             return result != null && result.getBoolean("saved", false);
         } catch (RuntimeException ignored) {
             return false;
@@ -346,7 +369,13 @@ final class ModuleConfig {
                 preferences.getBoolean(KEY_HIDE_TRANSLATION_CONTROLS, false),
                 preferences.getBoolean(KEY_GPS_SPOOF, false),
                 parseCoordinate(preferences.getString(KEY_GPS_LATITUDE, "0"), -90.0, 90.0),
-                parseCoordinate(preferences.getString(KEY_GPS_LONGITUDE, "0"), -180.0, 180.0)
+                parseCoordinate(preferences.getString(KEY_GPS_LONGITUDE, "0"), -180.0, 180.0),
+                preferences.getString(KEY_KEYWORD_BLACKLIST, ""),
+                preferences.getBoolean(KEY_BLOCK_TELEMETRY, false),
+                preferences.getBoolean(KEY_GHOST_MODE_STORIES, false),
+                preferences.getBoolean(KEY_GHOST_MODE_DM_READ, false),
+                preferences.getBoolean(KEY_GHOST_MODE_TYPING, false),
+                preferences.getBoolean(KEY_AVATAR_HD, false)
         );
     }
 
@@ -361,7 +390,23 @@ final class ModuleConfig {
                  false, false, false,
                  false, false, false, false, false, false, false, false,
                  false, false, false, false, false, false, false, false, false,
-                 false, false, false, 0.0, 0.0);
+                 false, false, false, 0.0, 0.0,
+                 "", false, false, false, false, false);
+    }
+
+    static ModuleConfig withKeywordBlacklist(String keywordBlacklist) {
+        return new ModuleConfig(false, RegionPreset.US, false, false, false, false, false, false, false,
+                 false, false, false, false, false, false, false, false, false,
+                false, PlaybackSpeed.DEFAULT, false,
+                "Movies/TikTok", "Pictures/TikTok", "Movies/TikTok",
+                false, false,
+                 60, 0, Long.MAX_VALUE, 0, Long.MAX_VALUE,
+                  false, false, false, false, false, false, false, false, false,
+                 false, false, false,
+                 false, false, false, false, false, false, false, false,
+                 false, false, false, false, false, false, false, false, false,
+                 false, false, false, 0.0, 0.0,
+                 keywordBlacklist, false, false, false, false, false);
     }
 
     boolean hasComponentPurificationEnabled() {
