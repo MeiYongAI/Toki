@@ -72,6 +72,12 @@ internal data class SettingsUiState(
     val gpsSpoof: Boolean,
     val gpsLatitude: String,
     val gpsLongitude: String,
+    val keywordBlacklist: String,
+    val blockTelemetry: Boolean,
+    val ghostModeStories: Boolean,
+    val ghostModeDmRead: Boolean,
+    val ghostModeTyping: Boolean,
+    val avatarHd: Boolean,
 )
 
 internal object SettingsDefaults {
@@ -145,6 +151,12 @@ internal object SettingsDefaults {
         gpsSpoof = false,
         gpsLatitude = "0.0",
         gpsLongitude = "0.0",
+        keywordBlacklist = "",
+        blockTelemetry = false,
+        ghostModeStories = false,
+        ghostModeDmRead = false,
+        ghostModeTyping = false,
+        avatarHd = false,
     )
 }
 

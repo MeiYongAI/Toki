@@ -167,4 +167,21 @@
     <string name="minimum_invalid_error">The minimum must be a number greater than or equal to 0. K, M, and B are supported.</string>
     <string name="maximum_invalid_error">The maximum must be a number greater than 0. K, M, and B are supported, or leave it blank for unlimited.</string>
     <string name="range_order_error">The maximum value must be greater than or equal to the minimum value</string>
+    <string name="settings_section_privacy">Privacy &amp; Ghost Mode</string>
+    <string name="ghost_mode_stories">Anonymous stories</string>
+    <string name="ghost_mode_stories_summary">Watch user stories without appearing in their view history.</string>
+    <string name="ghost_mode_dm_read">Invisible message reading</string>
+    <string name="ghost_mode_dm_read_summary">Read direct messages without sending read receipts or seen indicators.</string>
+    <string name="ghost_mode_typing">Hide typing indicator</string>
+    <string name="ghost_mode_typing_summary">Do not show the typing status indicator when composing direct messages.</string>
+    <string name="block_telemetry">Block analytics &amp; telemetry</string>
+    <string name="block_telemetry_summary">Intercept and drop ByteDance analytics and event tracking (AppLog, SensorsData).</string>
+    <string name="keyword_blacklist">Keyword blacklist</string>
+    <string name="keyword_blacklist_summary">Hide videos whose captions or tags match your blacklist.</string>
+    <string name="keyword_blacklist_dialog_desc">Enter keywords or hashtags you want to block, separated by commas or newlines:</string>
+    <string name="keyword_blacklist_label">Blocked keywords</string>
+    <string name="keyword_blacklist_hint">Example: spoiler, crypto, politics</string>
+    <string name="keyword_blacklist_none">No keywords blocked</string>
+    <string name="avatar_hd">HD avatar download</string>
+    <string name="avatar_hd_summary">Long press any user avatar in the feed to download it in original resolution.</string>
 </resources>

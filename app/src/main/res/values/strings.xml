@@ -164,4 +164,21 @@
     <string name="minimum_invalid_error">最小值必须是大于或等于 0 的数值，可使用 K、M 或 B</string>
     <string name="maximum_invalid_error">最大值必须是大于 0 的数值，可使用 K、M 或 B，或留空表示不限</string>
     <string name="range_order_error">最大值必须大于或等于最小值</string>
+    <string name="settings_section_privacy">隐私与隐身模式</string>
+    <string name="ghost_mode_stories">匿名查看故事</string>
+    <string name="ghost_mode_stories_summary">查看用户故事而不留在对方的浏览记录中。</string>
+    <string name="ghost_mode_dm_read">隐身读取私信</string>
+    <string name="ghost_mode_dm_read_summary">读取私信而不发送已读回执。</string>
+    <string name="ghost_mode_typing">隐藏正在输入</string>
+    <string name="ghost_mode_typing_summary">在聊天输入文字时不显示正在输入状态。</string>
+    <string name="block_telemetry">屏蔽分析与遥测</string>
+    <string name="block_telemetry_summary">拦截并丢弃字节跳动事件分析和遥测上报（AppLog、SensorsData）。</string>
+    <string name="keyword_blacklist">关键词黑名单</string>
+    <string name="keyword_blacklist_summary">隐藏描述或标签包含黑名单关键词的视频。</string>
+    <string name="keyword_blacklist_dialog_desc">输入要屏蔽的关键词或标签，使用逗号或换行分隔：</string>
+    <string name="keyword_blacklist_label">已屏蔽的关键词</string>
+    <string name="keyword_blacklist_hint">示例：剧透, 加密货币, 广告</string>
+    <string name="keyword_blacklist_none">未设置关键词</string>
+    <string name="avatar_hd">长按下载高清头像</string>
+    <string name="avatar_hd_summary">长按信息流中的用户头像即可下载原始高分辨率头像。</string>
 </resources>

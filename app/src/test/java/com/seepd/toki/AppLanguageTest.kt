@@ -8,6 +8,7 @@ class AppLanguageTest {
     fun storedLanguageValuesAreStable() {
         assertEquals(AppLanguage.SYSTEM, AppLanguage.fromStoredValue(null))
         assertEquals(AppLanguage.SYSTEM, AppLanguage.fromStoredValue("unknown"))
+        assertEquals(AppLanguage.SPANISH, AppLanguage.fromStoredValue("es"))
         assertEquals(AppLanguage.ENGLISH, AppLanguage.fromStoredValue("en"))
         assertEquals(AppLanguage.CHINESE, AppLanguage.fromStoredValue("zh"))
     }

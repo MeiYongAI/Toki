@@ -8,6 +8,7 @@ import java.util.Locale
 
 internal enum class AppLanguage(val storedValue: String, val languageTag: String?) {
     SYSTEM("system", null),
+    SPANISH("es", "es"),
     ENGLISH("en", "en"),
     CHINESE("zh", "zh-Hans"),
     ;

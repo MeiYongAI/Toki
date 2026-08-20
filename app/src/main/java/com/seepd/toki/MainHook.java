@@ -154,9 +154,28 @@ public final class MainHook extends XposedModule {
             }
             if (config.hideFeedAds || config.hideLive || config.hideImages
                     || config.hideAiGenerated || config.forceRegion
-                    || config.hideLongPosts || config.filterViewsLikes) {
+                    || config.hideLongPosts || config.filterViewsLikes
+                    || !config.keywordBlacklist.isEmpty()) {
                 installFeature("feed filters", () ->
                         new FeedHooks(this).install(classLoader, config));
+            }
+            if (config.blockTelemetry) {
+                installFeature("telemetry blocker", () -> {
+                    int installedTargets = new TelemetryHooks(this).install(classLoader);
+                    logInfo("Telemetry blocker hooks installed: " + installedTargets + " target(s)");
+                });
+            }
+            if (config.ghostModeStories || config.ghostModeDmRead || config.ghostModeTyping) {
+                installFeature("ghost mode privacy", () -> {
+                    int installedTargets = new GhostModeHooks(this).install(classLoader, config);
+                    logInfo("Ghost mode privacy hooks installed: " + installedTargets + " target(s)");
+                });
+            }
+            if (config.avatarHd) {
+                installFeature("avatar HD download", () -> {
+                    int installedTargets = new AvatarHooks(this).install(classLoader, config);
+                    logInfo("Avatar HD hooks installed: " + installedTargets + " target(s)");
+                });
             }
             if (config.disableOfflineColdCacheWithNetwork) {
                 installFeature("offline cold cache with network restriction", () ->

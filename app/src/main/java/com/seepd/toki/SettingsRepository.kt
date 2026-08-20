@@ -151,6 +151,12 @@ internal class SettingsRepository(context: Context) {
         gpsSpoof = preferences.getBoolean(ModuleConfig.KEY_GPS_SPOOF, false),
         gpsLatitude = stringValue(ModuleConfig.KEY_GPS_LATITUDE, "0.0"),
         gpsLongitude = stringValue(ModuleConfig.KEY_GPS_LONGITUDE, "0.0"),
+        keywordBlacklist = preferences.getString(ModuleConfig.KEY_KEYWORD_BLACKLIST, "").orEmpty(),
+        blockTelemetry = preferences.getBoolean(ModuleConfig.KEY_BLOCK_TELEMETRY, false),
+        ghostModeStories = preferences.getBoolean(ModuleConfig.KEY_GHOST_MODE_STORIES, false),
+        ghostModeDmRead = preferences.getBoolean(ModuleConfig.KEY_GHOST_MODE_DM_READ, false),
+        ghostModeTyping = preferences.getBoolean(ModuleConfig.KEY_GHOST_MODE_TYPING, false),
+        avatarHd = preferences.getBoolean(ModuleConfig.KEY_AVATAR_HD, false),
     )
 
     fun save(state: SettingsUiState) {
@@ -290,6 +296,12 @@ internal class SettingsRepository(context: Context) {
         .putBoolean(ModuleConfig.KEY_GPS_SPOOF, state.gpsSpoof)
         .putString(ModuleConfig.KEY_GPS_LATITUDE, state.gpsLatitude)
         .putString(ModuleConfig.KEY_GPS_LONGITUDE, state.gpsLongitude)
+        .putString(ModuleConfig.KEY_KEYWORD_BLACKLIST, state.keywordBlacklist)
+        .putBoolean(ModuleConfig.KEY_BLOCK_TELEMETRY, state.blockTelemetry)
+        .putBoolean(ModuleConfig.KEY_GHOST_MODE_STORIES, state.ghostModeStories)
+        .putBoolean(ModuleConfig.KEY_GHOST_MODE_DM_READ, state.ghostModeDmRead)
+        .putBoolean(ModuleConfig.KEY_GHOST_MODE_TYPING, state.ghostModeTyping)
+        .putBoolean(ModuleConfig.KEY_AVATAR_HD, state.avatarHd)
 
     private fun stringValue(key: String, fallback: String): String =
         preferences.getString(key, fallback)?.trim().orEmpty().ifEmpty { fallback }
