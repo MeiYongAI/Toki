@@ -1002,6 +1002,7 @@ private fun tikTokStatusText(state: HomeUiState): String {
 @Composable
 private fun appLanguageLabel(language: AppLanguage): String = when (language) {
     AppLanguage.SYSTEM -> stringResource(R.string.app_language_system)
+    AppLanguage.SPANISH -> "Español"
     AppLanguage.ENGLISH -> "English"
     AppLanguage.CHINESE -> "中文"
 }
