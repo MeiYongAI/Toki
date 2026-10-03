@@ -25,7 +25,6 @@ object AutoCleanModeHook {
     private lateinit var panelContext: Method
     private lateinit var panelFragment: Field
     private lateinit var cellFragment: Field
-    private lateinit var cellRoot: Method
     private lateinit var currentHolder: Method
     private lateinit var listFragment: Method
     private lateinit var cellAweme: Method
@@ -140,10 +139,6 @@ object AutoCleanModeHook {
         selectCurrent(page)
         if (preparing) page.state.prepare() else {
             page.state.play()
-            configuration?.let { snapshot ->
-                ImmersiveFullScreenHook.eliminatePlaceholder(cellRoot.invoke(cell) as? View,
-                    snapshot.boolean(ImmersiveFullScreenHook.KEY_IMMERSIVE_FULL_SCREEN))
-            }
         }
         commit(if (preparing) "prepare" else "play")
     }
@@ -247,14 +242,13 @@ object AutoCleanModeHook {
         val preserve = { view: View -> CleanSceneBinding.containsInstance(view, seekBar) }
         val homeCurrent = mainFragment.getMethod("getCurrentFragment")
         videoCell = HostSymbols.resolve(classLoader, HostSymbol.VIDEO_CELL)
-        val base = HostSymbols.resolve(classLoader, HostSymbol.VIDEO_BASE_CELL)
-        val panel = HostSymbols.resolve(classLoader, HostSymbol.CLEAN)
-        val component = HostSymbols.resolve(classLoader, HostSymbol.CELL_CLEAN)
+        val base = classLoader.loadClass("com.ss.android.ugc.aweme.feed.adapter.VideoBaseCell")
+        val panel = classLoader.loadClass("com.ss.android.ugc.feed.platform.panel.clean.FeedCleanComponent")
+        val component = classLoader.loadClass("com.ss.android.ugc.feed.platform.cell.clean.CellCleanComponent")
         val root = classLoader.loadClass("com.ss.android.ugc.feed.platform.panel.RootPanelComponent")
         panelContext = panel.getMethod("getPanelContext")
         panelFragment = panelContext.returnType.declaredFields.single { it.type == fragment }.apply { isAccessible = true }
-        cellFragment = base.getDeclaredField(HostSymbols.member(HostSymbol.VIDEO_BASE_CELL, "fragment")).apply { isAccessible = true }
-        cellRoot = base.getMethod("getRootView")
+        cellFragment = base.declaredFields.single { it.type == fragment }.apply { isAccessible = true }
         cellAweme = videoCell.getMethod("getAweme")
         val pageParams = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.BaseFeedPageParams")
         val componentBase = classLoader.loadClass("com.ss.android.ugc.feed.platform.cell.BaseCellContentComponent")
@@ -466,18 +460,15 @@ object AutoCleanModeHook {
      * Callers: init。
      */
     private fun installViewHooks(module: XposedModule) {
-        for ((name, type) in listOf("setVisibility" to Int::class.javaPrimitiveType, "setAlpha" to Float::class.javaPrimitiveType)) {
-            val handle = module.hook(View::class.java.getMethod(name, type))
+            val handle = module.hook(View::class.java.getMethod("setVisibility", Int::class.javaPrimitiveType))
                 .setExceptionMode(XposedInterface.ExceptionMode.PASSTHROUGH).intercept { chain ->
                     if (Looper.myLooper() != Looper.getMainLooper()) return@intercept chain.proceed()
-                    val requested = chain.args[0]
+                    val requested = chain.args[0] as Int
                     val view = chain.thisObject as View
-                    val effective: Any = if (name == "setVisibility") views.visibility(view, requested as Int)
-                        else views.alpha(view, requested as Float)
+                    val effective = views.visibility(view, requested)
                     if (effective != requested) chain.proceed(arrayOf(effective)) else chain.proceed()
                 }
             HookRuntime.registered("AutoCleanModeHook", handle)
-        }
     }
 
     /**

@@ -6,6 +6,7 @@ import android.util.Log
 internal enum class HostSymbol {
     DOWNLOAD_SOURCE,
     COMMENT_TRANSLATION,
+    DESCRIPTION_TRANSLATION,
     TRANSLATION_REVERSE,
     SPEED_MANAGER,
     PLAYER_CONTROLLER,
@@ -20,33 +21,21 @@ internal enum class HostSymbol {
     OFFLINE_RECOVERY,
     AUTHOR_LOCATION,
     RESERVED_AREA,
-    THREE_TIMES_SPEED,
-    PHOTO_EXPANSION,
+    FEED_ADAPTION,
+    PHOTO_LAYOUT,
     FEED_ADAPTER,
     RECOMMEND_MODEL,
     RECOMMEND_ADAPTER,
-    COMMENT_CLIP,
-    COMMENT_ACTION,
-    COMMENT_MENU,
-    COMMENT_BINDER,
-    COMMENT_DISPLAY,
+    COMMENT_COPY,
     PINCH,
-    CLEAN,
-    ADAPTION,
-    FEED_ADAPTION,
     SPEED_OPTIONS,
-    SPEED_LAMBDA11,
-    SPEED_LAMBDA21,
-    SPEED_LAMBDA31,
     MUTE_INFO,
-    CELL_CLEAN,
     VIDEO_CELL,
-    VIDEO_BASE_CELL
 }
 
 /** 以完整代码集合和规则摘要验证私有持久结果，唯一匹配后才允许宿主符号注册。 */
 internal object HostSymbols {
-    internal const val INDEX_FORMAT = "index-v7"
+    internal const val INDEX_FORMAT = "index-v9"
     private var resolved = java.util.Properties()
     private val rules: String by lazy {
         checkNotNull(HostSymbols::class.java.getResourceAsStream("/toki-host-rules.tsv")) {
@@ -81,7 +70,7 @@ internal object HostSymbols {
         val stored = HostSymbolCache.read(cache)
         val currentCode = stored.getProperty("cache.key") == key
         val coverage = if (currentCode) coverage(stored) else emptySet()
-        if (currentCode && cacheUsable(stored, coverage, required)) {
+        if (currentCode && cacheComplete(stored, coverage, required)) {
             resolved = stored
             val failures = stored.stringPropertyNames().filter { it.startsWith("error.") }
             HookRuntime.adaptation("适配缓存有效\n代码标识：$identity\n未匹配目标：${failures.joinToString().ifEmpty { "无" }}")
@@ -90,8 +79,8 @@ internal object HostSymbols {
             return true
         }
         val reason = if (currentCode) {
-            val missing = required.filterNot { cacheUsable(stored, coverage, setOf(it)) }
-            "新增功能依赖尚未适配：${missing.joinToString { it.name }}"
+            val missing = required.filterNot { cacheComplete(stored, coverage, setOf(it)) }
+            "功能依赖缺少扫描结果：${missing.joinToString { it.name }}"
         } else {
             HostCacheReason.describe(stored, identity, rulesIdentity)
         }
@@ -144,15 +133,21 @@ internal object HostSymbols {
         return names.split(',').mapTo(linkedSetOf()) { HostSymbol.valueOf(it) }
     }
 
-    /** Required symbols must have a resolved class and no matching scan error. */
-    internal fun cacheUsable(
+    /** 判定所需目标是否均有确定扫描结果；未匹配结果由功能注册阶段明确报告。
+     * @param properties 已验证代码和规则身份的缓存。
+     * @param coverage 已扫描目标集合。
+     * @param required 当前功能依赖。
+     * @return 每个目标恰有成功类名或失败原因时为 true；缺失或矛盾结果为 false。
+     * Callers: prepare、HostFeaturePlanTest。
+     */
+    internal fun cacheComplete(
         properties: java.util.Properties,
         coverage: Set<HostSymbol>,
         required: Set<HostSymbol>,
     ): Boolean = required.all { symbol ->
         coverage.contains(symbol) &&
-            !properties.containsKey("error.${symbol.name}") &&
-            !properties.getProperty(symbol.name).isNullOrBlank()
+            (!properties.getProperty(symbol.name).isNullOrBlank() xor
+                !properties.getProperty("error.${symbol.name}").isNullOrBlank())
     }
 
     /** 规则匹配只处理功能依赖；关联指纹仍从候选实际引用中解析。 */
@@ -203,6 +198,25 @@ internal object HostSymbols {
         return checkNotNull(resolved.getProperty("member.${symbol.name}.$role")) {
             "${symbol.name}.$role: 缺少已验证的成员契约"
         }.substringBefore('(').substringBefore(':')
+    }
+
+    /**
+     * 读取同一行为角色下的完整成员引用集合，数量由实际代码决定。
+     * @param symbol 业务符号。
+     * @param role 已验证的成员集合角色。
+     * @return 非空、无重复的完整 DEX 成员引用。
+     * Callers: PlaybackSpeedHook.menuContract、CommentCopyHook.init。
+     */
+    fun members(symbol: HostSymbol, role: String): List<String> {
+        name(symbol)
+        val encoded = checkNotNull(resolved.getProperty("members.${symbol.name}.$role")) {
+            "${symbol.name}.$role: 缺少已验证的成员集合"
+        }
+        val members = encoded.split('\n')
+        check(members.all { it.isNotBlank() } && members.distinct().size == members.size) {
+            "${symbol.name}.$role: 成员集合为空或重复"
+        }
+        return members
     }
 
     /** 检查符号是否唯一解析。@param symbol 业务符号。@return 是否可用。Callers: PlaybackSpeedHook。 */

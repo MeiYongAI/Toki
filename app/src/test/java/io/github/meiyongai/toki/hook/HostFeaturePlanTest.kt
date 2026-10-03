@@ -7,6 +7,15 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class HostFeaturePlanTest {
+    /** 正文与实验门控是同一功能的完整依赖，失败时整体停用。无参数，无返回。Callers: JUnit。 */
+    @Test fun videoTranslationRequiresBothGatesAndRejectsPartialActivation() {
+        val requested = config("video_translate_enabled" to true)
+        val plan = HostFeaturePlan(requested)
+        assertEquals(setOf(HostSymbol.DESCRIPTION_TRANSLATION, HostSymbol.TRANSLATION_REVERSE), plan.symbols)
+        plan.reject("VideoTranslateHook")
+        assertFalse(plan.apply(requested).boolean("video_translate_enabled"))
+        assertTrue(HostFeaturePlan(config("video_translate_enabled" to false)).symbols.isEmpty())
+    }
     @Test fun downloadRepairRequiresVerifiedSymbolsButPathOnlyDoesNot() {
         val repair = HostFeaturePlan(config("download_force_no_watermark" to true))
         assertTrue(repair.requiresScan)
@@ -77,7 +86,7 @@ class HostFeaturePlanTest {
         assertFalse(fixed.apply(config("fixed_speed_enabled" to true, "speed_expand_enabled" to true)).boolean("speed_expand_enabled"))
         val menu = HostFeaturePlan(config("speed_expand_enabled" to true))
         assertFalse(menu.symbols.contains(HostSymbol.PLAYER_CONTROLLER))
-        assertTrue(menu.symbols.contains(HostSymbol.THREE_TIMES_SPEED))
+        assertEquals(setOf(HostSymbol.SPEED_OPTIONS), menu.symbols)
     }
 
     @Test fun speedMemoryCannotClaimAnImportFromOutsideItsStartupSession() {
@@ -112,27 +121,30 @@ class HostFeaturePlanTest {
 
     @Test fun selectedRulesExcludeUnrelatedSymbolsAndCoverageIsExplicit() {
         val rules = javaClass.getResourceAsStream("/toki-host-rules.tsv")!!.bufferedReader().use { it.readText() }
-        val targets = setOf(HostSymbol.COMMENT_TRANSLATION, HostSymbol.TRANSLATION_REVERSE)
+        val targets = setOf(HostSymbol.COMMENT_TRANSLATION, HostSymbol.DESCRIPTION_TRANSLATION)
         val selected = HostSymbols.selectRules(rules, targets)
         assertEquals(targets.map { it.name }.toSet(), selected.lineSequence().filter { it.isNotBlank() }.map { it.substringBefore('\t') }.toSet())
-        assertThrows(IllegalStateException::class.java) { HostSymbols.selectRules(selected, setOf(HostSymbol.CLEAN)) }
+        assertThrows(IllegalStateException::class.java) { HostSymbols.selectRules(selected, setOf(HostSymbol.VIDEO_CELL)) }
         assertThrows(IllegalStateException::class.java) { HostSymbols.coverage(Properties()) }
         assertEquals(targets, HostSymbols.coverage(Properties().apply {
             setProperty("cache.symbols", targets.joinToString(",") { it.name })
         }))
     }
 
-    @Test fun failedRequiredSymbolCannotSatisfyCacheCoverage() {
+    @Test fun completedFailureIsCachedButMissingResultsRequireScanning() {
         val stored = Properties().apply {
             setProperty("cache.symbols", HostSymbol.COMMENT_TRANSLATION.name)
             setProperty("error.${HostSymbol.COMMENT_TRANSLATION.name}", "候选数量=0")
         }
         val coverage = HostSymbols.coverage(stored)
-        assertFalse(HostSymbols.cacheUsable(stored, coverage, setOf(HostSymbol.COMMENT_TRANSLATION)))
+        assertTrue(HostSymbols.cacheComplete(stored, coverage, setOf(HostSymbol.COMMENT_TRANSLATION)))
         stored.remove("error.${HostSymbol.COMMENT_TRANSLATION.name}")
-        assertFalse(HostSymbols.cacheUsable(stored, coverage, setOf(HostSymbol.COMMENT_TRANSLATION)))
+        assertFalse(HostSymbols.cacheComplete(stored, coverage, setOf(HostSymbol.COMMENT_TRANSLATION)))
         stored.setProperty(HostSymbol.COMMENT_TRANSLATION.name, "com.example.Resolved")
-        assertTrue(HostSymbols.cacheUsable(stored, coverage, setOf(HostSymbol.COMMENT_TRANSLATION)))
+        assertTrue(HostSymbols.cacheComplete(stored, coverage, setOf(HostSymbol.COMMENT_TRANSLATION)))
+        assertFalse(HostSymbols.cacheComplete(stored, coverage, setOf(HostSymbol.VIDEO_CELL)))
+        stored.setProperty("error.${HostSymbol.COMMENT_TRANSLATION.name}", "候选数量=0")
+        assertFalse(HostSymbols.cacheComplete(stored, coverage, setOf(HostSymbol.COMMENT_TRANSLATION)))
     }
 
     @Test fun packagedRulesHaveFiveColumnsUniqueContractsAndEveryLogicalSymbol() {
@@ -144,6 +156,16 @@ class HostFeaturePlanTest {
         assertEquals(rows.size, rows.distinct().size)
         assertEquals(HostSymbol.entries.map { it.name }.toSet(), rows.map { it[0] }.toSet())
         val digest = Regex("[0-9a-f]{64}")
-        assertTrue(rows.all { row -> (1..3).all { digest.matches(row[it]) } })
+        assertTrue(rows.all { row ->
+            if (row[1] == "method-v1") {
+                HostMethodRule.parse(row.toTypedArray())
+                true
+            } else if (row[1] == "speed-v1") {
+                row[0] in setOf("PLAYER_CONTROLLER", "PLAYER_MANAGER", "SPEED_MANAGER", "SPEED_OPTIONS") &&
+                    row.drop(2) == listOf("relations", "-", "-")
+            } else if (row[1] == "comment-v1") {
+                row[0] == "COMMENT_COPY" && row.drop(2) == listOf("relations", "-", "-")
+            } else (1..3).all { digest.matches(row[it]) }
+        })
     }
 }

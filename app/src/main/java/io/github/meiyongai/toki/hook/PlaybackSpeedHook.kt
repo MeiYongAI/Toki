@@ -8,18 +8,7 @@ import io.github.libxposed.api.XposedModule
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
-/**
- * 视频播放倍速跨视频锁定与原生调度 Hook 核心处理器。
- *
- * 深度对接 TikTok 原生倍速控制中枢 [X.08Fw]、视频播放控制器 [PlayerController] 以及底层播放管理器。
- * 实现三大核心能力：
- * 1. 原生倍速中枢状态同步与准入解除：激活 [X.08Fw.LJI] 跨视频保持总开关，放行 [X.08Fw.LIZ] 视频类型限制，
- *    在 [X.08Fw.LIZIZ] 与 [X.08Fw.LIZJ] 统一返回锁定倍速，并在 [X.08Fw.LJI] 切视频恢复入口中主动驱动倍速调度；
- * 2. 用户选速实时感知与即刻生效：拦截 [X.08Fw.LJ] 调度入口，捕获用户在原生菜单中选择的倍速，
- *    即刻向当前活跃播放器派发调速指令并将运行偏好保存在宿主私有存储中；
- * 3. 底层播放管理器防重置守护：在已验证的控制器与播放管理器调速入口
- *    拦截切视频时系统下发的 1.0x 重置指令，改写为锁定的目标倍速。
- */
+/** 视频倍速保持与菜单扩展；通过当前宿主的调用关系和状态字段契约注册。 */
 object PlaybackSpeedHook {
 
     private const val TAG = "TokiSpeedHook"
@@ -44,7 +33,7 @@ object PlaybackSpeedHook {
     @Volatile
     private var speedMemory: PlaybackSpeedMemory? = null
 
-    /** TikTok 原生倍速控制中枢类引用 [X.08Fw] */
+    /** TikTok 原生倍速控制中枢类引用 */
     @Volatile
     private var speedManagerClass: Class<*>? = null
 
@@ -217,35 +206,6 @@ object PlaybackSpeedHook {
     fun isFeatureEnabled(): Boolean = isEnabled
 
     /**
-     * 递归检索指定类及其父类中的目标反射字段。
-     *
-     * 逐级向上查找声明的指定名称字段，并设置其访问控制权限为可访问。
-     *
-     * Args:
-     *     targetClass (Class<*>?): 目标反射类。
-     *     fieldName (String): 字段名称。
-     *
-     * Returns:
-     *     Field?: 匹配的字段对象，未找到返回 null。
-     *
-     * Callers:
-     *     - `io.github.meiyongai.toki.hook.PlaybackSpeedHook.syncSpeedManagerFields`: 更新原生倍速中枢字段。
-     *     - `io.github.meiyongai.toki.hook.PlaybackSpeedHook.hookSpeedManagerMethods`: 检索中枢字段。
-     */
-    private fun findField(targetClass: Class<*>?, fieldName: String): Field? {
-        var current = targetClass
-        while (current != null && current != Any::class.java) {
-            val declared = current.declaredFields.firstOrNull { it.name == fieldName }
-            if (declared != null) {
-                declared.isAccessible = true
-                return declared
-            }
-            current = current.superclass
-        }
-        return null
-    }
-
-    /**
      * 按已验证的入口名称解析公开调速方法，支持继承的具体实现并拒绝错误返回类型。
      * @param type 控制器或播放管理器的运行时类型。
      * @param name 扫描契约给出的方法名。
@@ -282,9 +242,9 @@ object PlaybackSpeedHook {
     }
 
     /**
-     * 将记忆的倍速值与保持开关同步写入 TikTok 原生倍速控制中枢 [X.08Fw] 的状态字段。
+     * 将记忆的倍速值与保持开关同步写入 TikTok 原生倍速控制中枢的状态字段。
      *
-     * 对齐中枢内部的跨视频保持开关 [LJI]、目标保持倍速 [LJII] 与当前播放倍速 [LIZLLL]、[LIZJ]。
+     * 对齐中枢内部的跨视频保持开关、目标保持倍速与两个当前播放倍速字段。
      *
      * Args:
      *     speed (Float): 待同步的倍速浮点数值。
@@ -299,15 +259,15 @@ object PlaybackSpeedHook {
      *     - `io.github.meiyongai.toki.hook.PlaybackSpeedHook.hookSpeedManagerMethods`: 状态重置守护。
      */
     private fun syncSpeedManagerFields(speed: Float, enablePersist: Boolean) {
-        if (speedManagerClass == null) return
+        val clazz = speedManagerClass ?: return
         if (managerBaseline == null) managerBaseline = managerFields.mapValues { (_, field) -> field.get(null) }
 
-        managerFields.getValue("LJI").setBoolean(null, enablePersist)
-        managerFields.getValue("LJII").setFloat(null, speed)
-        managerFields.getValue("LIZLLL").setFloat(null, speed)
-        managerFields.getValue("LIZJ").setFloat(null, speed)
+        managerFields.getValue("enabled").setBoolean(null, enablePersist)
+        managerFields.getValue("persist").setFloat(null, speed)
+        managerFields.getValue("current0").setFloat(null, speed)
+        managerFields.getValue("current1").setFloat(null, speed)
 
-        Log.i(TAG, "已同步至 TikTok 原生倍速中枢 X.08Fw -> speed: ${speed}x, persist: $enablePersist")
+        Log.i(TAG, "已同步至原生倍速中枢 ${clazz.name} -> speed: ${speed}x, persist: $enablePersist")
     }
 
     /**
@@ -321,7 +281,7 @@ object PlaybackSpeedHook {
      *     Unit: 无返回值。
      *
      * Callers:
-     *     - `io.github.meiyongai.toki.hook.PlaybackSpeedHook.hookSpeedManagerMethods`: 拦截 X.08Fw.LJ 用户选速。
+     *     - `io.github.meiyongai.toki.hook.PlaybackSpeedHook.hookSpeedManagerMethods`: 拦截用户选速。
      */
     private fun onUserSelectedSpeed(speed: Float, scene: String?) {
         if (!isFeatureEnabled() || speed !in MIN_SPEED..MAX_SPEED) return
@@ -371,141 +331,46 @@ object PlaybackSpeedHook {
     }
 
     /**
-     * 挂载 TikTok 原生倍速管理器 [X.08Fw] 的核心拦截点。
-     *
-     * 涵盖六大核心切面：
-     * 1. 激活并守护原生全局倍速保持标记 `LJI = true`；
-     * 2. Hook `08Fw.LIZ(Aweme)`：解除 feed 视频类型判定限制，无条件允许跨视频保持；
-     * 3. Hook `08Fw.LIZIZ(Aweme)` 与 `08Fw.LIZJ(Aweme)`：查询当前视频倍速时均返回锁定的 `activeSpeed`；
-     * 4. Hook `08Fw.LJI(Aweme, String)`：切视频恢复入口拦截，无条件调用 `08Fw.LJ` 以 `activeSpeed` 驱动倍速调度；
-     * 5. Hook `08Fw.LJ(float, Aweme, String, String)`：用户选速即时捕获与调度；
-     * 6. Hook `08Fw.LJFF`：视频切换状态重置时守护状态字段不被重置为 1.0x。
-     *
-     * Args:
-     *     module (XposedModule): 当前注入的 XposedModule 实例。
-     *     classLoader (ClassLoader): 目标应用类加载器。
-     *
-     * Returns:
-     *     Unit: 无返回值。
-     *
-     * Callers:
-     *     - `io.github.meiyongai.toki.hook.PlaybackSpeedHook.init`: 模块初始化流程。
+     * 依照已验证的角色注册中枢查询、恢复、选速与重置入口。
+     * @param module 当前模块。
+     * @param contract 完整的中枢方法与状态契约。
+     * @return Unit；注册失败交由统一事务撤销。
+     * Callers: init。
      */
     private fun hookSpeedManagerMethods(module: XposedModule, contract: ManagerContract) {
-        val clazz = contract.type
-        speedManagerClass = clazz
-
-        // 2. Hook X.08Fw.LIZ(Aweme): 解除保持限制，确保任何视频均允许跨视频固定倍速
-        for (method in contract.methods.values) {
-            if (method.name == "LIZ" &&
-                method.parameterCount == 1 &&
-                method.returnType == java.lang.Boolean.TYPE &&
-                !method.isSynthetic
-            ) {
-                method.isAccessible = true
-                module.trackHook("PlaybackSpeedHook", method).intercept { chain ->
-                    if (isFeatureEnabled() && activeSpeed != 1.0f) {
-                        true
-                    } else {
-                        chain.proceed()
-                    }
-                }
-                Log.i(TAG, "已挂载 TikTok 原生倍速保持准入判定 X.08Fw.LIZ 拦截器")
+        speedManagerClass = contract.type
+        module.trackHook("PlaybackSpeedHook", contract.methods.getValue("gate")).intercept { chain ->
+            if (isFeatureEnabled() && activeSpeed != 1f) true else chain.proceed()
+        }
+        for (role in listOf("query0", "query1")) {
+            module.trackHook("PlaybackSpeedHook", contract.methods.getValue(role)).intercept { chain ->
+                if (isFeatureEnabled() && activeSpeed != 1f) activeSpeed else chain.proceed()
             }
         }
-
-        // 3. Hook X.08Fw.LIZIZ(Aweme) 与 LIZJ(Aweme): 各组件与菜单获取当前倍速入口
-        for (method in contract.methods.values) {
-            if ((method.name == "LIZIZ" || method.name == "LIZJ") &&
-                method.parameterCount == 1 &&
-                method.returnType == java.lang.Float.TYPE &&
-                !method.isSynthetic
-            ) {
-                method.isAccessible = true
-                module.trackHook("PlaybackSpeedHook", method).intercept { chain ->
-                    if (isFeatureEnabled() && activeSpeed != 1.0f) {
-                        activeSpeed
-                    } else {
-                        chain.proceed()
-                    }
-                }
-                Log.i(TAG, "已挂载 TikTok 原生倍速查询方法 X.08Fw.${method.name} 拦截器")
-            }
+        module.trackHook("PlaybackSpeedHook", contract.methods.getValue("restore")).intercept { chain ->
+            val aweme = chain.args[0]
+            if (isFeatureEnabled() && activeSpeed != 1f && aweme != null) {
+                contract.methods.getValue("select").invoke(null, activeSpeed, aweme, chain.args[1], "long_press")
+                null
+            } else chain.proceed()
         }
-
-        // 4. Hook X.08Fw.LJI(Aweme, String): 切换视频时的原生倍速恢复入口
-        for (method in contract.methods.values) {
-            if (method.name == "LJI" &&
-                method.parameterCount == 2 &&
-                method.returnType == java.lang.Void.TYPE &&
-                !method.isSynthetic
-            ) {
-                method.isAccessible = true
-                module.trackHook("PlaybackSpeedHook", method).intercept { chain ->
-                    val aweme = chain.args.getOrNull(0)
-                    val str = chain.args.getOrNull(1) as? String ?: ""
-                    if (isFeatureEnabled() && activeSpeed != 1.0f && aweme != null) {
-                        contract.methods.getValue("LJ").invoke(null, activeSpeed, aweme, str, "long_press")
-                        Log.d(TAG, "切视频原生恢复入口 X.08Fw.LJI 成功驱动倍速 -> ${activeSpeed}x")
-                        return@intercept null
-                    }
-                    chain.proceed()
-                }
-                Log.i(TAG, "已挂载 TikTok 原生切视频倍速恢复入口 X.08Fw.LJI 拦截器")
-            }
+        module.trackHook("PlaybackSpeedHook", contract.methods.getValue("select")).intercept { chain ->
+            if (!isFeatureEnabled()) return@intercept chain.proceed()
+            val speed = chain.args[0] as Float
+            val scene = chain.args[3] as? String
+            for (role in listOf("current0", "current1", "persist")) managerFields.getValue(role).setFloat(null, speed)
+            onUserSelectedSpeed(speed, scene.takeUnless { it.isNullOrEmpty() } ?: "long_press")
+            if (scene.isNullOrEmpty()) {
+                chain.proceed(arrayOf(speed, chain.args[1], chain.args[2], "long_press"))
+            } else chain.proceed()
         }
-
-        // 5. Hook X.08Fw.LJ(float, Aweme, String, String): 用户在菜单中选择倍速的调度函数
-        for (method in contract.methods.values) {
-            if (method.name == "LJ" &&
-                method.parameterCount == 4 &&
-                method.parameterTypes[0] == java.lang.Float.TYPE &&
-                !method.isSynthetic
-            ) {
-                method.isAccessible = true
-                module.trackHook("PlaybackSpeedHook", method).intercept { chain ->
-                    if (!isFeatureEnabled()) return@intercept chain.proceed()
-                    val speed = chain.args.getOrNull(0) as? Float
-                    val scene = chain.args.getOrNull(3) as? String
-                    Log.d(TAG, "08Fw.LJ 捕获选速调度 -> speed: ${speed}x, scene: $scene")
-
-                    if (speed != null) {
-                        managerFields.getValue("LIZLLL").setFloat(null, speed)
-                        managerFields.getValue("LIZJ").setFloat(null, speed)
-                        managerFields.getValue("LJII").setFloat(null, speed)
-
-                        val finalScene = if (scene.isNullOrEmpty()) "long_press" else scene
-                        onUserSelectedSpeed(speed, finalScene)
-                        if (scene.isNullOrEmpty()) {
-                            return@intercept chain.proceed(arrayOf(speed, chain.args.getOrNull(1), chain.args.getOrNull(2), "long_press"))
-                        }
-                    }
-                    chain.proceed()
-                }
-                Log.i(TAG, "已挂载 TikTok 原生倍速选择调度器 X.08Fw.LJ 拦截器")
-            }
+        module.trackHook("PlaybackSpeedHook", contract.methods.getValue("reset")).intercept { chain ->
+            val result = chain.proceed()
+            if (isFeatureEnabled() && activeSpeed != 1f) syncSpeedManagerFields(activeSpeed, enablePersist = true)
+            result
         }
-
-        // 6. Hook X.08Fw.LJFF: 视频切换时的状态重置函数，守护状态字段不被重置为 1.0x
-        for (method in contract.methods.values) {
-            if (method.name == "LJFF" &&
-                method.parameterCount == 4 &&
-                method.returnType == java.lang.Boolean.TYPE &&
-                !method.isSynthetic
-            ) {
-                method.isAccessible = true
-                module.trackHook("PlaybackSpeedHook", method).intercept { chain ->
-                    val result = chain.proceed()
-                    if (isFeatureEnabled() && activeSpeed != 1.0f) {
-                        syncSpeedManagerFields(activeSpeed, enablePersist = true)
-                    }
-                    result
-                }
-                Log.i(TAG, "已挂载 TikTok 原生倍速重置守护器 X.08Fw.LJFF 拦截器")
-            }
-        }
+        Log.i(TAG, "已注册倍速中枢：${contract.type.name}；入口=${contract.methods.size}")
     }
-
     /**
      * 解析控制器调速入口和播放器生命周期，所有成员由当前代码集合的契约确定。
      * @param classLoader 宿主最终类加载器。
@@ -582,24 +447,27 @@ object PlaybackSpeedHook {
      * Callers: init。
      */
     private fun menuContract(classLoader: ClassLoader): MenuContract {
-        val gate = HostSymbols.resolve(classLoader, HostSymbol.THREE_TIMES_SPEED).getDeclaredMethod("LIZ")
+        val gate = HostSymbols.resolve(classLoader, HostSymbol.SPEED_OPTIONS).getDeclaredMethod(
+            HostSymbols.member(HostSymbol.SPEED_OPTIONS, "gate"))
         check(gate.returnType == Boolean::class.javaPrimitiveType && java.lang.reflect.Modifier.isStatic(gate.modifiers))
-        val sources = listOf(HostSymbol.SPEED_OPTIONS to "options",
-            HostSymbol.SPEED_LAMBDA11 to "optionsPrimary", HostSymbol.SPEED_LAMBDA11 to "optionsSecondary",
-            HostSymbol.SPEED_LAMBDA21 to "options", HostSymbol.SPEED_LAMBDA31 to "options")
-        val methods = sources.map { (symbol, role) ->
-            val type = HostSymbols.resolve(classLoader, symbol)
-            val methodName = HostSymbols.member(symbol, role)
-            val method = if (symbol == HostSymbol.SPEED_OPTIONS) type.getDeclaredMethod(methodName)
-                else type.getDeclaredMethod(methodName, type)
+        val methods = HostSymbols.members(HostSymbol.SPEED_OPTIONS, "sources").map { reference ->
+            val owner = reference.substringBefore("->")
+            check(owner.startsWith('L') && owner.endsWith(';') && reference.contains("->")) { "无效倍速菜单引用：$reference" }
+            val descriptor = reference.substringAfter("->")
+            val type = Class.forName(owner.substring(1, owner.length - 1).replace('/', '.'), false, classLoader)
+            val name = descriptor.substringBefore('(')
+            val signature = descriptor.substring(name.length)
+            val method = when (signature) {
+                "()Ljava/util/List;" -> type.getDeclaredMethod(name).also { check(it.returnType == List::class.java) }
+                "($owner)Ljava/lang/Object;" -> type.getDeclaredMethod(name, type).also { check(it.returnType == Any::class.java) }
+                else -> error("无效倍速菜单签名：$reference")
+            }
             check(java.lang.reflect.Modifier.isStatic(method.modifiers))
-            check(method.returnType == List::class.java || method.returnType == Any::class.java)
-            method.isAccessible = true
-            method
+            method.apply { isAccessible = true }
         }
+        check(methods.any { it.parameterCount == 0 }) { "倍速菜单缺少列表入口" }
         return MenuContract(gate.apply { isAccessible = true }, methods)
     }
-
     private fun hookSpeedDialogMethods(module: XposedModule, contract: MenuContract) {
         module.trackHook("PlaybackSpeedHook", contract.gate).intercept { chain ->
             if (isExpansionEnabled()) true else chain.proceed()
@@ -610,7 +478,7 @@ object PlaybackSpeedHook {
             }
         }
         HookRuntime.state("SpeedOptions", "菜单数据源已注册；调用次数计入播放倍速")
-        Log.i(TAG, "已注册当前构建的倍速档位数据源")
+        Log.i(TAG, "已注册倍速档位数据源：${contract.sources.size} 个")
     }
 
     /**
@@ -681,29 +549,43 @@ object PlaybackSpeedHook {
         Log.i(TAG, "倍速请求已注册：固定=$fixed，档位扩展=$expanded")
     }
 
-    /** 固定倍速字段和方法必须满足唯一、静态、精确类型契约，在任何 Hook 注册前验证。 */
+    /**
+     * 按角色解析唯一、静态且类型完整的中枢成员，在任何 Hook 注册前验证。
+     * @param type 扫描确定的中枢类型。
+     * @return 完整中枢契约；错误直接报告。
+     * Callers: init。
+     */
     private fun managerContract(type: Class<*>): ManagerContract {
-        val fields = listOf("LJI", "LJII", "LIZLLL", "LIZJ").associateWith { name ->
-            checkNotNull(findField(type, name)) { "固定倍速缺少状态字段：${type.name}.$name" }.apply {
+        val symbol = HostSymbol.SPEED_MANAGER
+        val fields = listOf("enabled", "persist", "current0", "current1").associateWith { role ->
+            type.getDeclaredField(HostSymbols.member(symbol, role)).apply {
                 check(java.lang.reflect.Modifier.isStatic(modifiers) &&
-                    this.type == if (name == "LJI") java.lang.Boolean.TYPE else java.lang.Float.TYPE) {
+                    this.type == if (role == "enabled") java.lang.Boolean.TYPE else java.lang.Float.TYPE) {
                     "固定倍速状态字段契约错误：${type.name}.$name"
                 }
+                isAccessible = true
             }
         }
-        fun method(name: String, count: Int, returns: Class<*>): Method = type.declaredMethods.single {
-            it.name == name && it.parameterCount == count && it.returnType == returns && !it.isSynthetic
-        }.apply {
-            check(java.lang.reflect.Modifier.isStatic(modifiers)) { "倍速中枢方法不是静态方法：$name" }
-            isAccessible = true
-        }
-        val restore = method("LJI", 2, java.lang.Void.TYPE)
-        val select = method("LJ", 4, java.lang.Void.TYPE)
-        check(select.parameterTypes.contentEquals(arrayOf(java.lang.Float.TYPE, restore.parameterTypes[0], String::class.java, String::class.java)))
-        check(restore.parameterTypes[1] == String::class.java)
-        val methods = listOf(method("LIZ", 1, java.lang.Boolean.TYPE),
-            method("LIZIZ", 1, java.lang.Float.TYPE), method("LIZJ", 1, java.lang.Float.TYPE),
-            restore, select, method("LJFF", 4, java.lang.Boolean.TYPE)).associateBy { it.name }
+        check(fields.values.toSet().size == fields.size) { "倍速状态角色引用了重复字段" }
+        val aweme = Class.forName("com.ss.android.ugc.aweme.feed.model.Aweme", false, type.classLoader)
+        /** @param role 业务角色。@param returns 返回类型。@param parameters 参数类型。
+         * @return 静态可访问方法。Callers: managerContract。 */
+        fun method(role: String, returns: Class<*>, vararg parameters: Class<*>): Method =
+            type.getDeclaredMethod(HostSymbols.member(symbol, role), *parameters).apply {
+                check(java.lang.reflect.Modifier.isStatic(modifiers) && returnType == returns && !isSynthetic) {
+                    "倍速中枢方法契约错误：$role"
+                }
+                isAccessible = true
+            }
+        val methods = mapOf(
+            "gate" to method("gate", java.lang.Boolean.TYPE, aweme),
+            "query0" to method("query0", java.lang.Float.TYPE, aweme),
+            "query1" to method("query1", java.lang.Float.TYPE, aweme),
+            "restore" to method("restore", java.lang.Void.TYPE, aweme, String::class.java),
+            "select" to method("select", java.lang.Void.TYPE, java.lang.Float.TYPE, aweme, String::class.java, String::class.java),
+            "reset" to method("reset", java.lang.Boolean.TYPE, aweme, String::class.java, java.lang.Boolean.TYPE, java.lang.Boolean.TYPE),
+        )
+        check(methods.values.toSet().size == methods.size) { "倍速方法角色引用了重复入口" }
         return ManagerContract(type, fields, methods)
     }
 }

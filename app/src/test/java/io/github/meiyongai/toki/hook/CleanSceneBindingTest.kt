@@ -233,7 +233,7 @@ class CleanSceneBindingTest {
         val binding = CleanSceneBinding(root, content.id, gate, owner) { gate.refresh() }
         binding.onPreDraw()
         controls.visibility = gate.visibility(controls, View.VISIBLE)
-        controls.alpha = gate.alpha(controls, 1f)
+        controls.alpha = 1f
         assertEquals(View.INVISIBLE, controls.visibility)
         assertEquals(View.VISIBLE, content.visibility)
         controls.visibility = gate.visibility(controls, View.GONE)

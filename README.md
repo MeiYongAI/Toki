@@ -44,11 +44,14 @@ through a Material 3 interface with 57 language options.
 | --- | --- |
 | Android | Android 9 (API 28) or newer |
 | Framework | A working LSPosed installation supporting **libxposed API 102** |
-| TikTok | Official client; adapted versions: **47.0.3** and **46.8.3** |
+| TikTok | Official client; adapted versions: **47.1.4**, **47.0.3**, and **46.8.3** |
 | Module scope | `com.zhiliaoapp.musically` or `com.ss.android.ugc.trill` |
 
+Toki supports **official TikTok clients only**. Third-party modified clients,
+including TikTok Central, are not supported or adapted.
+
 Toki requires the framework to apply changes to TikTok. Other TikTok versions
-and modified clients are outside the documented compatibility scope. Download
+are outside the documented compatibility scope. Download
 variants can contain different code, so a listed version alone does not
 guarantee that every feature will work.
 

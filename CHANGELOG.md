@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.0.2 — 2026-10-04
+
+### English
+
+- Added official TikTok **47.1.4** support and improved adaptation across **47.0.3** and **46.8.3**.
+- Improved method discovery reliability and speed, including download, filtering, playback speed, comment copying, author region and auto-scroll adaptation.
+- Fixed the video description translation unlock interfering with translation availability.
+- Improved immersive layout and centered photo posts while preserving their aspect ratio.
+- Fixed controls remaining invisible after pausing in automatic clean mode.
+
+Update directly from **1.0.1**; the signing key is unchanged. Restart TikTok after updating and again after method discovery completes. Official TikTok clients only.
+
+### 中文
+
+- 新增官方 TikTok **47.1.4** 适配，完善 **47.0.3**、**46.8.3** 多版本适配。
+- 提升方法查找稳定性与速度，完善下载、过滤、倍速、评论复制、作者地区及自动滚动适配。
+- 修复视频内容翻译解锁影响翻译可用性的问题。
+- 优化全屏沉浸，图文保持比例居中显示。
+- 修复自动净屏暂停后部分控件仍不可见的问题。
+
+可直接覆盖升级 **1.0.1**，沿用原签名。更新后重启 TikTok，方法查找完成后再次重启。目前仅支持官方版 TikTok。
+
 ## 1.0.1 — 2026-10-03
 
 ### 中文

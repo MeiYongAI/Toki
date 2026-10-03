@@ -18,7 +18,38 @@ class CleanViewGateTest {
     /** 模拟平台属性拦截。@param view 目标。@param value 可见性。@return Unit。Callers: 本类测试。 */
     private fun visibility(view: View, value: Int) { view.visibility = gate.visibility(view, value) }
     /** 模拟平台属性拦截。@param view 目标。@param value 透明度。@return Unit。Callers: 本类测试。 */
-    private fun alpha(view: View, value: Float) { view.alpha = gate.alpha(view, value) }
+    private fun alpha(view: View, value: Float) { view.alpha = value }
+
+    /** 淡入在暂停后逐帧推进时，绘制提交不得回写动画起始值。无参数、无返回。Callers: JUnit。 */
+    @Test fun pauseFadeInIsNotOverwrittenByFrameCommits() {
+        val owner = CleanViewGate.Owner(true)
+        val controls = view().apply { alpha = 0f }
+        gate.bind(owner, controls)
+        gate.refresh()
+        owner.clean = false
+        visibility(controls, View.VISIBLE)
+        for (value in listOf(0f, 0.25f, 0.7f, 1f)) {
+            controls.alpha = value
+            gate.refresh()
+            assertEquals(View.VISIBLE, controls.visibility)
+            assertEquals(value, controls.alpha)
+        }
+    }
+
+    /** 隐藏期间动画仍可推进，解除净屏不能恢复过期透明度。无参数、无返回。Callers: JUnit。 */
+    @Test fun animationWhileCleanRemainsHostOwned() {
+        val owner = CleanViewGate.Owner(true)
+        val controls = view().apply { alpha = 0f }
+        gate.bind(owner, controls)
+        gate.refresh()
+        controls.alpha = 0.8f
+        gate.refresh()
+        assertEquals(View.INVISIBLE, controls.visibility)
+        owner.clean = false
+        gate.refresh()
+        assertEquals(View.VISIBLE, controls.visibility)
+        assertEquals(0.8f, controls.alpha)
+    }
 
     /** 创建时登记使首次显示不依赖一次原生隐藏调用。@return Unit；无入参。Callers: JUnit。 */
     @Test fun creationBindingDoesNotNeedNativeClean() {
@@ -27,11 +58,11 @@ class CleanViewGateTest {
         gate.bind(owner, controls)
         gate.refresh()
         assertEquals(View.INVISIBLE, controls.visibility)
-        assertEquals(0f, controls.alpha)
+        assertEquals(1f, controls.alpha)
         visibility(controls, View.VISIBLE)
         alpha(controls, 1f)
         assertEquals(View.INVISIBLE, controls.visibility)
-        assertEquals(0f, controls.alpha)
+        assertEquals(1f, controls.alpha)
     }
 
     /** 原生退出清屏不能覆盖自动清屏，自动暂停后恢复原生意图。@return Unit；无入参。Callers: JUnit。 */
@@ -131,10 +162,10 @@ class CleanViewGateTest {
         val failure = IllegalStateException("view-property-failure")
         val controls = object : View(RuntimeEnvironment.getApplication()) {
             var failing = true
-            /** 验证异常传播。@param value 新透明度。@return Unit。Callers: CleanViewGate。 */
-            override fun setAlpha(value: Float) {
+            /** 验证异常传播。@param value 新可见性。@return Unit。Callers: CleanViewGate。 */
+            override fun setVisibility(value: Int) {
                 if (failing) throw failure
-                super.setAlpha(value)
+                super.setVisibility(value)
             }
         }
         val owner = CleanViewGate.Owner(true)

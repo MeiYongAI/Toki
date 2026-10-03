@@ -176,9 +176,11 @@ object FeedFilterHook {
             check(type == Int::class.javaPrimitiveType) { "Feed 请求类型字段不是 int" }
             isAccessible = true
         }
-        val cold = HostSymbols.resolve(classLoader, HostSymbol.COLD_FEED).getDeclaredMethod("LJIJJ")
+        val cold = HostSymbols.resolve(classLoader, HostSymbol.COLD_FEED)
+            .getDeclaredMethod(HostSymbols.member(HostSymbol.COLD_FEED, "read"))
         val preload = HostSymbols.resolve(classLoader, HostSymbol.PRELOADED_FEED).declaredMethods.single {
-            it.name == "getData" && it.parameterCount == 0 && it.returnType == responseType
+            it.name == HostSymbols.member(HostSymbol.PRELOADED_FEED, "read") &&
+                it.parameterCount == 0 && it.returnType == responseType
         }
         val getItems = responseType.getMethod("getItems")
         val setItems = responseType.getMethod("setItems", List::class.java)
@@ -208,7 +210,7 @@ object FeedFilterHook {
             }
         }
         val offlineSwitch = HostSymbols.resolve(classLoader, HostSymbol.OFFLINE_RECOVERY)
-            .getDeclaredMethod("LIZIZ").apply {
+            .getDeclaredMethod(HostSymbols.member(HostSymbol.OFFLINE_RECOVERY, "enabled")).apply {
                 check(returnType == Boolean::class.javaPrimitiveType)
                 isAccessible = true
             }
@@ -265,7 +267,7 @@ object FeedFilterHook {
         val intType = Int::class.javaPrimitiveType!!
         val awemeType = reader.awemeType
         val setData = adapter.getDeclaredMethod("setData", List::class.java)
-        val getData = adapter.getDeclaredMethod("LJJJLL").apply {
+        val getData = adapter.getDeclaredMethod(HostSymbols.member(HostSymbol.FEED_ADAPTER, "getData")).apply {
             check(returnType == List::class.java)
             isAccessible = true
         }
@@ -276,7 +278,8 @@ object FeedFilterHook {
         val removeAndInsert = adapter.getDeclaredMethod(HostSymbols.member(HostSymbol.FEED_ADAPTER, "removeInsert"), intType, awemeType)
         val batch = adapter.getDeclaredMethod(HostSymbols.member(HostSymbol.FEED_ADAPTER, "batch"), intType, intType, List::class.java)
         val recommendBatch = recommendAdapter.getDeclaredMethod(HostSymbols.member(HostSymbol.RECOMMEND_ADAPTER, "batch"), intType, intType, List::class.java)
-        val remove = adapter.getDeclaredMethod("LJJJJLL", intType, awemeType).apply { isAccessible = true }
+        val remove = adapter.getDeclaredMethod(HostSymbols.member(HostSymbol.FEED_ADAPTER, "remove"), intType, awemeType)
+            .apply { isAccessible = true }
         val notify = adapter.getMethod("notifyDataSetChanged")
         val count = adapter.getMethod("getCount")
         for (constructor in adapter.declaredConstructors) {

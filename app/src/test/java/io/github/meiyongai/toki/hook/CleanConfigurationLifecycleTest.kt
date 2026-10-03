@@ -86,7 +86,7 @@ class CleanConfigurationLifecycleTest {
 
         // 暂停监听期间宿主可更改自己的属性；恢复后不覆盖这些原生意图。
         controls.visibility = gate.visibility(controls, View.GONE)
-        controls.alpha = gate.alpha(controls, 0.4f)
+        controls.alpha = 0.4f
         applyConfiguration(ConfigSnapshot(mapOf("clean_mode_on_play" to true), 2))
         assertEquals(4, seekBar.mode)
         root.viewTreeObserver.dispatchOnPreDraw()
@@ -97,10 +97,4 @@ class CleanConfigurationLifecycleTest {
         assertEquals(0.4f, controls.alpha)
     }
 
-    @Test fun explicitImmersiveDecisionUsesItsSuppliedConfiguration() {
-        val root = FrameLayout(RuntimeEnvironment.getApplication())
-        assertThrows(IllegalStateException::class.java) { ConfigClient.snapshot() }
-        ImmersiveFullScreenHook.eliminatePlaceholder(root, false)
-        ImmersiveFullScreenHook.eliminatePlaceholder(root, true)
-    }
 }

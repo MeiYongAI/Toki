@@ -22,6 +22,9 @@ public final class HostDexIndex {
     private static final Pattern OBFUSCATED = Pattern.compile("LX/[^;]+;|Lkotlin/jvm/internal/[A-Z][^;]+;");
     private static final ProgressListener NO_PROGRESS = (completed, total) -> {};
 
+    /** 方法候选按类与完整方法描述去重，同类多个匹配方法仍属于歧义。 */
+    private record MethodTarget(String owner, String descriptor, String role, Set<String> calls) {}
+
     /** 一条完整指纹及其预解析成员契约；同符号的不同规则分别参与匹配。 */
     private record Rule(String symbol, String shape, String literals, String linked,
             Map<String, String> bindings) {
@@ -255,7 +258,7 @@ public final class HostDexIndex {
     /**
      * 对全部代码扫描规则，只返回去重后唯一的候选；零候选和歧义分别记录。
      * @param paths 完整代码包路径。
-     * @param rules 每行 symbol、shape、literals、linked、bindings，以制表符分隔。
+     * @param rules 五列类指纹或 method-v1 方法行为规则，以制表符分隔。
      * @return symbol 映射到 binaryName；失败记录在 error.symbol。
      * @throws IOException 输入读取失败。
      * Callers: HostSymbols、离线验证器。
@@ -275,22 +278,62 @@ public final class HostDexIndex {
      */
     public static Properties scan(List<String> paths, String rules, ProgressListener progress) throws IOException {
         Set<Rule> parsedRules = new LinkedHashSet<>();
+        Set<HostMethodRule> methodRules = new LinkedHashSet<>();
+        Set<String> speedSymbols = new LinkedHashSet<>();
+        Set<String> commentSymbols = new LinkedHashSet<>();
         for (String line : rules.split("\\R")) {
             if (line.trim().isEmpty() || line.startsWith("#")) continue;
-            parsedRules.add(Rule.parse(line));
+            String[] columns = line.split("\t", -1);
+            if (columns.length == 5 && columns[1].equals("comment-v1")) {
+                if (!columns[0].equals("COMMENT_COPY") || !columns[2].equals("relations") ||
+                        !columns[3].equals("-") || !columns[4].equals("-"))
+                    throw new IllegalArgumentException("无效评论复制关系规则：" + line);
+                commentSymbols.add(columns[0]);
+            } else if (columns.length == 5 && columns[1].equals("speed-v1")) {
+                if (!Set.of("PLAYER_CONTROLLER", "PLAYER_MANAGER", "SPEED_MANAGER", "SPEED_OPTIONS").contains(columns[0]) ||
+                        !columns[2].equals("relations") || !columns[3].equals("-") || !columns[4].equals("-"))
+                    throw new IllegalArgumentException("无效倍速关系规则：" + line);
+                speedSymbols.add(columns[0]);
+            } else if (columns.length == 5 && columns[1].equals("method-v1")) methodRules.add(HostMethodRule.parse(columns));
+            else parsedRules.add(Rule.parse(line));
         }
+        Map<String, Set<MethodTarget>> methodCandidates = new TreeMap<>();
+        for (HostMethodRule rule : methodRules) methodCandidates.putIfAbsent(rule.symbol(), new LinkedHashSet<>());
+        Set<String> relationSymbols = new HashSet<>(speedSymbols);
+        relationSymbols.addAll(commentSymbols);
+        if (!Collections.disjoint(relationSymbols, methodCandidates.keySet()))
+            throw new IllegalArgumentException("同一符号不能混用关系与方法规则");
+        HostSpeedIndex speedIndex = new HostSpeedIndex();
+        HostCommentIndex commentIndex = new HostCommentIndex();
         Map<String, List<Rule>> byShape = new HashMap<>();
         Map<String, Map<String, Set<Rule>>> candidates = new TreeMap<>();
         for (Rule rule : parsedRules) {
+            if (methodCandidates.containsKey(rule.symbol()) || relationSymbols.contains(rule.symbol()))
+                throw new IllegalArgumentException("同一符号不能混用类指纹与方法规则：" + rule.symbol());
             candidates.computeIfAbsent(rule.symbol(), key -> new TreeMap<>());
             byShape.computeIfAbsent(rule.shape(), key -> new ArrayList<>()).add(rule);
         }
         Map<String, Set<Rule>> pending = new HashMap<>();
         Map<String, Set<String>> dependencies = new HashMap<>();
         int dexCount = countDex(paths);
-        int total = (dexCount * 2 + candidates.size()) * 1000;
+        int total = (dexCount * 2 + candidates.size() + methodCandidates.size() + relationSymbols.size()) * 1000;
         progress.onProgress(0, total);
+        HostMethodRule.Index methodIndex = new HostMethodRule.Index(methodRules);
         visit(paths, type -> {
+            if (!speedSymbols.isEmpty()) speedIndex.collect(type);
+            if (!commentSymbols.isEmpty()) commentIndex.collect(type);
+            if (!methodRules.isEmpty()) for (Method method : type.getMethods()) {
+                for (HostMethodRule rule : methodIndex.match(method)) {
+                    Set<String> calls = new HashSet<>();
+                    for (var instruction : method.getImplementation().getInstructions())
+                        if (instruction instanceof ReferenceInstruction ref &&
+                                ref.getReference() instanceof org.jf.dexlib2.iface.reference.MethodReference call &&
+                                instruction.getOpcode().name().startsWith("INVOKE_")) calls.add(call.toString());
+                    methodCandidates.get(rule.symbol()).add(new MethodTarget(type.getType(),
+                            memberDescriptor(method), rule.role(), Set.copyOf(calls)));
+                }
+            }
+            if (byShape.isEmpty()) return;
             List<Rule> matching = byShape.get(shape(type));
             if (matching == null) return;
             String content = literals(type);
@@ -332,6 +375,50 @@ public final class HostDexIndex {
             completed[0] += 1000;
             progress.onProgress(completed[0], total);
         });
+        methodCandidates.forEach((symbol, found) -> {
+            Set<String> roles = new HashSet<>();
+            Map<String, Set<String>> callers = new HashMap<>();
+            for (HostMethodRule rule : methodRules) if (rule.symbol().equals(symbol)) {
+                roles.add(rule.role());
+                for (String anchor : rule.anchors()) if (anchor.startsWith("called-by:"))
+                    callers.computeIfAbsent(rule.role(), key -> new HashSet<>()).add(anchor.substring(10));
+            }
+            for (Set<String> callerRoles : callers.values()) if (!roles.containsAll(callerRoles))
+                throw new IllegalArgumentException("方法规则引用未声明的角色：" + symbol);
+            boolean changed;
+            do {
+                Set<MethodTarget> current = Set.copyOf(found);
+                changed = found.removeIf(target -> callers.getOrDefault(target.role(), Set.of()).stream()
+                        .anyMatch(role -> current.stream().noneMatch(caller -> caller.owner().equals(target.owner()) &&
+                                caller.role().equals(role) && caller.calls().contains(target.owner() + "->" + target.descriptor()))));
+            } while (changed);
+            Map<String, Map<String, Set<MethodTarget>>> owners = new TreeMap<>();
+            for (MethodTarget target : found) owners.computeIfAbsent(target.owner(), key -> new TreeMap<>())
+                    .computeIfAbsent(target.role(), key -> new LinkedHashSet<>()).add(target);
+            owners.values().removeIf(members -> !members.keySet().containsAll(roles));
+            boolean ambiguous = owners.size() != 1 || owners.values().stream()
+                    .anyMatch(members -> members.values().stream().anyMatch(matches -> matches.size() != 1));
+            if (ambiguous) result.setProperty("error." + symbol, "候选数量=" +
+                    (owners.size() == 1 ? owners.values().iterator().next().values().stream().mapToInt(Set::size).max().orElse(0) : owners.size()));
+            else {
+                String owner = owners.keySet().iterator().next();
+                result.setProperty(symbol, owner.substring(1, owner.length() - 1).replace('/', '.'));
+                owners.get(owner).forEach((role, matches) -> result.setProperty("member." + symbol + "." + role,
+                        matches.iterator().next().descriptor()));
+            }
+            completed[0] += 1000;
+            progress.onProgress(completed[0], total);
+        });
+        for (String symbol : speedSymbols) {
+            result.putAll(speedIndex.resolve(symbol));
+            completed[0] += 1000;
+            progress.onProgress(completed[0], total);
+        }
+        if (!commentSymbols.isEmpty()) {
+            result.putAll(commentIndex.resolve());
+            completed[0] += 1000;
+            progress.onProgress(completed[0], total);
+        }
         return result;
     }
 

@@ -3,15 +3,14 @@ package io.github.meiyongai.toki.hook
 import android.view.View
 import java.util.WeakHashMap
 
-/** 管理创建时登记的完整控件容器，保留宿主独立的可见性和透明度。 */
+/** 仅管理完整控件容器的可见性，透明度和动画始终由宿主管理。 */
 internal class CleanViewGate {
     /** 一个页面区域的显示所有权；多个区域可以共用导航容器。 */
     class Owner(var clean: Boolean = false)
-    private class Entry(var visibility: Int, var alpha: Float) {
+    private class Entry(var visibility: Int) {
         val owners = mutableSetOf<Owner>()
         val clean: Boolean get() = owners.any { it.clean }
         val effectiveVisibility: Int get() = if (clean && visibility == View.VISIBLE) View.INVISIBLE else visibility
-        val effectiveAlpha: Float get() = if (clean) 0f else alpha
     }
     private val entries = WeakHashMap<View, Entry>()
     private var applying = false
@@ -35,7 +34,7 @@ internal class CleanViewGate {
 
     /** 登记完整容器。@param owner 所有者。@param view 容器。@return Unit。Callers: replace、AutoCleanModeHook。 */
     fun bind(owner: Owner, view: View) {
-        entries.getOrPut(view) { Entry(view.visibility, view.alpha) }.owners.add(owner)
+        entries.getOrPut(view) { Entry(view.visibility) }.owners.add(owner)
     }
 
     /**
@@ -49,19 +48,6 @@ internal class CleanViewGate {
         val entry = entries[view] ?: return requested
         if (!applying) entry.visibility = requested
         return entry.effectiveVisibility
-    }
-
-    /**
-     * 记录宿主透明度，包括原生清屏与原生属性动画。
-     * @param view 目标视图。
-     * @param requested 宿主请求的透明度。
-     * @return 应传递给 Android 的值。
-     * Callers: AutoCleanModeHook 的平台属性拦截、测试。
-     */
-    fun alpha(view: View, requested: Float): Float {
-        val entry = entries[view] ?: return requested
-        if (!applying) entry.alpha = requested
-        return entry.effectiveAlpha
     }
 
     /** 所有区域决策完成后统一提交属性。@return Unit；无入参。Callers: AutoCleanModeHook.commit、测试。 */
@@ -82,7 +68,6 @@ internal class CleanViewGate {
         applying = true
         try {
             if (view.visibility != entry.effectiveVisibility) view.visibility = entry.effectiveVisibility
-            if (view.alpha != entry.effectiveAlpha) view.alpha = entry.effectiveAlpha
         } finally {
             applying = previous
         }

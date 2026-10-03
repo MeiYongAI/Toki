@@ -82,4 +82,33 @@ class HostSymbolsPreparationTest {
         assertTrue(report().getString("error").orEmpty().startsWith(IllegalStateException::class.java.name))
         assertEquals(before, HostScanController.session.status.phase)
     }
+
+    /**
+     * 同一代码和规则的未匹配结果跨启动复用，并保留符号访问失败；不能循环启动扫描。
+     * @return Unit；无参数。
+     * Callers: JUnit。
+     */
+    @Test fun completedUnmatchedResultDoesNotRescanOnRepeatedStartup() {
+        val host = host()
+        val identity = HostDexIndex.identity(listOf(host.sourceDir))
+        val rules = javaClass.getResourceAsStream("/toki-host-rules.tsv")!!.bufferedReader().use { it.readText() }
+        val key = HostDexIndex.digest("${HostSymbols.INDEX_FORMAT}\n$identity\n" + HostDexIndex.digest(rules))
+        val symbol = HostSymbol.COMMENT_TRANSLATION
+        val file = HostSymbols.storageFile(java.io.File(host.dataDir))
+        HostSymbolCache.write(file, Properties().apply {
+            setProperty("cache.key", key)
+            setProperty("cache.symbols", symbol.name)
+            setProperty("error.${symbol.name}", "候选数量=0")
+        })
+        val saved = file.readBytes()
+        val before = HostScanController.session.status.phase
+        repeat(4) {
+            assertTrue(HostSymbols.initialize(host, true, setOf(symbol)))
+            assertEquals(before, HostScanController.session.status.phase)
+            assertArrayEquals(saved, file.readBytes())
+            assertFalse(HostSymbols.available(symbol))
+            val error = assertThrows(IllegalStateException::class.java) { HostSymbols.name(symbol) }
+            assertTrue(error.message.orEmpty().contains("候选数量=0"))
+        }
+    }
 }

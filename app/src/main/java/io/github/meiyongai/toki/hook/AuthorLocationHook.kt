@@ -5,17 +5,9 @@ import android.util.Log
 import io.github.meiyongai.toki.provider.ConfigClient
 import io.github.libxposed.api.XposedModule
 import java.util.Locale
+import java.lang.reflect.Modifier
 
-/**
- * 视频作者地理位置解析与国旗标识渲染 Hook 处理器。
- *
- * 注入点位于信息流作者名展示构建器 [X.08vJ.LIZIZ]（作者行展示文本的唯一产出点，
- * 调用方均为作者信息展示组件）：仅对展示文本追加国旗与地区前缀，不触碰 User
- * 数据模型——模型层注入会使带前缀的昵称进入跨页面数据流（作者主页初次渲染
- * 复用信息流 User 即闪现前缀，接口刷新后消失）。
- *
- * 结果：信息流作者名稳定带位置标识；作者主页及一切数据管道保持原生文本。
- */
+/** 在信息流作者名展示结果追加地区标识，不修改 User 模型。 */
 object AuthorLocationHook {
 
     private const val TAG = "TokiAuthorLocation"
@@ -32,6 +24,22 @@ object AuthorLocationHook {
     /** 功能启用状态 */
     private val isEnabled: Boolean
         get() = ConfigClient.getBoolean(KEY_SHOW_AUTHOR_LOCATION)
+
+    /** 在挂载前验证作者展示及只读模型契约；缺失或类型不符直接报告。 */
+    internal class Contract(builder: Class<*>, name: String, user: Class<*>, aweme: Class<*>) {
+        val build = builder.getDeclaredMethod(name, String::class.java, user, aweme).apply {
+            check(returnType == String::class.java && Modifier.isStatic(modifiers)) { "作者展示入口类型不符合契约" }
+            isAccessible = true
+        }
+        val region = user.getMethod("getRegion").apply {
+            check(returnType == String::class.java && !Modifier.isStatic(modifiers)) { "作者地区 getter 类型不符合契约" }
+            isAccessible = true
+        }
+        val author = aweme.getMethod("getAuthor").apply {
+            check(returnType == user && !Modifier.isStatic(modifiers)) { "视频作者 getter 类型不符合契约" }
+            isAccessible = true
+        }
+    }
 
     /**
      * 同步持久化存储中的作者位置显示功能开关。
@@ -122,31 +130,18 @@ object AuthorLocationHook {
      *     Unit: 无返回值。
      *
      * Callers:
-     *     - `io.github.meiyongai.toki.hook.TokiModule.onPackageLoaded`: 目标包加载完成时注册。
+     *     - `io.github.meiyongai.toki.hook.TokiModule.onPackageReady`: 目标包加载完成时注册。
      */
     fun init(module: XposedModule, classLoader: ClassLoader) {
         val userClass = classLoader.loadClass("com.ss.android.ugc.aweme.profile.model.User")
-        val getRegionMethod = userClass.getMethod("getRegion")
         val awemeClass = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.Aweme")
-        val getAuthorMethod = awemeClass.getMethod("getAuthor")
-
-        getRegionMethod.isAccessible = true
-        getAuthorMethod.isAccessible = true
-
-        // 信息流作者名展示构建器 X.08vJ.LIZIZ——作者行展示文本的唯一产出点
-        val builderClass = HostSymbols.resolve(classLoader, HostSymbol.AUTHOR_LOCATION)
-        val builderMethod = builderClass.declaredMethods.firstOrNull {
-            it.name == "LIZIZ" && it.parameterCount == 3 &&
-                it.parameterTypes[1] == userClass &&
-                it.parameterTypes[2] == awemeClass
-        }
-        if (builderMethod == null) {
-            Log.w(TAG, "X.08vJ.LIZIZ 未匹配，作者位置注入未挂载")
-            return
-        }
-        builderMethod.isAccessible = true
+        val contract = Contract(HostSymbols.resolve(classLoader, HostSymbol.AUTHOR_LOCATION),
+            HostSymbols.member(HostSymbol.AUTHOR_LOCATION, "build"), userClass, awemeClass)
+        val builderMethod = contract.build
+        val getRegionMethod = contract.region
+        val getAuthorMethod = contract.author
         module.trackHook("AuthorLocationHook", builderMethod).intercept { chain ->
-            val result = chain.proceed() as? String
+            val result = chain.proceed() as String?
             if (!isEnabled || result.isNullOrEmpty()) {
                 return@intercept result
             }
@@ -159,7 +154,7 @@ object AuthorLocationHook {
                 val awemeArg = chain.args[2]
                 if (awemeArg != null) getAuthorMethod.invoke(awemeArg) else null
             }
-            val region = if (user != null) getRegionMethod.invoke(user) as? String else null
+            val region = if (user != null) getRegionMethod.invoke(user) as String? else null
 
             if (region.isNullOrBlank()) {
                 return@intercept result
@@ -168,6 +163,6 @@ object AuthorLocationHook {
             formatAuthorWithLocation(result, region)
         }
 
-        Log.i(TAG, "作者位置展示层注入 Hook 初始化就绪")
+        Log.i(TAG, "作者位置展示入口已注册：${builderMethod.declaringClass.name}.${builderMethod.name}")
     }
 }

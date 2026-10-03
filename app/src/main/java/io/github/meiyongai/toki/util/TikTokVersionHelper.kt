@@ -38,6 +38,7 @@ object TikTokVersionHelper {
      * 当前模块适配验证支持的稳定 TikTok 版本清单。
      */
     val SUPPORTED_VERSIONS: List<String> = listOf(
+        "v47.1.4",
         "v47.0.3",
         "v46.8.3"
     )

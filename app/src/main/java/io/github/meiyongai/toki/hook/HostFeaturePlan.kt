@@ -85,22 +85,18 @@ internal class HostFeaturePlan(private val startup: ConfigSnapshot?) {
             "ImmersiveFullScreenHook" to setOf("immersive_full_screen"),
         )
         private val fixedSpeedSymbols = setOf(HostSymbol.PLAYER_CONTROLLER, HostSymbol.PLAYER_MANAGER, HostSymbol.SPEED_MANAGER)
-        private val speedMenuSymbols = setOf(HostSymbol.THREE_TIMES_SPEED, HostSymbol.SPEED_OPTIONS,
-            HostSymbol.SPEED_LAMBDA11, HostSymbol.SPEED_LAMBDA21, HostSymbol.SPEED_LAMBDA31)
+        private val speedMenuSymbols = setOf(HostSymbol.SPEED_OPTIONS)
         private val symbolDependencies = mapOf(
             "DownloadHook" to setOf(HostSymbol.DOWNLOAD_SOURCE),
             "FeedFilterHook" to setOf(HostSymbol.COLD_FEED, HostSymbol.PRELOADED_FEED, HostSymbol.OFFLINE_RECOVERY,
                 HostSymbol.FEED_ADAPTER, HostSymbol.RECOMMEND_ADAPTER, HostSymbol.RECOMMEND_MODEL),
             "CommentTranslateHook" to setOf(HostSymbol.COMMENT_TRANSLATION),
-            "VideoTranslateHook" to setOf(HostSymbol.TRANSLATION_REVERSE),
-            "CommentCopyHook" to setOf(HostSymbol.COMMENT_ACTION, HostSymbol.COMMENT_MENU, HostSymbol.COMMENT_BINDER,
-                HostSymbol.COMMENT_DISPLAY, HostSymbol.COMMENT_CLIP),
+            "VideoTranslateHook" to setOf(HostSymbol.DESCRIPTION_TRANSLATION, HostSymbol.TRANSLATION_REVERSE),
+            "CommentCopyHook" to setOf(HostSymbol.COMMENT_COPY),
             "AuthorLocationHook" to setOf(HostSymbol.AUTHOR_LOCATION),
             "ProgressBarHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.DARK_LAYER, HostSymbol.SEEK_CONTROLLER),
-            "AutoCleanModeHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.VIDEO_CELL, HostSymbol.VIDEO_BASE_CELL,
-                HostSymbol.CLEAN, HostSymbol.CELL_CLEAN, HostSymbol.PLAYER_CONTROLLER),
-            "ImmersiveFullScreenHook" to setOf(HostSymbol.RESERVED_AREA, HostSymbol.FEED_ADAPTION,
-                HostSymbol.ADAPTION, HostSymbol.PHOTO_EXPANSION),
+            "AutoCleanModeHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.VIDEO_CELL, HostSymbol.PLAYER_CONTROLLER),
+            "ImmersiveFullScreenHook" to setOf(HostSymbol.RESERVED_AREA, HostSymbol.FEED_ADAPTION, HostSymbol.PHOTO_LAYOUT),
             "AutoScrollHook" to setOf(HostSymbol.SETTINGS, HostSymbol.SEARCH_AUTO_SCROLL),
             "MusicUnlockHook" to setOf(HostSymbol.MUTE_INFO),
         )
