@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"저장 실패: 선택한 위치에 쓰기 권한이 없습니다. 다시 선택하세요."</string>
     <string name="feature_filter_topics" formatted="false">"추천 주제 숨기기"</string>
     <string name="feature_filter_creators" formatted="false">"추천 크리에이터 숨기기"</string>
+    <string name="host_scan_title_running" formatted="false">"메서드 찾는 중"</string>
+    <string name="host_scan_title_saving" formatted="false">"결과 저장 중"</string>
+    <string name="host_scan_title_complete" formatted="false">"검색 완료"</string>
+    <string name="host_scan_title_failed" formatted="false">"검색 실패"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok을 화면에 계속 띄워 두세요."</string>
+    <string name="host_scan_saving_hint" formatted="false">"잠시 기다려 주세요."</string>
+    <string name="host_scan_restart_hint" formatted="false">"결과를 적용하려면 TikTok을 직접 다시 시작하세요."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki에서 기능 진단을 확인하세요."</string>
+    <string name="host_scan_done" formatted="false">"알겠어요"</string>
 </resources>

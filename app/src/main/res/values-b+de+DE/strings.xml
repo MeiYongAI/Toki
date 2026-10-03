@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Speichern fehlgeschlagen. Keine Schreibberechtigung für diesen Ort. Wähle einen anderen aus."</string>
     <string name="feature_filter_topics" formatted="false">"Themenvorschläge ausblenden"</string>
     <string name="feature_filter_creators" formatted="false">"Creator-Vorschläge ausblenden"</string>
+    <string name="host_scan_title_running" formatted="false">"Methoden werden gesucht"</string>
+    <string name="host_scan_title_saving" formatted="false">"Ergebnisse werden gespeichert"</string>
+    <string name="host_scan_title_complete" formatted="false">"Suche abgeschlossen"</string>
+    <string name="host_scan_title_failed" formatted="false">"Suche fehlgeschlagen"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Lasse TikTok im Vordergrund."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Bitte warten."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Starte TikTok manuell neu, um die Ergebnisse anzuwenden."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Sieh dir die Funktionsdiagnose in Toki an."</string>
+    <string name="host_scan_done" formatted="false">"Verstanden"</string>
 </resources>

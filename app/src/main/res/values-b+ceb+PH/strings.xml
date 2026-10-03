@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Napakyas ang pagtipig. Wala gihatag ang pagtugot sa pagsulat niini nga lokasyon. Pagpili og lain."</string>
     <string name="feature_filter_topics" formatted="false">"Itago ang gisugyot nga mga topiko"</string>
     <string name="feature_filter_creators" formatted="false">"Itago ang gisugyot nga mga creator"</string>
+    <string name="host_scan_title_running" formatted="false">"Nangita og mga metodo"</string>
+    <string name="host_scan_title_saving" formatted="false">"Gitipigan ang mga resulta"</string>
+    <string name="host_scan_title_complete" formatted="false">"Nahuman ang pagpangita"</string>
+    <string name="host_scan_title_failed" formatted="false">"Napakyas ang pagpangita"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Ipadayon ang TikTok sa atubangan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Palihog paghulat."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Manwal nga i-restart ang TikTok aron maaplikar ang mga resulta."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Tan-awa ang mga diagnostic sa mga feature sa Toki."</string>
+    <string name="host_scan_done" formatted="false">"Nasabtan"</string>
 </resources>

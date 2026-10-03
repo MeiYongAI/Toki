@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.0.1 — 2026-10-03
+
+### 中文
+
+- 修复 TikTok 47.0.3 部分视频无水印下载生成 0 字节 `null.mp4` 的问题：在官方下载选源阶段使用同一视频的有效播放源，保留官方文件名、下载进度和保存流程。
+- 状态栏隐藏支持直播观看页，并在返回前台、恢复窗口焦点和配置变化时保持生效。
+- 优化方法查找窗口的留白，并修复开始查找时进度条短暂显示满格的问题。
+- 按启用功能安装 Hook 和查找所需方法，统一代码指纹匹配，并串行化适配缓存读写、校验提交结果。
+- 包名为 `io.github.meiyongai.toki`，版本码为 `2`。
+- **本版使用新正式签名，不能直接覆盖安装原签名的 1.0.0。请先导出 Toki 配置，再卸载旧版、安装本版、导入配置，并在 LSPosed 中确认启用及作用域后重启 TikTok。仅卸载 Toki，不需要卸载 TikTok。**
+- 无水印下载和直播状态栏隐藏已通过用户实机复测。直播顶部黑色留白保持宿主布局。
+
+### English
+
+- Fixed zero-byte `null.mp4` downloads on TikTok 47.0.3 by resolving a valid playback source during native watermark-free source selection. Native naming, progress and saving remain in use.
+- Added status-bar hiding on live viewing pages, including resume, window focus and configuration changes.
+- Reduced excess spacing in method discovery and fixed the initial full-progress flash.
+- Install hooks and discover methods according to enabled features, use shared code fingerprints, and serialize adaptation-cache access with commit verification.
+- Package: `io.github.meiyongai.toki`; version code: `2`.
+- **This release uses a new signing certificate and cannot update the original signed 1.0.0 in place. Export Toki settings, uninstall Toki, install this release, import settings, confirm LSPosed activation and scope, then restart TikTok. Do not uninstall TikTok.**
+- Download and live status-bar fixes were verified on-device by the user. The live page's top black spacing remains unchanged.
+
 ## 1.0.0 — 2026-09-30
 
 ### English

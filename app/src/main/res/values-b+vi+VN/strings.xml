@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Lưu thất bại: chưa có quyền ghi vào vị trí đã chọn. Vui lòng chọn lại."</string>
     <string name="feature_filter_topics" formatted="false">"Ẩn chủ đề được đề xuất"</string>
     <string name="feature_filter_creators" formatted="false">"Ẩn nhà sáng tạo được đề xuất"</string>
+    <string name="host_scan_title_running" formatted="false">"Đang tìm phương thức"</string>
+    <string name="host_scan_title_saving" formatted="false">"Đang lưu kết quả"</string>
+    <string name="host_scan_title_complete" formatted="false">"Tìm kiếm hoàn tất"</string>
+    <string name="host_scan_title_failed" formatted="false">"Tìm kiếm thất bại"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Giữ TikTok ở phía trước."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Vui lòng chờ."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Khởi động lại TikTok theo cách thủ công để áp dụng kết quả."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Xem chẩn đoán tính năng trong Toki."</string>
+    <string name="host_scan_done" formatted="false">"Đã hiểu"</string>
 </resources>

@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Theip ar shábháil. Níor deonaíodh cead scríofa don suíomh seo. Roghnaigh suíomh eile."</string>
     <string name="feature_filter_topics" formatted="false">"Folaigh ábhair mholta"</string>
     <string name="feature_filter_creators" formatted="false">"Folaigh cruthaitheoirí molta"</string>
+    <string name="host_scan_title_running" formatted="false">"Modhanna á lorg"</string>
+    <string name="host_scan_title_saving" formatted="false">"Torthaí á sábháil"</string>
+    <string name="host_scan_title_complete" formatted="false">"Cuardach críochnaithe"</string>
+    <string name="host_scan_title_failed" formatted="false">"Theip ar an gcuardach"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Coinnigh TikTok sa tulra."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Fan go fóill."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Atosaigh TikTok de láimh chun na torthaí a chur i bhfeidhm."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Féach ar dhiagnóisic na ngnéithe in Toki."</string>
+    <string name="host_scan_done" formatted="false">"Tuigim"</string>
 </resources>

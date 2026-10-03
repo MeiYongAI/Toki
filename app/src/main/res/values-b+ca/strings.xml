@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"No s’ha pogut desar. No s’ha concedit permís d’escriptura en aquesta ubicació. Tria’n una altra."</string>
     <string name="feature_filter_topics" formatted="false">"Amaga els temes suggerits"</string>
     <string name="feature_filter_creators" formatted="false">"Amaga els creadors suggerits"</string>
+    <string name="host_scan_title_running" formatted="false">"Cercant mètodes"</string>
+    <string name="host_scan_title_saving" formatted="false">"Desant els resultats"</string>
+    <string name="host_scan_title_complete" formatted="false">"Cerca completada"</string>
+    <string name="host_scan_title_failed" formatted="false">"La cerca ha fallat"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Manteniu TikTok en primer pla."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Espereu, si us plau."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Reinicieu TikTok manualment per aplicar els resultats."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Consulteu el diagnòstic de les funcions a Toki."</string>
+    <string name="host_scan_done" formatted="false">"Entesos"</string>
 </resources>

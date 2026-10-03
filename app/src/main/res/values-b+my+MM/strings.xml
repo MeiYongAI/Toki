@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"သိမ်းခြင်း မအောင်မြင်ပါ။ ဤနေရာတွင် ရေးခွင့်မရှိပါ။ အခြားနေရာ ရွေးပါ။"</string>
     <string name="feature_filter_topics" formatted="false">"အကြံပြုထားသော ခေါင်းစဉ်များ ဖျောက်ရန်"</string>
     <string name="feature_filter_creators" formatted="false">"အကြံပြုဖန်တီးသူများ ဖျောက်ရန်"</string>
+    <string name="host_scan_title_running" formatted="false">"မက်သဒ်များကို ရှာဖွေနေသည်"</string>
+    <string name="host_scan_title_saving" formatted="false">"ရလဒ်များကို သိမ်းဆည်းနေသည်"</string>
+    <string name="host_scan_title_complete" formatted="false">"ရှာဖွေမှု ပြီးဆုံးပြီ"</string>
+    <string name="host_scan_title_failed" formatted="false">"ရှာဖွေမှု မအောင်မြင်ပါ"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok ကို ရှေ့မျက်နှာပြင်တွင် ဖွင့်ထားပါ။"</string>
+    <string name="host_scan_saving_hint" formatted="false">"ခဏစောင့်ပါ။"</string>
+    <string name="host_scan_restart_hint" formatted="false">"ရလဒ်များကို အသုံးပြုရန် TikTok ကို ကိုယ်တိုင် ပြန်လည်စတင်ပါ။"</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki တွင် လုပ်ဆောင်ချက် စစ်ဆေးမှုကို ကြည့်ပါ။"</string>
+    <string name="host_scan_done" formatted="false">"နားလည်ပါပြီ"</string>
 </resources>

@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Shranjevanje ni uspelo. Za to mesto ni dovoljenja za pisanje. Izberite drugo mesto."</string>
     <string name="feature_filter_topics" formatted="false">"Skrij predlagane teme"</string>
     <string name="feature_filter_creators" formatted="false">"Skrij predlagane ustvarjalce"</string>
+    <string name="host_scan_title_running" formatted="false">"Iskanje metod"</string>
+    <string name="host_scan_title_saving" formatted="false">"Shranjevanje rezultatov"</string>
+    <string name="host_scan_title_complete" formatted="false">"Iskanje končano"</string>
+    <string name="host_scan_title_failed" formatted="false">"Iskanje ni uspelo"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Pusti TikTok v ospredju."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Počakaj."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Ročno znova zaženi TikTok, da uveljaviš rezultate."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Oglej si diagnostiko funkcij v Toki."</string>
+    <string name="host_scan_done" formatted="false">"Razumem"</string>
 </resources>

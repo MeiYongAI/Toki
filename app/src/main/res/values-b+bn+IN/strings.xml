@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"সংরক্ষণ ব্যর্থ হয়েছে। এই স্থানে লেখার অনুমতি দেওয়া হয়নি। অন্য স্থান বেছে নিন।"</string>
     <string name="feature_filter_topics" formatted="false">"প্রস্তাবিত বিষয় লুকান"</string>
     <string name="feature_filter_creators" formatted="false">"প্রস্তাবিত নির্মাতা লুকান"</string>
+    <string name="host_scan_title_running" formatted="false">"মেথড খোঁজা হচ্ছে"</string>
+    <string name="host_scan_title_saving" formatted="false">"ফলাফল সংরক্ষণ করা হচ্ছে"</string>
+    <string name="host_scan_title_complete" formatted="false">"অনুসন্ধান সম্পন্ন"</string>
+    <string name="host_scan_title_failed" formatted="false">"অনুসন্ধান ব্যর্থ"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok সামনে খোলা রাখুন।"</string>
+    <string name="host_scan_saving_hint" formatted="false">"অনুগ্রহ করে অপেক্ষা করুন।"</string>
+    <string name="host_scan_restart_hint" formatted="false">"ফলাফল প্রয়োগ করতে TikTok ম্যানুয়ালি পুনরায় চালু করুন।"</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki-তে ফিচারের ডায়াগনস্টিকস দেখুন।"</string>
+    <string name="host_scan_done" formatted="false">"বুঝেছি"</string>
 </resources>

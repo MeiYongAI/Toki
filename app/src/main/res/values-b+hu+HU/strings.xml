@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Sikertelen mentés. Nincs írási engedély ehhez a helyhez. Válassz másikat."</string>
     <string name="feature_filter_topics" formatted="false">"Ajánlott témák elrejtése"</string>
     <string name="feature_filter_creators" formatted="false">"Ajánlott alkotók elrejtése"</string>
+    <string name="host_scan_title_running" formatted="false">"Metódusok keresése"</string>
+    <string name="host_scan_title_saving" formatted="false">"Eredmények mentése"</string>
+    <string name="host_scan_title_complete" formatted="false">"Keresés befejezve"</string>
+    <string name="host_scan_title_failed" formatted="false">"A keresés sikertelen"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Tartsd a TikTok alkalmazást az előtérben."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Kérlek, várj."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Az eredmények alkalmazásához indítsd újra kézzel a TikTok alkalmazást."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Nézd meg a funkciók diagnosztikáját a Toki alkalmazásban."</string>
+    <string name="host_scan_done" formatted="false">"Értem"</string>
 </resources>

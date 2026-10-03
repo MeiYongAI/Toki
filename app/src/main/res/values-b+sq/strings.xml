@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Ruajtja dështoi. Nuk është dhënë leje shkrimi për këtë vend. Zgjidh një tjetër."</string>
     <string name="feature_filter_topics" formatted="false">"Fshih temat e sugjeruara"</string>
     <string name="feature_filter_creators" formatted="false">"Fshih krijuesit e sugjeruar"</string>
+    <string name="host_scan_title_running" formatted="false">"Po kërkohen metodat"</string>
+    <string name="host_scan_title_saving" formatted="false">"Po ruhen rezultatet"</string>
+    <string name="host_scan_title_complete" formatted="false">"Kërkimi përfundoi"</string>
+    <string name="host_scan_title_failed" formatted="false">"Kërkimi dështoi"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Mbaje TikTok në plan të parë."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Të lutem prit."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Rinis TikTok manualisht për të zbatuar rezultatet."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Shiko diagnostikimin e funksioneve në Toki."</string>
+    <string name="host_scan_done" formatted="false">"E kuptova"</string>
 </resources>

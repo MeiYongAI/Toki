@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Det gick inte att spara. Skrivbehörighet saknas för platsen. Välj en annan plats."</string>
     <string name="feature_filter_topics" formatted="false">"Dölj föreslagna ämnen"</string>
     <string name="feature_filter_creators" formatted="false">"Dölj föreslagna kreatörer"</string>
+    <string name="host_scan_title_running" formatted="false">"Söker efter metoder"</string>
+    <string name="host_scan_title_saving" formatted="false">"Sparar resultat"</string>
+    <string name="host_scan_title_complete" formatted="false">"Sökningen är klar"</string>
+    <string name="host_scan_title_failed" formatted="false">"Sökningen misslyckades"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Håll TikTok i förgrunden."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Vänta."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Starta om TikTok manuellt för att tillämpa resultaten."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Visa funktionsdiagnostik i Toki."</string>
+    <string name="host_scan_done" formatted="false">"Jag förstår"</string>
 </resources>

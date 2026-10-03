@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"保存に失敗しました。この場所への書き込み権限がありません。選択し直してください。"</string>
     <string name="feature_filter_topics" formatted="false">"おすすめ話題を非表示"</string>
     <string name="feature_filter_creators" formatted="false">"おすすめ投稿者を非表示"</string>
+    <string name="host_scan_title_running" formatted="false">"メソッドを検索中"</string>
+    <string name="host_scan_title_saving" formatted="false">"結果を保存中"</string>
+    <string name="host_scan_title_complete" formatted="false">"検索完了"</string>
+    <string name="host_scan_title_failed" formatted="false">"検索失敗"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok を前面に表示したままにしてください。"</string>
+    <string name="host_scan_saving_hint" formatted="false">"お待ちください。"</string>
+    <string name="host_scan_restart_hint" formatted="false">"結果を適用するには、TikTok を手動で再起動してください。"</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki で機能の診断を確認してください。"</string>
+    <string name="host_scan_done" formatted="false">"わかりました"</string>
 </resources>

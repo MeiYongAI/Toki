@@ -13,15 +13,15 @@ if (releaseSigningPropertiesFile.isFile) {
 val hasReleaseSigning = releaseSigningPropertiesFile.isFile
 
 android {
-    namespace = "com.toki.lsposed"
+    namespace = "io.github.meiyongai.toki"
     compileSdk = 37
 
     defaultConfig {
         applicationId = "io.github.meiyongai.toki"
         minSdk = 28
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.0.1"
     }
 
     signingConfigs {
@@ -95,6 +95,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.2.0")
     implementation("androidx.activity:activity-compose:1.9.3")
     testImplementation("junit:junit:4.13.2")
+    // 在 JVM 中驱动真实模块入口，验证按功能安装与全关会话诊断。
+    testImplementation("io.github.libxposed:api:102.0.0")
     // 仅在 JVM 单元测试中提供 Android org.json 的实现，不进入 APK。
     testImplementation("org.json:json:20240303")
     // 仅用于在 JVM 中验证 Android Bundle 诊断数据，不进入模块 APK。

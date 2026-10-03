@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Spremanje nije uspjelo. Zapisivanje na ovu lokaciju nije dopušteno. Odaberite drugu."</string>
     <string name="feature_filter_topics" formatted="false">"Sakrij predložene teme"</string>
     <string name="feature_filter_creators" formatted="false">"Sakrij predložene kreatore"</string>
+    <string name="host_scan_title_running" formatted="false">"Traženje metoda"</string>
+    <string name="host_scan_title_saving" formatted="false">"Spremanje rezultata"</string>
+    <string name="host_scan_title_complete" formatted="false">"Pretraživanje dovršeno"</string>
+    <string name="host_scan_title_failed" formatted="false">"Pretraživanje nije uspjelo"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Ostavite TikTok u prvom planu."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Pričekajte."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Ručno ponovno pokrenite TikTok kako biste primijenili rezultate."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Pogledajte dijagnostiku značajki u Toki."</string>
+    <string name="host_scan_done" formatted="false">"Razumijem"</string>
 </resources>

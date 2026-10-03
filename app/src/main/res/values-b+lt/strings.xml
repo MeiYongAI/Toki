@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Išsaugoti nepavyko. Šiai vietai nesuteiktas rašymo leidimas. Pasirinkite kitą vietą."</string>
     <string name="feature_filter_topics" formatted="false">"Slėpti siūlomas temas"</string>
     <string name="feature_filter_creators" formatted="false">"Slėpti siūlomus kūrėjus"</string>
+    <string name="host_scan_title_running" formatted="false">"Ieškoma metodų"</string>
+    <string name="host_scan_title_saving" formatted="false">"Išsaugomi rezultatai"</string>
+    <string name="host_scan_title_complete" formatted="false">"Paieška baigta"</string>
+    <string name="host_scan_title_failed" formatted="false">"Paieška nepavyko"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Palikite TikTok pirmame plane."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Palaukite."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Rankiniu būdu paleiskite TikTok iš naujo, kad pritaikytumėte rezultatus."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Peržiūrėkite funkcijų diagnostiką Toki."</string>
+    <string name="host_scan_done" formatted="false">"Supratau"</string>
 </resources>

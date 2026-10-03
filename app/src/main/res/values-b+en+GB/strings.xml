@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Save failed. Write permission was not granted for this location. Select another location."</string>
     <string name="feature_filter_topics" formatted="false">"Hide suggested topics"</string>
     <string name="feature_filter_creators" formatted="false">"Hide suggested creators"</string>
+    <string name="host_scan_title_running" formatted="false">"Finding methods"</string>
+    <string name="host_scan_title_saving" formatted="false">"Saving results"</string>
+    <string name="host_scan_title_complete" formatted="false">"Search complete"</string>
+    <string name="host_scan_title_failed" formatted="false">"Search failed"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Keep TikTok in the foreground."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Please wait."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Restart TikTok manually to apply the results."</string>
+    <string name="host_scan_failure_hint" formatted="false">"View feature diagnostics in Toki."</string>
+    <string name="host_scan_done" formatted="false">"Got it"</string>
 </resources>

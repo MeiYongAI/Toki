@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Lagring mislyktes. Skrivetilgang til stedet ble ikke gitt. Velg et annet sted."</string>
     <string name="feature_filter_topics" formatted="false">"Skjul foreslåtte emner"</string>
     <string name="feature_filter_creators" formatted="false">"Skjul foreslåtte skapere"</string>
+    <string name="host_scan_title_running" formatted="false">"Finner metoder"</string>
+    <string name="host_scan_title_saving" formatted="false">"Lagrer resultater"</string>
+    <string name="host_scan_title_complete" formatted="false">"Søk fullført"</string>
+    <string name="host_scan_title_failed" formatted="false">"Søk mislyktes"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Hold TikTok i forgrunnen."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Vennligst vent."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Start TikTok på nytt manuelt for å ta i bruk resultatene."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Se funksjonsdiagnostikk i Toki."</string>
+    <string name="host_scan_done" formatted="false">"Forstått"</string>
 </resources>

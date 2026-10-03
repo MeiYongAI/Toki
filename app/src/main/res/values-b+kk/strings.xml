@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Сақтау сәтсіз: таңдалған орынға жазу рұқсаты жоқ. Қайта таңдаңыз."</string>
     <string name="feature_filter_topics" formatted="false">"Ұсынылған тақырыптарды жасыру"</string>
     <string name="feature_filter_creators" formatted="false">"Ұсынылған авторларды жасыру"</string>
+    <string name="host_scan_title_running" formatted="false">"Әдістер ізделуде"</string>
+    <string name="host_scan_title_saving" formatted="false">"Нәтижелер сақталуда"</string>
+    <string name="host_scan_title_complete" formatted="false">"Іздеу аяқталды"</string>
+    <string name="host_scan_title_failed" formatted="false">"Іздеу сәтсіз аяқталды"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok қолданбасын алдыңғы қатарда ұстаңыз."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Күте тұрыңыз."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Нәтижелерді қолдану үшін TikTok қолданбасын қолмен қайта іске қосыңыз."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki ішіндегі функциялар диагностикасын қараңыз."</string>
+    <string name="host_scan_done" formatted="false">"Түсіндім"</string>
 </resources>

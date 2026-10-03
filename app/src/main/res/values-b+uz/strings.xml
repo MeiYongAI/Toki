@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Saqlash amalga oshmadi. Bu joyga yozish ruxsati berilmagan. Boshqa joyni tanlang."</string>
     <string name="feature_filter_topics" formatted="false">"Tavsiya etilgan mavzularni yashirish"</string>
     <string name="feature_filter_creators" formatted="false">"Tavsiya etilgan ijodkorlarni yashirish"</string>
+    <string name="host_scan_title_running" formatted="false">"Metodlar qidirilmoqda"</string>
+    <string name="host_scan_title_saving" formatted="false">"Natijalar saqlanmoqda"</string>
+    <string name="host_scan_title_complete" formatted="false">"Qidiruv tugallandi"</string>
+    <string name="host_scan_title_failed" formatted="false">"Qidiruv amalga oshmadi"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok ilovasini old planda saqlang."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Iltimos, kuting."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Natijalarni qoʻllash uchun TikTok ilovasini qoʻlda qayta ishga tushiring."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki ilovasida funksiyalar diagnostikasini koʻring."</string>
+    <string name="host_scan_done" formatted="false">"Tushunarli"</string>
 </resources>

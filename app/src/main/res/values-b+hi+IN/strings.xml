@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"सेव नहीं हो सका: चुने गए स्थान पर लिखने की अनुमति नहीं है। फिर चुनें।"</string>
     <string name="feature_filter_topics" formatted="false">"सुझाए गए विषय छिपाएँ"</string>
     <string name="feature_filter_creators" formatted="false">"सुझाए गए क्रिएटर छिपाएँ"</string>
+    <string name="host_scan_title_running" formatted="false">"मेथड खोजे जा रहे हैं"</string>
+    <string name="host_scan_title_saving" formatted="false">"परिणाम सहेजे जा रहे हैं"</string>
+    <string name="host_scan_title_complete" formatted="false">"खोज पूरी हुई"</string>
+    <string name="host_scan_title_failed" formatted="false">"खोज विफल हुई"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok को सामने खुला रखें।"</string>
+    <string name="host_scan_saving_hint" formatted="false">"कृपया प्रतीक्षा करें।"</string>
+    <string name="host_scan_restart_hint" formatted="false">"परिणाम लागू करने के लिए TikTok को मैन्युअल रूप से फिर शुरू करें।"</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki में फ़ीचर डायग्नोस्टिक्स देखें।"</string>
+    <string name="host_scan_done" formatted="false">"समझ गया"</string>
 </resources>

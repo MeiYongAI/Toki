@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Échec de l’enregistrement. L’écriture n’a pas été autorisée à cet emplacement. Choisissez-en un autre."</string>
     <string name="feature_filter_topics" formatted="false">"Masquer les sujets suggérés"</string>
     <string name="feature_filter_creators" formatted="false">"Masquer les créateurs suggérés"</string>
+    <string name="host_scan_title_running" formatted="false">"Recherche de méthodes"</string>
+    <string name="host_scan_title_saving" formatted="false">"Enregistrement des résultats"</string>
+    <string name="host_scan_title_complete" formatted="false">"Recherche terminée"</string>
+    <string name="host_scan_title_failed" formatted="false">"Échec de la recherche"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Gardez TikTok au premier plan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Veuillez patienter."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Redémarrez TikTok manuellement pour appliquer les résultats."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Consultez le diagnostic des fonctionnalités dans Toki."</string>
+    <string name="host_scan_done" formatted="false">"Compris"</string>
 </resources>

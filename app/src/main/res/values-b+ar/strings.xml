@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"فشل الحفظ: لا توجد صلاحية للكتابة في الموقع المحدد. اختره مجددًا."</string>
     <string name="feature_filter_topics" formatted="false">"إخفاء المواضيع المقترحة"</string>
     <string name="feature_filter_creators" formatted="false">"إخفاء المبدعين المقترحين"</string>
+    <string name="host_scan_title_running" formatted="false">"جارٍ البحث عن الطرق"</string>
+    <string name="host_scan_title_saving" formatted="false">"جارٍ حفظ النتائج"</string>
+    <string name="host_scan_title_complete" formatted="false">"اكتمل البحث"</string>
+    <string name="host_scan_title_failed" formatted="false">"فشل البحث"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"أبقِ TikTok في المقدمة."</string>
+    <string name="host_scan_saving_hint" formatted="false">"يُرجى الانتظار."</string>
+    <string name="host_scan_restart_hint" formatted="false">"أعد تشغيل TikTok يدويًا لتطبيق النتائج."</string>
+    <string name="host_scan_failure_hint" formatted="false">"اعرض تشخيص الميزات في Toki."</string>
+    <string name="host_scan_done" formatted="false">"فهمت"</string>
 </resources>

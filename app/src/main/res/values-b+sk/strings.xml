@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Uloženie zlyhalo. Na tomto mieste chýba povolenie na zápis. Vyberte iné miesto."</string>
     <string name="feature_filter_topics" formatted="false">"Skryť odporúčané témy"</string>
     <string name="feature_filter_creators" formatted="false">"Skryť odporúčaných tvorcov"</string>
+    <string name="host_scan_title_running" formatted="false">"Vyhľadávanie metód"</string>
+    <string name="host_scan_title_saving" formatted="false">"Ukladanie výsledkov"</string>
+    <string name="host_scan_title_complete" formatted="false">"Vyhľadávanie dokončené"</string>
+    <string name="host_scan_title_failed" formatted="false">"Vyhľadávanie zlyhalo"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Nechaj TikTok v popredí."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Prosím, počkaj."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Ručne reštartuj TikTok, aby sa použili výsledky."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Pozri si diagnostiku funkcií v Toki."</string>
+    <string name="host_scan_done" formatted="false">"Rozumiem"</string>
 </resources>

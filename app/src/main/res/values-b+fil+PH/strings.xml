@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Hindi na-save. Walang ipinagkaloob na pahintulot na sumulat sa lokasyong ito. Pumili ng iba."</string>
     <string name="feature_filter_topics" formatted="false">"Itago ang mga mungkahing paksa"</string>
     <string name="feature_filter_creators" formatted="false">"Itago ang mga mungkahing creator"</string>
+    <string name="host_scan_title_running" formatted="false">"Naghahanap ng mga method"</string>
+    <string name="host_scan_title_saving" formatted="false">"Sine-save ang mga resulta"</string>
+    <string name="host_scan_title_complete" formatted="false">"Tapos na ang paghahanap"</string>
+    <string name="host_scan_title_failed" formatted="false">"Nabigo ang paghahanap"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Panatilihin ang TikTok sa foreground."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Mangyaring maghintay."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Manu-manong i-restart ang TikTok upang mailapat ang mga resulta."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Tingnan ang mga diagnostic ng feature sa Toki."</string>
+    <string name="host_scan_done" formatted="false">"Naintindihan ko"</string>
 </resources>

@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"保存失败：所选位置未授予写入权限，请重新选择。"</string>
     <string name="feature_filter_topics" formatted="false">"过滤话题推荐"</string>
     <string name="feature_filter_creators" formatted="false">"过滤创作者推荐"</string>
+    <string name="host_scan_title_running" formatted="false">"正在查找方法"</string>
+    <string name="host_scan_title_saving" formatted="false">"正在保存结果"</string>
+    <string name="host_scan_title_complete" formatted="false">"查找完成"</string>
+    <string name="host_scan_title_failed" formatted="false">"查找未完成"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"保持 TikTok 在前台。"</string>
+    <string name="host_scan_saving_hint" formatted="false">"请稍候。"</string>
+    <string name="host_scan_restart_hint" formatted="false">"请手动重启 TikTok 以应用结果。"</string>
+    <string name="host_scan_failure_hint" formatted="false">"请在 Toki 查看功能诊断。"</string>
+    <string name="host_scan_done" formatted="false">"知道了"</string>
 </resources>

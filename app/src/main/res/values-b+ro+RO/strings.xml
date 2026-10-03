@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Salvarea a eșuat. Nu există permisiune de scriere în această locație. Selectează alta."</string>
     <string name="feature_filter_topics" formatted="false">"Ascunde subiectele sugerate"</string>
     <string name="feature_filter_creators" formatted="false">"Ascunde creatorii sugerați"</string>
+    <string name="host_scan_title_running" formatted="false">"Se caută metode"</string>
+    <string name="host_scan_title_saving" formatted="false">"Se salvează rezultatele"</string>
+    <string name="host_scan_title_complete" formatted="false">"Căutare finalizată"</string>
+    <string name="host_scan_title_failed" formatted="false">"Căutarea a eșuat"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Menține TikTok în prim-plan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Te rugăm să aștepți."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Repornește TikTok manual pentru a aplica rezultatele."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Vezi diagnosticarea funcțiilor în Toki."</string>
+    <string name="host_scan_done" formatted="false">"Am înțeles"</string>
 </resources>

@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"محفوظ کرنے میں ناکامی: منتخب مقام پر لکھنے کی اجازت نہیں۔ دوبارہ منتخب کریں۔"</string>
     <string name="feature_filter_topics" formatted="false">"مجوزہ موضوعات چھپائیں"</string>
     <string name="feature_filter_creators" formatted="false">"مجوزہ تخلیق کار چھپائیں"</string>
+    <string name="host_scan_title_running" formatted="false">"طریقے تلاش کیے جا رہے ہیں"</string>
+    <string name="host_scan_title_saving" formatted="false">"نتائج محفوظ کیے جا رہے ہیں"</string>
+    <string name="host_scan_title_complete" formatted="false">"تلاش مکمل ہو گئی"</string>
+    <string name="host_scan_title_failed" formatted="false">"تلاش ناکام ہو گئی"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok کو سامنے کھلا رکھیں۔"</string>
+    <string name="host_scan_saving_hint" formatted="false">"براہ کرم انتظار کریں۔"</string>
+    <string name="host_scan_restart_hint" formatted="false">"نتائج لاگو کرنے کے لیے TikTok کو دستی طور پر دوبارہ شروع کریں۔"</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki میں خصوصیات کی تشخیص دیکھیں۔"</string>
+    <string name="host_scan_done" formatted="false">"سمجھ گیا"</string>
 </resources>

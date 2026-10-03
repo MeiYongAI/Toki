@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Salvestamine nurjus. Sellele asukohale pole kirjutamisluba antud. Vali teine asukoht."</string>
     <string name="feature_filter_topics" formatted="false">"Peida soovitatud teemad"</string>
     <string name="feature_filter_creators" formatted="false">"Peida soovitatud loojad"</string>
+    <string name="host_scan_title_running" formatted="false">"Meetodite otsimine"</string>
+    <string name="host_scan_title_saving" formatted="false">"Tulemuste salvestamine"</string>
+    <string name="host_scan_title_complete" formatted="false">"Otsing lõpetatud"</string>
+    <string name="host_scan_title_failed" formatted="false">"Otsing ebaõnnestus"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Hoia TikTok esiplaanil."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Palun oota."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Tulemuste rakendamiseks taaskäivita TikTok käsitsi."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Vaata Toki funktsioonide diagnostikat."</string>
+    <string name="host_scan_done" formatted="false">"Selge"</string>
 </resources>

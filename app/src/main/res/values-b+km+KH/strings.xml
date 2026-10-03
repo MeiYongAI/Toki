@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"រក្សាទុកបរាជ័យ។ មិនមានសិទ្ធិសរសេរនៅទីតាំងនេះ។ សូមជ្រើសទីតាំងផ្សេង។"</string>
     <string name="feature_filter_topics" formatted="false">"លាក់ប្រធានបទដែលបានណែនាំ"</string>
     <string name="feature_filter_creators" formatted="false">"លាក់អ្នកបង្កើតដែលបានណែនាំ"</string>
+    <string name="host_scan_title_running" formatted="false">"កំពុងស្វែងរកមេតូត"</string>
+    <string name="host_scan_title_saving" formatted="false">"កំពុងរក្សាទុកលទ្ធផល"</string>
+    <string name="host_scan_title_complete" formatted="false">"ការស្វែងរកបានបញ្ចប់"</string>
+    <string name="host_scan_title_failed" formatted="false">"ការស្វែងរកបរាជ័យ"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"សូមទុក TikTok ឱ្យបើកនៅផ្ទៃខាងមុខ។"</string>
+    <string name="host_scan_saving_hint" formatted="false">"សូមរង់ចាំ។"</string>
+    <string name="host_scan_restart_hint" formatted="false">"សូមចាប់ផ្តើម TikTok ឡើងវិញដោយខ្លួនឯង ដើម្បីអនុវត្តលទ្ធផល។"</string>
+    <string name="host_scan_failure_hint" formatted="false">"សូមមើលការវិនិច្ឆ័យមុខងារនៅក្នុង Toki។"</string>
+    <string name="host_scan_done" formatted="false">"យល់ហើយ"</string>
 </resources>

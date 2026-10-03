@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Αποτυχία αποθήκευσης: δεν υπάρχει άδεια εγγραφής στη θέση. Επιλέξτε ξανά."</string>
     <string name="feature_filter_topics" formatted="false">"Απόκρυψη προτεινόμενων θεμάτων"</string>
     <string name="feature_filter_creators" formatted="false">"Απόκρυψη προτεινόμενων δημιουργών"</string>
+    <string name="host_scan_title_running" formatted="false">"Αναζήτηση μεθόδων"</string>
+    <string name="host_scan_title_saving" formatted="false">"Αποθήκευση αποτελεσμάτων"</string>
+    <string name="host_scan_title_complete" formatted="false">"Η αναζήτηση ολοκληρώθηκε"</string>
+    <string name="host_scan_title_failed" formatted="false">"Η αναζήτηση απέτυχε"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Κρατήστε το TikTok στο προσκήνιο."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Περιμένετε."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Επανεκκινήστε το TikTok χειροκίνητα για να εφαρμοστούν τα αποτελέσματα."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Δείτε τα διαγνωστικά λειτουργιών στο Toki."</string>
+    <string name="host_scan_done" formatted="false">"Κατάλαβα"</string>
 </resources>

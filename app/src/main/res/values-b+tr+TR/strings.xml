@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Kaydedilemedi: seçilen konuma yazma izni yok. Yeniden seçin."</string>
     <string name="feature_filter_topics" formatted="false">"Önerilen konuları gizle"</string>
     <string name="feature_filter_creators" formatted="false">"Önerilen içerik üreticilerini gizle"</string>
+    <string name="host_scan_title_running" formatted="false">"Yöntemler aranıyor"</string>
+    <string name="host_scan_title_saving" formatted="false">"Sonuçlar kaydediliyor"</string>
+    <string name="host_scan_title_complete" formatted="false">"Arama tamamlandı"</string>
+    <string name="host_scan_title_failed" formatted="false">"Arama başarısız"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok\'u ön planda tutun."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Lütfen bekleyin."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Sonuçları uygulamak için TikTok\'u elle yeniden başlatın."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Toki\'de özellik tanılamasını görüntüleyin."</string>
+    <string name="host_scan_done" formatted="false">"Anladım"</string>
 </resources>

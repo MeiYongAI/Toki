@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Kuhifadhi kumeshindwa. Ruhusa ya kuandika hapa haijatolewa. Chagua mahali pengine."</string>
     <string name="feature_filter_topics" formatted="false">"Ficha mada zilizopendekezwa"</string>
     <string name="feature_filter_creators" formatted="false">"Ficha mapendekezo ya watayarishi"</string>
+    <string name="host_scan_title_running" formatted="false">"Inatafuta mbinu"</string>
+    <string name="host_scan_title_saving" formatted="false">"Inahifadhi matokeo"</string>
+    <string name="host_scan_title_complete" formatted="false">"Utafutaji umekamilika"</string>
+    <string name="host_scan_title_failed" formatted="false">"Utafutaji umeshindwa"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Weka TikTok kwenye mandhari ya mbele."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Tafadhali subiri."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Anzisha upya TikTok wewe mwenyewe ili kutumia matokeo."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Angalia uchunguzi wa vipengele katika Toki."</string>
+    <string name="host_scan_done" formatted="false">"Nimeelewa"</string>
 </resources>

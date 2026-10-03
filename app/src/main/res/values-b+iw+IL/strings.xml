@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"השמירה נכשלה: אין הרשאת כתיבה למיקום שנבחר. יש לבחור שוב."</string>
     <string name="feature_filter_topics" formatted="false">"הסתרת נושאים מוצעים"</string>
     <string name="feature_filter_creators" formatted="false">"הסתרת יוצרים מוצעים"</string>
+    <string name="host_scan_title_running" formatted="false">"חיפוש שיטות"</string>
+    <string name="host_scan_title_saving" formatted="false">"שמירת תוצאות"</string>
+    <string name="host_scan_title_complete" formatted="false">"החיפוש הושלם"</string>
+    <string name="host_scan_title_failed" formatted="false">"החיפוש נכשל"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"יש להשאיר את TikTok בחזית."</string>
+    <string name="host_scan_saving_hint" formatted="false">"נא להמתין."</string>
+    <string name="host_scan_restart_hint" formatted="false">"יש להפעיל מחדש את TikTok באופן ידני כדי להחיל את התוצאות."</string>
+    <string name="host_scan_failure_hint" formatted="false">"ניתן לצפות באבחון התכונות ב-Toki."</string>
+    <string name="host_scan_done" formatted="false">"הבנתי"</string>
 </resources>

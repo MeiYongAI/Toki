@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Zapis nie powiódł się. Brak uprawnień do zapisu w tej lokalizacji. Wybierz inną."</string>
     <string name="feature_filter_topics" formatted="false">"Ukryj sugerowane tematy"</string>
     <string name="feature_filter_creators" formatted="false">"Ukryj sugerowanych twórców"</string>
+    <string name="host_scan_title_running" formatted="false">"Wyszukiwanie metod"</string>
+    <string name="host_scan_title_saving" formatted="false">"Zapisywanie wyników"</string>
+    <string name="host_scan_title_complete" formatted="false">"Wyszukiwanie zakończone"</string>
+    <string name="host_scan_title_failed" formatted="false">"Wyszukiwanie nie powiodło się"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Pozostaw TikTok na pierwszym planie."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Proszę czekać."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Uruchom ponownie TikTok ręcznie, aby zastosować wyniki."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Zobacz diagnostykę funkcji w Toki."</string>
+    <string name="host_scan_done" formatted="false">"Rozumiem"</string>
 </resources>

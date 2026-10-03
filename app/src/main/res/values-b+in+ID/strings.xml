@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Gagal menyimpan. Izin menulis di lokasi ini belum diberikan. Pilih lokasi lain."</string>
     <string name="feature_filter_topics" formatted="false">"Sembunyikan saran topik"</string>
     <string name="feature_filter_creators" formatted="false">"Sembunyikan saran kreator"</string>
+    <string name="host_scan_title_running" formatted="false">"Mencari metode"</string>
+    <string name="host_scan_title_saving" formatted="false">"Menyimpan hasil"</string>
+    <string name="host_scan_title_complete" formatted="false">"Pencarian selesai"</string>
+    <string name="host_scan_title_failed" formatted="false">"Pencarian gagal"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Biarkan TikTok tetap di latar depan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Harap tunggu."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Mulai ulang TikTok secara manual untuk menerapkan hasilnya."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Lihat diagnostik fitur di Toki."</string>
+    <string name="host_scan_done" formatted="false">"Mengerti"</string>
 </resources>

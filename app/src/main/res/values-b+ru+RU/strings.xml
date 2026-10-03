@@ -253,4 +253,13 @@
     <string name="sponsor_error_permission" formatted="false">"Не удалось сохранить: нет разрешения на запись в выбранное место. Выберите его заново."</string>
     <string name="feature_filter_topics" formatted="false">"Скрывать рекомендуемые темы"</string>
     <string name="feature_filter_creators" formatted="false">"Скрывать рекомендуемых авторов"</string>
+    <string name="host_scan_title_running" formatted="false">"Поиск методов"</string>
+    <string name="host_scan_title_saving" formatted="false">"Сохранение результатов"</string>
+    <string name="host_scan_title_complete" formatted="false">"Поиск завершён"</string>
+    <string name="host_scan_title_failed" formatted="false">"Поиск не удался"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Оставьте TikTok на переднем плане."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Подождите."</string>
+    <string name="host_scan_restart_hint" formatted="false">"Перезапустите TikTok вручную, чтобы применить результаты."</string>
+    <string name="host_scan_failure_hint" formatted="false">"Посмотрите диагностику функций в Toki."</string>
+    <string name="host_scan_done" formatted="false">"Понятно"</string>
 </resources>
