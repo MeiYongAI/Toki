@@ -31,14 +31,18 @@
             android:name="xposedminversion"
             android:value="102" />
 
-        <!-- 桌面管理端主入口（桌面启动项由 LauncherAlias 承载，便于动态隐藏图标） -->
+        <!-- 模块设置入口始终启用，LSPosed 通过 MODULE_SETTINGS 查找该活动。 -->
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/Theme.Toki.Starting"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
+            </intent-filter>
+        </activity>
 
-        <!-- 桌面启动别名：禁用该组件即可从桌面隐藏模块图标，
-             恢复入口为 LSPosed 管理器中的模块启动按钮 -->
+        <!-- 桌面启动别名：隐藏图标只禁用该组件，不影响主活动的模块设置入口。 -->
         <activity-alias
             android:name="io.github.meiyongai.toki.LauncherAlias"
             android:targetActivity=".ui.MainActivity"

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"إبقاء شريط التقدم السفلي ظاهرًا حتى في الفيديوهات القصيرة"</string>
     <string name="feature_immersive" formatted="false">"تشغيل بملء الشاشة"</string>
     <string name="feature_immersive_summary" formatted="false">"جعل الشريط السفلي شفافًا لعرض الفيديو على كامل الشاشة"</string>
-    <string name="feature_autoplay" formatted="false">"فتح التمرير التلقائي"</string>
-    <string name="feature_autoplay_summary" formatted="false">"اضغط مطولًا على الفيديو وفعّل التمرير التلقائي من القائمة"</string>
+    <string name="feature_autoplay" formatted="false">"تمرير تلقائي محسّن"</string>
+    <string name="feature_autoplay_summary" formatted="false">"إتاحة التمرير التلقائي في قوائم جميع الفيديوهات"</string>
     <string name="feature_status_bar" formatted="false">"إخفاء شريط حالة النظام"</string>
     <string name="feature_media_section" formatted="false">"التنزيلات والأدوات"</string>
     <string name="feature_download" formatted="false">"تنزيل بلا علامة مائية"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"أعد تشغيل TikTok يدويًا لتطبيق النتائج."</string>
     <string name="host_scan_failure_hint" formatted="false">"اعرض تشخيص الميزات في Toki."</string>
     <string name="host_scan_done" formatted="false">"فهمت"</string>
+    <string name="layout_title" formatted="false">"تخصيص الواجهة"</string>
+    <string name="layout_summary" formatted="false">"اختر العناصر التي تريد إخفاءها"</string>
+    <string name="layout_hint" formatted="false">"فعّل المفتاح لإخفاء العنصر"</string>
+    <string name="layout_top" formatted="false">"الشريط العلوي"</string>
+    <string name="layout_bottom" formatted="false">"الشريط السفلي"</string>
+    <string name="layout_side" formatted="false">"صفحة الفيديو"</string>
+    <string name="layout_search" formatted="false">"بحث"</string>
+    <string name="layout_live" formatted="false">"بث مباشر"</string>
+    <string name="layout_friends" formatted="false">"الأصدقاء"</string>
+    <string name="layout_following" formatted="false">"أتابعهم"</string>
+    <string name="layout_shop" formatted="false">"المتجر"</string>
+    <string name="layout_for_you" formatted="false">"لك"</string>
+    <string name="layout_nearby" formatted="false">"بالقرب منك"</string>
+    <string name="layout_stem" formatted="false">"علوم"</string>
+    <string name="layout_series" formatted="false">"مسلسلات"</string>
+    <string name="layout_home" formatted="false">"الرئيسية"</string>
+    <string name="layout_create" formatted="false">"إنشاء"</string>
+    <string name="layout_inbox" formatted="false">"الوارد"</string>
+    <string name="layout_profile" formatted="false">"الملف الشخصي"</string>
+    <string name="layout_discover" formatted="false">"اكتشاف"</string>
+    <string name="layout_avatar" formatted="false">"الصورة الشخصية"</string>
+    <string name="layout_follow" formatted="false">"زر المتابعة"</string>
+    <string name="layout_like" formatted="false">"إعجاب"</string>
+    <string name="layout_comment" formatted="false">"التعليقات"</string>
+    <string name="layout_favorite" formatted="false">"المفضلة"</string>
+    <string name="layout_share" formatted="false">"مشاركة"</string>
+    <string name="layout_music" formatted="false">"قرص الموسيقى"</string>
+    <string name="layout_explore" formatted="false">"استكشاف"</string>
+    <string name="layout_author" formatted="false">"معلومات المؤلف"</string>
+    <string name="layout_description" formatted="false">"الوصف"</string>
+    <string name="layout_music_title" formatted="false">"عنوان الموسيقى"</string>
+    <string name="layout_tags" formatted="false">"تسميات المعلومات"</string>
+    <string name="layout_search_label" formatted="false">"اقتراح البحث"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"زر إيقاف التمرير التلقائي"</string>
 </resources>

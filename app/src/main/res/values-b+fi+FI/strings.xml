@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Pidä etenemispalkki näkyvissä myös lyhyissä videoissa"</string>
     <string name="feature_immersive" formatted="false">"Koko näytön toisto"</string>
     <string name="feature_immersive_summary" formatted="false">"Tee alapalkista läpinäkyvä, jotta video täyttää näytön"</string>
-    <string name="feature_autoplay" formatted="false">"Avaa automaattinen vieritys"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Paina videota pitkään ja ota automaattinen vieritys käyttöön valikosta"</string>
+    <string name="feature_autoplay" formatted="false">"Laajennettu automaattivieritys"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Avaa automaattivierityksen kaikkien videoiden valikkoon"</string>
     <string name="feature_status_bar" formatted="false">"Piilota järjestelmän tilapalkki"</string>
     <string name="feature_media_section" formatted="false">"Lataukset ja työkalut"</string>
     <string name="feature_download" formatted="false">"Lataa ilman vesileimaa"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Käynnistä TikTok uudelleen käsin, jotta tulokset tulevat voimaan."</string>
     <string name="host_scan_failure_hint" formatted="false">"Katso toimintojen diagnostiikka Toki-sovelluksessa."</string>
     <string name="host_scan_done" formatted="false">"Selvä"</string>
+    <string name="layout_title" formatted="false">"Sivun asettelu"</string>
+    <string name="layout_summary" formatted="false">"Valitse piilotettavat painikkeet"</string>
+    <string name="layout_hint" formatted="false">"Piilota kohde kytkemällä valinta päälle"</string>
+    <string name="layout_top" formatted="false">"Yläpalkki"</string>
+    <string name="layout_bottom" formatted="false">"Alapalkki"</string>
+    <string name="layout_side" formatted="false">"Videosivu"</string>
+    <string name="layout_search" formatted="false">"Haku"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Kaverit"</string>
+    <string name="layout_following" formatted="false">"Seuratut"</string>
+    <string name="layout_shop" formatted="false">"Kauppa"</string>
+    <string name="layout_for_you" formatted="false">"Sinulle"</string>
+    <string name="layout_nearby" formatted="false">"Lähistöllä"</string>
+    <string name="layout_stem" formatted="false">"Tiede"</string>
+    <string name="layout_series" formatted="false">"Sarjat"</string>
+    <string name="layout_home" formatted="false">"Koti"</string>
+    <string name="layout_create" formatted="false">"Luo"</string>
+    <string name="layout_inbox" formatted="false">"Saapuneet"</string>
+    <string name="layout_profile" formatted="false">"Profiili"</string>
+    <string name="layout_discover" formatted="false">"Löydä"</string>
+    <string name="layout_avatar" formatted="false">"Profiilikuva"</string>
+    <string name="layout_follow" formatted="false">"Seuraa-painike"</string>
+    <string name="layout_like" formatted="false">"Tykkäys"</string>
+    <string name="layout_comment" formatted="false">"Kommentit"</string>
+    <string name="layout_favorite" formatted="false">"Suosikit"</string>
+    <string name="layout_share" formatted="false">"Jaa"</string>
+    <string name="layout_music" formatted="false">"Musiikkilevy"</string>
+    <string name="layout_explore" formatted="false">"Tutustu"</string>
+    <string name="layout_author" formatted="false">"Tekijän tiedot"</string>
+    <string name="layout_description" formatted="false">"Kuvaus"</string>
+    <string name="layout_music_title" formatted="false">"Musiikin nimi"</string>
+    <string name="layout_tags" formatted="false">"Tietotunnisteet"</string>
+    <string name="layout_search_label" formatted="false">"Hakuehdotus"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Automaattisen vierityksen pysäytyspainike"</string>
 </resources>

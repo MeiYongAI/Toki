@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Show it even on short videos"</string>
     <string name="feature_immersive" formatted="false">"Fullscreen playback"</string>
     <string name="feature_immersive_summary" formatted="false">"Play edge to edge behind a transparent bottom bar"</string>
-    <string name="feature_autoplay" formatted="false">"Unlock auto scroll"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Long-press a video to turn on auto scroll"</string>
+    <string name="feature_autoplay" formatted="false">"Enhanced auto scroll"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Unlock auto scroll in all video menus"</string>
     <string name="feature_status_bar" formatted="false">"Hide status bar"</string>
     <string name="feature_media_section" formatted="false">"Downloads &amp; tools"</string>
     <string name="feature_download" formatted="false">"Watermark-free downloads"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Restart TikTok manually to apply the results."</string>
     <string name="host_scan_failure_hint" formatted="false">"View feature diagnostics in Toki."</string>
     <string name="host_scan_done" formatted="false">"Got it"</string>
+    <string name="layout_title" formatted="false">"Page layout"</string>
+    <string name="layout_summary" formatted="false">"Choose which controls to hide"</string>
+    <string name="layout_hint" formatted="false">"Enable a switch to hide that item"</string>
+    <string name="layout_top" formatted="false">"Top bar"</string>
+    <string name="layout_bottom" formatted="false">"Bottom bar"</string>
+    <string name="layout_side" formatted="false">"Video page"</string>
+    <string name="layout_search" formatted="false">"Search"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Friends"</string>
+    <string name="layout_following" formatted="false">"Following"</string>
+    <string name="layout_shop" formatted="false">"Shop"</string>
+    <string name="layout_for_you" formatted="false">"For You"</string>
+    <string name="layout_nearby" formatted="false">"Nearby"</string>
+    <string name="layout_stem" formatted="false">"STEM"</string>
+    <string name="layout_series" formatted="false">"Series"</string>
+    <string name="layout_home" formatted="false">"Home"</string>
+    <string name="layout_create" formatted="false">"Create"</string>
+    <string name="layout_inbox" formatted="false">"Inbox"</string>
+    <string name="layout_profile" formatted="false">"Profile"</string>
+    <string name="layout_discover" formatted="false">"Discover"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Follow button"</string>
+    <string name="layout_like" formatted="false">"Like"</string>
+    <string name="layout_comment" formatted="false">"Comments"</string>
+    <string name="layout_favorite" formatted="false">"Favorites"</string>
+    <string name="layout_share" formatted="false">"Share"</string>
+    <string name="layout_music" formatted="false">"Music disc"</string>
+    <string name="layout_explore" formatted="false">"Explore"</string>
+    <string name="layout_author" formatted="false">"Author info"</string>
+    <string name="layout_description" formatted="false">"Description"</string>
+    <string name="layout_music_title" formatted="false">"Music title"</string>
+    <string name="layout_tags" formatted="false">"Info labels"</string>
+    <string name="layout_search_label" formatted="false">"Search suggestion"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Stop auto scroll button"</string>
 </resources>

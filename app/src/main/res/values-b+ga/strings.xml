@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Coinníonn sé an barra dul chun cinn infheicthe, fiú ar fhíseáin ghearra"</string>
     <string name="feature_immersive" formatted="false">"Athsheinm lánscáileáin"</string>
     <string name="feature_immersive_summary" formatted="false">"Déanann sé an barra íochtair trédhearcach chun an scáileán a líonadh leis an bhfíseán"</string>
-    <string name="feature_autoplay" formatted="false">"Díghlasáil scrollú uathoibríoch"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Brúigh go fada ar fhíseán agus cumasaigh scrollú uathoibríoch sa roghchlár"</string>
+    <string name="feature_autoplay" formatted="false">"Scrollú uathoibríoch feabhsaithe"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Díghlasáil scrollú uathoibríoch i roghchlár gach físeáin"</string>
     <string name="feature_status_bar" formatted="false">"Folaigh barra stádais an chórais"</string>
     <string name="feature_media_section" formatted="false">"Íoslódálacha agus gníomhartha"</string>
     <string name="feature_download" formatted="false">"Íoslódálacha gan comhartha uisce"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Atosaigh TikTok de láimh chun na torthaí a chur i bhfeidhm."</string>
     <string name="host_scan_failure_hint" formatted="false">"Féach ar dhiagnóisic na ngnéithe in Toki."</string>
     <string name="host_scan_done" formatted="false">"Tuigim"</string>
+    <string name="layout_title" formatted="false">"Leagan amach"</string>
+    <string name="layout_summary" formatted="false">"Roghnaigh na rialtáin le cur i bhfolach"</string>
+    <string name="layout_hint" formatted="false">"Cuir an lasc ar siúl chun an mhír a cheilt"</string>
+    <string name="layout_top" formatted="false">"Barra uachtair"</string>
+    <string name="layout_bottom" formatted="false">"Barra íochtair"</string>
+    <string name="layout_side" formatted="false">"Leathanach físe"</string>
+    <string name="layout_search" formatted="false">"Cuardaigh"</string>
+    <string name="layout_live" formatted="false">"BEO"</string>
+    <string name="layout_friends" formatted="false">"Cairde"</string>
+    <string name="layout_following" formatted="false">"Á leanúint"</string>
+    <string name="layout_shop" formatted="false">"Siopa"</string>
+    <string name="layout_for_you" formatted="false">"Duitse"</string>
+    <string name="layout_nearby" formatted="false">"In aice láimhe"</string>
+    <string name="layout_stem" formatted="false">"Eolaíocht"</string>
+    <string name="layout_series" formatted="false">"Sraitheanna"</string>
+    <string name="layout_home" formatted="false">"Baile"</string>
+    <string name="layout_create" formatted="false">"Cruthaigh"</string>
+    <string name="layout_inbox" formatted="false">"Bosca isteach"</string>
+    <string name="layout_profile" formatted="false">"Próifíl"</string>
+    <string name="layout_discover" formatted="false">"Aimsigh"</string>
+    <string name="layout_avatar" formatted="false">"Pictiúr próifíle"</string>
+    <string name="layout_follow" formatted="false">"Cnaipe Lean"</string>
+    <string name="layout_like" formatted="false">"Is maith liom"</string>
+    <string name="layout_comment" formatted="false">"Nótaí tráchta"</string>
+    <string name="layout_favorite" formatted="false">"Ceanáin"</string>
+    <string name="layout_share" formatted="false">"Comhroinn"</string>
+    <string name="layout_music" formatted="false">"Diosca ceoil"</string>
+    <string name="layout_explore" formatted="false">"Fiosraigh"</string>
+    <string name="layout_author" formatted="false">"Eolas faoin údar"</string>
+    <string name="layout_description" formatted="false">"Cur síos"</string>
+    <string name="layout_music_title" formatted="false">"Teideal ceoil"</string>
+    <string name="layout_tags" formatted="false">"Lipéid eolais"</string>
+    <string name="layout_search_label" formatted="false">"Moladh cuardaigh"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Cnaipe chun uathscrollú a stopadh"</string>
 </resources>

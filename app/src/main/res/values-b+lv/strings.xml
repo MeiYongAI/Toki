@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Rādīt norises joslu arī īsos video"</string>
     <string name="feature_immersive" formatted="false">"Pilnekrāna atskaņošana"</string>
     <string name="feature_immersive_summary" formatted="false">"Padarīt apakšējo joslu caurspīdīgu, lai video aizpildītu ekrānu"</string>
-    <string name="feature_autoplay" formatted="false">"Atbloķēt automātisko ritināšanu"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Turiet nospiestu video un izvēlnē ieslēdziet automātisko ritināšanu"</string>
+    <string name="feature_autoplay" formatted="false">"Uzlabota automātiskā ritināšana"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Atbloķē automātisko ritināšanu visu video izvēlnēs"</string>
     <string name="feature_status_bar" formatted="false">"Paslēpt sistēmas statusa joslu"</string>
     <string name="feature_media_section" formatted="false">"Lejupielādes un darbības"</string>
     <string name="feature_download" formatted="false">"Lejupielāde bez ūdenszīmes"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Manuāli restartējiet TikTok, lai lietotu rezultātus."</string>
     <string name="host_scan_failure_hint" formatted="false">"Skatiet funkciju diagnostiku lietotnē Toki."</string>
     <string name="host_scan_done" formatted="false">"Sapratu"</string>
+    <string name="layout_title" formatted="false">"Lapas izkārtojums"</string>
+    <string name="layout_summary" formatted="false">"Izvēlieties slēpjamos elementus"</string>
+    <string name="layout_hint" formatted="false">"Ieslēdziet slēdzi, lai paslēptu elementu"</string>
+    <string name="layout_top" formatted="false">"Augšējā josla"</string>
+    <string name="layout_bottom" formatted="false">"Apakšējā josla"</string>
+    <string name="layout_side" formatted="false">"Video lapa"</string>
+    <string name="layout_search" formatted="false">"Meklēt"</string>
+    <string name="layout_live" formatted="false">"TIEŠRAIDE"</string>
+    <string name="layout_friends" formatted="false">"Draugi"</string>
+    <string name="layout_following" formatted="false">"Sekoju"</string>
+    <string name="layout_shop" formatted="false">"Veikals"</string>
+    <string name="layout_for_you" formatted="false">"Jums"</string>
+    <string name="layout_nearby" formatted="false">"Tuvumā"</string>
+    <string name="layout_stem" formatted="false">"Zinātne"</string>
+    <string name="layout_series" formatted="false">"Seriāli"</string>
+    <string name="layout_home" formatted="false">"Sākums"</string>
+    <string name="layout_create" formatted="false">"Izveidot"</string>
+    <string name="layout_inbox" formatted="false">"Iesūtne"</string>
+    <string name="layout_profile" formatted="false">"Profils"</string>
+    <string name="layout_discover" formatted="false">"Atklāt"</string>
+    <string name="layout_avatar" formatted="false">"Profila attēls"</string>
+    <string name="layout_follow" formatted="false">"Sekošanas poga"</string>
+    <string name="layout_like" formatted="false">"Patīk"</string>
+    <string name="layout_comment" formatted="false">"Komentāri"</string>
+    <string name="layout_favorite" formatted="false">"Izlase"</string>
+    <string name="layout_share" formatted="false">"Kopīgot"</string>
+    <string name="layout_music" formatted="false">"Mūzikas disks"</string>
+    <string name="layout_explore" formatted="false">"Pārlūkot"</string>
+    <string name="layout_author" formatted="false">"Autora informācija"</string>
+    <string name="layout_description" formatted="false">"Apraksts"</string>
+    <string name="layout_music_title" formatted="false">"Mūzikas nosaukums"</string>
+    <string name="layout_tags" formatted="false">"Informācijas etiķetes"</string>
+    <string name="layout_search_label" formatted="false">"Meklēšanas ieteikums"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Automātiskās ritināšanas apturēšanas poga"</string>
 </resources>

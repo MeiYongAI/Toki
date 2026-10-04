@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Kekalkan paparan bar kemajuan, termasuk pada video pendek"</string>
     <string name="feature_immersive" formatted="false">"Main balik skrin penuh"</string>
     <string name="feature_immersive_summary" formatted="false">"Jadikan bar bawah lut sinar supaya video memenuhi skrin"</string>
-    <string name="feature_autoplay" formatted="false">"Buka kunci tatal automatik"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Tekan lama pada video dan dayakan tatal automatik melalui menu"</string>
+    <string name="feature_autoplay" formatted="false">"Tatal automatik dipertingkat"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Buka tatal automatik dalam menu semua video"</string>
     <string name="feature_status_bar" formatted="false">"Sembunyikan bar status sistem"</string>
     <string name="feature_media_section" formatted="false">"Muat turun dan tindakan"</string>
     <string name="feature_download" formatted="false">"Muat turun tanpa tera air"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Mulakan semula TikTok secara manual untuk menggunakan hasilnya."</string>
     <string name="host_scan_failure_hint" formatted="false">"Lihat diagnostik ciri dalam Toki."</string>
     <string name="host_scan_done" formatted="false">"Faham"</string>
+    <string name="layout_title" formatted="false">"Susun atur halaman"</string>
+    <string name="layout_summary" formatted="false">"Pilih kawalan yang hendak disembunyikan"</string>
+    <string name="layout_hint" formatted="false">"Hidupkan suis untuk menyembunyikan item"</string>
+    <string name="layout_top" formatted="false">"Bar atas"</string>
+    <string name="layout_bottom" formatted="false">"Bar bawah"</string>
+    <string name="layout_side" formatted="false">"Halaman video"</string>
+    <string name="layout_search" formatted="false">"Cari"</string>
+    <string name="layout_live" formatted="false">"SIARAN LANGSUNG"</string>
+    <string name="layout_friends" formatted="false">"Rakan"</string>
+    <string name="layout_following" formatted="false">"Mengikuti"</string>
+    <string name="layout_shop" formatted="false">"Kedai"</string>
+    <string name="layout_for_you" formatted="false">"Untuk Anda"</string>
+    <string name="layout_nearby" formatted="false">"Berdekatan"</string>
+    <string name="layout_stem" formatted="false">"Sains"</string>
+    <string name="layout_series" formatted="false">"Siri"</string>
+    <string name="layout_home" formatted="false">"Utama"</string>
+    <string name="layout_create" formatted="false">"Cipta"</string>
+    <string name="layout_inbox" formatted="false">"Peti masuk"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Temui"</string>
+    <string name="layout_avatar" formatted="false">"Foto profil"</string>
+    <string name="layout_follow" formatted="false">"Butang Ikut"</string>
+    <string name="layout_like" formatted="false">"Suka"</string>
+    <string name="layout_comment" formatted="false">"Komen"</string>
+    <string name="layout_favorite" formatted="false">"Kegemaran"</string>
+    <string name="layout_share" formatted="false">"Kongsi"</string>
+    <string name="layout_music" formatted="false">"Cakera muzik"</string>
+    <string name="layout_explore" formatted="false">"Teroka"</string>
+    <string name="layout_author" formatted="false">"Maklumat pengarang"</string>
+    <string name="layout_description" formatted="false">"Perihalan"</string>
+    <string name="layout_music_title" formatted="false">"Tajuk muzik"</string>
+    <string name="layout_tags" formatted="false">"Label maklumat"</string>
+    <string name="layout_search_label" formatted="false">"Cadangan carian"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Butang hentikan tatal automatik"</string>
 </resources>

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Показувати нижню смугу прогресу навіть у коротких відео"</string>
     <string name="feature_immersive" formatted="false">"Повноекранний режим"</string>
     <string name="feature_immersive_summary" formatted="false">"Прозора нижня панель і відео на весь екран"</string>
-    <string name="feature_autoplay" formatted="false">"Розблокувати автопрокручування"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Утримуйте відео та ввімкніть автопрокручування в меню"</string>
+    <string name="feature_autoplay" formatted="false">"Розширене автопрокручування"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Відкриває автопрокручування в меню всіх відео"</string>
     <string name="feature_status_bar" formatted="false">"Приховати системний рядок стану"</string>
     <string name="feature_media_section" formatted="false">"Завантаження й інструменти"</string>
     <string name="feature_download" formatted="false">"Завантаження без водяного знака"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Перезапустіть TikTok вручну, щоб застосувати результати."</string>
     <string name="host_scan_failure_hint" formatted="false">"Перегляньте діагностику функцій у Toki."</string>
     <string name="host_scan_done" formatted="false">"Зрозуміло"</string>
+    <string name="layout_title" formatted="false">"Оформлення сторінок"</string>
+    <string name="layout_summary" formatted="false">"Виберіть елементи для приховування"</string>
+    <string name="layout_hint" formatted="false">"Увімкніть перемикач, щоб приховати елемент"</string>
+    <string name="layout_top" formatted="false">"Верхня панель"</string>
+    <string name="layout_bottom" formatted="false">"Нижня панель"</string>
+    <string name="layout_side" formatted="false">"Сторінка відео"</string>
+    <string name="layout_search" formatted="false">"Пошук"</string>
+    <string name="layout_live" formatted="false">"Ефіри"</string>
+    <string name="layout_friends" formatted="false">"Друзі"</string>
+    <string name="layout_following" formatted="false">"Підписки"</string>
+    <string name="layout_shop" formatted="false">"Магазин"</string>
+    <string name="layout_for_you" formatted="false">"Для вас"</string>
+    <string name="layout_nearby" formatted="false">"Поруч"</string>
+    <string name="layout_stem" formatted="false">"Наука"</string>
+    <string name="layout_series" formatted="false">"Серіали"</string>
+    <string name="layout_home" formatted="false">"Головна"</string>
+    <string name="layout_create" formatted="false">"Створити"</string>
+    <string name="layout_inbox" formatted="false">"Вхідні"</string>
+    <string name="layout_profile" formatted="false">"Профіль"</string>
+    <string name="layout_discover" formatted="false">"Цікаве"</string>
+    <string name="layout_avatar" formatted="false">"Аватар"</string>
+    <string name="layout_follow" formatted="false">"Кнопка підписки"</string>
+    <string name="layout_like" formatted="false">"Вподобання"</string>
+    <string name="layout_comment" formatted="false">"Коментарі"</string>
+    <string name="layout_favorite" formatted="false">"Обране"</string>
+    <string name="layout_share" formatted="false">"Поділитися"</string>
+    <string name="layout_music" formatted="false">"Музична платівка"</string>
+    <string name="layout_explore" formatted="false">"Огляд"</string>
+    <string name="layout_author" formatted="false">"Інформація про автора"</string>
+    <string name="layout_description" formatted="false">"Опис"</string>
+    <string name="layout_music_title" formatted="false">"Назва музики"</string>
+    <string name="layout_tags" formatted="false">"Інформаційні мітки"</string>
+    <string name="layout_search_label" formatted="false">"Пошукова підказка"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Кнопка зупинки автопрокрутки"</string>
 </resources>

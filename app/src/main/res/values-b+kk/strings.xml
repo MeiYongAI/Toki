@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Қысқа бейнелерде де төменгі орындалу жолағын көрсету"</string>
     <string name="feature_immersive" formatted="false">"Толық экранда ойнату"</string>
     <string name="feature_immersive_summary" formatted="false">"Төменгі жолақты мөлдір етіп, бейнені бүкіл экранға көрсету"</string>
-    <string name="feature_autoplay" formatted="false">"Автоматты айналдыруды ашу"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Бейнені басып ұстап, мәзірден автоматты айналдыруды қосыңыз"</string>
+    <string name="feature_autoplay" formatted="false">"Жетілдірілген автоайналдыру"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Барлық видео мәзірінде автоайналдыруды ашады"</string>
     <string name="feature_status_bar" formatted="false">"Жүйенің күй жолағын жасыру"</string>
     <string name="feature_media_section" formatted="false">"Жүктеу және құралдар"</string>
     <string name="feature_download" formatted="false">"Су таңбасынсыз жүктеу"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Нәтижелерді қолдану үшін TikTok қолданбасын қолмен қайта іске қосыңыз."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki ішіндегі функциялар диагностикасын қараңыз."</string>
     <string name="host_scan_done" formatted="false">"Түсіндім"</string>
+    <string name="layout_title" formatted="false">"Бет орналасуы"</string>
+    <string name="layout_summary" formatted="false">"Жасырылатын басқару элементтерін таңдаңыз"</string>
+    <string name="layout_hint" formatted="false">"Элементті жасыру үшін қосқышты қосыңыз"</string>
+    <string name="layout_top" formatted="false">"Жоғарғы жолақ"</string>
+    <string name="layout_bottom" formatted="false">"Төменгі жолақ"</string>
+    <string name="layout_side" formatted="false">"Видео беті"</string>
+    <string name="layout_search" formatted="false">"Іздеу"</string>
+    <string name="layout_live" formatted="false">"Тікелей эфир"</string>
+    <string name="layout_friends" formatted="false">"Достар"</string>
+    <string name="layout_following" formatted="false">"Жазылымдар"</string>
+    <string name="layout_shop" formatted="false">"Дүкен"</string>
+    <string name="layout_for_you" formatted="false">"Сіз үшін"</string>
+    <string name="layout_nearby" formatted="false">"Жақын жерде"</string>
+    <string name="layout_stem" formatted="false">"Ғылым"</string>
+    <string name="layout_series" formatted="false">"Сериалдар"</string>
+    <string name="layout_home" formatted="false">"Басты бет"</string>
+    <string name="layout_create" formatted="false">"Жасау"</string>
+    <string name="layout_inbox" formatted="false">"Кіріс жәшігі"</string>
+    <string name="layout_profile" formatted="false">"Профиль"</string>
+    <string name="layout_discover" formatted="false">"Табу"</string>
+    <string name="layout_avatar" formatted="false">"Аватар"</string>
+    <string name="layout_follow" formatted="false">"Жазылу түймесі"</string>
+    <string name="layout_like" formatted="false">"Ұнату"</string>
+    <string name="layout_comment" formatted="false">"Пікірлер"</string>
+    <string name="layout_favorite" formatted="false">"Таңдаулылар"</string>
+    <string name="layout_share" formatted="false">"Бөлісу"</string>
+    <string name="layout_music" formatted="false">"Музыка дискісі"</string>
+    <string name="layout_explore" formatted="false">"Шолу"</string>
+    <string name="layout_author" formatted="false">"Автор туралы ақпарат"</string>
+    <string name="layout_description" formatted="false">"Сипаттама"</string>
+    <string name="layout_music_title" formatted="false">"Музыка атауы"</string>
+    <string name="layout_tags" formatted="false">"Ақпарат белгілері"</string>
+    <string name="layout_search_label" formatted="false">"Іздеу ұсынысы"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Автоматты айналдыруды тоқтату түймесі"</string>
 </resources>

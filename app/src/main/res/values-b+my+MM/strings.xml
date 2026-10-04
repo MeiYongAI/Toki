@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"ဗီဒီယိုတိုများတွင်လည်း တိုးတက်မှုဘားကို ပြထားရန်"</string>
     <string name="feature_immersive" formatted="false">"မျက်နှာပြင်အပြည့် ဖွင့်ရန်"</string>
     <string name="feature_immersive_summary" formatted="false">"အောက်ဘားကို ဖောက်ထွင်းမြင်ရစေပြီး ဗီဒီယိုကို မျက်နှာပြင်အပြည့် ပြရန်"</string>
-    <string name="feature_autoplay" formatted="false">"အလိုအလျောက်ရွှေ့ခြင်း ဖွင့်ပေးရန်"</string>
-    <string name="feature_autoplay_summary" formatted="false">"ဗီဒီယိုကို ဖိထားပြီး မီနူးမှ အလိုအလျောက်ရွှေ့ခြင်းကို ဖွင့်ပါ"</string>
+    <string name="feature_autoplay" formatted="false">"အဆင့်မြှင့် အလိုအလျောက်ရွှေ့ခြင်း"</string>
+    <string name="feature_autoplay_summary" formatted="false">"ဗီဒီယိုအားလုံး၏ မီနူးတွင် အလိုအလျောက်ရွှေ့ခြင်းကို ဖွင့်ပေးသည်"</string>
     <string name="feature_status_bar" formatted="false">"စနစ်အခြေအနေဘား ဖျောက်ရန်"</string>
     <string name="feature_media_section" formatted="false">"ဒေါင်းလုဒ်နှင့် ကိရိယာများ"</string>
     <string name="feature_download" formatted="false">"ရေစာမပါဘဲ ဒေါင်းလုဒ်"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"ရလဒ်များကို အသုံးပြုရန် TikTok ကို ကိုယ်တိုင် ပြန်လည်စတင်ပါ။"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki တွင် လုပ်ဆောင်ချက် စစ်ဆေးမှုကို ကြည့်ပါ။"</string>
     <string name="host_scan_done" formatted="false">"နားလည်ပါပြီ"</string>
+    <string name="layout_title" formatted="false">"စာမျက်နှာ အပြင်အဆင်"</string>
+    <string name="layout_summary" formatted="false">"ဖျောက်လိုသည့် ခလုတ်များကို ရွေးပါ"</string>
+    <string name="layout_hint" formatted="false">"ပစ္စည်းကို ဖျောက်ရန် ခလုတ်ကို ဖွင့်ပါ"</string>
+    <string name="layout_top" formatted="false">"အပေါ်ဘား"</string>
+    <string name="layout_bottom" formatted="false">"အောက်ဘား"</string>
+    <string name="layout_side" formatted="false">"ဗီဒီယိုစာမျက်နှာ"</string>
+    <string name="layout_search" formatted="false">"ရှာဖွေရန်"</string>
+    <string name="layout_live" formatted="false">"တိုက်ရိုက်"</string>
+    <string name="layout_friends" formatted="false">"သူငယ်ချင်းများ"</string>
+    <string name="layout_following" formatted="false">"လိုက်ကြည့်နေသည်"</string>
+    <string name="layout_shop" formatted="false">"ဆိုင်"</string>
+    <string name="layout_for_you" formatted="false">"သင့်အတွက်"</string>
+    <string name="layout_nearby" formatted="false">"အနီးအနား"</string>
+    <string name="layout_stem" formatted="false">"သိပ္ပံ"</string>
+    <string name="layout_series" formatted="false">"ဇာတ်လမ်းတွဲများ"</string>
+    <string name="layout_home" formatted="false">"ပင်မ"</string>
+    <string name="layout_create" formatted="false">"ဖန်တီးရန်"</string>
+    <string name="layout_inbox" formatted="false">"စာအဝင်"</string>
+    <string name="layout_profile" formatted="false">"ပရိုဖိုင်"</string>
+    <string name="layout_discover" formatted="false">"ရှာဖွေတွေ့ရှိရန်"</string>
+    <string name="layout_avatar" formatted="false">"ပရိုဖိုင်ပုံ"</string>
+    <string name="layout_follow" formatted="false">"လိုက်ကြည့်ရန် ခလုတ်"</string>
+    <string name="layout_like" formatted="false">"နှစ်သက်"</string>
+    <string name="layout_comment" formatted="false">"မှတ်ချက်များ"</string>
+    <string name="layout_favorite" formatted="false">"အကြိုက်ဆုံးများ"</string>
+    <string name="layout_share" formatted="false">"မျှဝေရန်"</string>
+    <string name="layout_music" formatted="false">"တေးဂီတအခွေ"</string>
+    <string name="layout_explore" formatted="false">"လေ့လာရန်"</string>
+    <string name="layout_author" formatted="false">"ဖန်တီးသူ အချက်အလက်"</string>
+    <string name="layout_description" formatted="false">"ဖော်ပြချက်"</string>
+    <string name="layout_music_title" formatted="false">"တေးဂီတ ခေါင်းစဉ်"</string>
+    <string name="layout_tags" formatted="false">"အချက်အလက် အညွှန်းများ"</string>
+    <string name="layout_search_label" formatted="false">"ရှာဖွေမှု အကြံပြုချက်"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"အလိုအလျောက်ရွှေ့ခြင်း ရပ်ရန်ခလုတ်"</string>
 </resources>

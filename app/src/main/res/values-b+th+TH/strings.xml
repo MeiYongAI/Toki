@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"แสดงแถบความคืบหน้าไว้ตลอด แม้ในวิดีโอสั้น"</string>
     <string name="feature_immersive" formatted="false">"เล่นเต็มหน้าจอ"</string>
     <string name="feature_immersive_summary" formatted="false">"ทำให้แถบด้านล่างโปร่งใสเพื่อให้วิดีโอแสดงเต็มหน้าจอ"</string>
-    <string name="feature_autoplay" formatted="false">"ปลดล็อกการเลื่อนอัตโนมัติ"</string>
-    <string name="feature_autoplay_summary" formatted="false">"กดวิดีโอค้างแล้วเปิดการเลื่อนอัตโนมัติจากเมนู"</string>
+    <string name="feature_autoplay" formatted="false">"เลื่อนอัตโนมัติแบบปรับปรุง"</string>
+    <string name="feature_autoplay_summary" formatted="false">"ปลดล็อกการเลื่อนอัตโนมัติในเมนูของทุกวิดีโอ"</string>
     <string name="feature_status_bar" formatted="false">"ซ่อนแถบสถานะระบบ"</string>
     <string name="feature_media_section" formatted="false">"ดาวน์โหลดและเครื่องมือ"</string>
     <string name="feature_download" formatted="false">"ดาวน์โหลดไร้ลายน้ำ"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"เริ่ม TikTok ใหม่ด้วยตนเองเพื่อใช้ผลลัพธ์"</string>
     <string name="host_scan_failure_hint" formatted="false">"ดูการวินิจฉัยฟีเจอร์ใน Toki"</string>
     <string name="host_scan_done" formatted="false">"เข้าใจแล้ว"</string>
+    <string name="layout_title" formatted="false">"เค้าโครงหน้า"</string>
+    <string name="layout_summary" formatted="false">"เลือกปุ่มที่ต้องการซ่อน"</string>
+    <string name="layout_hint" formatted="false">"เปิดสวิตช์เพื่อซ่อนรายการนั้น"</string>
+    <string name="layout_top" formatted="false">"แถบด้านบน"</string>
+    <string name="layout_bottom" formatted="false">"แถบด้านล่าง"</string>
+    <string name="layout_side" formatted="false">"หน้าวิดีโอ"</string>
+    <string name="layout_search" formatted="false">"ค้นหา"</string>
+    <string name="layout_live" formatted="false">"ไลฟ์"</string>
+    <string name="layout_friends" formatted="false">"เพื่อน"</string>
+    <string name="layout_following" formatted="false">"กำลังติดตาม"</string>
+    <string name="layout_shop" formatted="false">"ร้านค้า"</string>
+    <string name="layout_for_you" formatted="false">"สำหรับคุณ"</string>
+    <string name="layout_nearby" formatted="false">"ใกล้เคียง"</string>
+    <string name="layout_stem" formatted="false">"วิทยาศาสตร์"</string>
+    <string name="layout_series" formatted="false">"ซีรีส์"</string>
+    <string name="layout_home" formatted="false">"หน้าแรก"</string>
+    <string name="layout_create" formatted="false">"สร้าง"</string>
+    <string name="layout_inbox" formatted="false">"กล่องข้อความ"</string>
+    <string name="layout_profile" formatted="false">"โปรไฟล์"</string>
+    <string name="layout_discover" formatted="false">"ค้นพบ"</string>
+    <string name="layout_avatar" formatted="false">"รูปโปรไฟล์"</string>
+    <string name="layout_follow" formatted="false">"ปุ่มติดตาม"</string>
+    <string name="layout_like" formatted="false">"ถูกใจ"</string>
+    <string name="layout_comment" formatted="false">"ความคิดเห็น"</string>
+    <string name="layout_favorite" formatted="false">"รายการโปรด"</string>
+    <string name="layout_share" formatted="false">"แชร์"</string>
+    <string name="layout_music" formatted="false">"แผ่นเพลง"</string>
+    <string name="layout_explore" formatted="false">"สำรวจ"</string>
+    <string name="layout_author" formatted="false">"ข้อมูลผู้สร้าง"</string>
+    <string name="layout_description" formatted="false">"คำอธิบาย"</string>
+    <string name="layout_music_title" formatted="false">"ชื่อเพลง"</string>
+    <string name="layout_tags" formatted="false">"ป้ายข้อมูล"</string>
+    <string name="layout_search_label" formatted="false">"คำแนะนำการค้นหา"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"ปุ่มหยุดเลื่อนอัตโนมัติ"</string>
 </resources>

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"短い動画でも下部のシークバーを表示します"</string>
     <string name="feature_immersive" formatted="false">"全画面再生"</string>
     <string name="feature_immersive_summary" formatted="false">"下部バーを透明にし、動画を画面全体に表示します"</string>
-    <string name="feature_autoplay" formatted="false">"自動スクロールを有効化"</string>
-    <string name="feature_autoplay_summary" formatted="false">"動画を長押しし、メニューから自動スクロールを有効にします"</string>
+    <string name="feature_autoplay" formatted="false">"自動スクロールの拡張"</string>
+    <string name="feature_autoplay_summary" formatted="false">"すべての動画で、長押しメニューの自動スクロールを解放"</string>
     <string name="feature_status_bar" formatted="false">"システムのステータスバーを隠す"</string>
     <string name="feature_media_section" formatted="false">"保存・ツール"</string>
     <string name="feature_download" formatted="false">"透かしなしで保存"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"結果を適用するには、TikTok を手動で再起動してください。"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki で機能の診断を確認してください。"</string>
     <string name="host_scan_done" formatted="false">"わかりました"</string>
+    <string name="layout_title" formatted="false">"画面レイアウト"</string>
+    <string name="layout_summary" formatted="false">"非表示にする項目を選択"</string>
+    <string name="layout_hint" formatted="false">"スイッチをオンにすると項目を非表示にします"</string>
+    <string name="layout_top" formatted="false">"上部バー"</string>
+    <string name="layout_bottom" formatted="false">"下部バー"</string>
+    <string name="layout_side" formatted="false">"動画ページ"</string>
+    <string name="layout_search" formatted="false">"検索"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"友達"</string>
+    <string name="layout_following" formatted="false">"フォロー中"</string>
+    <string name="layout_shop" formatted="false">"ショップ"</string>
+    <string name="layout_for_you" formatted="false">"おすすめ"</string>
+    <string name="layout_nearby" formatted="false">"近く"</string>
+    <string name="layout_stem" formatted="false">"科学"</string>
+    <string name="layout_series" formatted="false">"シリーズ"</string>
+    <string name="layout_home" formatted="false">"ホーム"</string>
+    <string name="layout_create" formatted="false">"投稿"</string>
+    <string name="layout_inbox" formatted="false">"メッセージ"</string>
+    <string name="layout_profile" formatted="false">"プロフィール"</string>
+    <string name="layout_discover" formatted="false">"見つける"</string>
+    <string name="layout_avatar" formatted="false">"アバター"</string>
+    <string name="layout_follow" formatted="false">"フォローボタン"</string>
+    <string name="layout_like" formatted="false">"いいね"</string>
+    <string name="layout_comment" formatted="false">"コメント"</string>
+    <string name="layout_favorite" formatted="false">"セーブ"</string>
+    <string name="layout_share" formatted="false">"シェア"</string>
+    <string name="layout_music" formatted="false">"楽曲アイコン"</string>
+    <string name="layout_explore" formatted="false">"探索"</string>
+    <string name="layout_author" formatted="false">"投稿者情報"</string>
+    <string name="layout_description" formatted="false">"説明文"</string>
+    <string name="layout_music_title" formatted="false">"楽曲情報"</string>
+    <string name="layout_tags" formatted="false">"情報ラベル"</string>
+    <string name="layout_search_label" formatted="false">"検索候補"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"自動スクロール停止ボタン"</string>
 </resources>

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"छोटे वीडियो में भी नीचे की प्रगति पट्टी दिखाएँ"</string>
     <string name="feature_immersive" formatted="false">"फ़ुल-स्क्रीन प्लेबैक"</string>
     <string name="feature_immersive_summary" formatted="false">"नीचे की पट्टी को पारदर्शी बनाकर वीडियो पूरी स्क्रीन पर दिखाएँ"</string>
-    <string name="feature_autoplay" formatted="false">"ऑटो स्क्रॉल अनलॉक करें"</string>
-    <string name="feature_autoplay_summary" formatted="false">"वीडियो दबाकर रखें और मेन्यू से ऑटो स्क्रॉल चालू करें"</string>
+    <string name="feature_autoplay" formatted="false">"बेहतर ऑटो स्क्रॉल"</string>
+    <string name="feature_autoplay_summary" formatted="false">"हर वीडियो के मेन्यू में ऑटो स्क्रॉल अनलॉक करें"</string>
     <string name="feature_status_bar" formatted="false">"सिस्टम स्टेटस बार छिपाएँ"</string>
     <string name="feature_media_section" formatted="false">"डाउनलोड और टूल"</string>
     <string name="feature_download" formatted="false">"बिना वॉटरमार्क डाउनलोड"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"परिणाम लागू करने के लिए TikTok को मैन्युअल रूप से फिर शुरू करें।"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki में फ़ीचर डायग्नोस्टिक्स देखें।"</string>
     <string name="host_scan_done" formatted="false">"समझ गया"</string>
+    <string name="layout_title" formatted="false">"पेज लेआउट"</string>
+    <string name="layout_summary" formatted="false">"छिपाने वाले बटन चुनें"</string>
+    <string name="layout_hint" formatted="false">"किसी आइटम को छिपाने के लिए स्विच चालू करें"</string>
+    <string name="layout_top" formatted="false">"ऊपरी बार"</string>
+    <string name="layout_bottom" formatted="false">"निचला बार"</string>
+    <string name="layout_side" formatted="false">"वीडियो पेज"</string>
+    <string name="layout_search" formatted="false">"खोज"</string>
+    <string name="layout_live" formatted="false">"लाइव"</string>
+    <string name="layout_friends" formatted="false">"दोस्त"</string>
+    <string name="layout_following" formatted="false">"फ़ॉलो किए गए"</string>
+    <string name="layout_shop" formatted="false">"शॉप"</string>
+    <string name="layout_for_you" formatted="false">"आपके लिए"</string>
+    <string name="layout_nearby" formatted="false">"आस-पास"</string>
+    <string name="layout_stem" formatted="false">"विज्ञान"</string>
+    <string name="layout_series" formatted="false">"सीरीज़"</string>
+    <string name="layout_home" formatted="false">"होम"</string>
+    <string name="layout_create" formatted="false">"बनाएँ"</string>
+    <string name="layout_inbox" formatted="false">"इनबॉक्स"</string>
+    <string name="layout_profile" formatted="false">"प्रोफ़ाइल"</string>
+    <string name="layout_discover" formatted="false">"खोजें"</string>
+    <string name="layout_avatar" formatted="false">"प्रोफ़ाइल फ़ोटो"</string>
+    <string name="layout_follow" formatted="false">"फ़ॉलो बटन"</string>
+    <string name="layout_like" formatted="false">"लाइक"</string>
+    <string name="layout_comment" formatted="false">"टिप्पणियाँ"</string>
+    <string name="layout_favorite" formatted="false">"पसंदीदा"</string>
+    <string name="layout_share" formatted="false">"शेयर"</string>
+    <string name="layout_music" formatted="false">"म्यूज़िक डिस्क"</string>
+    <string name="layout_explore" formatted="false">"एक्सप्लोर"</string>
+    <string name="layout_author" formatted="false">"लेखक की जानकारी"</string>
+    <string name="layout_description" formatted="false">"विवरण"</string>
+    <string name="layout_music_title" formatted="false">"संगीत का शीर्षक"</string>
+    <string name="layout_tags" formatted="false">"जानकारी के लेबल"</string>
+    <string name="layout_search_label" formatted="false">"खोज सुझाव"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"ऑटो स्क्रॉल रोकने का बटन"</string>
 </resources>

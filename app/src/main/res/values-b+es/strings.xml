@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Mantiene visible la barra de progreso, incluso en vídeos cortos"</string>
     <string name="feature_immersive" formatted="false">"Reproducción a pantalla completa"</string>
     <string name="feature_immersive_summary" formatted="false">"Hace transparente la barra inferior para mostrar el vídeo de borde a borde"</string>
-    <string name="feature_autoplay" formatted="false">"Desbloquear desplazamiento automático"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Mantén pulsado un vídeo y activa el desplazamiento automático en el menú"</string>
+    <string name="feature_autoplay" formatted="false">"Desplazamiento automático mejorado"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Desbloquea el desplazamiento automático en el menú de cualquier vídeo"</string>
     <string name="feature_status_bar" formatted="false">"Ocultar la barra de estado del sistema"</string>
     <string name="feature_media_section" formatted="false">"Descargas y acciones"</string>
     <string name="feature_download" formatted="false">"Descargas sin marca de agua"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Reinicia TikTok manualmente para aplicar los resultados."</string>
     <string name="host_scan_failure_hint" formatted="false">"Consulta el diagnóstico de funciones en Toki."</string>
     <string name="host_scan_done" formatted="false">"Entendido"</string>
+    <string name="layout_title" formatted="false">"Diseño de página"</string>
+    <string name="layout_summary" formatted="false">"Elige qué controles ocultar"</string>
+    <string name="layout_hint" formatted="false">"Activa el interruptor para ocultar el elemento"</string>
+    <string name="layout_top" formatted="false">"Barra superior"</string>
+    <string name="layout_bottom" formatted="false">"Barra inferior"</string>
+    <string name="layout_side" formatted="false">"Página del vídeo"</string>
+    <string name="layout_search" formatted="false">"Buscar"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Amigos"</string>
+    <string name="layout_following" formatted="false">"Siguiendo"</string>
+    <string name="layout_shop" formatted="false">"Tienda"</string>
+    <string name="layout_for_you" formatted="false">"Para ti"</string>
+    <string name="layout_nearby" formatted="false">"Cerca"</string>
+    <string name="layout_stem" formatted="false">"Ciencia"</string>
+    <string name="layout_series" formatted="false">"Series"</string>
+    <string name="layout_home" formatted="false">"Inicio"</string>
+    <string name="layout_create" formatted="false">"Crear"</string>
+    <string name="layout_inbox" formatted="false">"Bandeja de entrada"</string>
+    <string name="layout_profile" formatted="false">"Perfil"</string>
+    <string name="layout_discover" formatted="false">"Descubrir"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Botón Seguir"</string>
+    <string name="layout_like" formatted="false">"Me gusta"</string>
+    <string name="layout_comment" formatted="false">"Comentarios"</string>
+    <string name="layout_favorite" formatted="false">"Favoritos"</string>
+    <string name="layout_share" formatted="false">"Compartir"</string>
+    <string name="layout_music" formatted="false">"Disco de música"</string>
+    <string name="layout_explore" formatted="false">"Explorar"</string>
+    <string name="layout_author" formatted="false">"Información del autor"</string>
+    <string name="layout_description" formatted="false">"Descripción"</string>
+    <string name="layout_music_title" formatted="false">"Título de la música"</string>
+    <string name="layout_tags" formatted="false">"Etiquetas informativas"</string>
+    <string name="layout_search_label" formatted="false">"Sugerencia de búsqueda"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Botón para detener el desplazamiento automático"</string>
 </resources>

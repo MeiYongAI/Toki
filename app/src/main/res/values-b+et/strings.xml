@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Hoiab edenemisriba nähtaval ka lühikestes videotes"</string>
     <string name="feature_immersive" formatted="false">"Täisekraaniesitus"</string>
     <string name="feature_immersive_summary" formatted="false">"Muudab alumise riba läbipaistvaks, et video täidaks kogu ekraani"</string>
-    <string name="feature_autoplay" formatted="false">"Ava automaatne kerimine"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Vajuta videol pikalt ja lülita menüüs sisse automaatne kerimine"</string>
+    <string name="feature_autoplay" formatted="false">"Täiustatud automaatkerimine"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Avab automaatkerimise kõigi videote menüüs"</string>
     <string name="feature_status_bar" formatted="false">"Peida süsteemi olekuriba"</string>
     <string name="feature_media_section" formatted="false">"Allalaadimine ja toimingud"</string>
     <string name="feature_download" formatted="false">"Allalaadimine vesimärgita"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Tulemuste rakendamiseks taaskäivita TikTok käsitsi."</string>
     <string name="host_scan_failure_hint" formatted="false">"Vaata Toki funktsioonide diagnostikat."</string>
     <string name="host_scan_done" formatted="false">"Selge"</string>
+    <string name="layout_title" formatted="false">"Lehe paigutus"</string>
+    <string name="layout_summary" formatted="false">"Vali peidetavad elemendid"</string>
+    <string name="layout_hint" formatted="false">"Elemendi peitmiseks lülita lüliti sisse"</string>
+    <string name="layout_top" formatted="false">"Ülariba"</string>
+    <string name="layout_bottom" formatted="false">"Alariba"</string>
+    <string name="layout_side" formatted="false">"Videoleht"</string>
+    <string name="layout_search" formatted="false">"Otsing"</string>
+    <string name="layout_live" formatted="false">"OTSE"</string>
+    <string name="layout_friends" formatted="false">"Sõbrad"</string>
+    <string name="layout_following" formatted="false">"Jälgitavad"</string>
+    <string name="layout_shop" formatted="false">"Pood"</string>
+    <string name="layout_for_you" formatted="false">"Sulle"</string>
+    <string name="layout_nearby" formatted="false">"Läheduses"</string>
+    <string name="layout_stem" formatted="false">"Teadus"</string>
+    <string name="layout_series" formatted="false">"Sarjad"</string>
+    <string name="layout_home" formatted="false">"Avaleht"</string>
+    <string name="layout_create" formatted="false">"Loo"</string>
+    <string name="layout_inbox" formatted="false">"Postkast"</string>
+    <string name="layout_profile" formatted="false">"Profiil"</string>
+    <string name="layout_discover" formatted="false">"Avasta"</string>
+    <string name="layout_avatar" formatted="false">"Profiilipilt"</string>
+    <string name="layout_follow" formatted="false">"Jälgimisnupp"</string>
+    <string name="layout_like" formatted="false">"Meeldib"</string>
+    <string name="layout_comment" formatted="false">"Kommentaarid"</string>
+    <string name="layout_favorite" formatted="false">"Lemmikud"</string>
+    <string name="layout_share" formatted="false">"Jaga"</string>
+    <string name="layout_music" formatted="false">"Muusikaplaat"</string>
+    <string name="layout_explore" formatted="false">"Uuri"</string>
+    <string name="layout_author" formatted="false">"Autori info"</string>
+    <string name="layout_description" formatted="false">"Kirjeldus"</string>
+    <string name="layout_music_title" formatted="false">"Muusika pealkiri"</string>
+    <string name="layout_tags" formatted="false">"Infosildid"</string>
+    <string name="layout_search_label" formatted="false">"Otsingusoovitus"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Automaatkerimise peatamise nupp"</string>
 </resources>

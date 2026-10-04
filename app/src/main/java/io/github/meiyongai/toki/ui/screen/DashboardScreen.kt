@@ -551,6 +551,8 @@ fun DashboardScreen(
             )
         }
 
+        LayoutCleanupSection()
+
         // === 分组 3: 内容下载与操作增强 (共 7 项) ===
         PreferenceSection(title = strings.getString(R.string.feature_media_section)) {
             SwitchPreferenceItem(

@@ -5,6 +5,9 @@ import android.util.Log
 /** 宿主逻辑符号；所有官方构建统一按实际代码指纹和成员契约解析。 */
 internal enum class HostSymbol {
     DOWNLOAD_SOURCE,
+    LAYOUT_TOP_TABS,
+    LAYOUT_TOOLBAR,
+    LAYOUT_BOTTOM_ITEM,
     COMMENT_TRANSLATION,
     DESCRIPTION_TRANSLATION,
     TRANSLATION_REVERSE,
@@ -13,11 +16,17 @@ internal enum class HostSymbol {
     PLAYER_MANAGER,
     SETTINGS,
     SEARCH_AUTO_SCROLL,
+    AUTO_SCROLL_MENU,
+    AUTO_SCROLL_PLAYBACK,
+    AUTO_SCROLL_CONTEXT,
+    AUTO_SCROLL_REGISTRATION,
+    AUTO_SCROLL_REGISTER,
     COLD_FEED,
     PRELOADED_FEED,
     DARK_LAYER,
     SEEK_BAR,
     SEEK_CONTROLLER,
+    PLAY_BUTTON,
     OFFLINE_RECOVERY,
     AUTHOR_LOCATION,
     RESERVED_AREA,
@@ -68,25 +77,25 @@ internal object HostSymbols {
         val key = HostDexIndex.digest("$INDEX_FORMAT\n$identity\n" + rulesIdentity)
         val cache = storageFile(java.io.File(info.dataDir))
         val stored = HostSymbolCache.read(cache)
-        val currentCode = stored.getProperty("cache.key") == key
-        val coverage = if (currentCode) coverage(stored) else emptySet()
-        if (currentCode && cacheComplete(stored, coverage, required)) {
-            resolved = stored
-            val failures = stored.stringPropertyNames().filter { it.startsWith("error.") }
+        val plan = HostScanPlan(stored, rules, identity, INDEX_FORMAT, required)
+        if (plan.pending.isEmpty()) {
+            resolved = if (stored.getProperty("cache.format") == INDEX_FORMAT && stored.getProperty("cache.key") == key) stored else {
+                plan.merge(java.util.Properties()).apply {
+                    for (field in listOf("cache.scanPid", "cache.createdAt", "cache.reason")) {
+                        stored.getProperty(field)?.let { setProperty(field, it) }
+                    }
+                    if (scanAllowed) HostSymbolCache.write(cache, this)
+                }
+            }
+            val failures = resolved.stringPropertyNames().filter { it.startsWith("error.") }
             HookRuntime.adaptation("适配缓存有效\n代码标识：$identity\n未匹配目标：${failures.joinToString().ifEmpty { "无" }}")
             HookRuntime.state("HostSymbols", "缓存已验证")
             HookRuntime.event("TokiHostSymbols", "缓存已验证 pid=${android.os.Process.myPid()} key=$key scanPid=${stored.getProperty("cache.scanPid")} code=$identity rules=$rulesIdentity")
             return true
         }
-        val reason = if (currentCode) {
-            val missing = required.filterNot { cacheComplete(stored, coverage, setOf(it)) }
-            "功能依赖缺少扫描结果：${missing.joinToString { it.name }}"
-        } else {
-            HostCacheReason.describe(stored, identity, rulesIdentity)
-        }
+        val reason = "${HostCacheReason.describe(stored, identity, rulesIdentity)}；补查目标：${plan.pending.joinToString { it.name }}"
         HookRuntime.event("TokiHostSymbols", "需要查找：$reason；pid=${android.os.Process.myPid()} allowed=$scanAllowed oldKey=${stored.getProperty("cache.key")} newKey=$key code=$identity rules=$rulesIdentity apkCount=${paths.size}")
-        // 保留本代码集合已覆盖的目标，切换回原功能时不用重复扫描。
-        val targets = required + coverage
+        val targets = plan.pending
         val selectedRules = selectRules(rules, targets)
         HookRuntime.adaptation(if (scanAllowed) "正在查找 ${targets.size} 项功能依赖 · $identity" else "等待主进程扫描完成后重启")
         HookRuntime.state("HostSymbols", if (scanAllowed) "正在扫描" else "等待主进程准备")
@@ -94,15 +103,15 @@ internal object HostSymbols {
             HostScanController.session.begin()
             Thread({
                 try {
-                    val result = HostDexIndex.scan(paths, selectedRules) { completed, total ->
+                    val scanned = HostDexIndex.scan(paths, selectedRules) { completed, total ->
                         HostScanController.session.progress(completed, total)
                     }
                     HostScanController.session.saving()
                     check(HostDexIndex.identity(paths) == identity) { "扫描期间宿主代码集合发生变化，缓存未发布" }
+                    val result = plan.merge(scanned)
                     result.setProperty("cache.key", key)
                     result.setProperty("cache.identity", identity)
                     result.setProperty("cache.rules", rulesIdentity)
-                    result.setProperty("cache.symbols", targets.map { it.name }.sorted().joinToString(","))
                     result.setProperty("cache.scanPid", android.os.Process.myPid().toString())
                     result.setProperty("cache.createdAt", System.currentTimeMillis().toString())
                     result.setProperty("cache.reason", reason)

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Rodyti eigos juostą ir trumpuose vaizdo įrašuose"</string>
     <string name="feature_immersive" formatted="false">"Atkūrimas visame ekrane"</string>
     <string name="feature_immersive_summary" formatted="false">"Apatinę juostą padaryti skaidrią, kad vaizdas užpildytų ekraną"</string>
-    <string name="feature_autoplay" formatted="false">"Atrakinti automatinį slinkimą"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Ilgai paspauskite vaizdo įrašą ir meniu įjunkite automatinį slinkimą"</string>
+    <string name="feature_autoplay" formatted="false">"Išplėstas automatinis slinkimas"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Atrakina automatinį slinkimą visų vaizdo įrašų meniu"</string>
     <string name="feature_status_bar" formatted="false">"Slėpti sistemos būsenos juostą"</string>
     <string name="feature_media_section" formatted="false">"Atsisiuntimai ir veiksmai"</string>
     <string name="feature_download" formatted="false">"Siuntimas be vandens ženklo"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Rankiniu būdu paleiskite TikTok iš naujo, kad pritaikytumėte rezultatus."</string>
     <string name="host_scan_failure_hint" formatted="false">"Peržiūrėkite funkcijų diagnostiką Toki."</string>
     <string name="host_scan_done" formatted="false">"Supratau"</string>
+    <string name="layout_title" formatted="false">"Puslapio išdėstymas"</string>
+    <string name="layout_summary" formatted="false">"Pasirinkite, kuriuos valdiklius slėpti"</string>
+    <string name="layout_hint" formatted="false">"Įjunkite jungiklį, kad paslėptumėte elementą"</string>
+    <string name="layout_top" formatted="false">"Viršutinė juosta"</string>
+    <string name="layout_bottom" formatted="false">"Apatinė juosta"</string>
+    <string name="layout_side" formatted="false">"Vaizdo įrašo puslapis"</string>
+    <string name="layout_search" formatted="false">"Paieška"</string>
+    <string name="layout_live" formatted="false">"TIESIOGIAI"</string>
+    <string name="layout_friends" formatted="false">"Draugai"</string>
+    <string name="layout_following" formatted="false">"Sekami"</string>
+    <string name="layout_shop" formatted="false">"Parduotuvė"</string>
+    <string name="layout_for_you" formatted="false">"Jums"</string>
+    <string name="layout_nearby" formatted="false">"Netoliese"</string>
+    <string name="layout_stem" formatted="false">"Mokslas"</string>
+    <string name="layout_series" formatted="false">"Serialai"</string>
+    <string name="layout_home" formatted="false">"Pradžia"</string>
+    <string name="layout_create" formatted="false">"Kurti"</string>
+    <string name="layout_inbox" formatted="false">"Gautieji"</string>
+    <string name="layout_profile" formatted="false">"Profilis"</string>
+    <string name="layout_discover" formatted="false">"Atrasti"</string>
+    <string name="layout_avatar" formatted="false">"Profilio nuotrauka"</string>
+    <string name="layout_follow" formatted="false">"Sekimo mygtukas"</string>
+    <string name="layout_like" formatted="false">"Patinka"</string>
+    <string name="layout_comment" formatted="false">"Komentarai"</string>
+    <string name="layout_favorite" formatted="false">"Mėgstamiausi"</string>
+    <string name="layout_share" formatted="false">"Bendrinti"</string>
+    <string name="layout_music" formatted="false">"Muzikos diskas"</string>
+    <string name="layout_explore" formatted="false">"Naršyti"</string>
+    <string name="layout_author" formatted="false">"Autoriaus informacija"</string>
+    <string name="layout_description" formatted="false">"Aprašymas"</string>
+    <string name="layout_music_title" formatted="false">"Muzikos pavadinimas"</string>
+    <string name="layout_tags" formatted="false">"Informacinės žymos"</string>
+    <string name="layout_search_label" formatted="false">"Paieškos pasiūlymas"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Automatinio slinkimo stabdymo mygtukas"</string>
 </resources>

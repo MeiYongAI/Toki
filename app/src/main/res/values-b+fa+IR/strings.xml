@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"نمایش نوار پیشرفت پایین حتی برای ویدئوهای کوتاه"</string>
     <string name="feature_immersive" formatted="false">"پخش تمام‌صفحه"</string>
     <string name="feature_immersive_summary" formatted="false">"شفاف کردن نوار پایین برای نمایش ویدئو در سراسر صفحه"</string>
-    <string name="feature_autoplay" formatted="false">"باز کردن پیمایش خودکار"</string>
-    <string name="feature_autoplay_summary" formatted="false">"ویدئو را نگه دارید و پیمایش خودکار را از منو فعال کنید"</string>
+    <string name="feature_autoplay" formatted="false">"پیمایش خودکار پیشرفته"</string>
+    <string name="feature_autoplay_summary" formatted="false">"پیمایش خودکار را در منوی همهٔ ویدئوها در دسترس می‌گذارد"</string>
     <string name="feature_status_bar" formatted="false">"پنهان کردن نوار وضعیت سیستم"</string>
     <string name="feature_media_section" formatted="false">"دانلود و ابزارها"</string>
     <string name="feature_download" formatted="false">"دانلود بدون واترمارک"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"برای اعمال نتایج، TikTok را به‌صورت دستی دوباره راه‌اندازی کنید."</string>
     <string name="host_scan_failure_hint" formatted="false">"عیب‌یابی قابلیت‌ها را در Toki ببینید."</string>
     <string name="host_scan_done" formatted="false">"متوجه شدم"</string>
+    <string name="layout_title" formatted="false">"چیدمان صفحه"</string>
+    <string name="layout_summary" formatted="false">"دکمه‌هایی را که می‌خواهید پنهان شوند انتخاب کنید"</string>
+    <string name="layout_hint" formatted="false">"برای پنهان کردن هر مورد، کلیدش را روشن کنید"</string>
+    <string name="layout_top" formatted="false">"نوار بالا"</string>
+    <string name="layout_bottom" formatted="false">"نوار پایین"</string>
+    <string name="layout_side" formatted="false">"صفحهٔ ویدئو"</string>
+    <string name="layout_search" formatted="false">"جستجو"</string>
+    <string name="layout_live" formatted="false">"پخش زنده"</string>
+    <string name="layout_friends" formatted="false">"دوستان"</string>
+    <string name="layout_following" formatted="false">"دنبال‌شده‌ها"</string>
+    <string name="layout_shop" formatted="false">"فروشگاه"</string>
+    <string name="layout_for_you" formatted="false">"برای شما"</string>
+    <string name="layout_nearby" formatted="false">"اطراف"</string>
+    <string name="layout_stem" formatted="false">"علم"</string>
+    <string name="layout_series" formatted="false">"مجموعه‌ها"</string>
+    <string name="layout_home" formatted="false">"خانه"</string>
+    <string name="layout_create" formatted="false">"ایجاد"</string>
+    <string name="layout_inbox" formatted="false">"صندوق ورودی"</string>
+    <string name="layout_profile" formatted="false">"نمایه"</string>
+    <string name="layout_discover" formatted="false">"کشف"</string>
+    <string name="layout_avatar" formatted="false">"تصویر نمایه"</string>
+    <string name="layout_follow" formatted="false">"دکمهٔ دنبال کردن"</string>
+    <string name="layout_like" formatted="false">"پسندیدن"</string>
+    <string name="layout_comment" formatted="false">"دیدگاه‌ها"</string>
+    <string name="layout_favorite" formatted="false">"علاقه‌مندی‌ها"</string>
+    <string name="layout_share" formatted="false">"اشتراک‌گذاری"</string>
+    <string name="layout_music" formatted="false">"دیسک موسیقی"</string>
+    <string name="layout_explore" formatted="false">"کاوش"</string>
+    <string name="layout_author" formatted="false">"اطلاعات نویسنده"</string>
+    <string name="layout_description" formatted="false">"توضیحات"</string>
+    <string name="layout_music_title" formatted="false">"عنوان موسیقی"</string>
+    <string name="layout_tags" formatted="false">"برچسب‌های اطلاعات"</string>
+    <string name="layout_search_label" formatted="false">"پیشنهاد جستجو"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"دکمه توقف پیمایش خودکار"</string>
 </resources>

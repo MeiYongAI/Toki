@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Manté visible la barra de progrés, fins i tot en vídeos curts"</string>
     <string name="feature_immersive" formatted="false">"Reproducció a pantalla completa"</string>
     <string name="feature_immersive_summary" formatted="false">"Fa transparent la barra inferior perquè el vídeo ocupi tota la pantalla"</string>
-    <string name="feature_autoplay" formatted="false">"Desbloqueja el desplaçament automàtic"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Mantén premut un vídeo i activa el desplaçament automàtic al menú"</string>
+    <string name="feature_autoplay" formatted="false">"Desplaçament automàtic millorat"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Desbloqueja el desplaçament automàtic al menú de cada vídeo"</string>
     <string name="feature_status_bar" formatted="false">"Amaga la barra d’estat del sistema"</string>
     <string name="feature_media_section" formatted="false">"Baixades i accions"</string>
     <string name="feature_download" formatted="false">"Baixades sense marca d’aigua"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Reinicieu TikTok manualment per aplicar els resultats."</string>
     <string name="host_scan_failure_hint" formatted="false">"Consulteu el diagnòstic de les funcions a Toki."</string>
     <string name="host_scan_done" formatted="false">"Entesos"</string>
+    <string name="layout_title" formatted="false">"Disseny de la pàgina"</string>
+    <string name="layout_summary" formatted="false">"Tria quins controls vols amagar"</string>
+    <string name="layout_hint" formatted="false">"Activa cada opció per amagar-la"</string>
+    <string name="layout_top" formatted="false">"Barra superior"</string>
+    <string name="layout_bottom" formatted="false">"Barra inferior"</string>
+    <string name="layout_side" formatted="false">"Pàgina del vídeo"</string>
+    <string name="layout_search" formatted="false">"Cerca"</string>
+    <string name="layout_live" formatted="false">"En directe"</string>
+    <string name="layout_friends" formatted="false">"Amics"</string>
+    <string name="layout_following" formatted="false">"Seguint"</string>
+    <string name="layout_shop" formatted="false">"Botiga"</string>
+    <string name="layout_for_you" formatted="false">"Per a tu"</string>
+    <string name="layout_nearby" formatted="false">"A prop"</string>
+    <string name="layout_stem" formatted="false">"Ciència"</string>
+    <string name="layout_series" formatted="false">"Sèries"</string>
+    <string name="layout_home" formatted="false">"Inici"</string>
+    <string name="layout_create" formatted="false">"Crea"</string>
+    <string name="layout_inbox" formatted="false">"Safata d’entrada"</string>
+    <string name="layout_profile" formatted="false">"Perfil"</string>
+    <string name="layout_discover" formatted="false">"Descobreix"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Botó de seguiment"</string>
+    <string name="layout_like" formatted="false">"M’agrada"</string>
+    <string name="layout_comment" formatted="false">"Comentaris"</string>
+    <string name="layout_favorite" formatted="false">"Preferits"</string>
+    <string name="layout_share" formatted="false">"Comparteix"</string>
+    <string name="layout_music" formatted="false">"Disc de música"</string>
+    <string name="layout_explore" formatted="false">"Explora"</string>
+    <string name="layout_author" formatted="false">"Informació de l’autor"</string>
+    <string name="layout_description" formatted="false">"Descripció"</string>
+    <string name="layout_music_title" formatted="false">"Títol de la música"</string>
+    <string name="layout_tags" formatted="false">"Etiquetes informatives"</string>
+    <string name="layout_search_label" formatted="false">"Suggeriment de cerca"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Botó per aturar el desplaçament automàtic"</string>
 </resources>

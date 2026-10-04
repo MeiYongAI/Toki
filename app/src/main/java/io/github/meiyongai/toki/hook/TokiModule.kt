@@ -133,6 +133,7 @@ class TokiModule : XposedModule() {
             "AuthorLocationHook" -> AuthorLocationHook.init(this, loader)
             "ProgressBarHook" -> ProgressBarHook.init(this, loader)
             "AutoCleanModeHook" -> AutoCleanModeHook.init(this, loader)
+            "LayoutCleanupHook" -> LayoutCleanupHook.init(this, loader)
             "ImmersiveFullScreenHook" -> ImmersiveFullScreenHook.init(this, loader)
             "AutoScrollHook" -> AutoScrollHook.init(this, loader)
             "DownloadHook" -> DownloadHook.init(this, loader)

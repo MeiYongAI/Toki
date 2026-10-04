@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Håll förloppsindikatorn synlig även i korta videor"</string>
     <string name="feature_immersive" formatted="false">"Helskärmsuppspelning"</string>
     <string name="feature_immersive_summary" formatted="false">"Gör nederfältet genomskinligt för video över hela skärmen"</string>
-    <string name="feature_autoplay" formatted="false">"Lås upp automatisk rullning"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Tryck länge på en video och aktivera automatisk rullning i menyn"</string>
+    <string name="feature_autoplay" formatted="false">"Utökad automatisk rullning"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Lås upp automatisk rullning i alla videomenyer"</string>
     <string name="feature_status_bar" formatted="false">"Dölj systemets statusfält"</string>
     <string name="feature_media_section" formatted="false">"Nedladdningar och verktyg"</string>
     <string name="feature_download" formatted="false">"Ladda ned utan vattenstämpel"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Starta om TikTok manuellt för att tillämpa resultaten."</string>
     <string name="host_scan_failure_hint" formatted="false">"Visa funktionsdiagnostik i Toki."</string>
     <string name="host_scan_done" formatted="false">"Jag förstår"</string>
+    <string name="layout_title" formatted="false">"Sidlayout"</string>
+    <string name="layout_summary" formatted="false">"Välj vilka knappar som ska döljas"</string>
+    <string name="layout_hint" formatted="false">"Slå på reglaget för att dölja objektet"</string>
+    <string name="layout_top" formatted="false">"Övre fält"</string>
+    <string name="layout_bottom" formatted="false">"Nedre fält"</string>
+    <string name="layout_side" formatted="false">"Videosida"</string>
+    <string name="layout_search" formatted="false">"Sök"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Vänner"</string>
+    <string name="layout_following" formatted="false">"Följer"</string>
+    <string name="layout_shop" formatted="false">"Butik"</string>
+    <string name="layout_for_you" formatted="false">"För dig"</string>
+    <string name="layout_nearby" formatted="false">"I närheten"</string>
+    <string name="layout_stem" formatted="false">"Vetenskap"</string>
+    <string name="layout_series" formatted="false">"Serier"</string>
+    <string name="layout_home" formatted="false">"Hem"</string>
+    <string name="layout_create" formatted="false">"Skapa"</string>
+    <string name="layout_inbox" formatted="false">"Inkorg"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Upptäck"</string>
+    <string name="layout_avatar" formatted="false">"Profilbild"</string>
+    <string name="layout_follow" formatted="false">"Följ-knapp"</string>
+    <string name="layout_like" formatted="false">"Gilla"</string>
+    <string name="layout_comment" formatted="false">"Kommentarer"</string>
+    <string name="layout_favorite" formatted="false">"Favoriter"</string>
+    <string name="layout_share" formatted="false">"Dela"</string>
+    <string name="layout_music" formatted="false">"Musikskiva"</string>
+    <string name="layout_explore" formatted="false">"Utforska"</string>
+    <string name="layout_author" formatted="false">"Upphovsperson"</string>
+    <string name="layout_description" formatted="false">"Beskrivning"</string>
+    <string name="layout_music_title" formatted="false">"Musiktitel"</string>
+    <string name="layout_tags" formatted="false">"Infoetiketter"</string>
+    <string name="layout_search_label" formatted="false">"Sökförslag"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Stoppknapp för automatisk rullning"</string>
 </resources>

@@ -19,7 +19,7 @@ import org.robolectric.annotation.Config
 
 /** 同步适配准备失败必须进入诊断，同时按原异常继续传播给框架。 */
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, application = Application::class, sdk = [35])
+@Config(manifest = Config.NONE, application = Application::class, sdk = [35], shadows = [PosixAtomicFileShadow::class])
 class HostSymbolsPreparationTest {
     @get:Rule val temporary = TemporaryFolder()
 
@@ -100,6 +100,7 @@ class HostSymbolsPreparationTest {
             setProperty("cache.symbols", symbol.name)
             setProperty("error.${symbol.name}", "候选数量=0")
         })
+        assertTrue(HostSymbols.initialize(host, true, setOf(symbol)))
         val saved = file.readBytes()
         val before = HostScanController.session.status.phase
         repeat(4) {

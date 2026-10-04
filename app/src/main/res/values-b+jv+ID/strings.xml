@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Bar kemajuan tetep katon, kalebu ing video cendhak"</string>
     <string name="feature_immersive" formatted="false">"Puteran layar wutuh"</string>
     <string name="feature_immersive_summary" formatted="false">"Nggawe bar ngisor transparan supaya video ngebaki layar"</string>
-    <string name="feature_autoplay" formatted="false">"Bukak gulung otomatis"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Pencet suwé video banjur aktifake gulung otomatis saka menu"</string>
+    <string name="feature_autoplay" formatted="false">"Gulir otomatis luwih apik"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Mbukak gulir otomatis ing menu kabeh video"</string>
     <string name="feature_status_bar" formatted="false">"Dhelikake bar status sistem"</string>
     <string name="feature_media_section" formatted="false">"Undhuhan lan tumindak"</string>
     <string name="feature_download" formatted="false">"Undhuhan tanpa tandha banyu"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Wiwiti maneh TikTok kanthi manual kanggo ngetrapake asil."</string>
     <string name="host_scan_failure_hint" formatted="false">"Delengen diagnostik fitur ing Toki."</string>
     <string name="host_scan_done" formatted="false">"Ngerti"</string>
+    <string name="layout_title" formatted="false">"Tata kaca"</string>
+    <string name="layout_summary" formatted="false">"Pilih kontrol sing arep didhelikake"</string>
+    <string name="layout_hint" formatted="false">"Uripake saklar kanggo ndhelikake item"</string>
+    <string name="layout_top" formatted="false">"Bar ndhuwur"</string>
+    <string name="layout_bottom" formatted="false">"Bar ngisor"</string>
+    <string name="layout_side" formatted="false">"Kaca video"</string>
+    <string name="layout_search" formatted="false">"Goleki"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Kanca"</string>
+    <string name="layout_following" formatted="false">"Ngetutake"</string>
+    <string name="layout_shop" formatted="false">"Toko"</string>
+    <string name="layout_for_you" formatted="false">"Kanggo sampeyan"</string>
+    <string name="layout_nearby" formatted="false">"Cedhak"</string>
+    <string name="layout_stem" formatted="false">"Sains"</string>
+    <string name="layout_series" formatted="false">"Seri"</string>
+    <string name="layout_home" formatted="false">"Ngarep"</string>
+    <string name="layout_create" formatted="false">"Gawe"</string>
+    <string name="layout_inbox" formatted="false">"Kothak mlebu"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Temokake"</string>
+    <string name="layout_avatar" formatted="false">"Foto profil"</string>
+    <string name="layout_follow" formatted="false">"Tombol Tututi"</string>
+    <string name="layout_like" formatted="false">"Seneng"</string>
+    <string name="layout_comment" formatted="false">"Komentar"</string>
+    <string name="layout_favorite" formatted="false">"Favorit"</string>
+    <string name="layout_share" formatted="false">"Bagi"</string>
+    <string name="layout_music" formatted="false">"Piringan musik"</string>
+    <string name="layout_explore" formatted="false">"Jelajahi"</string>
+    <string name="layout_author" formatted="false">"Info pangripta"</string>
+    <string name="layout_description" formatted="false">"Katrangan"</string>
+    <string name="layout_music_title" formatted="false">"Judhul musik"</string>
+    <string name="layout_tags" formatted="false">"Label informasi"</string>
+    <string name="layout_search_label" formatted="false">"Saran telusuran"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Tombol mandheg gulir otomatis"</string>
 </resources>

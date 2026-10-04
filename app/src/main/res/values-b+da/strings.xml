@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Behold statuslinjen synlig, også på korte videoer"</string>
     <string name="feature_immersive" formatted="false">"Fuldskærmsafspilning"</string>
     <string name="feature_immersive_summary" formatted="false">"Gør bundlinjen gennemsigtig, så videoen fylder hele skærmen"</string>
-    <string name="feature_autoplay" formatted="false">"Lås automatisk rulning op"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Tryk længe på en video, og slå automatisk rulning til i menuen"</string>
+    <string name="feature_autoplay" formatted="false">"Udvidet automatisk rulning"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Lås automatisk rulning op i alle videomenuer"</string>
     <string name="feature_status_bar" formatted="false">"Skjul systemets statuslinje"</string>
     <string name="feature_media_section" formatted="false">"Downloads og handlinger"</string>
     <string name="feature_download" formatted="false">"Downloads uden vandmærke"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Genstart TikTok manuelt for at anvende resultaterne."</string>
     <string name="host_scan_failure_hint" formatted="false">"Se funktionsdiagnostik i Toki."</string>
     <string name="host_scan_done" formatted="false">"Forstået"</string>
+    <string name="layout_title" formatted="false">"Sidelayout"</string>
+    <string name="layout_summary" formatted="false">"Vælg hvilke knapper der skal skjules"</string>
+    <string name="layout_hint" formatted="false">"Slå kontakten til for at skjule elementet"</string>
+    <string name="layout_top" formatted="false">"Øverste bjælke"</string>
+    <string name="layout_bottom" formatted="false">"Nederste bjælke"</string>
+    <string name="layout_side" formatted="false">"Videoside"</string>
+    <string name="layout_search" formatted="false">"Søg"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Venner"</string>
+    <string name="layout_following" formatted="false">"Følger"</string>
+    <string name="layout_shop" formatted="false">"Butik"</string>
+    <string name="layout_for_you" formatted="false">"Til dig"</string>
+    <string name="layout_nearby" formatted="false">"I nærheden"</string>
+    <string name="layout_stem" formatted="false">"Videnskab"</string>
+    <string name="layout_series" formatted="false">"Serier"</string>
+    <string name="layout_home" formatted="false">"Hjem"</string>
+    <string name="layout_create" formatted="false">"Opret"</string>
+    <string name="layout_inbox" formatted="false">"Indbakke"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Opdag"</string>
+    <string name="layout_avatar" formatted="false">"Profilbillede"</string>
+    <string name="layout_follow" formatted="false">"Følg-knap"</string>
+    <string name="layout_like" formatted="false">"Synes godt om"</string>
+    <string name="layout_comment" formatted="false">"Kommentarer"</string>
+    <string name="layout_favorite" formatted="false">"Favoritter"</string>
+    <string name="layout_share" formatted="false">"Del"</string>
+    <string name="layout_music" formatted="false">"Musikplade"</string>
+    <string name="layout_explore" formatted="false">"Udforsk"</string>
+    <string name="layout_author" formatted="false">"Forfatterinfo"</string>
+    <string name="layout_description" formatted="false">"Beskrivelse"</string>
+    <string name="layout_music_title" formatted="false">"Musiktitel"</string>
+    <string name="layout_tags" formatted="false">"Infoetiketter"</string>
+    <string name="layout_search_label" formatted="false">"Søgeforslag"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Stopknap til automatisk rulning"</string>
 </resources>

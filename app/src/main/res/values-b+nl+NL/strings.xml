@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Houd de voortgangsbalk zichtbaar, ook bij korte video\'s"</string>
     <string name="feature_immersive" formatted="false">"Schermvullend afspelen"</string>
     <string name="feature_immersive_summary" formatted="false">"Maak de onderbalk transparant voor schermvullende video"</string>
-    <string name="feature_autoplay" formatted="false">"Automatisch scrollen ontgrendelen"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Houd een video ingedrukt en schakel automatisch scrollen in via het menu"</string>
+    <string name="feature_autoplay" formatted="false">"Uitgebreid automatisch scrollen"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Ontgrendel automatisch scrollen in elk videomenu"</string>
     <string name="feature_status_bar" formatted="false">"Systeemstatusbalk verbergen"</string>
     <string name="feature_media_section" formatted="false">"Downloads en acties"</string>
     <string name="feature_download" formatted="false">"Downloads zonder watermerk"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Start TikTok handmatig opnieuw om de resultaten toe te passen."</string>
     <string name="host_scan_failure_hint" formatted="false">"Bekijk de functiediagnose in Toki."</string>
     <string name="host_scan_done" formatted="false">"Begrepen"</string>
+    <string name="layout_title" formatted="false">"Pagina-indeling"</string>
+    <string name="layout_summary" formatted="false">"Kies welke knoppen je wilt verbergen"</string>
+    <string name="layout_hint" formatted="false">"Zet de schakelaar aan om het item te verbergen"</string>
+    <string name="layout_top" formatted="false">"Bovenbalk"</string>
+    <string name="layout_bottom" formatted="false">"Onderbalk"</string>
+    <string name="layout_side" formatted="false">"Videopagina"</string>
+    <string name="layout_search" formatted="false">"Zoeken"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Vrienden"</string>
+    <string name="layout_following" formatted="false">"Volgend"</string>
+    <string name="layout_shop" formatted="false">"Winkel"</string>
+    <string name="layout_for_you" formatted="false">"Voor jou"</string>
+    <string name="layout_nearby" formatted="false">"In de buurt"</string>
+    <string name="layout_stem" formatted="false">"Wetenschap"</string>
+    <string name="layout_series" formatted="false">"Series"</string>
+    <string name="layout_home" formatted="false">"Home"</string>
+    <string name="layout_create" formatted="false">"Maken"</string>
+    <string name="layout_inbox" formatted="false">"Inbox"</string>
+    <string name="layout_profile" formatted="false">"Profiel"</string>
+    <string name="layout_discover" formatted="false">"Ontdekken"</string>
+    <string name="layout_avatar" formatted="false">"Profielfoto"</string>
+    <string name="layout_follow" formatted="false">"Volgknop"</string>
+    <string name="layout_like" formatted="false">"Vind ik leuk"</string>
+    <string name="layout_comment" formatted="false">"Reacties"</string>
+    <string name="layout_favorite" formatted="false">"Favorieten"</string>
+    <string name="layout_share" formatted="false">"Delen"</string>
+    <string name="layout_music" formatted="false">"Muziekplaat"</string>
+    <string name="layout_explore" formatted="false">"Verkennen"</string>
+    <string name="layout_author" formatted="false">"Auteursinfo"</string>
+    <string name="layout_description" formatted="false">"Beschrijving"</string>
+    <string name="layout_music_title" formatted="false">"Muziektitel"</string>
+    <string name="layout_tags" formatted="false">"Informatielabels"</string>
+    <string name="layout_search_label" formatted="false">"Zoeksuggestie"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Stopknop voor automatisch scrollen"</string>
 </resources>

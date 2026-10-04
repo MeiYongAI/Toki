@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"ছোট ভিডিওতেও অগ্রগতি বার দৃশ্যমান রাখে"</string>
     <string name="feature_immersive" formatted="false">"পূর্ণপর্দায় প্লেব্যাক"</string>
     <string name="feature_immersive_summary" formatted="false">"ভিডিও পুরো পর্দা জুড়ে দেখাতে নীচের বার স্বচ্ছ করে"</string>
-    <string name="feature_autoplay" formatted="false">"স্বয়ংক্রিয় স্ক্রোল চালু করার সুবিধা খুলুন"</string>
-    <string name="feature_autoplay_summary" formatted="false">"ভিডিওতে চেপে ধরে মেনু থেকে স্বয়ংক্রিয় স্ক্রোল চালু করুন"</string>
+    <string name="feature_autoplay" formatted="false">"উন্নত অটো স্ক্রোল"</string>
+    <string name="feature_autoplay_summary" formatted="false">"সব ভিডিওর মেনুতে অটো স্ক্রোল চালুর সুযোগ দেয়"</string>
     <string name="feature_status_bar" formatted="false">"সিস্টেমের স্ট্যাটাস বার লুকান"</string>
     <string name="feature_media_section" formatted="false">"ডাউনলোড ও সরঞ্জাম"</string>
     <string name="feature_download" formatted="false">"জলছাপ ছাড়া ডাউনলোড"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"ফলাফল প্রয়োগ করতে TikTok ম্যানুয়ালি পুনরায় চালু করুন।"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki-তে ফিচারের ডায়াগনস্টিকস দেখুন।"</string>
     <string name="host_scan_done" formatted="false">"বুঝেছি"</string>
+    <string name="layout_title" formatted="false">"পৃষ্ঠার বিন্যাস"</string>
+    <string name="layout_summary" formatted="false">"কোন বোতামগুলি লুকাবেন বেছে নিন"</string>
+    <string name="layout_hint" formatted="false">"কোনো আইটেম লুকাতে সুইচ চালু করুন"</string>
+    <string name="layout_top" formatted="false">"উপরের বার"</string>
+    <string name="layout_bottom" formatted="false">"নিচের বার"</string>
+    <string name="layout_side" formatted="false">"ভিডিও পৃষ্ঠা"</string>
+    <string name="layout_search" formatted="false">"অনুসন্ধান"</string>
+    <string name="layout_live" formatted="false">"লাইভ"</string>
+    <string name="layout_friends" formatted="false">"বন্ধুরা"</string>
+    <string name="layout_following" formatted="false">"অনুসরণ করছেন"</string>
+    <string name="layout_shop" formatted="false">"দোকান"</string>
+    <string name="layout_for_you" formatted="false">"আপনার জন্য"</string>
+    <string name="layout_nearby" formatted="false">"আশেপাশে"</string>
+    <string name="layout_stem" formatted="false">"বিজ্ঞান"</string>
+    <string name="layout_series" formatted="false">"সিরিজ"</string>
+    <string name="layout_home" formatted="false">"হোম"</string>
+    <string name="layout_create" formatted="false">"তৈরি করুন"</string>
+    <string name="layout_inbox" formatted="false">"ইনবক্স"</string>
+    <string name="layout_profile" formatted="false">"প্রোফাইল"</string>
+    <string name="layout_discover" formatted="false">"আবিষ্কার"</string>
+    <string name="layout_avatar" formatted="false">"প্রোফাইল ছবি"</string>
+    <string name="layout_follow" formatted="false">"ফলো বোতাম"</string>
+    <string name="layout_like" formatted="false">"লাইক"</string>
+    <string name="layout_comment" formatted="false">"মন্তব্য"</string>
+    <string name="layout_favorite" formatted="false">"পছন্দের"</string>
+    <string name="layout_share" formatted="false">"শেয়ার"</string>
+    <string name="layout_music" formatted="false">"মিউজিক ডিস্ক"</string>
+    <string name="layout_explore" formatted="false">"ঘুরে দেখুন"</string>
+    <string name="layout_author" formatted="false">"লেখকের তথ্য"</string>
+    <string name="layout_description" formatted="false">"বিবরণ"</string>
+    <string name="layout_music_title" formatted="false">"গানের নাম"</string>
+    <string name="layout_tags" formatted="false">"তথ্য লেবেল"</string>
+    <string name="layout_search_label" formatted="false">"অনুসন্ধানের পরামর্শ"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"অটো স্ক্রল বন্ধের বোতাম"</string>
 </resources>

@@ -50,3 +50,14 @@ FEED_ADAPTION	method-v1	()Lcom/ss/android/ugc/aweme/videoadaption/adaptionparams
 PHOTO_LAYOUT	method-v1	(Lcom/ss/android/ugc/aweme/ui/layout/FeedContentLayoutInfo;IIIIIILX/*;)LX/*;	static|call:Ljava/lang/Float;->floatValue()F|call:Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;	plan
 SETTINGS	method-v1	(IILjava/lang/String;Z)I	call:Ljava/lang/Integer;->intValue()I|invoke:INVOKE_VIRTUAL:self:(IIILjava/lang/String;Z)I	readInt
 SEARCH_AUTO_SCROLL	method-v1	()Z	string:search_auto_scroll|invoke:INVOKE_VIRTUAL:obfuscated:(Ljava/lang/String;IZ)I	gate
+AUTO_SCROLL_MENU	method-v1	(LX/*;)LX/*;	string:not create auto scroll item, enterFrom:|string:createAutoScrollItem, add auto scroll item to the menu|call:Lcom/ss/android/ugc/aweme/feed/model/AwemeExtKt;->isAdTraffic(Lcom/ss/android/ugc/aweme/feed/model/Aweme;)Z	build
+AUTO_SCROLL_PLAYBACK	method-v1	(Z)Z	call:Lcom/ss/android/ugc/aweme/feed/model/AwemeExtKt;->isAdTraffic(Lcom/ss/android/ugc/aweme/feed/model/Aweme;)Z|call:Lcom/ss/android/ugc/aweme/feed/model/AwemeRawAd;->getShowMaskTimes()I	canAdvance
+AUTO_SCROLL_CONTEXT	method-v1	(Ljava/lang/String;)Z	static|string:homepage_hot|string:homepage_series|string:paid_series_detail_page	page
+AUTO_SCROLL_CONTEXT	method-v1	(Ljava/lang/String;)Z	static|string:general_search|string:search_result	search
+AUTO_SCROLL_CONTEXT	method-v1	(LX/*;)Lcom/ss/android/ugc/feed/platform/panel/autoscroll/IAutoAScrollAbility;	static|string:For You|string:paid_series_detail_page	resolve
+AUTO_SCROLL_REGISTRATION	method-v1	(Ljava/lang/Object;)Ljava/lang/Object;	class:Lcom/ss/android/ugc/feed/platform/panel/autoscroll/AutoScrollComponent;|field:Lkotlin/Unit;->LIZ:Lkotlin/Unit;|invoke:INVOKE_DIRECT:obfuscated:()V	declaration
+AUTO_SCROLL_REGISTER	method-v1	(Lcom/ss/android/ugc/feed/platform/panel/RootPanelComponent;Lkotlin/jvm/functions/Function1;)V	static|call:Lkotlin/jvm/functions/Function1;->invoke(Ljava/lang/Object;)Ljava/lang/Object;	register
+LAYOUT_TOP_TABS	method-v1	(Landroid/view/View;LX/*;)LX/*;	call:Landroid/view/View;->setFocusable(Z)V|call:Landroid/view/View;->setMinimumWidth(I)V|invoke:INVOKE_INTERFACE:obfuscated:()Ljava/lang/String;	bind
+LAYOUT_TOOLBAR	method-v1	(Landroid/view/View;Ljava/lang/String;)V	static|call:Landroid/view/View;->setTag(ILjava/lang/Object;)V|call:Landroid/view/View;->setTag(Ljava/lang/Object;)V	tag
+LAYOUT_BOTTOM_ITEM	method-v1	()Lcom/bytedance/tux/input/TuxTextView;	name:getTabTitleView	view
+PLAY_BUTTON	method-v1	()V	call:Landroid/view/View;->setSelected(Z)V|call:Landroid/view/ViewPropertyAnimator;->scaleX(F)Landroid/view/ViewPropertyAnimator;|call:Landroid/view/ViewPropertyAnimator;->scaleY(F)Landroid/view/ViewPropertyAnimator;|owner:Lcom/ss/android/ugc/feed/platform/panel/playbutton/PlayButtonComponent;	show

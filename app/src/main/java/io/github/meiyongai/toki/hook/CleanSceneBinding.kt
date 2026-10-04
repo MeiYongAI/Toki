@@ -34,10 +34,21 @@ internal class CleanSceneBinding(
          * Callers: AutoCleanModeHook 的页面保留规则、CleanSceneBindingTest。
          */
         internal fun containsInstance(root: View, type: Class<*>): Boolean {
-            if (type.isInstance(root)) return true
+            return containsView(root, type::isInstance)
+        }
+
+        /**
+         * 按控件身份识别完整交互子树，包含独立挂载和延迟加载的容器。
+         * @param root 待检查的子树。
+         * @param matches 由原生控件契约提供的身份判断。
+         * @return 自身或后代是否命中。
+         * Callers: containsInstance、AutoCleanModeHook.init、测试。
+         */
+        internal fun containsView(root: View, matches: (View) -> Boolean): Boolean {
+            if (matches(root)) return true
             val group = root as? ViewGroup ?: return false
             for (index in 0 until group.childCount) {
-                if (containsInstance(group.getChildAt(index), type)) return true
+                if (containsView(group.getChildAt(index), matches)) return true
             }
             return false
         }

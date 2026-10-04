@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Zadržava traku napretka vidljivom i u kratkim videozapisima"</string>
     <string name="feature_immersive" formatted="false">"Reprodukcija preko cijelog zaslona"</string>
     <string name="feature_immersive_summary" formatted="false">"Čini donju traku prozirnom kako bi videozapis ispunio zaslon"</string>
-    <string name="feature_autoplay" formatted="false">"Otključaj automatsko pomicanje"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Dugo pritisnite videozapis i uključite automatsko pomicanje u izborniku"</string>
+    <string name="feature_autoplay" formatted="false">"Poboljšano automatsko pomicanje"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Otključava automatsko pomicanje u izborniku svih videozapisa"</string>
     <string name="feature_status_bar" formatted="false">"Sakrij statusnu traku sustava"</string>
     <string name="feature_media_section" formatted="false">"Preuzimanja i radnje"</string>
     <string name="feature_download" formatted="false">"Preuzimanje bez vodenog žiga"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Ručno ponovno pokrenite TikTok kako biste primijenili rezultate."</string>
     <string name="host_scan_failure_hint" formatted="false">"Pogledajte dijagnostiku značajki u Toki."</string>
     <string name="host_scan_done" formatted="false">"Razumijem"</string>
+    <string name="layout_title" formatted="false">"Izgled stranice"</string>
+    <string name="layout_summary" formatted="false">"Odaberite kontrole koje želite sakriti"</string>
+    <string name="layout_hint" formatted="false">"Uključite prekidač za skrivanje stavke"</string>
+    <string name="layout_top" formatted="false">"Gornja traka"</string>
+    <string name="layout_bottom" formatted="false">"Donja traka"</string>
+    <string name="layout_side" formatted="false">"Stranica videozapisa"</string>
+    <string name="layout_search" formatted="false">"Pretraživanje"</string>
+    <string name="layout_live" formatted="false">"UŽIVO"</string>
+    <string name="layout_friends" formatted="false">"Prijatelji"</string>
+    <string name="layout_following" formatted="false">"Pratim"</string>
+    <string name="layout_shop" formatted="false">"Trgovina"</string>
+    <string name="layout_for_you" formatted="false">"Za vas"</string>
+    <string name="layout_nearby" formatted="false">"U blizini"</string>
+    <string name="layout_stem" formatted="false">"Znanost"</string>
+    <string name="layout_series" formatted="false">"Serije"</string>
+    <string name="layout_home" formatted="false">"Početna"</string>
+    <string name="layout_create" formatted="false">"Stvori"</string>
+    <string name="layout_inbox" formatted="false">"Ulazni sandučić"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Otkrij"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Gumb za praćenje"</string>
+    <string name="layout_like" formatted="false">"Sviđa mi se"</string>
+    <string name="layout_comment" formatted="false">"Komentari"</string>
+    <string name="layout_favorite" formatted="false">"Favoriti"</string>
+    <string name="layout_share" formatted="false">"Podijeli"</string>
+    <string name="layout_music" formatted="false">"Glazbeni disk"</string>
+    <string name="layout_explore" formatted="false">"Istraži"</string>
+    <string name="layout_author" formatted="false">"Podaci o autoru"</string>
+    <string name="layout_description" formatted="false">"Opis"</string>
+    <string name="layout_music_title" formatted="false">"Naslov glazbe"</string>
+    <string name="layout_tags" formatted="false">"Informativne oznake"</string>
+    <string name="layout_search_label" formatted="false">"Prijedlog pretraživanja"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Gumb za zaustavljanje automatskog pomicanja"</string>
 </resources>

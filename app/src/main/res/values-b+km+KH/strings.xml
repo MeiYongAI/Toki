@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"រក្សារបារវឌ្ឍនភាពឱ្យមើលឃើញ សូម្បីវីដេអូខ្លី"</string>
     <string name="feature_immersive" formatted="false">"ចាក់ពេញអេក្រង់"</string>
     <string name="feature_immersive_summary" formatted="false">"ធ្វើឱ្យរបារខាងក្រោមថ្លា ដើម្បីឱ្យវីដេអូពេញអេក្រង់"</string>
-    <string name="feature_autoplay" formatted="false">"ដោះសោការរមូរស្វ័យប្រវត្តិ"</string>
-    <string name="feature_autoplay_summary" formatted="false">"ចុចវីដេអូឱ្យជាប់ ហើយបើកការរមូរស្វ័យប្រវត្តិពីម៉ឺនុយ"</string>
+    <string name="feature_autoplay" formatted="false">"ការរំកិលស្វ័យប្រវត្តិប្រសើរឡើង"</string>
+    <string name="feature_autoplay_summary" formatted="false">"ដោះសោការរំកិលស្វ័យប្រវត្តិក្នុងម៉ឺនុយវីដេអូទាំងអស់"</string>
     <string name="feature_status_bar" formatted="false">"លាក់របារស្ថានភាពប្រព័ន្ធ"</string>
     <string name="feature_media_section" formatted="false">"ការទាញយក និងឧបករណ៍"</string>
     <string name="feature_download" formatted="false">"ទាញយកគ្មានស្នាមទឹក"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"សូមចាប់ផ្តើម TikTok ឡើងវិញដោយខ្លួនឯង ដើម្បីអនុវត្តលទ្ធផល។"</string>
     <string name="host_scan_failure_hint" formatted="false">"សូមមើលការវិនិច្ឆ័យមុខងារនៅក្នុង Toki។"</string>
     <string name="host_scan_done" formatted="false">"យល់ហើយ"</string>
+    <string name="layout_title" formatted="false">"ប្លង់ទំព័រ"</string>
+    <string name="layout_summary" formatted="false">"ជ្រើសរើសប៊ូតុងដែលត្រូវលាក់"</string>
+    <string name="layout_hint" formatted="false">"បើកកុងតាក់ដើម្បីលាក់ធាតុ"</string>
+    <string name="layout_top" formatted="false">"របារខាងលើ"</string>
+    <string name="layout_bottom" formatted="false">"របារខាងក្រោម"</string>
+    <string name="layout_side" formatted="false">"ទំព័រវីដេអូ"</string>
+    <string name="layout_search" formatted="false">"ស្វែងរក"</string>
+    <string name="layout_live" formatted="false">"ផ្សាយផ្ទាល់"</string>
+    <string name="layout_friends" formatted="false">"មិត្តភក្តិ"</string>
+    <string name="layout_following" formatted="false">"កំពុងតាមដាន"</string>
+    <string name="layout_shop" formatted="false">"ហាង"</string>
+    <string name="layout_for_you" formatted="false">"សម្រាប់អ្នក"</string>
+    <string name="layout_nearby" formatted="false">"នៅក្បែរ"</string>
+    <string name="layout_stem" formatted="false">"វិទ្យាសាស្ត្រ"</string>
+    <string name="layout_series" formatted="false">"រឿងភាគ"</string>
+    <string name="layout_home" formatted="false">"ទំព័រដើម"</string>
+    <string name="layout_create" formatted="false">"បង្កើត"</string>
+    <string name="layout_inbox" formatted="false">"ប្រអប់សារ"</string>
+    <string name="layout_profile" formatted="false">"ប្រវត្តិរូប"</string>
+    <string name="layout_discover" formatted="false">"រកឃើញ"</string>
+    <string name="layout_avatar" formatted="false">"រូបប្រវត្តិរូប"</string>
+    <string name="layout_follow" formatted="false">"ប៊ូតុងតាមដាន"</string>
+    <string name="layout_like" formatted="false">"ចូលចិត្ត"</string>
+    <string name="layout_comment" formatted="false">"មតិយោបល់"</string>
+    <string name="layout_favorite" formatted="false">"ចំណូលចិត្ត"</string>
+    <string name="layout_share" formatted="false">"ចែករំលែក"</string>
+    <string name="layout_music" formatted="false">"ថាសតន្ត្រី"</string>
+    <string name="layout_explore" formatted="false">"រុករក"</string>
+    <string name="layout_author" formatted="false">"ព័ត៌មានអ្នកបង្កើត"</string>
+    <string name="layout_description" formatted="false">"ការពិពណ៌នា"</string>
+    <string name="layout_music_title" formatted="false">"ចំណងជើងតន្ត្រី"</string>
+    <string name="layout_tags" formatted="false">"ស្លាកព័ត៌មាន"</string>
+    <string name="layout_search_label" formatted="false">"ការណែនាំស្វែងរក"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"ប៊ូតុងបញ្ឈប់ការរមូរស្វ័យប្រវត្តិ"</string>
 </resources>

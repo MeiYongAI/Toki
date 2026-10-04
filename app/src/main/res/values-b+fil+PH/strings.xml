@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Panatilihing nakikita ang progress bar, kahit sa maiikling video"</string>
     <string name="feature_immersive" formatted="false">"Pag-play sa buong screen"</string>
     <string name="feature_immersive_summary" formatted="false">"Gawing transparent ang ibabang bar para mapuno ng video ang screen"</string>
-    <string name="feature_autoplay" formatted="false">"I-unlock ang awtomatikong pag-scroll"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Pindutin nang matagal ang video at paganahin ang awtomatikong pag-scroll sa menu"</string>
+    <string name="feature_autoplay" formatted="false">"Pinahusay na auto-scroll"</string>
+    <string name="feature_autoplay_summary" formatted="false">"I-unlock ang auto-scroll sa menu ng lahat ng video"</string>
     <string name="feature_status_bar" formatted="false">"Itago ang status bar ng sistema"</string>
     <string name="feature_media_section" formatted="false">"Mga pag-download at aksyon"</string>
     <string name="feature_download" formatted="false">"Download na walang watermark"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Manu-manong i-restart ang TikTok upang mailapat ang mga resulta."</string>
     <string name="host_scan_failure_hint" formatted="false">"Tingnan ang mga diagnostic ng feature sa Toki."</string>
     <string name="host_scan_done" formatted="false">"Naintindihan ko"</string>
+    <string name="layout_title" formatted="false">"Ayos ng pahina"</string>
+    <string name="layout_summary" formatted="false">"Piliin ang mga kontrol na itatago"</string>
+    <string name="layout_hint" formatted="false">"I-on ang switch para itago ang item"</string>
+    <string name="layout_top" formatted="false">"Bar sa itaas"</string>
+    <string name="layout_bottom" formatted="false">"Bar sa ibaba"</string>
+    <string name="layout_side" formatted="false">"Pahina ng video"</string>
+    <string name="layout_search" formatted="false">"Maghanap"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Mga kaibigan"</string>
+    <string name="layout_following" formatted="false">"Sinusundan"</string>
+    <string name="layout_shop" formatted="false">"Tindahan"</string>
+    <string name="layout_for_you" formatted="false">"Para sa iyo"</string>
+    <string name="layout_nearby" formatted="false">"Malapit"</string>
+    <string name="layout_stem" formatted="false">"STEM"</string>
+    <string name="layout_series" formatted="false">"Mga serye"</string>
+    <string name="layout_home" formatted="false">"Home"</string>
+    <string name="layout_create" formatted="false">"Gumawa"</string>
+    <string name="layout_inbox" formatted="false">"Inbox"</string>
+    <string name="layout_profile" formatted="false">"Profile"</string>
+    <string name="layout_discover" formatted="false">"Tuklasin"</string>
+    <string name="layout_avatar" formatted="false">"Larawan sa profile"</string>
+    <string name="layout_follow" formatted="false">"Button na Sundan"</string>
+    <string name="layout_like" formatted="false">"Like"</string>
+    <string name="layout_comment" formatted="false">"Mga komento"</string>
+    <string name="layout_favorite" formatted="false">"Mga paborito"</string>
+    <string name="layout_share" formatted="false">"Ibahagi"</string>
+    <string name="layout_music" formatted="false">"Disc ng musika"</string>
+    <string name="layout_explore" formatted="false">"Mag-explore"</string>
+    <string name="layout_author" formatted="false">"Impormasyon ng may-akda"</string>
+    <string name="layout_description" formatted="false">"Paglalarawan"</string>
+    <string name="layout_music_title" formatted="false">"Pamagat ng musika"</string>
+    <string name="layout_tags" formatted="false">"Mga label ng impormasyon"</string>
+    <string name="layout_search_label" formatted="false">"Mungkahi sa paghahanap"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Button na ihinto ang auto scroll"</string>
 </resources>

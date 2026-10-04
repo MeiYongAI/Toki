@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Halda framvindustikunni sýnilegri, líka í stuttum myndskeiðum"</string>
     <string name="feature_immersive" formatted="false">"Spilun á öllum skjánum"</string>
     <string name="feature_immersive_summary" formatted="false">"Gera neðri stikuna gegnsæja svo myndskeið fylli skjáinn"</string>
-    <string name="feature_autoplay" formatted="false">"Opna sjálfvirka flettingu"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Haltu inni á myndskeiði og virkjaðu sjálfvirka flettingu í valmyndinni"</string>
+    <string name="feature_autoplay" formatted="false">"Bætt sjálfvirkt skrun"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Opnar sjálfvirkt skrun í valmynd allra myndskeiða"</string>
     <string name="feature_status_bar" formatted="false">"Fela stöðustiku kerfis"</string>
     <string name="feature_media_section" formatted="false">"Niðurhal og aðgerðir"</string>
     <string name="feature_download" formatted="false">"Niðurhal án vatnsmerkis"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Endurræstu TikTok handvirkt til að virkja niðurstöðurnar."</string>
     <string name="host_scan_failure_hint" formatted="false">"Skoðaðu greiningu eiginleika í Toki."</string>
     <string name="host_scan_done" formatted="false">"Skilið"</string>
+    <string name="layout_title" formatted="false">"Útlit síðu"</string>
+    <string name="layout_summary" formatted="false">"Veldu hvaða hnappa á að fela"</string>
+    <string name="layout_hint" formatted="false">"Kveiktu á rofanum til að fela atriðið"</string>
+    <string name="layout_top" formatted="false">"Efsta stika"</string>
+    <string name="layout_bottom" formatted="false">"Neðsta stika"</string>
+    <string name="layout_side" formatted="false">"Síða myndskeiðs"</string>
+    <string name="layout_search" formatted="false">"Leit"</string>
+    <string name="layout_live" formatted="false">"Í BEINNI"</string>
+    <string name="layout_friends" formatted="false">"Vinir"</string>
+    <string name="layout_following" formatted="false">"Fylgir"</string>
+    <string name="layout_shop" formatted="false">"Verslun"</string>
+    <string name="layout_for_you" formatted="false">"Fyrir þig"</string>
+    <string name="layout_nearby" formatted="false">"Nálægt"</string>
+    <string name="layout_stem" formatted="false">"Vísindi"</string>
+    <string name="layout_series" formatted="false">"Þáttaraðir"</string>
+    <string name="layout_home" formatted="false">"Heim"</string>
+    <string name="layout_create" formatted="false">"Búa til"</string>
+    <string name="layout_inbox" formatted="false">"Innhólf"</string>
+    <string name="layout_profile" formatted="false">"Prófíll"</string>
+    <string name="layout_discover" formatted="false">"Uppgötva"</string>
+    <string name="layout_avatar" formatted="false">"Prófílmynd"</string>
+    <string name="layout_follow" formatted="false">"Fylgja-hnappur"</string>
+    <string name="layout_like" formatted="false">"Líkar við"</string>
+    <string name="layout_comment" formatted="false">"Athugasemdir"</string>
+    <string name="layout_favorite" formatted="false">"Eftirlæti"</string>
+    <string name="layout_share" formatted="false">"Deila"</string>
+    <string name="layout_music" formatted="false">"Tónlistardiskur"</string>
+    <string name="layout_explore" formatted="false">"Kanna"</string>
+    <string name="layout_author" formatted="false">"Upplýsingar um höfund"</string>
+    <string name="layout_description" formatted="false">"Lýsing"</string>
+    <string name="layout_music_title" formatted="false">"Heiti tónlistar"</string>
+    <string name="layout_tags" formatted="false">"Upplýsingamerkingar"</string>
+    <string name="layout_search_label" formatted="false">"Leitartillaga"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Stöðvunarhnappur sjálfvirkrar flettingar"</string>
 </resources>

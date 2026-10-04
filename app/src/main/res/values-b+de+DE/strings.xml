@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Zeigt den Fortschrittsbalken auch bei kurzen Videos dauerhaft an"</string>
     <string name="feature_immersive" formatted="false">"Vollbildwiedergabe"</string>
     <string name="feature_immersive_summary" formatted="false">"Macht die untere Leiste transparent, damit Videos den ganzen Bildschirm ausfüllen"</string>
-    <string name="feature_autoplay" formatted="false">"Automatisches Scrollen freischalten"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Drücke lange auf ein Video und aktiviere automatisches Scrollen im Menü"</string>
+    <string name="feature_autoplay" formatted="false">"Erweitertes Auto-Scrollen"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Schaltet Auto-Scrollen in allen Videomenüs frei"</string>
     <string name="feature_status_bar" formatted="false">"Systemstatusleiste ausblenden"</string>
     <string name="feature_media_section" formatted="false">"Downloads und Aktionen"</string>
     <string name="feature_download" formatted="false">"Downloads ohne Wasserzeichen"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Starte TikTok manuell neu, um die Ergebnisse anzuwenden."</string>
     <string name="host_scan_failure_hint" formatted="false">"Sieh dir die Funktionsdiagnose in Toki an."</string>
     <string name="host_scan_done" formatted="false">"Verstanden"</string>
+    <string name="layout_title" formatted="false">"Seitenlayout"</string>
+    <string name="layout_summary" formatted="false">"Wähle die auszublendenden Elemente"</string>
+    <string name="layout_hint" formatted="false">"Schalter aktivieren, um das Element auszublenden"</string>
+    <string name="layout_top" formatted="false">"Obere Leiste"</string>
+    <string name="layout_bottom" formatted="false">"Untere Leiste"</string>
+    <string name="layout_side" formatted="false">"Videoseite"</string>
+    <string name="layout_search" formatted="false">"Suche"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Freunde"</string>
+    <string name="layout_following" formatted="false">"Folge ich"</string>
+    <string name="layout_shop" formatted="false">"Shop"</string>
+    <string name="layout_for_you" formatted="false">"Für dich"</string>
+    <string name="layout_nearby" formatted="false">"In der Nähe"</string>
+    <string name="layout_stem" formatted="false">"Wissenschaft"</string>
+    <string name="layout_series" formatted="false">"Serien"</string>
+    <string name="layout_home" formatted="false">"Startseite"</string>
+    <string name="layout_create" formatted="false">"Erstellen"</string>
+    <string name="layout_inbox" formatted="false">"Posteingang"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Entdecken"</string>
+    <string name="layout_avatar" formatted="false">"Profilbild"</string>
+    <string name="layout_follow" formatted="false">"Folgen-Schaltfläche"</string>
+    <string name="layout_like" formatted="false">"Gefällt mir"</string>
+    <string name="layout_comment" formatted="false">"Kommentare"</string>
+    <string name="layout_favorite" formatted="false">"Favoriten"</string>
+    <string name="layout_share" formatted="false">"Teilen"</string>
+    <string name="layout_music" formatted="false">"Musikplatte"</string>
+    <string name="layout_explore" formatted="false">"Erkunden"</string>
+    <string name="layout_author" formatted="false">"Autoreninfo"</string>
+    <string name="layout_description" formatted="false">"Beschreibung"</string>
+    <string name="layout_music_title" formatted="false">"Musiktitel"</string>
+    <string name="layout_tags" formatted="false">"Info-Labels"</string>
+    <string name="layout_search_label" formatted="false">"Suchvorschlag"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Stopp-Taste für automatisches Scrollen"</string>
 </resources>

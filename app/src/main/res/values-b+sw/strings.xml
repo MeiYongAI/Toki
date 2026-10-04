@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Weka upau wa maendeleo uonekane hata kwenye video fupi"</string>
     <string name="feature_immersive" formatted="false">"Uchezaji wa skrini nzima"</string>
     <string name="feature_immersive_summary" formatted="false">"Fanya upau wa chini uwe wazi ili video ienee skrini nzima"</string>
-    <string name="feature_autoplay" formatted="false">"Fungua usogezaji otomatiki"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Bonyeza video kwa muda na uwashe usogezaji otomatiki kwenye menyu"</string>
+    <string name="feature_autoplay" formatted="false">"Usogezaji otomatiki ulioboreshwa"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Fungua usogezaji otomatiki kwenye menyu za video zote"</string>
     <string name="feature_status_bar" formatted="false">"Ficha upau wa hali wa mfumo"</string>
     <string name="feature_media_section" formatted="false">"Vipakuliwa na vitendo"</string>
     <string name="feature_download" formatted="false">"Vipakuliwa bila alama ya maji"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Anzisha upya TikTok wewe mwenyewe ili kutumia matokeo."</string>
     <string name="host_scan_failure_hint" formatted="false">"Angalia uchunguzi wa vipengele katika Toki."</string>
     <string name="host_scan_done" formatted="false">"Nimeelewa"</string>
+    <string name="layout_title" formatted="false">"Mpangilio wa ukurasa"</string>
+    <string name="layout_summary" formatted="false">"Chagua vidhibiti vya kuficha"</string>
+    <string name="layout_hint" formatted="false">"Washa swichi ili kuficha kipengee"</string>
+    <string name="layout_top" formatted="false">"Upau wa juu"</string>
+    <string name="layout_bottom" formatted="false">"Upau wa chini"</string>
+    <string name="layout_side" formatted="false">"Ukurasa wa video"</string>
+    <string name="layout_search" formatted="false">"Tafuta"</string>
+    <string name="layout_live" formatted="false">"MOJA KWA MOJA"</string>
+    <string name="layout_friends" formatted="false">"Marafiki"</string>
+    <string name="layout_following" formatted="false">"Unaowafuata"</string>
+    <string name="layout_shop" formatted="false">"Duka"</string>
+    <string name="layout_for_you" formatted="false">"Kwa ajili yako"</string>
+    <string name="layout_nearby" formatted="false">"Karibu"</string>
+    <string name="layout_stem" formatted="false">"Sayansi"</string>
+    <string name="layout_series" formatted="false">"Mfululizo"</string>
+    <string name="layout_home" formatted="false">"Mwanzo"</string>
+    <string name="layout_create" formatted="false">"Unda"</string>
+    <string name="layout_inbox" formatted="false">"Kikasha"</string>
+    <string name="layout_profile" formatted="false">"Wasifu"</string>
+    <string name="layout_discover" formatted="false">"Gundua"</string>
+    <string name="layout_avatar" formatted="false">"Picha ya wasifu"</string>
+    <string name="layout_follow" formatted="false">"Kitufe cha kufuata"</string>
+    <string name="layout_like" formatted="false">"Penda"</string>
+    <string name="layout_comment" formatted="false">"Maoni"</string>
+    <string name="layout_favorite" formatted="false">"Vipendwa"</string>
+    <string name="layout_share" formatted="false">"Shiriki"</string>
+    <string name="layout_music" formatted="false">"Diski ya muziki"</string>
+    <string name="layout_explore" formatted="false">"Vumbua"</string>
+    <string name="layout_author" formatted="false">"Maelezo ya mtunzi"</string>
+    <string name="layout_description" formatted="false">"Maelezo"</string>
+    <string name="layout_music_title" formatted="false">"Jina la muziki"</string>
+    <string name="layout_tags" formatted="false">"Lebo za taarifa"</string>
+    <string name="layout_search_label" formatted="false">"Pendekezo la utafutaji"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Kitufe cha kusimamisha usogezaji otomatiki"</string>
 </resources>

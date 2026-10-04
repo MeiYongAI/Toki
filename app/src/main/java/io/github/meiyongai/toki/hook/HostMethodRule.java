@@ -15,6 +15,7 @@ import org.jf.dexlib2.iface.instruction.TwoRegisterInstruction;
 import org.jf.dexlib2.iface.reference.FieldReference;
 import org.jf.dexlib2.iface.reference.MethodReference;
 import org.jf.dexlib2.iface.reference.StringReference;
+import org.jf.dexlib2.iface.reference.TypeReference;
 
 /** 方法行为契约：签名、调用方式、字段访问和角色关系，不依赖混淆成员名称。 */
 record HostMethodRule(String symbol, String signature, Set<String> anchors, String role, Pattern signaturePattern) {
@@ -38,7 +39,7 @@ record HostMethodRule(String symbol, String signature, Set<String> anchors, Stri
                     anchor.matches("field:L[^;]+;->[^:]+:.+") ||
                     anchor.matches("name:(?:<init>|[A-Za-z_$][A-Za-z0-9_$]*)") ||
                     anchor.matches("called-by:[A-Za-z][A-Za-z0-9]*") ||
-                    anchor.equals("static") || anchor.equals("instance")))
+                    anchor.matches("class:L[^;]+;") || anchor.matches("owner:L[^;]+;") || anchor.equals("static") || anchor.equals("instance")))
                 throw new IllegalArgumentException("无效方法行为条件：" + anchor);
             anchors.add(anchor);
         }
@@ -83,9 +84,12 @@ record HostMethodRule(String symbol, String signature, Set<String> anchors, Stri
         Set<String> found = new HashSet<>();
         found.add((method.getAccessFlags() & 8) != 0 ? "static" : "instance");
         found.add("name:" + method.getName());
+        found.add("owner:" + method.getDefiningClass());
         for (var instruction : body.getInstructions()) {
             if (!(instruction instanceof ReferenceInstruction reference)) continue;
             var target = reference.getReference();
+            if (instruction.getOpcode() == Opcode.CONST_CLASS && target instanceof TypeReference type)
+                found.add("class:" + type.getType());
             if (target instanceof StringReference string) found.add("string:" + string.getString());
             if (target instanceof MethodReference call && instruction.getOpcode().name().startsWith("INVOKE_"))
                 found.add("call:" + call);

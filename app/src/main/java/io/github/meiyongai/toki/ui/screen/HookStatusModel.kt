@@ -18,6 +18,7 @@ internal object HookStatusCatalog {
         HookFeatureDefinition("PlaybackSpeedHook", R.string.status_feature_speed),
         HookFeatureDefinition("ProgressBarHook", R.string.status_feature_progress),
         HookFeatureDefinition("AutoCleanModeHook", R.string.status_feature_clean),
+        HookFeatureDefinition("LayoutCleanupHook", R.string.layout_title),
         HookFeatureDefinition("ImmersiveFullScreenHook", R.string.status_feature_immersive),
         HookFeatureDefinition("AutoScrollHook", R.string.status_feature_scroll),
         HookFeatureDefinition("VideoDurationAlertHook", R.string.status_feature_duration),

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Menține bara de progres vizibilă, inclusiv la videoclipurile scurte"</string>
     <string name="feature_immersive" formatted="false">"Redare pe tot ecranul"</string>
     <string name="feature_immersive_summary" formatted="false">"Fă bara de jos transparentă pentru videoclipuri pe tot ecranul"</string>
-    <string name="feature_autoplay" formatted="false">"Deblochează derularea automată"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Apasă lung pe un videoclip și activează derularea automată din meniu"</string>
+    <string name="feature_autoplay" formatted="false">"Derulare automată extinsă"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Deblochează derularea automată în meniul oricărui videoclip"</string>
     <string name="feature_status_bar" formatted="false">"Ascunde bara de stare a sistemului"</string>
     <string name="feature_media_section" formatted="false">"Descărcări și instrumente"</string>
     <string name="feature_download" formatted="false">"Descărcări fără filigran"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Repornește TikTok manual pentru a aplica rezultatele."</string>
     <string name="host_scan_failure_hint" formatted="false">"Vezi diagnosticarea funcțiilor în Toki."</string>
     <string name="host_scan_done" formatted="false">"Am înțeles"</string>
+    <string name="layout_title" formatted="false">"Aspectul paginii"</string>
+    <string name="layout_summary" formatted="false">"Alege comenzile de ascuns"</string>
+    <string name="layout_hint" formatted="false">"Activează comutatorul pentru a ascunde elementul"</string>
+    <string name="layout_top" formatted="false">"Bara de sus"</string>
+    <string name="layout_bottom" formatted="false">"Bara de jos"</string>
+    <string name="layout_side" formatted="false">"Pagina videoclipului"</string>
+    <string name="layout_search" formatted="false">"Căutare"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Prieteni"</string>
+    <string name="layout_following" formatted="false">"Urmărești"</string>
+    <string name="layout_shop" formatted="false">"Magazin"</string>
+    <string name="layout_for_you" formatted="false">"Pentru tine"</string>
+    <string name="layout_nearby" formatted="false">"În apropiere"</string>
+    <string name="layout_stem" formatted="false">"Știință"</string>
+    <string name="layout_series" formatted="false">"Seriale"</string>
+    <string name="layout_home" formatted="false">"Acasă"</string>
+    <string name="layout_create" formatted="false">"Creează"</string>
+    <string name="layout_inbox" formatted="false">"Mesaje primite"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Descoperă"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Buton de urmărire"</string>
+    <string name="layout_like" formatted="false">"Apreciere"</string>
+    <string name="layout_comment" formatted="false">"Comentarii"</string>
+    <string name="layout_favorite" formatted="false">"Favorite"</string>
+    <string name="layout_share" formatted="false">"Distribuie"</string>
+    <string name="layout_music" formatted="false">"Disc muzical"</string>
+    <string name="layout_explore" formatted="false">"Explorează"</string>
+    <string name="layout_author" formatted="false">"Informații despre autor"</string>
+    <string name="layout_description" formatted="false">"Descriere"</string>
+    <string name="layout_music_title" formatted="false">"Titlul muzicii"</string>
+    <string name="layout_tags" formatted="false">"Etichete informative"</string>
+    <string name="layout_search_label" formatted="false">"Sugestie de căutare"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Buton de oprire a derulării automate"</string>
 </resources>

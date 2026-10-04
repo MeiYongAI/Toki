@@ -20,6 +20,30 @@ import static org.junit.Assert.*;
 
 /** 使用真实 DEX 和发布规则验证改名容忍与错误候选拒绝。 */
 public class HostMethodRuleTest {
+    /** 相同展示行为的临时组件不能混入正式组件候选，成员改名不影响定位。无参数、无返回。Callers: JUnit。 */
+    @Test public void ownerAnchorSeparatesEquivalentComponents() {
+        var rule = HostMethodRule.parse(new String[]{"BUTTON", "method-v1", "()V", "owner:Lhost/Button;", "show"});
+        for (String owner : List.of("Lhost/Button;", "Lhost/ButtonTemp;")) {
+            var method = new ImmutableMethod(owner, "renamed", List.of(), "V", 1, Set.of(), Set.of(),
+                    new ImmutableMethodImplementation(1, List.of(new ImmutableInstruction10x(Opcode.RETURN_VOID)), List.of(), List.of()));
+            assertEquals(owner.equals("Lhost/Button;"), rule.matches(method));
+            assertEquals(rule.matches(method), !new HostMethodRule.Index(List.of(rule)).match(method).isEmpty());
+        }
+    }
+    /** 类常量契约必须精确匹配类型及指令，不能将类型转换误认成组件声明。无参数、无返回。Callers: JUnit。 */
+    @Test public void classAnchorRequiresExactConstClassInstruction() {
+        var rule = HostMethodRule.parse(new String[]{"PANEL", "method-v1", "()V", "class:Lhost/Controller;", "declaration"});
+        for (var opcode : List.of(Opcode.CONST_CLASS, Opcode.CHECK_CAST)) {
+            for (String type : List.of("Lhost/Controller;", "Lhost/Other;")) {
+                var method = new ImmutableMethod("LX/Owner;", "renamed", List.of(), "V", 1, Set.of(), Set.of(),
+                        new ImmutableMethodImplementation(2, List.of(
+                                new ImmutableInstruction21c(opcode, 0, new ImmutableTypeReference(type)),
+                                new ImmutableInstruction10x(Opcode.RETURN_VOID)), List.of(), List.of()));
+                assertEquals(opcode == Opcode.CONST_CLASS && type.equals("Lhost/Controller;"), rule.matches(method));
+                assertEquals(rule.matches(method), !new HostMethodRule.Index(List.of(rule)).match(method).isEmpty());
+            }
+        }
+    }
     /** 索引必须保留通配与精确规则的全部匹配角色，并严格区分构造器和静态方法。无参数、无返回。Callers: JUnit。 */
     @Test public void indexedRulesPreserveAllMatchingRolesAndInvocationKinds() {
         var rules = List.of(

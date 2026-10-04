@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"مختصر ویڈیوز میں بھی نیچے پیش رفت کی پٹی دکھائیں"</string>
     <string name="feature_immersive" formatted="false">"پوری اسکرین پر پلے بیک"</string>
     <string name="feature_immersive_summary" formatted="false">"نچلی پٹی شفاف کرکے ویڈیو پوری اسکرین پر دکھائیں"</string>
-    <string name="feature_autoplay" formatted="false">"خودکار اسکرول کھولیں"</string>
-    <string name="feature_autoplay_summary" formatted="false">"ویڈیو کو دبا کر رکھیں اور مینو سے خودکار اسکرول فعال کریں"</string>
+    <string name="feature_autoplay" formatted="false">"بہتر خودکار اسکرول"</string>
+    <string name="feature_autoplay_summary" formatted="false">"ہر ویڈیو کے مینو میں خودکار اسکرول کھولیں"</string>
     <string name="feature_status_bar" formatted="false">"سسٹم کی اسٹیٹس بار چھپائیں"</string>
     <string name="feature_media_section" formatted="false">"ڈاؤن لوڈ اور ٹولز"</string>
     <string name="feature_download" formatted="false">"بغیر واٹرمارک ڈاؤن لوڈ"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"نتائج لاگو کرنے کے لیے TikTok کو دستی طور پر دوبارہ شروع کریں۔"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki میں خصوصیات کی تشخیص دیکھیں۔"</string>
     <string name="host_scan_done" formatted="false">"سمجھ گیا"</string>
+    <string name="layout_title" formatted="false">"صفحے کی ترتیب"</string>
+    <string name="layout_summary" formatted="false">"چھپانے والے بٹن منتخب کریں"</string>
+    <string name="layout_hint" formatted="false">"کسی آئٹم کو چھپانے کے لیے سوئچ آن کریں"</string>
+    <string name="layout_top" formatted="false">"اوپر کی بار"</string>
+    <string name="layout_bottom" formatted="false">"نیچے کی بار"</string>
+    <string name="layout_side" formatted="false">"ویڈیو کا صفحہ"</string>
+    <string name="layout_search" formatted="false">"تلاش"</string>
+    <string name="layout_live" formatted="false">"لائیو"</string>
+    <string name="layout_friends" formatted="false">"دوست"</string>
+    <string name="layout_following" formatted="false">"فالو کردہ"</string>
+    <string name="layout_shop" formatted="false">"دکان"</string>
+    <string name="layout_for_you" formatted="false">"آپ کے لیے"</string>
+    <string name="layout_nearby" formatted="false">"قریبی"</string>
+    <string name="layout_stem" formatted="false">"سائنس"</string>
+    <string name="layout_series" formatted="false">"سیریز"</string>
+    <string name="layout_home" formatted="false">"ہوم"</string>
+    <string name="layout_create" formatted="false">"بنائیں"</string>
+    <string name="layout_inbox" formatted="false">"ان باکس"</string>
+    <string name="layout_profile" formatted="false">"پروفائل"</string>
+    <string name="layout_discover" formatted="false">"دریافت"</string>
+    <string name="layout_avatar" formatted="false">"پروفائل تصویر"</string>
+    <string name="layout_follow" formatted="false">"فالو بٹن"</string>
+    <string name="layout_like" formatted="false">"لائک"</string>
+    <string name="layout_comment" formatted="false">"تبصرے"</string>
+    <string name="layout_favorite" formatted="false">"پسندیدہ"</string>
+    <string name="layout_share" formatted="false">"شیئر"</string>
+    <string name="layout_music" formatted="false">"موسیقی کی ڈسک"</string>
+    <string name="layout_explore" formatted="false">"کھوجیں"</string>
+    <string name="layout_author" formatted="false">"تخلیق کار کی معلومات"</string>
+    <string name="layout_description" formatted="false">"تفصیل"</string>
+    <string name="layout_music_title" formatted="false">"موسیقی کا عنوان"</string>
+    <string name="layout_tags" formatted="false">"معلوماتی لیبل"</string>
+    <string name="layout_search_label" formatted="false">"تلاش کی تجویز"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"آٹو اسکرول روکنے کا بٹن"</string>
 </resources>

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Manter a barra de progresso visível, mesmo em vídeos curtos"</string>
     <string name="feature_immersive" formatted="false">"Reprodução em tela cheia"</string>
     <string name="feature_immersive_summary" formatted="false">"Tornar a barra inferior transparente para vídeos em toda a tela"</string>
-    <string name="feature_autoplay" formatted="false">"Desbloquear rolagem automática"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Mantenha o vídeo pressionado e ative a rolagem automática no menu"</string>
+    <string name="feature_autoplay" formatted="false">"Rolagem automática aprimorada"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Libera a rolagem automática no menu de todos os vídeos"</string>
     <string name="feature_status_bar" formatted="false">"Ocultar barra de status do sistema"</string>
     <string name="feature_media_section" formatted="false">"Downloads e ferramentas"</string>
     <string name="feature_download" formatted="false">"Baixar sem marca-d\'água"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Reinicie o TikTok manualmente para aplicar os resultados."</string>
     <string name="host_scan_failure_hint" formatted="false">"Veja o diagnóstico dos recursos no Toki."</string>
     <string name="host_scan_done" formatted="false">"Entendi"</string>
+    <string name="layout_title" formatted="false">"Layout da página"</string>
+    <string name="layout_summary" formatted="false">"Escolha quais controles ocultar"</string>
+    <string name="layout_hint" formatted="false">"Ative a opção para ocultar o item"</string>
+    <string name="layout_top" formatted="false">"Barra superior"</string>
+    <string name="layout_bottom" formatted="false">"Barra inferior"</string>
+    <string name="layout_side" formatted="false">"Página do vídeo"</string>
+    <string name="layout_search" formatted="false">"Pesquisar"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Amigos"</string>
+    <string name="layout_following" formatted="false">"Seguindo"</string>
+    <string name="layout_shop" formatted="false">"Loja"</string>
+    <string name="layout_for_you" formatted="false">"Para você"</string>
+    <string name="layout_nearby" formatted="false">"Por perto"</string>
+    <string name="layout_stem" formatted="false">"Ciência"</string>
+    <string name="layout_series" formatted="false">"Séries"</string>
+    <string name="layout_home" formatted="false">"Início"</string>
+    <string name="layout_create" formatted="false">"Criar"</string>
+    <string name="layout_inbox" formatted="false">"Caixa de entrada"</string>
+    <string name="layout_profile" formatted="false">"Perfil"</string>
+    <string name="layout_discover" formatted="false">"Descobrir"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Botão Seguir"</string>
+    <string name="layout_like" formatted="false">"Curtir"</string>
+    <string name="layout_comment" formatted="false">"Comentários"</string>
+    <string name="layout_favorite" formatted="false">"Favoritos"</string>
+    <string name="layout_share" formatted="false">"Compartilhar"</string>
+    <string name="layout_music" formatted="false">"Disco de música"</string>
+    <string name="layout_explore" formatted="false">"Explorar"</string>
+    <string name="layout_author" formatted="false">"Informações do autor"</string>
+    <string name="layout_description" formatted="false">"Descrição"</string>
+    <string name="layout_music_title" formatted="false">"Título da música"</string>
+    <string name="layout_tags" formatted="false">"Etiquetas informativas"</string>
+    <string name="layout_search_label" formatted="false">"Sugestão de pesquisa"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Botão para parar a rolagem automática"</string>
 </resources>

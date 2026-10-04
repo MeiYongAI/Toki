@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Qısa videolarda da gedişat çubuğunu görünən saxlayır"</string>
     <string name="feature_immersive" formatted="false">"Tam ekran oxutma"</string>
     <string name="feature_immersive_summary" formatted="false">"Videonun bütün ekranı tutması üçün alt çubuğu şəffaf edir"</string>
-    <string name="feature_autoplay" formatted="false">"Avtomatik sürüşdürməni açın"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Videoya uzun basın və menyudan avtomatik sürüşdürməni aktiv edin"</string>
+    <string name="feature_autoplay" formatted="false">"Təkmil avtomatik sürüşdürmə"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Bütün video menyularında avtomatik sürüşdürməni açır"</string>
     <string name="feature_status_bar" formatted="false">"Sistemin vəziyyət çubuğunu gizlədin"</string>
     <string name="feature_media_section" formatted="false">"Endirmələr və əməliyyatlar"</string>
     <string name="feature_download" formatted="false">"Su nişansız endirmə"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Nəticələri tətbiq etmək üçün TikTok-u əl ilə yenidən başladın."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki-də funksiya diaqnostikasına baxın."</string>
     <string name="host_scan_done" formatted="false">"Aydındır"</string>
+    <string name="layout_title" formatted="false">"Səhifə görünüşü"</string>
+    <string name="layout_summary" formatted="false">"Gizlədiləcək elementləri seçin"</string>
+    <string name="layout_hint" formatted="false">"Elementi gizlətmək üçün açarı aktiv edin"</string>
+    <string name="layout_top" formatted="false">"Üst panel"</string>
+    <string name="layout_bottom" formatted="false">"Alt panel"</string>
+    <string name="layout_side" formatted="false">"Video səhifəsi"</string>
+    <string name="layout_search" formatted="false">"Axtarış"</string>
+    <string name="layout_live" formatted="false">"Canlı yayım"</string>
+    <string name="layout_friends" formatted="false">"Dostlar"</string>
+    <string name="layout_following" formatted="false">"İzlənilənlər"</string>
+    <string name="layout_shop" formatted="false">"Mağaza"</string>
+    <string name="layout_for_you" formatted="false">"Sizin üçün"</string>
+    <string name="layout_nearby" formatted="false">"Yaxınlıqda"</string>
+    <string name="layout_stem" formatted="false">"Elm"</string>
+    <string name="layout_series" formatted="false">"Seriallar"</string>
+    <string name="layout_home" formatted="false">"Əsas səhifə"</string>
+    <string name="layout_create" formatted="false">"Yarat"</string>
+    <string name="layout_inbox" formatted="false">"Gələnlər"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Kəşf et"</string>
+    <string name="layout_avatar" formatted="false">"Profil şəkli"</string>
+    <string name="layout_follow" formatted="false">"İzlə düyməsi"</string>
+    <string name="layout_like" formatted="false">"Bəyən"</string>
+    <string name="layout_comment" formatted="false">"Şərhlər"</string>
+    <string name="layout_favorite" formatted="false">"Seçilmişlər"</string>
+    <string name="layout_share" formatted="false">"Paylaş"</string>
+    <string name="layout_music" formatted="false">"Musiqi diski"</string>
+    <string name="layout_explore" formatted="false">"Araşdır"</string>
+    <string name="layout_author" formatted="false">"Müəllif məlumatı"</string>
+    <string name="layout_description" formatted="false">"Təsvir"</string>
+    <string name="layout_music_title" formatted="false">"Musiqi adı"</string>
+    <string name="layout_tags" formatted="false">"Məlumat etiketləri"</string>
+    <string name="layout_search_label" formatted="false">"Axtarış təklifi"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Avtomatik sürüşdürməni dayandırma düyməsi"</string>
 </resources>

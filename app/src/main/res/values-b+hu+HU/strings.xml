@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"A folyamatjelző rövid videóknál is látható marad"</string>
     <string name="feature_immersive" formatted="false">"Teljes képernyős lejátszás"</string>
     <string name="feature_immersive_summary" formatted="false">"Átlátszó alsó sáv, a teljes képernyőt kitöltő videóval"</string>
-    <string name="feature_autoplay" formatted="false">"Automatikus görgetés feloldása"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Tartsd hosszan lenyomva a videót, és kapcsold be az automatikus görgetést a menüben"</string>
+    <string name="feature_autoplay" formatted="false">"Bővített automatikus görgetés"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Feloldja az automatikus görgetést minden videó menüjében"</string>
     <string name="feature_status_bar" formatted="false">"Rendszerállapotsáv elrejtése"</string>
     <string name="feature_media_section" formatted="false">"Letöltés és műveletek"</string>
     <string name="feature_download" formatted="false">"Letöltés vízjel nélkül"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Az eredmények alkalmazásához indítsd újra kézzel a TikTok alkalmazást."</string>
     <string name="host_scan_failure_hint" formatted="false">"Nézd meg a funkciók diagnosztikáját a Toki alkalmazásban."</string>
     <string name="host_scan_done" formatted="false">"Értem"</string>
+    <string name="layout_title" formatted="false">"Oldalelrendezés"</string>
+    <string name="layout_summary" formatted="false">"Válaszd ki az elrejtendő elemeket"</string>
+    <string name="layout_hint" formatted="false">"Kapcsold be az elem elrejtéséhez"</string>
+    <string name="layout_top" formatted="false">"Felső sáv"</string>
+    <string name="layout_bottom" formatted="false">"Alsó sáv"</string>
+    <string name="layout_side" formatted="false">"Videóoldal"</string>
+    <string name="layout_search" formatted="false">"Keresés"</string>
+    <string name="layout_live" formatted="false">"ÉLŐ"</string>
+    <string name="layout_friends" formatted="false">"Ismerősök"</string>
+    <string name="layout_following" formatted="false">"Követések"</string>
+    <string name="layout_shop" formatted="false">"Bolt"</string>
+    <string name="layout_for_you" formatted="false">"Neked"</string>
+    <string name="layout_nearby" formatted="false">"A közelben"</string>
+    <string name="layout_stem" formatted="false">"Tudomány"</string>
+    <string name="layout_series" formatted="false">"Sorozatok"</string>
+    <string name="layout_home" formatted="false">"Kezdőlap"</string>
+    <string name="layout_create" formatted="false">"Létrehozás"</string>
+    <string name="layout_inbox" formatted="false">"Bejövő üzenetek"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Felfedezés"</string>
+    <string name="layout_avatar" formatted="false">"Profilkép"</string>
+    <string name="layout_follow" formatted="false">"Követés gomb"</string>
+    <string name="layout_like" formatted="false">"Kedvelés"</string>
+    <string name="layout_comment" formatted="false">"Hozzászólások"</string>
+    <string name="layout_favorite" formatted="false">"Kedvencek"</string>
+    <string name="layout_share" formatted="false">"Megosztás"</string>
+    <string name="layout_music" formatted="false">"Zenelemez"</string>
+    <string name="layout_explore" formatted="false">"Böngészés"</string>
+    <string name="layout_author" formatted="false">"Szerző adatai"</string>
+    <string name="layout_description" formatted="false">"Leírás"</string>
+    <string name="layout_music_title" formatted="false">"Zene címe"</string>
+    <string name="layout_tags" formatted="false">"Információs címkék"</string>
+    <string name="layout_search_label" formatted="false">"Keresési javaslat"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Automatikus görgetés leállítógombja"</string>
 </resources>

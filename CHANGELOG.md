@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.0.3 — 2026-10-04
+
+### English
+
+- Added layout cleanup with separate top navigation, bottom navigation and video-page controls, including the stop auto-scroll button.
+- Enhanced native auto scroll across video pages, including profile and Following feeds.
+- Reuse valid method-discovery results after module updates; only new or changed rules are scanned when TikTok is unchanged.
+- Fixed missing seek-time numbers and visual search tags in automatic clean mode.
+- Updated translations and kept module settings accessible through LSPosed when the launcher icon is hidden.
+
+Update directly from **1.0.1 / 1.0.2**; the signing key is unchanged. Restart TikTok after updating and again if method discovery runs. Official TikTok clients only.
+
+### 中文
+
+- 新增页面布局净化，顶栏、底栏、视频页面独立设置，支持隐藏停止连播按钮。
+- 增强原生自动连播，支持作者主页、关注页等视频页面。
+- 优化方法缓存复用：TikTok 未更新时，模块更新仅补查新增或变化的规则。
+- 修复自动净屏时拖动时间数字不显示、暂停后“搜同款”标签不出现的问题。
+- 完善多语言文案，隐藏桌面图标后仍可从 LSPosed 打开模块设置。
+
+可直接覆盖升级 **1.0.1 / 1.0.2**，沿用原签名。更新后重启 TikTok，如触发方法查找，完成后再次重启。目前仅支持官方版 TikTok。
+
 ## 1.0.2 — 2026-10-04
 
 ### English

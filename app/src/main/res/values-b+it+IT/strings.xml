@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Mantieni visibile la barra di avanzamento anche nei video brevi"</string>
     <string name="feature_immersive" formatted="false">"Riproduzione a schermo intero"</string>
     <string name="feature_immersive_summary" formatted="false">"Rendi trasparente la barra inferiore per video a tutto schermo"</string>
-    <string name="feature_autoplay" formatted="false">"Sblocca scorrimento automatico"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Tieni premuto un video e attiva lo scorrimento automatico dal menu"</string>
+    <string name="feature_autoplay" formatted="false">"Scorrimento automatico avanzato"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Sblocca lo scorrimento automatico nel menu di ogni video"</string>
     <string name="feature_status_bar" formatted="false">"Nascondi barra di stato del sistema"</string>
     <string name="feature_media_section" formatted="false">"Download e azioni"</string>
     <string name="feature_download" formatted="false">"Download senza filigrana"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Riavvia TikTok manualmente per applicare i risultati."</string>
     <string name="host_scan_failure_hint" formatted="false">"Consulta la diagnostica delle funzionalità in Toki."</string>
     <string name="host_scan_done" formatted="false">"Ho capito"</string>
+    <string name="layout_title" formatted="false">"Layout della pagina"</string>
+    <string name="layout_summary" formatted="false">"Scegli quali controlli nascondere"</string>
+    <string name="layout_hint" formatted="false">"Attiva l’interruttore per nascondere l’elemento"</string>
+    <string name="layout_top" formatted="false">"Barra superiore"</string>
+    <string name="layout_bottom" formatted="false">"Barra inferiore"</string>
+    <string name="layout_side" formatted="false">"Pagina video"</string>
+    <string name="layout_search" formatted="false">"Cerca"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Amici"</string>
+    <string name="layout_following" formatted="false">"Seguiti"</string>
+    <string name="layout_shop" formatted="false">"Negozio"</string>
+    <string name="layout_for_you" formatted="false">"Per te"</string>
+    <string name="layout_nearby" formatted="false">"Nelle vicinanze"</string>
+    <string name="layout_stem" formatted="false">"Scienza"</string>
+    <string name="layout_series" formatted="false">"Serie"</string>
+    <string name="layout_home" formatted="false">"Home"</string>
+    <string name="layout_create" formatted="false">"Crea"</string>
+    <string name="layout_inbox" formatted="false">"Posta in arrivo"</string>
+    <string name="layout_profile" formatted="false">"Profilo"</string>
+    <string name="layout_discover" formatted="false">"Scopri"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Pulsante Segui"</string>
+    <string name="layout_like" formatted="false">"Mi piace"</string>
+    <string name="layout_comment" formatted="false">"Commenti"</string>
+    <string name="layout_favorite" formatted="false">"Preferiti"</string>
+    <string name="layout_share" formatted="false">"Condividi"</string>
+    <string name="layout_music" formatted="false">"Disco musicale"</string>
+    <string name="layout_explore" formatted="false">"Esplora"</string>
+    <string name="layout_author" formatted="false">"Info sull’autore"</string>
+    <string name="layout_description" formatted="false">"Descrizione"</string>
+    <string name="layout_music_title" formatted="false">"Titolo della musica"</string>
+    <string name="layout_tags" formatted="false">"Etichette informative"</string>
+    <string name="layout_search_label" formatted="false">"Suggerimento di ricerca"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Pulsante di arresto dello scorrimento automatico"</string>
 </resources>

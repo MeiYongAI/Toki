@@ -3,12 +3,14 @@ package io.github.meiyongai.toki.hook
 import android.graphics.Canvas
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import io.github.meiyongai.toki.provider.ConfigClient
 import io.github.libxposed.api.XposedModule
 import java.lang.ref.WeakReference
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
+import java.util.WeakHashMap
 
 /** 进度条常显与净屏联动；播放模式按配置切换，暂停和拖拽保留宿主模式。 */
 object ProgressBarHook {
@@ -18,6 +20,15 @@ object ProgressBarHook {
     private var activeSeekBar: WeakReference<Any>? = null
     private var seekBarShowTypeMethod: Method? = null
     @Volatile private var cleanSeekBarMode = 4
+    private val interactionViews = WeakHashMap<View, Unit>()
+
+    /**
+     * 识别由原生进度控制器管理的时间提示容器，保留其显示与收起流程。
+     * @param view 页面布局中的候选视图。
+     * @return 是否为已登记的进度交互容器。
+     * Callers: AutoCleanModeHook.init 的页面保留规则。
+     */
+    internal fun ownsInteractionView(view: View): Boolean = interactionViews.containsKey(view)
 
     /**
      * 从有效配置读取播放态显示策略。
@@ -46,6 +57,8 @@ object ProgressBarHook {
     internal class ViewContract(val seekBar: Class<*>, controller: Class<*>, val mask: Class<*>,
         showTypeName: String, setShowTypeName: String) {
         val field: Field
+        val duration: Field
+        val constructors = controller.declaredConstructors
         val decide: Method
         val apply: Method
         val draw: Method
@@ -55,6 +68,8 @@ object ProgressBarHook {
                 "进度条或遮罩不是 View 类型"
             }
             field = controller.declaredFields.single { it.type == seekBar && !Modifier.isStatic(it.modifiers) }
+                .apply { isAccessible = true }
+            duration = controller.declaredFields.single { it.type == ViewGroup::class.java && !Modifier.isStatic(it.modifiers) }
                 .apply { isAccessible = true }
             decide = controller.getDeclaredMethod(showTypeName, Boolean::class.javaPrimitiveType)
                 .apply { isAccessible = true }
@@ -96,8 +111,16 @@ object ProgressBarHook {
             activeSeekBar = null
             seekBarShowTypeMethod = null
             cleanSeekBarMode = 4
+            interactionViews.clear()
         }
         seekBarShowTypeMethod = contract.apply
+        for (constructor in contract.constructors) {
+            module.trackHook("ProgressBarHook", constructor, requiresConfiguration = false).intercept { chain ->
+                val result = chain.proceed()
+                interactionViews[checkNotNull(contract.duration.get(chain.thisObject) as? View)] = Unit
+                result
+            }
+        }
         module.trackHook("ProgressBarHook", getter).intercept { chain ->
             val original = chain.proceed()
             if (!ConfigClient.getBoolean(KEY_ALWAYS_SHOW_PROGRESS_BAR)) original

@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Vrstica napredka naj bo vidna tudi pri kratkih videih"</string>
     <string name="feature_immersive" formatted="false">"Celozaslonsko predvajanje"</string>
     <string name="feature_immersive_summary" formatted="false">"Prosojna spodnja vrstica omogoča video čez celoten zaslon"</string>
-    <string name="feature_autoplay" formatted="false">"Odkleni samodejno pomikanje"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Pridržite video in v meniju vklopite samodejno pomikanje"</string>
+    <string name="feature_autoplay" formatted="false">"Izboljšano samodejno pomikanje"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Odklene samodejno pomikanje v meniju vseh videov"</string>
     <string name="feature_status_bar" formatted="false">"Skrij sistemsko vrstico stanja"</string>
     <string name="feature_media_section" formatted="false">"Prenosi in orodja"</string>
     <string name="feature_download" formatted="false">"Prenosi brez vodnega žiga"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Ročno znova zaženi TikTok, da uveljaviš rezultate."</string>
     <string name="host_scan_failure_hint" formatted="false">"Oglej si diagnostiko funkcij v Toki."</string>
     <string name="host_scan_done" formatted="false">"Razumem"</string>
+    <string name="layout_title" formatted="false">"Postavitev strani"</string>
+    <string name="layout_summary" formatted="false">"Izberite gumbe, ki jih želite skriti"</string>
+    <string name="layout_hint" formatted="false">"Vklopite stikalo, da skrijete element"</string>
+    <string name="layout_top" formatted="false">"Zgornja vrstica"</string>
+    <string name="layout_bottom" formatted="false">"Spodnja vrstica"</string>
+    <string name="layout_side" formatted="false">"Stran videa"</string>
+    <string name="layout_search" formatted="false">"Iskanje"</string>
+    <string name="layout_live" formatted="false">"V ŽIVO"</string>
+    <string name="layout_friends" formatted="false">"Prijatelji"</string>
+    <string name="layout_following" formatted="false">"Sledim"</string>
+    <string name="layout_shop" formatted="false">"Trgovina"</string>
+    <string name="layout_for_you" formatted="false">"Zate"</string>
+    <string name="layout_nearby" formatted="false">"V bližini"</string>
+    <string name="layout_stem" formatted="false">"Znanost"</string>
+    <string name="layout_series" formatted="false">"Serije"</string>
+    <string name="layout_home" formatted="false">"Domov"</string>
+    <string name="layout_create" formatted="false">"Ustvari"</string>
+    <string name="layout_inbox" formatted="false">"Prejeto"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Odkrij"</string>
+    <string name="layout_avatar" formatted="false">"Profilna slika"</string>
+    <string name="layout_follow" formatted="false">"Gumb za sledenje"</string>
+    <string name="layout_like" formatted="false">"Všeček"</string>
+    <string name="layout_comment" formatted="false">"Komentarji"</string>
+    <string name="layout_favorite" formatted="false">"Priljubljeno"</string>
+    <string name="layout_share" formatted="false">"Deli"</string>
+    <string name="layout_music" formatted="false">"Glasbena plošča"</string>
+    <string name="layout_explore" formatted="false">"Razišči"</string>
+    <string name="layout_author" formatted="false">"Podatki o avtorju"</string>
+    <string name="layout_description" formatted="false">"Opis"</string>
+    <string name="layout_music_title" formatted="false">"Naslov glasbe"</string>
+    <string name="layout_tags" formatted="false">"Informacijske oznake"</string>
+    <string name="layout_search_label" formatted="false">"Predlog iskanja"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Gumb za ustavitev samodejnega pomikanja"</string>
 </resources>

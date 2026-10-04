@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"短片也持續顯示底部播放進度列"</string>
     <string name="feature_immersive" formatted="false">"全螢幕沉浸播放"</string>
     <string name="feature_immersive_summary" formatted="false">"底部導覽列透明懸浮，影片延伸至全螢幕"</string>
-    <string name="feature_autoplay" formatted="false">"解鎖自動連播"</string>
-    <string name="feature_autoplay_summary" formatted="false">"長按影片開啟選單，即可啟用自動連播"</string>
+    <string name="feature_autoplay" formatted="false">"自動連播增強"</string>
+    <string name="feature_autoplay_summary" formatted="false">"解鎖所有影片頁面的長按連播選項"</string>
     <string name="feature_status_bar" formatted="false">"隱藏系統狀態列"</string>
     <string name="feature_media_section" formatted="false">"內容下載與操作增強"</string>
     <string name="feature_download" formatted="false">"強制無浮水印下載"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"請手動重新啟動 TikTok 以套用結果。"</string>
     <string name="host_scan_failure_hint" formatted="false">"請在 Toki 查看功能診斷。"</string>
     <string name="host_scan_done" formatted="false">"知道了"</string>
+    <string name="layout_title" formatted="false">"頁面佈局淨化"</string>
+    <string name="layout_summary" formatted="false">"分類選擇要隱藏的控制項"</string>
+    <string name="layout_hint" formatted="false">"開啟開關即可隱藏對應項目"</string>
+    <string name="layout_top" formatted="false">"頂部導覽"</string>
+    <string name="layout_bottom" formatted="false">"底部導覽"</string>
+    <string name="layout_side" formatted="false">"影片頁面"</string>
+    <string name="layout_search" formatted="false">"搜尋入口"</string>
+    <string name="layout_live" formatted="false">"直播入口"</string>
+    <string name="layout_friends" formatted="false">"好友"</string>
+    <string name="layout_following" formatted="false">"已關注"</string>
+    <string name="layout_shop" formatted="false">"商城"</string>
+    <string name="layout_for_you" formatted="false">"推薦"</string>
+    <string name="layout_nearby" formatted="false">"附近"</string>
+    <string name="layout_stem" formatted="false">"科普"</string>
+    <string name="layout_series" formatted="false">"短劇"</string>
+    <string name="layout_home" formatted="false">"首頁"</string>
+    <string name="layout_create" formatted="false">"發佈"</string>
+    <string name="layout_inbox" formatted="false">"收件匣"</string>
+    <string name="layout_profile" formatted="false">"個人檔案"</string>
+    <string name="layout_discover" formatted="false">"探索"</string>
+    <string name="layout_avatar" formatted="false">"作者頭像"</string>
+    <string name="layout_follow" formatted="false">"頭像關注按鈕"</string>
+    <string name="layout_like" formatted="false">"按讚"</string>
+    <string name="layout_comment" formatted="false">"留言"</string>
+    <string name="layout_favorite" formatted="false">"收藏"</string>
+    <string name="layout_share" formatted="false">"分享"</string>
+    <string name="layout_music" formatted="false">"音樂唱片"</string>
+    <string name="layout_explore" formatted="false">"社群"</string>
+    <string name="layout_author" formatted="false">"作者資訊"</string>
+    <string name="layout_description" formatted="false">"文案內容"</string>
+    <string name="layout_music_title" formatted="false">"音樂資訊"</string>
+    <string name="layout_tags" formatted="false">"資訊標籤"</string>
+    <string name="layout_search_label" formatted="false">"搜尋標籤"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"停止自動播放按鈕"</string>
 </resources>

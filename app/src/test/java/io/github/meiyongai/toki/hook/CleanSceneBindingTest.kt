@@ -84,6 +84,26 @@ class CleanSceneBindingTest {
         binding.close()
     }
 
+    /** 数字提示与进度条分开挂载时仍交由原生拖动流程管理，不强制显示数字。@return Unit。Callers: JUnit。 */
+    @Test fun separateDurationContainerKeepsNativeDragVisibility() {
+        val root = frame()
+        val content = frame().also(root::addView)
+        val controls = frame().also(root::addView)
+        val duration = frame().apply { visibility = View.GONE }.also(root::addView)
+        val binding = CleanSceneBinding(root, content.id, gate, CleanViewGate.Owner(true),
+            preserve = { CleanSceneBinding.containsView(it) { candidate -> candidate === duration } }) { gate.refresh() }
+        binding.onPreDraw()
+        assertEquals(View.GONE, duration.visibility)
+        duration.visibility = View.VISIBLE
+        binding.onPreDraw()
+        assertEquals(View.VISIBLE, duration.visibility)
+        assertEquals(View.INVISIBLE, controls.visibility)
+        duration.visibility = View.GONE
+        binding.onPreDraw()
+        assertEquals(View.GONE, duration.visibility)
+        binding.close()
+    }
+
     /** 延迟加载容器填充进度条后在下一次布局提交前恢复容器。@return Unit。Callers: JUnit。 */
     @Test fun lazySeekBarContainerIsRestoredAfterInflation() {
         val root = frame()

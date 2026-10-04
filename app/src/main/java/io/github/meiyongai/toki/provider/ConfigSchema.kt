@@ -17,6 +17,7 @@ object ConfigSchema {
         "AuthorLocationHook" to listOf("show_author_location"),
         "ProgressBarHook" to listOf("always_show_progress_bar", "clean_mode_show_progress_bar"),
         "AutoCleanModeHook" to listOf("clean_mode_on_play"),
+        "LayoutCleanupHook" to io.github.meiyongai.toki.model.LayoutElement.entries.map { it.key },
         "ImmersiveFullScreenHook" to listOf("immersive_full_screen"),
         "AutoScrollHook" to listOf("auto_scroll_unlock"),
         "DownloadHook" to listOf("download_force_no_watermark", "download_path_enabled"),

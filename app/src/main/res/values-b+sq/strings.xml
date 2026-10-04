@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Mbaje shiritin e ecurisë të dukshëm edhe në video të shkurtra"</string>
     <string name="feature_immersive" formatted="false">"Luajtje në ekran të plotë"</string>
     <string name="feature_immersive_summary" formatted="false">"Bëje shiritin e poshtëm të tejdukshëm për video në të gjithë ekranin"</string>
-    <string name="feature_autoplay" formatted="false">"Zhblloko lëvizjen automatike"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Mbaje shtypur videon dhe aktivizo lëvizjen automatike nga menyja"</string>
+    <string name="feature_autoplay" formatted="false">"Lëvizje automatike e përmirësuar"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Zhbllokon lëvizjen automatike në menynë e çdo videoje"</string>
     <string name="feature_status_bar" formatted="false">"Fshih shiritin e gjendjes së sistemit"</string>
     <string name="feature_media_section" formatted="false">"Shkarkime dhe mjete"</string>
     <string name="feature_download" formatted="false">"Shkarkime pa shenjë uji"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Rinis TikTok manualisht për të zbatuar rezultatet."</string>
     <string name="host_scan_failure_hint" formatted="false">"Shiko diagnostikimin e funksioneve në Toki."</string>
     <string name="host_scan_done" formatted="false">"E kuptova"</string>
+    <string name="layout_title" formatted="false">"Paraqitja e faqes"</string>
+    <string name="layout_summary" formatted="false">"Zgjidh kontrollet që do të fshihen"</string>
+    <string name="layout_hint" formatted="false">"Aktivizo çelësin për të fshehur elementin"</string>
+    <string name="layout_top" formatted="false">"Shiriti sipër"</string>
+    <string name="layout_bottom" formatted="false">"Shiriti poshtë"</string>
+    <string name="layout_side" formatted="false">"Faqja e videos"</string>
+    <string name="layout_search" formatted="false">"Kërko"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Miqtë"</string>
+    <string name="layout_following" formatted="false">"Ndjek"</string>
+    <string name="layout_shop" formatted="false">"Dyqani"</string>
+    <string name="layout_for_you" formatted="false">"Për ty"</string>
+    <string name="layout_nearby" formatted="false">"Pranë"</string>
+    <string name="layout_stem" formatted="false">"Shkencë"</string>
+    <string name="layout_series" formatted="false">"Seriale"</string>
+    <string name="layout_home" formatted="false">"Kreu"</string>
+    <string name="layout_create" formatted="false">"Krijo"</string>
+    <string name="layout_inbox" formatted="false">"Kutia hyrëse"</string>
+    <string name="layout_profile" formatted="false">"Profili"</string>
+    <string name="layout_discover" formatted="false">"Zbulo"</string>
+    <string name="layout_avatar" formatted="false">"Fotoja e profilit"</string>
+    <string name="layout_follow" formatted="false">"Butoni Ndiq"</string>
+    <string name="layout_like" formatted="false">"Pëlqim"</string>
+    <string name="layout_comment" formatted="false">"Komente"</string>
+    <string name="layout_favorite" formatted="false">"Të preferuarat"</string>
+    <string name="layout_share" formatted="false">"Ndaj"</string>
+    <string name="layout_music" formatted="false">"Disku i muzikës"</string>
+    <string name="layout_explore" formatted="false">"Eksploro"</string>
+    <string name="layout_author" formatted="false">"Informacioni i autorit"</string>
+    <string name="layout_description" formatted="false">"Përshkrimi"</string>
+    <string name="layout_music_title" formatted="false">"Titulli i muzikës"</string>
+    <string name="layout_tags" formatted="false">"Etiketa informuese"</string>
+    <string name="layout_search_label" formatted="false">"Sugjerim kërkimi"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Butoni i ndalimit të lëvizjes automatike"</string>
 </resources>

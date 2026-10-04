@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Garde la barre de progression visible, même sur les vidéos courtes"</string>
     <string name="feature_immersive" formatted="false">"Lecture plein écran"</string>
     <string name="feature_immersive_summary" formatted="false">"Rend la barre inférieure transparente pour une vidéo bord à bord"</string>
-    <string name="feature_autoplay" formatted="false">"Débloquer le défilement automatique"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Appuyez longuement sur une vidéo et activez le défilement automatique dans le menu"</string>
+    <string name="feature_autoplay" formatted="false">"Défilement auto amélioré"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Débloque le défilement auto dans le menu de chaque vidéo"</string>
     <string name="feature_status_bar" formatted="false">"Masquer la barre d’état du système"</string>
     <string name="feature_media_section" formatted="false">"Téléchargements et actions"</string>
     <string name="feature_download" formatted="false">"Téléchargements sans filigrane"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Redémarrez TikTok manuellement pour appliquer les résultats."</string>
     <string name="host_scan_failure_hint" formatted="false">"Consultez le diagnostic des fonctionnalités dans Toki."</string>
     <string name="host_scan_done" formatted="false">"Compris"</string>
+    <string name="layout_title" formatted="false">"Disposition de la page"</string>
+    <string name="layout_summary" formatted="false">"Choisir les éléments à masquer"</string>
+    <string name="layout_hint" formatted="false">"Activez une option pour masquer cet élément"</string>
+    <string name="layout_top" formatted="false">"Barre du haut"</string>
+    <string name="layout_bottom" formatted="false">"Barre du bas"</string>
+    <string name="layout_side" formatted="false">"Page vidéo"</string>
+    <string name="layout_search" formatted="false">"Recherche"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Amis"</string>
+    <string name="layout_following" formatted="false">"Abonnements"</string>
+    <string name="layout_shop" formatted="false">"Boutique"</string>
+    <string name="layout_for_you" formatted="false">"Pour toi"</string>
+    <string name="layout_nearby" formatted="false">"À proximité"</string>
+    <string name="layout_stem" formatted="false">"Sciences"</string>
+    <string name="layout_series" formatted="false">"Séries"</string>
+    <string name="layout_home" formatted="false">"Accueil"</string>
+    <string name="layout_create" formatted="false">"Créer"</string>
+    <string name="layout_inbox" formatted="false">"Boîte de réception"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Découvrir"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Bouton Suivre"</string>
+    <string name="layout_like" formatted="false">"J’aime"</string>
+    <string name="layout_comment" formatted="false">"Commentaires"</string>
+    <string name="layout_favorite" formatted="false">"Favoris"</string>
+    <string name="layout_share" formatted="false">"Partager"</string>
+    <string name="layout_music" formatted="false">"Disque musical"</string>
+    <string name="layout_explore" formatted="false">"Explorer"</string>
+    <string name="layout_author" formatted="false">"Infos sur l’auteur"</string>
+    <string name="layout_description" formatted="false">"Description"</string>
+    <string name="layout_music_title" formatted="false">"Titre de la musique"</string>
+    <string name="layout_tags" formatted="false">"Étiquettes d’information"</string>
+    <string name="layout_search_label" formatted="false">"Suggestion de recherche"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Bouton d’arrêt du défilement automatique"</string>
 </resources>

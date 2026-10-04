@@ -20,6 +20,79 @@ class CleanViewGateTest {
     /** 模拟平台属性拦截。@param view 目标。@param value 透明度。@return Unit。Callers: 本类测试。 */
     private fun alpha(view: View, value: Float) { view.alpha = value }
 
+    /** 暂停退出净屏不能恢复被布局净化隐藏的控件。无参数、无返回。Callers: JUnit。 */
+    @Test fun layoutHidingSurvivesPauseAndRepeatedNativeShow() {
+        val playback = CleanViewGate.Owner(true)
+        val layout = CleanViewGate.Owner(true, View.GONE)
+        val controls = view()
+        gate.bind(playback, controls)
+        gate.refresh()
+        gate.bind(layout, controls)
+        gate.refresh()
+        repeat(3) {
+            visibility(controls, View.VISIBLE)
+            playback.clean = false
+            gate.refresh()
+            assertEquals(View.GONE, controls.visibility)
+            playback.clean = true
+        }
+        layout.clean = false
+        gate.refresh()
+        assertEquals(View.INVISIBLE, controls.visibility)
+        playback.clean = false
+        gate.refresh()
+        assertEquals(View.VISIBLE, controls.visibility)
+    }
+
+    /** 导航复用解绑不得释放同一视图上的净屏所有权。无参数、无返回。Callers: JUnit。 */
+    @Test fun recycledNavigationRetainsOtherOwnersAndNativeIntent() {
+        val playback = CleanViewGate.Owner(true)
+        val layout = CleanViewGate.Owner(true, View.GONE)
+        val controls = view()
+        gate.bind(playback, controls)
+        gate.bind(layout, controls)
+        visibility(controls, View.INVISIBLE)
+        gate.unbind(layout, controls)
+        assertEquals(View.INVISIBLE, controls.visibility)
+        playback.clean = false
+        gate.refresh()
+        assertEquals(View.INVISIBLE, controls.visibility)
+        visibility(controls, View.VISIBLE)
+        assertEquals(View.VISIBLE, controls.visibility)
+    }
+
+    /** 原生重建控件绑定相同配置后立即隐藏，关闭时各自恢复原生状态。无参数、无返回。Callers: JUnit。 */
+    @Test fun newVideoControlsInheritHidingWithoutLosingNativeVisibility() {
+        val layout = CleanViewGate.Owner(true, View.GONE)
+        val first = view()
+        val next = view().apply { visibility = View.INVISIBLE }
+        gate.bind(layout, first)
+        gate.bind(layout, next)
+        gate.refresh()
+        assertEquals(View.GONE, first.visibility)
+        assertEquals(View.GONE, next.visibility)
+        gate.detach(layout)
+        assertEquals(View.VISIBLE, first.visibility)
+        assertEquals(View.INVISIBLE, next.visibility)
+    }
+
+    /** 后台预加载只提交自身控件，前台所有者随后更新仍保持同一原生状态。无参数、无返回。Callers: JUnit。 */
+    @Test fun preloadedControlsShareVisibilityIntentAcrossThreads() {
+        val layout = CleanViewGate.Owner(true, View.GONE)
+        val controls = view()
+        val worker = Thread {
+            gate.bind(layout, controls)
+            gate.refresh(controls)
+            visibility(controls, View.VISIBLE)
+        }
+        worker.start()
+        worker.join()
+        assertEquals(View.GONE, controls.visibility)
+        layout.clean = false
+        gate.refresh()
+        assertEquals(View.VISIBLE, controls.visibility)
+    }
+
     /** 淡入在暂停后逐帧推进时，绘制提交不得回写动画起始值。无参数、无返回。Callers: JUnit。 */
     @Test fun pauseFadeInIsNotOverwrittenByFrameCommits() {
         val owner = CleanViewGate.Owner(true)

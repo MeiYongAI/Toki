@@ -87,6 +87,7 @@ internal class HostFeaturePlan(private val startup: ConfigSnapshot?) {
         private val fixedSpeedSymbols = setOf(HostSymbol.PLAYER_CONTROLLER, HostSymbol.PLAYER_MANAGER, HostSymbol.SPEED_MANAGER)
         private val speedMenuSymbols = setOf(HostSymbol.SPEED_OPTIONS)
         private val symbolDependencies = mapOf(
+            "LayoutCleanupHook" to setOf(HostSymbol.LAYOUT_TOP_TABS, HostSymbol.LAYOUT_TOOLBAR, HostSymbol.LAYOUT_BOTTOM_ITEM),
             "DownloadHook" to setOf(HostSymbol.DOWNLOAD_SOURCE),
             "FeedFilterHook" to setOf(HostSymbol.COLD_FEED, HostSymbol.PRELOADED_FEED, HostSymbol.OFFLINE_RECOVERY,
                 HostSymbol.FEED_ADAPTER, HostSymbol.RECOMMEND_ADAPTER, HostSymbol.RECOMMEND_MODEL),
@@ -95,9 +96,11 @@ internal class HostFeaturePlan(private val startup: ConfigSnapshot?) {
             "CommentCopyHook" to setOf(HostSymbol.COMMENT_COPY),
             "AuthorLocationHook" to setOf(HostSymbol.AUTHOR_LOCATION),
             "ProgressBarHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.DARK_LAYER, HostSymbol.SEEK_CONTROLLER),
-            "AutoCleanModeHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.VIDEO_CELL, HostSymbol.PLAYER_CONTROLLER),
+            "AutoCleanModeHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.VIDEO_CELL, HostSymbol.PLAYER_CONTROLLER, HostSymbol.PLAY_BUTTON),
             "ImmersiveFullScreenHook" to setOf(HostSymbol.RESERVED_AREA, HostSymbol.FEED_ADAPTION, HostSymbol.PHOTO_LAYOUT),
-            "AutoScrollHook" to setOf(HostSymbol.SETTINGS, HostSymbol.SEARCH_AUTO_SCROLL),
+            "AutoScrollHook" to setOf(HostSymbol.SETTINGS, HostSymbol.SEARCH_AUTO_SCROLL,
+                HostSymbol.AUTO_SCROLL_MENU, HostSymbol.AUTO_SCROLL_PLAYBACK, HostSymbol.AUTO_SCROLL_CONTEXT,
+                HostSymbol.AUTO_SCROLL_REGISTRATION, HostSymbol.AUTO_SCROLL_REGISTER),
             "MusicUnlockHook" to setOf(HostSymbol.MUTE_INFO),
         )
     }

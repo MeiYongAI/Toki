@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Qisqa videolarda ham ijro chizigʻini koʻrsatish"</string>
     <string name="feature_immersive" formatted="false">"Toʻliq ekranda ijro"</string>
     <string name="feature_immersive_summary" formatted="false">"Video butun ekranga yoyilishi uchun pastki panelni shaffof qilish"</string>
-    <string name="feature_autoplay" formatted="false">"Avtomatik aylantirishni ochish"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Videoni bosib turing va menyudan avtomatik aylantirishni yoqing"</string>
+    <string name="feature_autoplay" formatted="false">"Kengaytirilgan avtomatik aylantirish"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Barcha video menyularida avtomatik aylantirishni ochadi"</string>
     <string name="feature_status_bar" formatted="false">"Tizim holat panelini yashirish"</string>
     <string name="feature_media_section" formatted="false">"Yuklab olish va amallar"</string>
     <string name="feature_download" formatted="false">"Suv belgisiz yuklash"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Natijalarni qoʻllash uchun TikTok ilovasini qoʻlda qayta ishga tushiring."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki ilovasida funksiyalar diagnostikasini koʻring."</string>
     <string name="host_scan_done" formatted="false">"Tushunarli"</string>
+    <string name="layout_title" formatted="false">"Sahifa tartibi"</string>
+    <string name="layout_summary" formatted="false">"Yashiriladigan tugmalarni tanlang"</string>
+    <string name="layout_hint" formatted="false">"Elementni yashirish uchun kalitni yoqing"</string>
+    <string name="layout_top" formatted="false">"Yuqori panel"</string>
+    <string name="layout_bottom" formatted="false">"Pastki panel"</string>
+    <string name="layout_side" formatted="false">"Video sahifasi"</string>
+    <string name="layout_search" formatted="false">"Qidirish"</string>
+    <string name="layout_live" formatted="false">"JONLI"</string>
+    <string name="layout_friends" formatted="false">"Do‘stlar"</string>
+    <string name="layout_following" formatted="false">"Kuzatilmoqda"</string>
+    <string name="layout_shop" formatted="false">"Do‘kon"</string>
+    <string name="layout_for_you" formatted="false">"Siz uchun"</string>
+    <string name="layout_nearby" formatted="false">"Yaqin atrofda"</string>
+    <string name="layout_stem" formatted="false">"Fan"</string>
+    <string name="layout_series" formatted="false">"Seriallar"</string>
+    <string name="layout_home" formatted="false">"Bosh sahifa"</string>
+    <string name="layout_create" formatted="false">"Yaratish"</string>
+    <string name="layout_inbox" formatted="false">"Kiruvchi xabarlar"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Kashf qilish"</string>
+    <string name="layout_avatar" formatted="false">"Profil rasmi"</string>
+    <string name="layout_follow" formatted="false">"Kuzatish tugmasi"</string>
+    <string name="layout_like" formatted="false">"Yoqtirish"</string>
+    <string name="layout_comment" formatted="false">"Izohlar"</string>
+    <string name="layout_favorite" formatted="false">"Sevimlilar"</string>
+    <string name="layout_share" formatted="false">"Ulashish"</string>
+    <string name="layout_music" formatted="false">"Musiqa diski"</string>
+    <string name="layout_explore" formatted="false">"Ko‘rib chiqish"</string>
+    <string name="layout_author" formatted="false">"Muallif haqida"</string>
+    <string name="layout_description" formatted="false">"Tavsif"</string>
+    <string name="layout_music_title" formatted="false">"Musiqa nomi"</string>
+    <string name="layout_tags" formatted="false">"Ma’lumot yorliqlari"</string>
+    <string name="layout_search_label" formatted="false">"Qidiruv taklifi"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Avtomatik aylantirishni to‘xtatish tugmasi"</string>
 </resources>

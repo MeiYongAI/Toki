@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Εμφάνιση της κάτω γραμμής προόδου και στα σύντομα βίντεο"</string>
     <string name="feature_immersive" formatted="false">"Αναπαραγωγή πλήρους οθόνης"</string>
     <string name="feature_immersive_summary" formatted="false">"Διαφανής κάτω γραμμή και βίντεο σε ολόκληρη την οθόνη"</string>
-    <string name="feature_autoplay" formatted="false">"Ξεκλείδωμα αυτόματης κύλισης"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Πατήστε παρατεταμένα το βίντεο και ενεργοποιήστε την αυτόματη κύλιση από το μενού"</string>
+    <string name="feature_autoplay" formatted="false">"Βελτιωμένη αυτόματη κύλιση"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Ξεκλειδώνει την αυτόματη κύλιση στο μενού κάθε βίντεο"</string>
     <string name="feature_status_bar" formatted="false">"Απόκρυψη γραμμής κατάστασης συστήματος"</string>
     <string name="feature_media_section" formatted="false">"Λήψεις και εργαλεία"</string>
     <string name="feature_download" formatted="false">"Λήψεις χωρίς υδατογράφημα"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Επανεκκινήστε το TikTok χειροκίνητα για να εφαρμοστούν τα αποτελέσματα."</string>
     <string name="host_scan_failure_hint" formatted="false">"Δείτε τα διαγνωστικά λειτουργιών στο Toki."</string>
     <string name="host_scan_done" formatted="false">"Κατάλαβα"</string>
+    <string name="layout_title" formatted="false">"Διάταξη σελίδας"</string>
+    <string name="layout_summary" formatted="false">"Επιλέξτε ποια στοιχεία θα κρύβονται"</string>
+    <string name="layout_hint" formatted="false">"Ενεργοποιήστε τον διακόπτη για απόκρυψη"</string>
+    <string name="layout_top" formatted="false">"Πάνω γραμμή"</string>
+    <string name="layout_bottom" formatted="false">"Κάτω γραμμή"</string>
+    <string name="layout_side" formatted="false">"Σελίδα βίντεο"</string>
+    <string name="layout_search" formatted="false">"Αναζήτηση"</string>
+    <string name="layout_live" formatted="false">"ΖΩΝΤΑΝΑ"</string>
+    <string name="layout_friends" formatted="false">"Φίλοι"</string>
+    <string name="layout_following" formatted="false">"Ακολουθείτε"</string>
+    <string name="layout_shop" formatted="false">"Κατάστημα"</string>
+    <string name="layout_for_you" formatted="false">"Για εσάς"</string>
+    <string name="layout_nearby" formatted="false">"Κοντά σας"</string>
+    <string name="layout_stem" formatted="false">"Επιστήμη"</string>
+    <string name="layout_series" formatted="false">"Σειρές"</string>
+    <string name="layout_home" formatted="false">"Αρχική"</string>
+    <string name="layout_create" formatted="false">"Δημιουργία"</string>
+    <string name="layout_inbox" formatted="false">"Εισερχόμενα"</string>
+    <string name="layout_profile" formatted="false">"Προφίλ"</string>
+    <string name="layout_discover" formatted="false">"Ανακάλυψη"</string>
+    <string name="layout_avatar" formatted="false">"Εικόνα προφίλ"</string>
+    <string name="layout_follow" formatted="false">"Κουμπί ακολούθησης"</string>
+    <string name="layout_like" formatted="false">"Μου αρέσει"</string>
+    <string name="layout_comment" formatted="false">"Σχόλια"</string>
+    <string name="layout_favorite" formatted="false">"Αγαπημένα"</string>
+    <string name="layout_share" formatted="false">"Κοινοποίηση"</string>
+    <string name="layout_music" formatted="false">"Δίσκος μουσικής"</string>
+    <string name="layout_explore" formatted="false">"Εξερεύνηση"</string>
+    <string name="layout_author" formatted="false">"Στοιχεία δημιουργού"</string>
+    <string name="layout_description" formatted="false">"Περιγραφή"</string>
+    <string name="layout_music_title" formatted="false">"Τίτλος μουσικής"</string>
+    <string name="layout_tags" formatted="false">"Ετικέτες πληροφοριών"</string>
+    <string name="layout_search_label" formatted="false">"Πρόταση αναζήτησης"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Κουμπί διακοπής αυτόματης κύλισης"</string>
 </resources>

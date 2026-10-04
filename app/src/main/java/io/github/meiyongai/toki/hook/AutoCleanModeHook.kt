@@ -20,7 +20,7 @@ object AutoCleanModeHook {
     private val components = WeakHashMap<Any, Component>()
     private val pagers = WeakHashMap<Any, Pager>()
     private val shells = WeakHashMap<Any, Shell>()
-    private val views = CleanViewGate()
+    private val views = HostViewVisibility.gate
     private var configuration: ConfigSnapshot? = null
     private lateinit var panelContext: Method
     private lateinit var panelFragment: Field
@@ -239,7 +239,9 @@ object AutoCleanModeHook {
         val tabContent = tabHost.declaredFields.single { it.type == FrameLayout::class.java }.apply { isAccessible = true }
         val tabCurrent = tabHost.getMethod("getCurrentFragment")
         val seekBar = HostSymbols.resolve(classLoader, HostSymbol.SEEK_BAR)
-        val preserve = { view: View -> CleanSceneBinding.containsInstance(view, seekBar) }
+        val preserve = { view: View -> CleanSceneBinding.containsView(view) {
+            seekBar.isInstance(it) || ProgressBarHook.ownsInteractionView(it)
+        } }
         val homeCurrent = mainFragment.getMethod("getCurrentFragment")
         videoCell = HostSymbols.resolve(classLoader, HostSymbol.VIDEO_CELL)
         val base = classLoader.loadClass("com.ss.android.ugc.aweme.feed.adapter.VideoBaseCell")
@@ -264,6 +266,21 @@ object AutoCleanModeHook {
         val registerView = panel.declaredMethods.single {
             it.returnType == Void.TYPE && it.parameterCount == 2 && it.parameterTypes[0] == View::class.java &&
                 it.parameterTypes[1].isEnum
+        }
+        val playButton = HostSymbols.resolve(classLoader, HostSymbol.PLAY_BUTTON)
+        val playButtonContext = playButton.getMethod("getPanelContext")
+        check(playButtonContext.returnType == panelContext.returnType)
+        val showPause = playButton.getDeclaredMethod(HostSymbols.member(HostSymbol.PLAY_BUTTON, "show"))
+        check(showPause.returnType == Void.TYPE)
+        module.trackScene(showPause).intercept { chain ->
+            panelFragment.get(playButtonContext.invoke(checkNotNull(chain.thisObject)))?.let {
+                val page = pageFor(it)
+                if (selectCurrent(page) != null) {
+                    page.state.stop()
+                    commit("pausePresentation")
+                }
+            }
+            chain.proceed()
         }
 
         for (type in listOf(mainFragment, mainPage)) {
@@ -460,15 +477,7 @@ object AutoCleanModeHook {
      * Callers: init。
      */
     private fun installViewHooks(module: XposedModule) {
-            val handle = module.hook(View::class.java.getMethod("setVisibility", Int::class.javaPrimitiveType))
-                .setExceptionMode(XposedInterface.ExceptionMode.PASSTHROUGH).intercept { chain ->
-                    if (Looper.myLooper() != Looper.getMainLooper()) return@intercept chain.proceed()
-                    val requested = chain.args[0] as Int
-                    val view = chain.thisObject as View
-                    val effective = views.visibility(view, requested)
-                    if (effective != requested) chain.proceed(arrayOf(effective)) else chain.proceed()
-                }
-            HookRuntime.registered("AutoCleanModeHook", handle)
+        HostViewVisibility.acquire(module, "AutoCleanModeHook")
     }
 
     /**

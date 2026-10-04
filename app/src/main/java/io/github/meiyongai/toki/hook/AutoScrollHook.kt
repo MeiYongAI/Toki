@@ -5,7 +5,7 @@ import io.github.meiyongai.toki.provider.ConfigClient
 import io.github.libxposed.api.XposedModule
 import java.lang.reflect.Modifier
 
-/** 放行推荐页和搜索页的自动滚动实验开关，保留宿主菜单、播放与场景限制。 */
+/** 解锁视频页与广告的原生自动滚动，保留宿主菜单操作、暂停和播放完成流程。 */
 object AutoScrollHook {
     const val KEY_AUTO_SCROLL_UNLOCK = "auto_scroll_unlock"
 
@@ -43,7 +43,7 @@ object AutoScrollHook {
     internal fun unlocks(enabled: Boolean, key: Any?): Boolean = enabled && key == "fyp_auto_scroll"
 
     /**
-     * 同时校验推荐页与搜索页入口，然后注册可观测 Hook。
+     * 完整校验实验、菜单、翻页资格与页面路由，再注册可观测 Hook。
      * @param module LSPosed 模块上下文。
      * @param classLoader 官方宿主类加载器。
      * @return Unit；契约错误交由统一功能注册事务报告。
@@ -54,12 +54,57 @@ object AutoScrollHook {
             HostSymbols.member(HostSymbol.SETTINGS, "readInt"),
             HostSymbols.resolve(classLoader, HostSymbol.SEARCH_AUTO_SCROLL),
             HostSymbols.member(HostSymbol.SEARCH_AUTO_SCROLL, "gate"))
+        val aweme = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.Aweme")
+        val adTraffic = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.AwemeExtKt")
+            .getDeclaredMethod("isAdTraffic", aweme).apply {
+                check(Modifier.isStatic(modifiers) && returnType == Boolean::class.javaPrimitiveType)
+                isAccessible = true
+            }
+        val menuOwner = HostSymbols.resolve(classLoader, HostSymbol.AUTO_SCROLL_MENU)
+        val menu = menuOwner.declaredMethods.single {
+            it.name == HostSymbols.member(HostSymbol.AUTO_SCROLL_MENU, "build")
+        }.apply {
+            check(!Modifier.isStatic(modifiers))
+            check(parameterCount == 1 && !returnType.isPrimitive)
+            isAccessible = true
+        }
+        val model = menuOwner.declaredFields.single { it.type == aweme && !Modifier.isStatic(it.modifiers) }
+            .apply { isAccessible = true }
+        val controller = HostSymbols.resolve(classLoader, HostSymbol.AUTO_SCROLL_PLAYBACK)
+        val canAdvance = controller.getDeclaredMethod(
+            HostSymbols.member(HostSymbol.AUTO_SCROLL_PLAYBACK, "canAdvance"), Boolean::class.javaPrimitiveType
+        ).apply {
+            check(!Modifier.isStatic(modifiers) && returnType == Boolean::class.javaPrimitiveType)
+            isAccessible = true
+        }
+        val currentVideo = controller.declaredMethods.single {
+            !Modifier.isStatic(it.modifiers) && it.parameterCount == 0 && it.returnType == aweme
+        }.apply { isAccessible = true }
+        val pages = AutoScrollPages(classLoader, controller, menuOwner)
+        val adScope = AutoScrollAdScope()
+        pages.install(module)
         module.trackHook("AutoScrollHook", contract.reader).intercept { chain ->
             if (unlocks(ConfigClient.getBoolean(KEY_AUTO_SCROLL_UNLOCK), chain.args[2])) 1 else chain.proceed()
         }
         module.trackHook("AutoScrollHook", contract.gate).intercept { chain ->
             if (ConfigClient.getBoolean(KEY_AUTO_SCROLL_UNLOCK)) true else chain.proceed()
         }
-        Log.i("TokiAutoScroll", "自动滚动入口已注册：推荐=${contract.reader.declaringClass.name}.${contract.reader.name}；搜索=${contract.gate.declaringClass.name}.${contract.gate.name}")
+        module.trackHook("AutoScrollHook", adTraffic).intercept { chain ->
+            val original = chain.proceed() as Boolean
+            original && !adScope.contains(chain.args[0])
+        }
+        module.trackHook("AutoScrollHook", menu).intercept { chain ->
+            if (ConfigClient.getBoolean(KEY_AUTO_SCROLL_UNLOCK)) {
+                pages.building(checkNotNull(chain.thisObject)) {
+                    adScope.checking(model.get(chain.thisObject)) { chain.proceed() }
+                }
+            } else chain.proceed()
+        }
+        module.trackHook("AutoScrollHook", canAdvance).intercept { chain ->
+            if (ConfigClient.getBoolean(KEY_AUTO_SCROLL_UNLOCK)) {
+                adScope.checking(currentVideo.invoke(chain.thisObject)) { chain.proceed() }
+            } else chain.proceed()
+        }
+        Log.i("TokiAutoScroll", "自动滚动入口已注册：推荐=${contract.reader.declaringClass.name}.${contract.reader.name}；搜索=${contract.gate.declaringClass.name}.${contract.gate.name}；菜单=${menuOwner.name}.${menu.name}")
     }
 }

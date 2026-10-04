@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"הצגת סרגל ההתקדמות התחתון גם בסרטונים קצרים"</string>
     <string name="feature_immersive" formatted="false">"הפעלה במסך מלא"</string>
     <string name="feature_immersive_summary" formatted="false">"סרגל תחתון שקוף להצגת הסרטון על כל המסך"</string>
-    <string name="feature_autoplay" formatted="false">"פתיחת גלילה אוטומטית"</string>
-    <string name="feature_autoplay_summary" formatted="false">"לחיצה ממושכת על הסרטון מאפשרת להפעיל גלילה אוטומטית מהתפריט"</string>
+    <string name="feature_autoplay" formatted="false">"גלילה אוטומטית משופרת"</string>
+    <string name="feature_autoplay_summary" formatted="false">"פתיחת גלילה אוטומטית בתפריט של כל סרטון"</string>
     <string name="feature_status_bar" formatted="false">"הסתרת שורת המצב של המערכת"</string>
     <string name="feature_media_section" formatted="false">"הורדות וכלים"</string>
     <string name="feature_download" formatted="false">"הורדה ללא סימן מים"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"יש להפעיל מחדש את TikTok באופן ידני כדי להחיל את התוצאות."</string>
     <string name="host_scan_failure_hint" formatted="false">"ניתן לצפות באבחון התכונות ב-Toki."</string>
     <string name="host_scan_done" formatted="false">"הבנתי"</string>
+    <string name="layout_title" formatted="false">"פריסת העמוד"</string>
+    <string name="layout_summary" formatted="false">"בחירת הפקדים להסתרה"</string>
+    <string name="layout_hint" formatted="false">"הפעלת המתג מסתירה את הפריט"</string>
+    <string name="layout_top" formatted="false">"סרגל עליון"</string>
+    <string name="layout_bottom" formatted="false">"סרגל תחתון"</string>
+    <string name="layout_side" formatted="false">"עמוד הסרטון"</string>
+    <string name="layout_search" formatted="false">"חיפוש"</string>
+    <string name="layout_live" formatted="false">"שידור חי"</string>
+    <string name="layout_friends" formatted="false">"חברים"</string>
+    <string name="layout_following" formatted="false">"במעקב"</string>
+    <string name="layout_shop" formatted="false">"חנות"</string>
+    <string name="layout_for_you" formatted="false">"בשבילך"</string>
+    <string name="layout_nearby" formatted="false">"בקרבת מקום"</string>
+    <string name="layout_stem" formatted="false">"מדע"</string>
+    <string name="layout_series" formatted="false">"סדרות"</string>
+    <string name="layout_home" formatted="false">"בית"</string>
+    <string name="layout_create" formatted="false">"יצירה"</string>
+    <string name="layout_inbox" formatted="false">"דואר נכנס"</string>
+    <string name="layout_profile" formatted="false">"פרופיל"</string>
+    <string name="layout_discover" formatted="false">"גילוי"</string>
+    <string name="layout_avatar" formatted="false">"תמונת פרופיל"</string>
+    <string name="layout_follow" formatted="false">"כפתור מעקב"</string>
+    <string name="layout_like" formatted="false">"לייק"</string>
+    <string name="layout_comment" formatted="false">"תגובות"</string>
+    <string name="layout_favorite" formatted="false">"מועדפים"</string>
+    <string name="layout_share" formatted="false">"שיתוף"</string>
+    <string name="layout_music" formatted="false">"תקליט מוזיקה"</string>
+    <string name="layout_explore" formatted="false">"חקירה"</string>
+    <string name="layout_author" formatted="false">"פרטי היוצר"</string>
+    <string name="layout_description" formatted="false">"תיאור"</string>
+    <string name="layout_music_title" formatted="false">"שם המוזיקה"</string>
+    <string name="layout_tags" formatted="false">"תוויות מידע"</string>
+    <string name="layout_search_label" formatted="false">"הצעת חיפוש"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"כפתור עצירת גלילה אוטומטית"</string>
 </resources>

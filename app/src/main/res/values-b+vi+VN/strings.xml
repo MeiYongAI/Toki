@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Hiện thanh tiến trình phía dưới ngay cả với video ngắn"</string>
     <string name="feature_immersive" formatted="false">"Phát toàn màn hình"</string>
     <string name="feature_immersive_summary" formatted="false">"Làm thanh dưới trong suốt để video phủ toàn màn hình"</string>
-    <string name="feature_autoplay" formatted="false">"Mở khóa cuộn tự động"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Nhấn giữ video rồi bật cuộn tự động trong menu"</string>
+    <string name="feature_autoplay" formatted="false">"Cuộn tự động nâng cao"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Mở khóa cuộn tự động trong menu mọi video"</string>
     <string name="feature_status_bar" formatted="false">"Ẩn thanh trạng thái hệ thống"</string>
     <string name="feature_media_section" formatted="false">"Tải xuống và công cụ"</string>
     <string name="feature_download" formatted="false">"Tải không hình mờ"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Khởi động lại TikTok theo cách thủ công để áp dụng kết quả."</string>
     <string name="host_scan_failure_hint" formatted="false">"Xem chẩn đoán tính năng trong Toki."</string>
     <string name="host_scan_done" formatted="false">"Đã hiểu"</string>
+    <string name="layout_title" formatted="false">"Bố cục trang"</string>
+    <string name="layout_summary" formatted="false">"Chọn các nút muốn ẩn"</string>
+    <string name="layout_hint" formatted="false">"Bật công tắc để ẩn mục tương ứng"</string>
+    <string name="layout_top" formatted="false">"Thanh trên"</string>
+    <string name="layout_bottom" formatted="false">"Thanh dưới"</string>
+    <string name="layout_side" formatted="false">"Trang video"</string>
+    <string name="layout_search" formatted="false">"Tìm kiếm"</string>
+    <string name="layout_live" formatted="false">"LIVE"</string>
+    <string name="layout_friends" formatted="false">"Bạn bè"</string>
+    <string name="layout_following" formatted="false">"Đang Follow"</string>
+    <string name="layout_shop" formatted="false">"Cửa hàng"</string>
+    <string name="layout_for_you" formatted="false">"Dành cho bạn"</string>
+    <string name="layout_nearby" formatted="false">"Gần đây"</string>
+    <string name="layout_stem" formatted="false">"Khoa học"</string>
+    <string name="layout_series" formatted="false">"Phim ngắn"</string>
+    <string name="layout_home" formatted="false">"Trang chủ"</string>
+    <string name="layout_create" formatted="false">"Tạo"</string>
+    <string name="layout_inbox" formatted="false">"Hộp thư"</string>
+    <string name="layout_profile" formatted="false">"Hồ sơ"</string>
+    <string name="layout_discover" formatted="false">"Khám phá"</string>
+    <string name="layout_avatar" formatted="false">"Ảnh đại diện"</string>
+    <string name="layout_follow" formatted="false">"Nút Follow"</string>
+    <string name="layout_like" formatted="false">"Thích"</string>
+    <string name="layout_comment" formatted="false">"Bình luận"</string>
+    <string name="layout_favorite" formatted="false">"Yêu thích"</string>
+    <string name="layout_share" formatted="false">"Chia sẻ"</string>
+    <string name="layout_music" formatted="false">"Đĩa nhạc"</string>
+    <string name="layout_explore" formatted="false">"Tìm hiểu"</string>
+    <string name="layout_author" formatted="false">"Thông tin tác giả"</string>
+    <string name="layout_description" formatted="false">"Mô tả"</string>
+    <string name="layout_music_title" formatted="false">"Tên nhạc"</string>
+    <string name="layout_tags" formatted="false">"Nhãn thông tin"</string>
+    <string name="layout_search_label" formatted="false">"Gợi ý tìm kiếm"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Nút dừng cuộn tự động"</string>
 </resources>

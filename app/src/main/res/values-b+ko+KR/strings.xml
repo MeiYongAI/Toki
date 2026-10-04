@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"짧은 동영상에도 하단 재생 진행률 표시줄을 표시합니다"</string>
     <string name="feature_immersive" formatted="false">"전체 화면 재생"</string>
     <string name="feature_immersive_summary" formatted="false">"하단 탐색 바를 투명하게 하여 동영상을 화면 전체에 표시합니다"</string>
-    <string name="feature_autoplay" formatted="false">"자동 스크롤 잠금 해제"</string>
-    <string name="feature_autoplay_summary" formatted="false">"동영상을 길게 눌러 메뉴에서 자동 스크롤을 켭니다"</string>
+    <string name="feature_autoplay" formatted="false">"자동 스크롤 확장"</string>
+    <string name="feature_autoplay_summary" formatted="false">"모든 동영상의 길게 누르기 메뉴에서 자동 스크롤 잠금 해제"</string>
     <string name="feature_status_bar" formatted="false">"시스템 상태 표시줄 숨기기"</string>
     <string name="feature_media_section" formatted="false">"다운로드 및 도구"</string>
     <string name="feature_download" formatted="false">"워터마크 없이 저장"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"결과를 적용하려면 TikTok을 직접 다시 시작하세요."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki에서 기능 진단을 확인하세요."</string>
     <string name="host_scan_done" formatted="false">"알겠어요"</string>
+    <string name="layout_title" formatted="false">"화면 레이아웃"</string>
+    <string name="layout_summary" formatted="false">"숨길 항목 선택"</string>
+    <string name="layout_hint" formatted="false">"스위치를 켜면 해당 항목이 숨겨집니다"</string>
+    <string name="layout_top" formatted="false">"상단 메뉴"</string>
+    <string name="layout_bottom" formatted="false">"하단 메뉴"</string>
+    <string name="layout_side" formatted="false">"동영상 페이지"</string>
+    <string name="layout_search" formatted="false">"검색"</string>
+    <string name="layout_live" formatted="false">"라이브"</string>
+    <string name="layout_friends" formatted="false">"친구"</string>
+    <string name="layout_following" formatted="false">"팔로잉"</string>
+    <string name="layout_shop" formatted="false">"샵"</string>
+    <string name="layout_for_you" formatted="false">"추천"</string>
+    <string name="layout_nearby" formatted="false">"주변"</string>
+    <string name="layout_stem" formatted="false">"과학"</string>
+    <string name="layout_series" formatted="false">"시리즈"</string>
+    <string name="layout_home" formatted="false">"홈"</string>
+    <string name="layout_create" formatted="false">"만들기"</string>
+    <string name="layout_inbox" formatted="false">"받은 편지함"</string>
+    <string name="layout_profile" formatted="false">"프로필"</string>
+    <string name="layout_discover" formatted="false">"발견"</string>
+    <string name="layout_avatar" formatted="false">"프로필 사진"</string>
+    <string name="layout_follow" formatted="false">"팔로우 버튼"</string>
+    <string name="layout_like" formatted="false">"좋아요"</string>
+    <string name="layout_comment" formatted="false">"댓글"</string>
+    <string name="layout_favorite" formatted="false">"즐겨찾기"</string>
+    <string name="layout_share" formatted="false">"공유"</string>
+    <string name="layout_music" formatted="false">"음악 디스크"</string>
+    <string name="layout_explore" formatted="false">"탐색"</string>
+    <string name="layout_author" formatted="false">"작성자 정보"</string>
+    <string name="layout_description" formatted="false">"설명"</string>
+    <string name="layout_music_title" formatted="false">"음악 정보"</string>
+    <string name="layout_tags" formatted="false">"정보 라벨"</string>
+    <string name="layout_search_label" formatted="false">"검색 제안"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"자동 스크롤 중지 버튼"</string>
 </resources>

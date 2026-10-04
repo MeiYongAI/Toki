@@ -48,8 +48,8 @@
     <string name="feature_progress_summary" formatted="false">"Ponechať indikátor priebehu viditeľný aj v krátkych videách"</string>
     <string name="feature_immersive" formatted="false">"Prehrávanie na celej obrazovke"</string>
     <string name="feature_immersive_summary" formatted="false">"Spriehľadniť spodný panel, aby video vyplnilo obrazovku"</string>
-    <string name="feature_autoplay" formatted="false">"Odomknúť automatické posúvanie"</string>
-    <string name="feature_autoplay_summary" formatted="false">"Podržte video a v ponuke zapnite automatické posúvanie"</string>
+    <string name="feature_autoplay" formatted="false">"Rozšírené automatické posúvanie"</string>
+    <string name="feature_autoplay_summary" formatted="false">"Odomkne automatické posúvanie v ponuke všetkých videí"</string>
     <string name="feature_status_bar" formatted="false">"Skryť systémový stavový riadok"</string>
     <string name="feature_media_section" formatted="false">"Sťahovanie a nástroje"</string>
     <string name="feature_download" formatted="false">"Sťahovať bez vodoznaku"</string>
@@ -262,4 +262,38 @@
     <string name="host_scan_restart_hint" formatted="false">"Ručne reštartuj TikTok, aby sa použili výsledky."</string>
     <string name="host_scan_failure_hint" formatted="false">"Pozri si diagnostiku funkcií v Toki."</string>
     <string name="host_scan_done" formatted="false">"Rozumiem"</string>
+    <string name="layout_title" formatted="false">"Rozloženie stránky"</string>
+    <string name="layout_summary" formatted="false">"Vyberte ovládacie prvky na skrytie"</string>
+    <string name="layout_hint" formatted="false">"Zapnutím prepínača položku skryjete"</string>
+    <string name="layout_top" formatted="false">"Horná lišta"</string>
+    <string name="layout_bottom" formatted="false">"Dolná lišta"</string>
+    <string name="layout_side" formatted="false">"Stránka videa"</string>
+    <string name="layout_search" formatted="false">"Hľadať"</string>
+    <string name="layout_live" formatted="false">"NAŽIVO"</string>
+    <string name="layout_friends" formatted="false">"Priatelia"</string>
+    <string name="layout_following" formatted="false">"Sledované"</string>
+    <string name="layout_shop" formatted="false">"Obchod"</string>
+    <string name="layout_for_you" formatted="false">"Pre vás"</string>
+    <string name="layout_nearby" formatted="false">"V okolí"</string>
+    <string name="layout_stem" formatted="false">"Veda"</string>
+    <string name="layout_series" formatted="false">"Seriály"</string>
+    <string name="layout_home" formatted="false">"Domov"</string>
+    <string name="layout_create" formatted="false">"Vytvoriť"</string>
+    <string name="layout_inbox" formatted="false">"Doručená pošta"</string>
+    <string name="layout_profile" formatted="false">"Profil"</string>
+    <string name="layout_discover" formatted="false">"Objavovať"</string>
+    <string name="layout_avatar" formatted="false">"Avatar"</string>
+    <string name="layout_follow" formatted="false">"Tlačidlo sledovania"</string>
+    <string name="layout_like" formatted="false">"Páči sa mi"</string>
+    <string name="layout_comment" formatted="false">"Komentáre"</string>
+    <string name="layout_favorite" formatted="false">"Obľúbené"</string>
+    <string name="layout_share" formatted="false">"Zdieľať"</string>
+    <string name="layout_music" formatted="false">"Hudobný disk"</string>
+    <string name="layout_explore" formatted="false">"Preskúmať"</string>
+    <string name="layout_author" formatted="false">"Informácie o autorovi"</string>
+    <string name="layout_description" formatted="false">"Popis"</string>
+    <string name="layout_music_title" formatted="false">"Názov hudby"</string>
+    <string name="layout_tags" formatted="false">"Informačné štítky"</string>
+    <string name="layout_search_label" formatted="false">"Návrh vyhľadávania"</string>
+    <string name="layout_auto_scroll_stop" formatted="false">"Tlačidlo zastavenia automatického posúvania"</string>
 </resources>

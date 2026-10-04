@@ -23,6 +23,7 @@ class ProgressBarRegistrationTest {
     }
     class Controller {
         @JvmField var renamedView: Seek? = null
+        @JvmField var renamedDuration: android.view.ViewGroup? = null
         /** @param show 请求显隐。@return 模式。Callers: 反射契约测试。 */
         fun renamedDecision(show: Boolean): Int = 0
     }
@@ -37,6 +38,7 @@ class ProgressBarRegistrationTest {
         val contract = ProgressBarHook.ViewContract(Seek::class.java, Controller::class.java, Mask::class.java,
             "renamedDecision", "renamedApply")
         assertEquals("renamedView", contract.field.name)
+        assertEquals("renamedDuration", contract.duration.name)
         assertEquals("renamedDecision", contract.decide.name)
         assertEquals("renamedApply", contract.apply.name)
     }

@@ -9,7 +9,8 @@ import android.content.pm.PackageManager
  *
  * 桌面启动项由 Manifest 中的 [ALIAS_COMPONENT]（activity-alias）承载：
  * 禁用该别名组件即可让桌面隐藏模块图标，主活动 [io.github.meiyongai.toki.ui.MainActivity]
- * 保持可用——重新进入本界面的标准途径是 LSPosed 管理器中的模块启动按钮。
+ * 通过独立的 MAIN + MODULE_SETTINGS 过滤器保持可发现、可启动，
+ * 隐藏后可从 LSPosed 管理器中的“模块设置”重新进入本界面。
  *
  * 组件启用状态（PackageManager）即唯一事实源，读取实时返回，不经过
  * 配置中心缓存，避免隐藏后状态与真实组件状态脱节。
