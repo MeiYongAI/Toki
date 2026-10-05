@@ -11,6 +11,7 @@
 [English](README.md) · **简体中文**
 
 [下载](https://github.com/MeiYongAI/Toki/releases) ·
+[模块仓库](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki) ·
 [更新日志](CHANGELOG.md) ·
 [问题反馈](https://github.com/MeiYongAI/Toki/issues/new/choose) ·
 [Telegram 群组](https://t.me/toki_lsposed)
@@ -61,10 +62,11 @@ Toki 需要框架才能对 TikTok 生效。其他 TikTok 版本不在文档所�
 4. 强行停止 TikTok 后重新打开。如果出现方法查找窗口，请等待完成；
    成功后点击「知道了」关闭提示，再手动强行停止 TikTok 并重新打开，以应用适配结果。
 
-### 升级至 1.0.1
+### 更新与签名
 
-1.0.1 使用新的签名密钥，无法直接覆盖原签名的 1.0.0。
-请先导出 Toki 配置，再卸载 Toki、安装 1.0.1 并导入配置。
+从 1.0.1 起的正式版沿用相同签名，可以直接覆盖更新。
+原签名的 1.0.0 无法直接覆盖升级；请先导出 Toki 配置，
+再卸载 Toki、安装最新正式版并导入配置。
 在 LSPosed 中确认模块已启用及作用域后重启 TikTok。无需卸载 TikTok。
 
 ### 从 0.x 升级
@@ -127,6 +129,11 @@ Toki 1.0.0 使用包名 `io.github.meiyongai.toki` 和新的正式签名，
 如果适配失败，反馈时请注明 TikTok 版本和下载渠道。
 
 ## 开发
+
+本仓库统一维护源码、问题反馈和正式版本。
+[Xposed 模块仓库](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki)
+分发同一份已签名 APK，供模块目录收录。维护者发布时请按
+[版本同步说明](docs/releasing.md)同步两个仓库。
 
 ### 开发环境
 

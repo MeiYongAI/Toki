@@ -1,1 +1,1 @@
-TikTok customization with feed filters, playback controls, media tools and a Material 3 interface. Adapted for TikTok 47.0.3 and 46.8.3; requires libxposed API 102.
+Toki: TikTok customization with feed filters, layout cleanup, playback controls, media tools and a Material 3 interface. Adapted for official TikTok 47.1.4, 47.0.3 and 46.8.3; requires Android 9+ and libxposed API 102.

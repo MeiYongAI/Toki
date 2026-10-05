@@ -11,6 +11,7 @@ An LSPosed module that gives you more control over your TikTok experience.
 **English** · [简体中文](README.zh-CN.md)
 
 [Download](https://github.com/MeiYongAI/Toki/releases) ·
+[Module repository](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki) ·
 [Changelog](CHANGELOG.md) ·
 [Report a problem](https://github.com/MeiYongAI/Toki/issues/new/choose) ·
 [Telegram](https://t.me/toki_lsposed)
@@ -66,10 +67,11 @@ guarantee that every feature will work.
    let it finish and dismiss the completion message. Then force-stop TikTok
    and open it again to apply the saved results.
 
-### Upgrade to 1.0.1
+### Updates and signing
 
-Version 1.0.1 uses a new signing key and cannot update the original signed 1.0.0
-in place. Export Toki settings, uninstall Toki, install 1.0.1 and import settings.
+Releases from 1.0.1 onward use the same signing key and support in-place updates.
+The original signed 1.0.0 cannot be updated in place. Export Toki settings,
+uninstall Toki, install the latest release and import settings.
 Confirm module activation and scope in LSPosed, then restart TikTok. Do not
 uninstall TikTok.
 
@@ -142,6 +144,11 @@ the feature status page. If adaptation fails, include the TikTok version and
 download source in your report.
 
 ## Development
+
+This repository is the source of truth for code, issues and releases.
+The [Xposed module repository](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki)
+distributes the same signed APK for the module catalog. Maintainers should follow
+the [release synchronization instructions](docs/releasing.md) when publishing.
 
 ### Environment
 
