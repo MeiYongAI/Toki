@@ -1,18 +1,18 @@
 # Toki
 
-<img src="docs/assets/toki.svg" align="right" width="96" height="96" alt="Toki icon">
+<img src="https://raw.githubusercontent.com/MeiYongAI/Toki/main/docs/assets/toki.svg" align="right" width="96" height="96" alt="Toki icon">
 
 An LSPosed module that gives you more control over your TikTok experience.
 
 [![Build](https://github.com/MeiYongAI/Toki/actions/workflows/build.yml/badge.svg)](https://github.com/MeiYongAI/Toki/actions/workflows/build.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MeiYongAI/Toki/blob/main/LICENSE)
 [![Android 9+](https://img.shields.io/badge/Android-9%2B-3DDC84.svg)](#dependencies)
 
 **English** · [简体中文](README.zh-CN.md)
 
 [Download](https://github.com/MeiYongAI/Toki/releases) ·
 [Module repository](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki) ·
-[Changelog](CHANGELOG.md) ·
+[Changelog](https://github.com/MeiYongAI/Toki/blob/main/CHANGELOG.md) ·
 [Report a problem](https://github.com/MeiYongAI/Toki/issues/new/choose) ·
 [Telegram](https://t.me/toki_lsposed)
 
@@ -66,23 +66,6 @@ guarantee that every feature will work.
 4. Force-stop TikTok and open it again. If a method-discovery dialog appears,
    let it finish and dismiss the completion message. Then force-stop TikTok
    and open it again to apply the saved results.
-
-### Updates and signing
-
-Releases from 1.0.1 onward use the same signing key and support in-place updates.
-The original signed 1.0.0 cannot be updated in place. Export Toki settings,
-uninstall Toki, install the latest release and import settings.
-Confirm module activation and scope in LSPosed, then restart TikTok. Do not
-uninstall TikTok.
-
-### Upgrade from 0.x
-
-Toki 1.0.0 uses the package `io.github.meiyongai.toki` and a new release signing
-key. It installs separately from the old `com.seepd.toki` module.
-
-Disable the old module in LSPosed before enabling this one. Settings are not
-migrated automatically; keep any needed configuration before uninstalling the
-old app. See the [Changelog](CHANGELOG.md) for migration details.
 
 ## Usage
 
@@ -145,10 +128,10 @@ download source in your report.
 
 ## Development
 
-This repository is the source of truth for code, issues and releases.
+[MeiYongAI/Toki](https://github.com/MeiYongAI/Toki) maintains the source code, issues and releases.
 The [Xposed module repository](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki)
 distributes the same signed APK for the module catalog. Maintainers should follow
-the [release synchronization instructions](docs/releasing.md) when publishing.
+the [release synchronization instructions](https://github.com/MeiYongAI/Toki/blob/main/docs/releasing.md) when publishing.
 
 ### Environment
 
@@ -177,7 +160,7 @@ sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
 ```
 
 Build a debug APK and run the same verification tasks as
-[CI](.github/workflows/build.yml):
+[CI](https://github.com/MeiYongAI/Toki/blob/main/.github/workflows/build.yml):
 
 ```bash
 ./gradlew :app:assembleDebug
@@ -202,7 +185,7 @@ Release builds enable R8 and resource shrinking.
 
 ### Sign a release
 
-Copy [keystore.properties.example](keystore/keystore.properties.example) to
+Copy [keystore.properties.example](https://github.com/MeiYongAI/Toki/blob/main/keystore/keystore.properties.example) to
 `keystore/keystore.properties`, then supply your own keystore path, alias and
 credentials. Keystore paths are relative to the repository root. Without this
 file, the release APK is unsigned and must be signed before installation.
@@ -267,7 +250,7 @@ build files, local SDK paths and signing credentials out of commits.
 
 If Toki is useful to you, you can support development through
 [Ko-fi](https://ko-fi.com/meiyongai) or
-[Alipay](app/src/main/res/drawable-nodpi/alipay.jpg). These options are also
+[Alipay](https://github.com/MeiYongAI/Toki/blob/main/app/src/main/res/drawable-nodpi/alipay.jpg). These options are also
 available in Toki under **Support Toki**. Donations are optional.
 
 <details>
@@ -289,6 +272,6 @@ or reuse content only with permission.
 
 ## License
 
-Copyright © 2026 MeiYongAI. Licensed under the [MIT License](LICENSE).
+Copyright © 2026 MeiYongAI. Licensed under the [MIT License](https://github.com/MeiYongAI/Toki/blob/main/LICENSE).
 Dependency credits and licenses are listed in
-[Third-party notices](THIRD_PARTY_NOTICES.md).
+[Third-party notices](https://github.com/MeiYongAI/Toki/blob/main/THIRD_PARTY_NOTICES.md).

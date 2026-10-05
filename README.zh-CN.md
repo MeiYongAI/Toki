@@ -1,18 +1,18 @@
 # Toki
 
-<img src="docs/assets/toki.svg" align="right" width="96" height="96" alt="Toki 图标">
+<img src="https://raw.githubusercontent.com/MeiYongAI/Toki/main/docs/assets/toki.svg" align="right" width="96" height="96" alt="Toki 图标">
 
 面向 TikTok 的 LSPosed 模块，让 TikTok 更合你的使用习惯。
 
 [![构建](https://github.com/MeiYongAI/Toki/actions/workflows/build.yml/badge.svg)](https://github.com/MeiYongAI/Toki/actions/workflows/build.yml)
-[![许可证：MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![许可证：MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MeiYongAI/Toki/blob/main/LICENSE)
 [![Android 9+](https://img.shields.io/badge/Android-9%2B-3DDC84.svg)](#使用条件)
 
 [English](README.md) · **简体中文**
 
 [下载](https://github.com/MeiYongAI/Toki/releases) ·
 [模块仓库](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki) ·
-[更新日志](CHANGELOG.md) ·
+[更新日志](https://github.com/MeiYongAI/Toki/blob/main/CHANGELOG.md) ·
 [问题反馈](https://github.com/MeiYongAI/Toki/issues/new/choose) ·
 [Telegram 群组](https://t.me/toki_lsposed)
 
@@ -61,21 +61,6 @@ Toki 需要框架才能对 TikTok 生效。其他 TikTok 版本不在文档所�
 3. 打开 Toki，检查首页的激活状态，并选择需要启用的功能。
 4. 强行停止 TikTok 后重新打开。如果出现方法查找窗口，请等待完成；
    成功后点击「知道了」关闭提示，再手动强行停止 TikTok 并重新打开，以应用适配结果。
-
-### 更新与签名
-
-从 1.0.1 起的正式版沿用相同签名，可以直接覆盖更新。
-原签名的 1.0.0 无法直接覆盖升级；请先导出 Toki 配置，
-再卸载 Toki、安装最新正式版并导入配置。
-在 LSPosed 中确认模块已启用及作用域后重启 TikTok。无需卸载 TikTok。
-
-### 从 0.x 升级
-
-Toki 1.0.0 使用包名 `io.github.meiyongai.toki` 和新的正式签名，
-会与旧版 `com.seepd.toki` 模块分开安装。
-
-请先在 LSPosed 中停用旧模块，再启用新版。配置不会自动迁移，
-卸载旧版前请保留需要的设置。迁移详情见[更新日志](CHANGELOG.md)。
 
 ## 使用
 
@@ -130,10 +115,10 @@ Toki 1.0.0 使用包名 `io.github.meiyongai.toki` 和新的正式签名，
 
 ## 开发
 
-本仓库统一维护源码、问题反馈和正式版本。
+[MeiYongAI/Toki](https://github.com/MeiYongAI/Toki) 统一维护源码、问题反馈和正式版本。
 [Xposed 模块仓库](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki)
 分发同一份已签名 APK，供模块目录收录。维护者发布时请按
-[版本同步说明](docs/releasing.md)同步两个仓库。
+[版本同步说明](https://github.com/MeiYongAI/Toki/blob/main/docs/releasing.md)同步两个仓库。
 
 ### 开发环境
 
@@ -160,7 +145,7 @@ cd Toki
 sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
 ```
 
-构建 Debug APK，并运行与 [CI](.github/workflows/build.yml) 一致的检查任务：
+构建 Debug APK，并运行与 [CI](https://github.com/MeiYongAI/Toki/blob/main/.github/workflows/build.yml) 一致的检查任务：
 
 ```bash
 ./gradlew :app:assembleDebug
@@ -185,7 +170,7 @@ Release 构建启用 R8 和资源压缩。
 
 ### Release 签名
 
-将 [keystore.properties.example](keystore/keystore.properties.example) 复制为
+将 [keystore.properties.example](https://github.com/MeiYongAI/Toki/blob/main/keystore/keystore.properties.example) 复制为
 `keystore/keystore.properties`，填写自己的密钥路径、别名和凭据。
 密钥路径相对于仓库根目录；没有该配置文件时，Release APK 不签名，签名后才能安装。
 
@@ -239,7 +224,7 @@ Toki 按启动时的配置选择要安装的功能。全部主功能关闭时，
 ## 支持开发
 
 如果 Toki 对你有帮助，可以通过 [Ko-fi](https://ko-fi.com/meiyongai)
-或[支付宝](app/src/main/res/drawable-nodpi/alipay.jpg)支持开发，
+或[支付宝](https://github.com/MeiYongAI/Toki/blob/main/app/src/main/res/drawable-nodpi/alipay.jpg)支持开发，
 也可在 Toki 首页的「支持开发」中找到赞助入口。赞助完全自愿。
 
 <details>
@@ -260,5 +245,5 @@ Toki 是独立项目，与 TikTok 或字节跳动不存在隶属或背书关系�
 
 ## 许可证
 
-Copyright © 2026 MeiYongAI。本项目采用 [MIT 许可证](LICENSE)，
-依赖许可与致谢见[第三方声明](THIRD_PARTY_NOTICES.md)。
+Copyright © 2026 MeiYongAI。本项目采用 [MIT 许可证](https://github.com/MeiYongAI/Toki/blob/main/LICENSE)，
+依赖许可与致谢见[第三方声明](https://github.com/MeiYongAI/Toki/blob/main/THIRD_PARTY_NOTICES.md)。

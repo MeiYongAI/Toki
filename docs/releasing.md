@@ -4,6 +4,10 @@
 [Xposed 模块仓库](https://github.com/Xposed-Modules-Repo/io.github.meiyongai.toki)
 使用同一份 APK，不重新构建或签名。仅在个人仓库发布，不会自动同步到模块仓库。
 
+两个仓库的 `README.md`、`README.zh-CN.md` 使用相同内容；更新说明时同步这两个文件，
+不要另外维护精简版分发首页。图片与开发文档链接指向个人仓库，语言切换链接保持相对路径。
+旧包名的迁移公告只维护在 `com.seepd.toki` 仓库，新仓库首页介绍当前版本。
+
 ## 发布流程
 
 1. 完成项目要求的测试、Lint 和签名验证，在个人仓库发布正式 Release。
