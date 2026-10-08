@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Playback"</string>
     <string name="feature_progress" formatted="false">"Always show progress bar"</string>
     <string name="feature_progress_summary" formatted="false">"Show it even on short videos"</string>
-    <string name="feature_immersive" formatted="false">"Fullscreen playback"</string>
-    <string name="feature_immersive_summary" formatted="false">"Play edge to edge behind a transparent bottom bar"</string>
+    <string name="feature_immersive" formatted="false">"Video display"</string>
     <string name="feature_autoplay" formatted="false">"Enhanced auto scroll"</string>
     <string name="feature_autoplay_summary" formatted="false">"Unlock auto scroll in all video menus"</string>
     <string name="feature_status_bar" formatted="false">"Hide status bar"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Show creator region"</string>
     <string name="feature_author_region_summary" formatted="false">"Add a flag and country code beside the creator\'s name"</string>
     <string name="feature_copy_comment" formatted="false">"Copy comment text only"</string>
-    <string name="feature_video_translation" formatted="false">"Unlock caption translation"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Restore the missing translation option"</string>
+    <string name="feature_video_translation" formatted="false">"Captions and translation menu"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Show the entry in the long-press menu"</string>
     <string name="feature_comment_translation" formatted="false">"Translate comments"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Translate foreign-language comments in one tap"</string>
     <string name="feature_filter_section" formatted="false">"Feed filtering"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Playback speed"</string>
     <string name="status_feature_progress" formatted="false">"Progress bar"</string>
     <string name="status_feature_clean" formatted="false">"Auto-hide controls"</string>
-    <string name="status_feature_immersive" formatted="false">"Immersive playback"</string>
+    <string name="status_feature_immersive" formatted="false">"Video display"</string>
     <string name="status_feature_scroll" formatted="false">"Auto scroll"</string>
     <string name="status_feature_duration" formatted="false">"Duration alert"</string>
     <string name="status_feature_comment_translate" formatted="false">"Comment translation"</string>
-    <string name="status_feature_video_translate" formatted="false">"Caption translation"</string>
+    <string name="status_feature_video_translate" formatted="false">"Captions and translation menu"</string>
     <string name="status_feature_comment_copy" formatted="false">"Comment copying"</string>
     <string name="status_feature_author" formatted="false">"Creator region"</string>
     <string name="status_feature_download" formatted="false">"Video saving"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Save failed. Write permission was not granted for this location. Select another location."</string>
     <string name="feature_filter_topics" formatted="false">"Hide suggested topics"</string>
     <string name="feature_filter_creators" formatted="false">"Hide suggested creators"</string>
-    <string name="host_scan_title_running" formatted="false">"Finding methods"</string>
-    <string name="host_scan_title_saving" formatted="false">"Saving results"</string>
     <string name="host_scan_title_complete" formatted="false">"Search complete"</string>
     <string name="host_scan_title_failed" formatted="false">"Search failed"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Keep TikTok in the foreground."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Please wait."</string>
     <string name="host_scan_restart_hint" formatted="false">"Restart TikTok manually to apply the results."</string>
     <string name="host_scan_failure_hint" formatted="false">"View feature diagnostics in Toki."</string>
-    <string name="host_scan_done" formatted="false">"Got it"</string>
     <string name="layout_title" formatted="false">"Page layout"</string>
     <string name="layout_summary" formatted="false">"Choose which controls to hide"</string>
     <string name="layout_hint" formatted="false">"Enable a switch to hide that item"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Info labels"</string>
     <string name="layout_search_label" formatted="false">"Search suggestion"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Stop auto scroll button"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Coins &amp; rewards"</string>
+    <string name="layout_quick_comment" formatted="false">"Quick comments"</string>
+    <string name="layout_playlist" formatted="false">"Playlist"</string>
+    <string name="layout_creation_buttons" formatted="false">"Creation shortcuts"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE reminders"</string>
+    <string name="layout_opacity" formatted="false">"Opacity"</string>
+    <string name="feature_background_audio">"Unlock background audio"</string>
+    <string name="layout_landscape">"Full-screen button"</string>
+    <string name="layout_photo_indicators">"Photo indicators &amp; hints"</string>
+    <string name="layout_quick_message">"Quick messages &amp; shared by"</string>
+    <string name="layout_user_card">"Suggested accounts"</string>
+    <string name="layout_survey">"Surveys &amp; feedback"</string>
+    <string name="layout_ad_cards">"Product &amp; ad cards"</string>
+    <string name="layout_bottom_banners">"Other bottom banners"</string>
+    <string name="layout_activities">"Event entry"</string>
+    <string name="host_scan_title_running" formatted="false">"Finding methods"</string>
+    <string name="host_scan_title_saving" formatted="false">"Saving results"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Keep TikTok in the foreground."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Please wait."</string>
+    <string name="host_scan_done" formatted="false">"Got it"</string>
+    <string name="video_fit_center" formatted="false">"Centered"</string>
+    <string name="video_fit_smart" formatted="false">"Fullscreen"</string>
 </resources>

@@ -122,7 +122,7 @@ object StatusBarHook {
     }
 
     /** 视频卡片根视图获取方法引用 */
-    private var cellGetRootViewMethod: Method? = null
+    private lateinit var cellGetRootViewMethod: Method
 
     /**
      * 挂载视频播放卡片生命周期监听。
@@ -141,23 +141,14 @@ object StatusBarHook {
      *     - `io.github.meiyongai.toki.hook.StatusBarHook.init`: 模块初始化时调用。
      */
     private fun hookVideoCellPlayback(module: XposedModule, classLoader: ClassLoader) {
-        val cellClass = runCatching {
-            classLoader.loadClass("com.ss.android.ugc.aweme.feed.adapter.VideoViewCell")
-        }.getOrElse {
-            Log.e(TAG, "加载 VideoViewCell 类失败", it)
-            return
-        }
+        val cellClass = classLoader.loadClass("com.ss.android.ugc.aweme.feed.adapter.VideoViewCell")
 
-        cellGetRootViewMethod = runCatching {
-            cellClass.getMethod("getRootView")
-        }.getOrElse {
-            Log.e(TAG, "获取 VideoViewCell.getRootView 方法失败", it)
-            null
-        }
+        cellGetRootViewMethod = cellClass.getMethod("getRootView")
 
         val renderMethods = cellClass.declaredMethods.filter { method ->
             method.name == "onRenderFirstFrame" && method.parameterTypes.size == 1
         }
+        check(renderMethods.isNotEmpty()) { "视频卡片缺少首帧通知入口" }
         for (method in renderMethods) {
             method.isAccessible = true
             module.trackHook("StatusBarHook", method).intercept { chain ->
@@ -167,43 +158,31 @@ object StatusBarHook {
             }
         }
 
-        runCatching {
-            cellClass.getDeclaredMethod("onPageSelected", Int::class.javaPrimitiveType)
-        }.onSuccess { method ->
+        cellClass.getDeclaredMethod("onPageSelected", Int::class.javaPrimitiveType).let { method ->
             method.isAccessible = true
             module.trackHook("StatusBarHook", method).intercept { chain ->
                 val result = chain.proceed()
                 handleVideoPlay(chain.thisObject)
                 result
             }
-        }.onFailure {
-            Log.e(TAG, "挂载 VideoViewCell.onPageSelected Hook 失败", it)
         }
 
-        runCatching {
-            cellClass.getDeclaredMethod("onPausePlay", String::class.java)
-        }.onSuccess { method ->
+        cellClass.getDeclaredMethod("onPausePlay", String::class.java).let { method ->
             method.isAccessible = true
             module.trackHook("StatusBarHook", method).intercept { chain ->
                 val result = chain.proceed()
                 handleVideoPause(chain.thisObject)
                 result
             }
-        }.onFailure {
-            Log.e(TAG, "挂载 VideoViewCell.onPausePlay Hook 失败", it)
         }
 
-        runCatching {
-            cellClass.getDeclaredMethod("onResumePlay", String::class.java)
-        }.onSuccess { method ->
+        cellClass.getDeclaredMethod("onResumePlay", String::class.java).let { method ->
             method.isAccessible = true
             module.trackHook("StatusBarHook", method).intercept { chain ->
                 val result = chain.proceed()
                 handleVideoResume(chain.thisObject)
                 result
             }
-        }.onFailure {
-            Log.e(TAG, "挂载 VideoViewCell.onResumePlay Hook 失败", it)
         }
 
         Log.i(TAG, "视频卡片播放与暂停生命周期 Hook 挂载完成")
@@ -255,19 +234,9 @@ object StatusBarHook {
      *     - `io.github.meiyongai.toki.hook.StatusBarHook.init`: 模块初始化时调用。
      */
     private fun hookFragmentTabHost(module: XposedModule, classLoader: ClassLoader) {
-        val tabHostClass = runCatching {
-            classLoader.loadClass("com.ss.android.ugc.aweme.ui.FragmentTabHost")
-        }.getOrElse {
-            Log.e(TAG, "加载 FragmentTabHost 类失败", it)
-            return
-        }
+        val tabHostClass = classLoader.loadClass("com.ss.android.ugc.aweme.ui.FragmentTabHost")
 
-        val onTabChangedMethod = runCatching {
-            tabHostClass.getDeclaredMethod("onTabChanged", String::class.java)
-        }.getOrElse {
-            Log.e(TAG, "获取 FragmentTabHost.onTabChanged 方法失败", it)
-            return
-        }
+        val onTabChangedMethod = tabHostClass.getDeclaredMethod("onTabChanged", String::class.java)
         onTabChangedMethod.isAccessible = true
 
         module.trackHook("StatusBarHook", onTabChangedMethod).intercept { chain ->
@@ -299,27 +268,12 @@ object StatusBarHook {
      *     - `io.github.meiyongai.toki.hook.StatusBarHook.init`: 模块初始化时调用。
      */
     private fun hookProfileVisibility(module: XposedModule, classLoader: ClassLoader) {
-        val profileClass = runCatching {
-            classLoader.loadClass("com.ss.android.ugc.profile.platform.framework.aweme.profile.ui.I18nAbsProfileFragmentV2")
-        }.getOrElse {
-            Log.e(TAG, "加载 I18nAbsProfileFragmentV2 类失败", it)
-            return
-        }
+        val profileClass = classLoader.loadClass("com.ss.android.ugc.profile.platform.framework.aweme.profile.ui.I18nAbsProfileFragmentV2")
 
-        val setUserVisibleHintMethod = runCatching {
-            profileClass.getDeclaredMethod("setUserVisibleHint", Boolean::class.javaPrimitiveType)
-        }.getOrElse {
-            Log.e(TAG, "获取 I18nAbsProfileFragmentV2.setUserVisibleHint 方法失败", it)
-            return
-        }
+        val setUserVisibleHintMethod = profileClass.getDeclaredMethod("setUserVisibleHint", Boolean::class.javaPrimitiveType)
         setUserVisibleHintMethod.isAccessible = true
 
-        val getActivityMethod = runCatching {
-            profileClass.getMethod("getActivity")
-        }.getOrElse {
-            Log.e(TAG, "获取 I18nAbsProfileFragmentV2.getActivity 方法失败", it)
-            return
-        }
+        val getActivityMethod = profileClass.getMethod("getActivity")
         getActivityMethod.isAccessible = true
 
         module.trackHook("StatusBarHook", setUserVisibleHintMethod).intercept { chain ->
@@ -360,19 +314,9 @@ object StatusBarHook {
      *     - `io.github.meiyongai.toki.hook.StatusBarHook.init`: 模块初始化时调用。
      */
     private fun hookActivityResume(module: XposedModule, classLoader: ClassLoader) {
-        val activityClass = runCatching {
-            classLoader.loadClass("android.app.Activity")
-        }.getOrElse {
-            Log.e(TAG, "加载 Activity 类失败", it)
-            return
-        }
+        val activityClass = classLoader.loadClass("android.app.Activity")
 
-        val onResumeMethod = runCatching {
-            activityClass.getDeclaredMethod("onResume")
-        }.getOrElse {
-            Log.e(TAG, "获取 Activity.onResume 方法失败", it)
-            return
-        }
+        val onResumeMethod = activityClass.getDeclaredMethod("onResume")
         onResumeMethod.isAccessible = true
 
         module.trackHook("StatusBarHook", onResumeMethod).intercept { chain ->
@@ -596,7 +540,7 @@ object StatusBarHook {
      *     - `io.github.meiyongai.toki.hook.StatusBarHook.handleVideoPlay`: 提取所属 Activity 时。
      */
     private fun resolveActivityFromCell(cellObject: Any): Activity? {
-        val method = cellGetRootViewMethod ?: return null
+        val method = cellGetRootViewMethod
         val view = method.invoke(cellObject) as? View ?: return null
         return activityOf(view.context)
     }

@@ -24,6 +24,69 @@ class CleanSceneBindingTest {
     private fun frame() = FrameLayout(RuntimeEnvironment.getApplication()).apply { id = View.generateViewId() }
     /** 创建与普通容器类型不同的进度条测试视图。@return ViewGroup；无入参。Callers: 本类测试。 */
     private fun seekBar() = object : FrameLayout(RuntimeEnvironment.getApplication()) { }
+
+    /** 作者详情的共用父容器只隐藏普通控件，进度条祖先始终可见。@return Unit；无入参。Callers: JUnit。 */
+    @Test fun cellControlsPreserveNestedProgressAndDuration() {
+        val root = frame()
+        val controls = frame().also(root::addView)
+        val labels = frame().also(controls::addView)
+        val nested = frame().also(controls::addView)
+        val seek = seekBar().also(nested::addView)
+        val buttons = frame().also(nested::addView)
+        val duration = frame().apply { visibility = View.GONE }.also(controls::addView)
+        val binding = CleanSceneBinding(root, null, gate, CleanViewGate.Owner(true),
+            preserve = { it === seek || it === duration }, controls = { listOf(controls) }) { gate.refresh() }
+        binding.onPreDraw()
+        assertEquals(View.VISIBLE, controls.visibility)
+        assertEquals(View.VISIBLE, nested.visibility)
+        assertEquals(View.VISIBLE, seek.visibility)
+        assertEquals(View.GONE, duration.visibility)
+        assertEquals(View.INVISIBLE, labels.visibility)
+        assertEquals(View.INVISIBLE, buttons.visibility)
+        binding.close()
+        assertEquals(View.VISIBLE, labels.visibility)
+        assertEquals(View.VISIBLE, buttons.visibility)
+    }
+
+    /** 延迟挂载进度条后重新划分原生控件区域，并恢复父容器。@return Unit；无入参。Callers: JUnit。 */
+    @Test fun lazilyCreatedProgressReleasesHiddenAncestor() {
+        val root = frame()
+        val controls = frame().also(root::addView)
+        val label = frame().also(controls::addView)
+        val seek = seekBar()
+        val binding = CleanSceneBinding(root, null, gate, CleanViewGate.Owner(true),
+            preserve = { it === seek }, controls = { listOf(controls) }) { gate.refresh() }
+        binding.onPreDraw()
+        assertEquals(View.INVISIBLE, controls.visibility)
+        controls.addView(seek)
+        binding.onGlobalLayout()
+        binding.onPreDraw()
+        assertEquals(View.VISIBLE, controls.visibility)
+        assertEquals(View.VISIBLE, seek.visibility)
+        assertEquals(View.INVISIBLE, label.visibility)
+        binding.close()
+    }
+
+    /** 清屏不能隐藏包含视频表面的祖先，也不能干扰另一页面。@return Unit；无入参。Callers: JUnit。 */
+    @Test fun surfaceAncestorsAndIndependentPagesStayVisible() {
+        val root = frame()
+        val surface = android.view.SurfaceView(RuntimeEnvironment.getApplication()).also(root::addView)
+        val button = frame().also(root::addView)
+        val otherRoot = frame()
+        val otherButton = frame().also(otherRoot::addView)
+        val first = CleanSceneBinding(root, null, gate, CleanViewGate.Owner(true),
+            preserve = { it is android.view.SurfaceView }, controls = { listOf(root) }) { gate.refresh() }
+        val second = CleanSceneBinding(otherRoot, null, gate, CleanViewGate.Owner(false),
+            controls = { listOf(otherRoot) }) { gate.refresh() }
+        first.onPreDraw()
+        assertEquals(View.VISIBLE, root.visibility)
+        assertEquals(View.VISIBLE, surface.visibility)
+        assertEquals(View.INVISIBLE, button.visibility)
+        assertEquals(View.VISIBLE, otherRoot.visibility)
+        assertEquals(View.VISIBLE, otherButton.visibility)
+        first.close()
+        second.close()
+    }
     /** 绘制完成布局的视图。@param root 根视图。@return 中心像素颜色。Callers: 本类测试。 */
     private fun draw(root: View): Int {
         root.measure(View.MeasureSpec.makeMeasureSpec(20, View.MeasureSpec.EXACTLY),
@@ -145,7 +208,7 @@ class CleanSceneBindingTest {
         owner.clean = state.shouldClean
         binding.onPreDraw()
         assertEquals(Color.BLUE, draw(root))
-        state.pause()
+        state.stop()
         owner.clean = state.shouldClean
         binding.onPreDraw()
         assertEquals(View.VISIBLE, top.visibility)

@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"প্লেব্যাক"</string>
     <string name="feature_progress" formatted="false">"অগ্রগতি বার সব সময় দেখান"</string>
     <string name="feature_progress_summary" formatted="false">"ছোট ভিডিওতেও অগ্রগতি বার দৃশ্যমান রাখে"</string>
-    <string name="feature_immersive" formatted="false">"পূর্ণপর্দায় প্লেব্যাক"</string>
-    <string name="feature_immersive_summary" formatted="false">"ভিডিও পুরো পর্দা জুড়ে দেখাতে নীচের বার স্বচ্ছ করে"</string>
+    <string name="feature_immersive" formatted="false">"ভিডিও প্রদর্শন"</string>
     <string name="feature_autoplay" formatted="false">"উন্নত অটো স্ক্রোল"</string>
     <string name="feature_autoplay_summary" formatted="false">"সব ভিডিওর মেনুতে অটো স্ক্রোল চালুর সুযোগ দেয়"</string>
     <string name="feature_status_bar" formatted="false">"সিস্টেমের স্ট্যাটাস বার লুকান"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"নির্মাতার অঞ্চল দেখান"</string>
     <string name="feature_author_region_summary" formatted="false">"নির্মাতার নামের পাশে দেশ বা অঞ্চলের পতাকা ও কোড দেখান"</string>
     <string name="feature_copy_comment" formatted="false">"শুধু লেখা কপি করুন"</string>
-    <string name="feature_video_translation" formatted="false">"বিবরণ অনুবাদ চালু করুন"</string>
-    <string name="feature_video_translation_summary" formatted="false">"যেসব অ্যাকাউন্টে অনুবাদের বিকল্প নেই, সেখানে তা দেখায়"</string>
+    <string name="feature_video_translation" formatted="false">"সাবটাইটেল ও অনুবাদ মেনু"</string>
+    <string name="feature_video_translation_summary" formatted="false">"দীর্ঘক্ষণ চেপে ধরার মেনুতে বিকল্পটি দেখান"</string>
     <string name="feature_comment_translation" formatted="false">"মন্তব্য অনুবাদ"</string>
     <string name="feature_comment_translation_summary" formatted="false">"বিদেশি ভাষার একাধিক মন্তব্য একসঙ্গে অনুবাদের বোতাম যোগ করে"</string>
     <string name="feature_filter_section" formatted="false">"ফিড ফিল্টারিং"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"প্লেব্যাকের গতি"</string>
     <string name="status_feature_progress" formatted="false">"অগ্রগতি বার"</string>
     <string name="status_feature_clean" formatted="false">"চলার সময় নিয়ন্ত্রণ লুকানো"</string>
-    <string name="status_feature_immersive" formatted="false">"পূর্ণপর্দা"</string>
+    <string name="status_feature_immersive" formatted="false">"ভিডিও প্রদর্শন"</string>
     <string name="status_feature_scroll" formatted="false">"স্বয়ংক্রিয় স্ক্রোল"</string>
     <string name="status_feature_duration" formatted="false">"দৈর্ঘ্যের সতর্কতা"</string>
     <string name="status_feature_comment_translate" formatted="false">"মন্তব্যের অনুবাদ"</string>
-    <string name="status_feature_video_translate" formatted="false">"বিবরণ অনুবাদ"</string>
+    <string name="status_feature_video_translate" formatted="false">"সাবটাইটেল ও অনুবাদ মেনু"</string>
     <string name="status_feature_comment_copy" formatted="false">"মন্তব্য কপি"</string>
     <string name="status_feature_author" formatted="false">"নির্মাতার অঞ্চল"</string>
     <string name="status_feature_download" formatted="false">"ভিডিও সংরক্ষণ"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"সংরক্ষণ ব্যর্থ হয়েছে। এই স্থানে লেখার অনুমতি দেওয়া হয়নি। অন্য স্থান বেছে নিন।"</string>
     <string name="feature_filter_topics" formatted="false">"প্রস্তাবিত বিষয় লুকান"</string>
     <string name="feature_filter_creators" formatted="false">"প্রস্তাবিত নির্মাতা লুকান"</string>
-    <string name="host_scan_title_running" formatted="false">"মেথড খোঁজা হচ্ছে"</string>
-    <string name="host_scan_title_saving" formatted="false">"ফলাফল সংরক্ষণ করা হচ্ছে"</string>
     <string name="host_scan_title_complete" formatted="false">"অনুসন্ধান সম্পন্ন"</string>
     <string name="host_scan_title_failed" formatted="false">"অনুসন্ধান ব্যর্থ"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok সামনে খোলা রাখুন।"</string>
-    <string name="host_scan_saving_hint" formatted="false">"অনুগ্রহ করে অপেক্ষা করুন।"</string>
     <string name="host_scan_restart_hint" formatted="false">"ফলাফল প্রয়োগ করতে TikTok ম্যানুয়ালি পুনরায় চালু করুন।"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki-তে ফিচারের ডায়াগনস্টিকস দেখুন।"</string>
-    <string name="host_scan_done" formatted="false">"বুঝেছি"</string>
     <string name="layout_title" formatted="false">"পৃষ্ঠার বিন্যাস"</string>
     <string name="layout_summary" formatted="false">"কোন বোতামগুলি লুকাবেন বেছে নিন"</string>
     <string name="layout_hint" formatted="false">"কোনো আইটেম লুকাতে সুইচ চালু করুন"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"তথ্য লেবেল"</string>
     <string name="layout_search_label" formatted="false">"অনুসন্ধানের পরামর্শ"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"অটো স্ক্রল বন্ধের বোতাম"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"কয়েন ও পুরস্কার"</string>
+    <string name="layout_quick_comment" formatted="false">"দ্রুত মন্তব্য"</string>
+    <string name="layout_playlist" formatted="false">"প্লেলিস্ট"</string>
+    <string name="layout_creation_buttons" formatted="false">"তৈরির শর্টকাট"</string>
+    <string name="layout_live_notice" formatted="false">"লাইভ রিমাইন্ডার"</string>
+    <string name="layout_opacity" formatted="false">"অস্বচ্ছতা"</string>
+    <string name="feature_background_audio">"ব্যাকগ্রাউন্ড অডিও চালু করুন"</string>
+    <string name="layout_landscape">"পূর্ণস্ক্রিন বোতাম"</string>
+    <string name="layout_photo_indicators">"ছবির নির্দেশক ও ইঙ্গিত"</string>
+    <string name="layout_quick_message">"দ্রুত বার্তা ও শেয়ারকারী"</string>
+    <string name="layout_user_card">"প্রস্তাবিত অ্যাকাউন্ট"</string>
+    <string name="layout_survey">"সমীক্ষা ও মতামত"</string>
+    <string name="layout_ad_cards">"পণ্য ও বিজ্ঞাপন কার্ড"</string>
+    <string name="layout_bottom_banners">"অন্যান্য নিচের ব্যানার"</string>
+    <string name="layout_activities">"ইভেন্টের প্রবেশপথ"</string>
+    <string name="host_scan_title_running" formatted="false">"মেথড খোঁজা হচ্ছে"</string>
+    <string name="host_scan_title_saving" formatted="false">"ফলাফল সংরক্ষণ করা হচ্ছে"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok সামনে খোলা রাখুন।"</string>
+    <string name="host_scan_saving_hint" formatted="false">"অনুগ্রহ করে অপেক্ষা করুন।"</string>
+    <string name="host_scan_done" formatted="false">"বুঝেছি"</string>
+    <string name="video_fit_center" formatted="false">"মাঝখানে"</string>
+    <string name="video_fit_smart" formatted="false">"পূর্ণ পর্দা"</string>
 </resources>

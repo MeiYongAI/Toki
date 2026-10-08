@@ -7,11 +7,29 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class HostFeaturePlanTest {
-    /** 正文与实验门控是同一功能的完整依赖，失败时整体停用。无参数，无返回。Callers: JUnit。 */
-    @Test fun videoTranslationRequiresBothGatesAndRejectsPartialActivation() {
+    /** 无参数。显示模式在当前会话冻结，旧配置保留居中模式。返回 Unit。Callers: JUnit。 */
+    @Test fun videoFitModeRequiresRestartAndDoesNotEnableLayoutAlone() {
+        val plan = HostFeaturePlan(config("immersive_full_screen" to true))
+        val smart = config("immersive_full_screen" to true, "video_fit_mode" to "smart")
+        assertTrue(plan.requiresRestart("ImmersiveFullScreenHook", smart))
+        assertEquals("center", plan.apply(smart).string("video_fit_mode", "center"))
+        assertTrue(HostFeaturePlan(config("video_fit_mode" to "smart")).features.isEmpty())
+        assertEquals("smart", HostFeaturePlan(smart).apply(smart).string("video_fit_mode"))
+        assertThrows(IllegalArgumentException::class.java) { ConfigSchema.validate(mapOf("video_fit_mode" to "stretch")) }
+    }
+    /** 后台音频实验缓存只能通过重启更改。无参数，无返回。Callers: JUnit。 */
+    @Test fun backgroundAudioFreezesExperimentUntilRestart() {
+        val plan = HostFeaturePlan(config("background_audio_unlock" to true))
+        assertEquals(setOf(HostSymbol.BACKGROUND_AUDIO), plan.symbols)
+        val disabled = config("background_audio_unlock" to false)
+        assertTrue(plan.requiresRestart("BackgroundAudioHook", disabled))
+        assertTrue(plan.apply(disabled).boolean("background_audio_unlock"))
+    }
+    /** 字幕菜单依赖菜单契约与原生启用门控，失败时停用入口解锁。无参数，无返回。Callers: JUnit。 */
+    @Test fun captionMenuRequiresAclAndEnableGate() {
         val requested = config("video_translate_enabled" to true)
         val plan = HostFeaturePlan(requested)
-        assertEquals(setOf(HostSymbol.DESCRIPTION_TRANSLATION, HostSymbol.TRANSLATION_REVERSE), plan.symbols)
+        assertEquals(setOf(HostSymbol.MENU_CAPTION_ACL, HostSymbol.CAPTION_CONSUMER, HostSymbol.TRANSLATION_REVERSE), plan.symbols)
         plan.reject("VideoTranslateHook")
         assertFalse(plan.apply(requested).boolean("video_translate_enabled"))
         assertTrue(HostFeaturePlan(config("video_translate_enabled" to false)).symbols.isEmpty())
@@ -42,7 +60,8 @@ class HostFeaturePlanTest {
     @Test fun cleanOwnsProgressEvenWhenProgressPreservationIsOff() {
         val plan = HostFeaturePlan(config("clean_mode_on_play" to true))
         assertEquals(setOf("ProgressBarHook", "AutoCleanModeHook"), plan.features)
-        assertTrue(plan.symbols.containsAll(setOf(HostSymbol.SEEK_BAR, HostSymbol.SEEK_CONTROLLER, HostSymbol.PLAYER_CONTROLLER)))
+        assertTrue(plan.symbols.containsAll(setOf(HostSymbol.SEEK_BAR, HostSymbol.SEEK_CONTROLLER, HostSymbol.VIDEO_CELL, HostSymbol.PLAY_BUTTON)))
+        assertFalse(plan.symbols.contains(HostSymbol.PLAYER_CONTROLLER))
         assertFalse(plan.symbols.contains(HostSymbol.SPEED_OPTIONS))
         assertTrue(HostFeaturePlan(config("clean_mode_show_progress_bar" to true)).features.isEmpty())
     }
@@ -121,7 +140,7 @@ class HostFeaturePlanTest {
 
     @Test fun selectedRulesExcludeUnrelatedSymbolsAndCoverageIsExplicit() {
         val rules = javaClass.getResourceAsStream("/toki-host-rules.tsv")!!.bufferedReader().use { it.readText() }
-        val targets = setOf(HostSymbol.COMMENT_TRANSLATION, HostSymbol.DESCRIPTION_TRANSLATION)
+        val targets = setOf(HostSymbol.COMMENT_TRANSLATION, HostSymbol.MENU_CAPTION_ACL)
         val selected = HostSymbols.selectRules(rules, targets)
         assertEquals(targets.map { it.name }.toSet(), selected.lineSequence().filter { it.isNotBlank() }.map { it.substringBefore('\t') }.toSet())
         assertThrows(IllegalStateException::class.java) { HostSymbols.selectRules(selected, setOf(HostSymbol.VIDEO_CELL)) }

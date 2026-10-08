@@ -11,10 +11,11 @@ import io.github.libxposed.api.XposedModule
 import io.github.meiyongai.toki.provider.ConfigClient
 import java.lang.reflect.Modifier
 
-/** 修正宿主屏幕与卡片的布局预留；视频比例、OCR 避让和对齐交由宿主计算。 */
+/** 扩展宿主显示区域；居中扩展保留原适配，智能铺满按比例限制裁切。 */
 object ImmersiveFullScreenHook {
     private const val TAG = "TokiImmersiveFullScreen"
     const val KEY_IMMERSIVE_FULL_SCREEN = "immersive_full_screen"
+    const val KEY_VIDEO_FIT_MODE = "video_fit_mode"
     private const val SCREEN = "com.ss.android.ugc.aweme.screenadaption.adaptionparams.ScreenAdaptionResult"
     private const val FEED = "com.ss.android.ugc.feed.platform.cell.component.adaption.FeedCellAdaptionComponentV2"
     private const val PADDING = "com.ss.android.ugc.aweme.videoadaption.adaptionparams.AdaptionPaddingValues"
@@ -86,7 +87,7 @@ object ImmersiveFullScreenHook {
      * @param module 模块 Hook 上下文。
      * @param classLoader 宿主类加载器。
      * @return Unit。
-     * Callers: TokiModule.onPackageLoaded 的功能注册。
+     * Callers: TokiModule.installHost。
      */
     fun init(module: XposedModule, classLoader: ClassLoader) {
         val layout = LayoutContract(classLoader.loadClass(SCREEN),
@@ -102,6 +103,22 @@ object ImmersiveFullScreenHook {
         val resume = Activity::class.java.getDeclaredMethod("onPostResume").apply { isAccessible = true }
         val photos = ImmersivePhotoLayout(HostSymbols.resolve(classLoader, HostSymbol.PHOTO_LAYOUT),
             HostSymbols.member(HostSymbol.PHOTO_LAYOUT, "plan"))
+        val video = if (ConfigClient.getString(KEY_VIDEO_FIT_MODE, "center") == "smart") SmartVideoLayout(feed,
+            classLoader.loadClass("com.ss.android.ugc.aweme.videoadaption.adaptionparams.VideoAdaptionResult"),
+            classLoader.loadClass("com.ss.android.ugc.aweme.videoadaption.adaptionparams.resultoperator.MultiContainerThresholdResultOperator")) else null
+
+        if (video != null) module.trackHook("ImmersiveFullScreenHook", video.apply).intercept { chain ->
+            if (enabled()) {
+                val args = chain.args.toTypedArray()
+                val previous = video.lastGeometry
+                args[0] = video.replace(args[0])
+                if (previous != video.lastGeometry) {
+                    HookRuntime.detail("ImmersiveFullScreenHook", video.lastGeometry)
+                    HookRuntime.event(TAG, video.lastGeometry)
+                }
+                chain.proceed(args)
+            } else chain.proceed()
+        }
 
         module.trackHook("ImmersiveFullScreenHook", layout.screenConstructor).intercept { chain ->
             if (enabled()) {

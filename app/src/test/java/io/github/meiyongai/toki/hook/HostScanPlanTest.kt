@@ -43,6 +43,24 @@ class HostScanPlanTest {
         assertEquals(setOf(b), HostScanPlan(onlyA, rules, "host", "format", setOf(a, b)).pending)
     }
 
+    /** 删除目标及枚举后保留有效缓存，合并时清除失效记录。无参数、无返回。Callers: JUnit。 */
+    @Test fun removedSymbolsArePrunedBeforeEnumResolution() {
+        val stored = saved().apply {
+            setProperty("cache.symbols", "$a,$b,REMOVED_TARGET")
+            setProperty("REMOVED_TARGET", "X.Removed")
+            setProperty("member.REMOVED_TARGET.reader", "read()Z")
+        }
+        val plan = HostScanPlan(stored, "SETTINGS\tfirst\n", "host", "format", setOf(a))
+        assertEquals(setOf(a), plan.retained)
+        assertTrue(plan.pending.isEmpty())
+        val result = plan.merge(Properties())
+        assertEquals(a.name, result.getProperty("cache.symbols"))
+        assertNull(result.getProperty("REMOVED_TARGET"))
+        assertNull(result.getProperty("member.REMOVED_TARGET.reader"))
+        assertNull(result.getProperty("error.${b.name}"))
+        assertEquals("X.Settings", result.getProperty(a.name))
+    }
+
     /** TikTok 代码或扫描语义改变必须失效，缺失结果不能发布。无参数、无返回。Callers: JUnit。 */
     @Test fun hostAndScannerChangesInvalidateAllRequiredTargets() {
         assertEquals(setOf(a, b), HostScanPlan(saved(), rules, "other", "format", setOf(a, b)).pending)

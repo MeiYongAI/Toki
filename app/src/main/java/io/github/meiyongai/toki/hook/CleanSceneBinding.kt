@@ -14,14 +14,47 @@ import java.lang.ref.WeakReference
  * @param gate 共享的视图所有权管理器。
  * @param owner 区域所有者。
  * @param preserve 页面级清屏之外仍由专用状态机管理的视图判定。
+ * @param controls 原生组件声明的控件根集合；null 表示按内容路径划分。
  * @param commit 更新全部页面的显示决策并提交属性。
  */
 internal class CleanSceneBinding(
     root: View, private val contentId: Int?, private val gate: CleanViewGate,
     val owner: CleanViewGate.Owner, private val preserve: (View) -> Boolean = { false },
+    private val controls: (() -> Collection<View>)? = null,
     private val commit: () -> Unit
 ) : View.OnAttachStateChangeListener, ViewTreeObserver.OnGlobalLayoutListener, ViewTreeObserver.OnPreDrawListener {
     companion object {
+        /**
+         * 拆分包含受保护子树的控件容器，只隐藏其余旁支。
+         * @param roots 宿主声明的控件区域。
+         * @param preserve 判断需要完整保留的交互子树。
+         * @return 可安全隐藏的容器集合。
+         * Callers: updateTargets、CleanSceneBindingTest。
+         */
+        internal fun controlTargets(roots: Collection<View>, preserve: (View) -> Boolean): Set<View> {
+            val targets = mutableSetOf<View>()
+            /** 遍历单个控件区域。@param view 区域根。@return 是否包含保留子树。Callers: controlTargets、递归。 */
+            fun visit(view: View): Boolean {
+                if (preserve(view)) return true
+                val children = (view as? ViewGroup)?.let { group ->
+                    (0 until group.childCount).map { group.getChildAt(it) }
+                }.orEmpty()
+                val protected = children.map { it to visit(it) }
+                if (protected.none { it.second }) {
+                    targets.removeAll(children.toSet())
+                    targets.add(view)
+                    return false
+                }
+                return true
+            }
+            val declared = roots.toSet()
+            declared.filter { view ->
+                var ancestor = view.parent as? View
+                while (ancestor != null && ancestor !in declared) ancestor = ancestor.parent as? View
+                ancestor == null
+            }.forEach { visit(it) }
+            return targets
+        }
         /**
          * 判断视图自身或其子树是否包含指定类型的宿主控件。
          *
@@ -77,6 +110,10 @@ internal class CleanSceneBinding(
     fun updateTargets() {
         if (!active || closed) return
         val boundary = root.get() ?: return
+        controls?.let {
+            gate.replace(owner, controlTargets(it(), preserve))
+            return
+        }
         val id = contentId ?: return
         // 每次按宿主当前树解析。旧实例被移除、替换或移往其它页面属于内容生命周期。
         var branch = boundary.findViewById<View>(id)
@@ -110,7 +147,7 @@ internal class CleanSceneBinding(
     /** 离开窗口时移除窗口监听。@param view 页面根视图。@return Unit。Callers: Android。 */
     override fun onViewDetachedFromWindow(view: View) {
         unobserve(view)
-        if (contentId != null) gate.detach(owner)
+        if (contentId != null || controls != null) gate.detach(owner)
     }
 
     /** 配置失效时解除监听与区域修改；恢复时从当前根视图重新解析内容。 */
@@ -127,7 +164,7 @@ internal class CleanSceneBinding(
                 view.removeOnAttachStateChangeListener(this)
             }
         }
-        if (!value && contentId != null) gate.detach(owner)
+        if (!value && (contentId != null || controls != null)) gate.detach(owner)
     }
 
     /**

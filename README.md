@@ -67,6 +67,9 @@ guarantee that every feature will work.
    let it finish and dismiss the completion message. Then force-stop TikTok
    and open it again to apply the saved results.
 
+Verified builds use bundled adaptation results without first-run discovery. Other builds
+run native method discovery and require a restart when it completes.
+
 ## Usage
 
 Open Toki to configure features, change the interface language, view feature
@@ -90,8 +93,8 @@ TikTok and check the feature status in Toki after opening TikTok.
 | Area | Options |
 | --- | --- |
 | Feed filters | Filter ads across video feeds, including creator profiles. On For You, filter LIVE, photos, AI-labeled videos/photos, topic/creator cards, keywords, authors, duration, views and likes; block offline video insertion. |
-| Layout cleanup | Separate top navigation, bottom navigation and video-page controls, including the stop auto-scroll button. |
-| Playback | Custom speeds, automatic clean mode, fullscreen playback, progress-bar options and enhanced auto scroll across video pages. |
+| Layout cleanup | Separate top navigation, bottom navigation and video-page controls, including rewards, activity cards and the stop auto-scroll button, plus opacity settings. |
+| Playback | Custom speeds, automatic clean mode, centered or fullscreen video, background audio unlock, progress-bar options and enhanced auto scroll across video pages. |
 | Media and tools | Prefer watermark-free downloads, set custom save folders, handle audio restrictions, configure translation and copy original or translated comment text. |
 | Region | Spoof SIM/region, language, time zone and location within TikTok; display creator regions. |
 | Management | Feature status, settings import/export, automatic method discovery and 57 interface language options. |

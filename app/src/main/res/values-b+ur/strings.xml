@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"پلے بیک"</string>
     <string name="feature_progress" formatted="false">"پیش رفت کی پٹی ہمیشہ دکھائیں"</string>
     <string name="feature_progress_summary" formatted="false">"مختصر ویڈیوز میں بھی نیچے پیش رفت کی پٹی دکھائیں"</string>
-    <string name="feature_immersive" formatted="false">"پوری اسکرین پر پلے بیک"</string>
-    <string name="feature_immersive_summary" formatted="false">"نچلی پٹی شفاف کرکے ویڈیو پوری اسکرین پر دکھائیں"</string>
+    <string name="feature_immersive" formatted="false">"ویڈیو کی نمائش"</string>
     <string name="feature_autoplay" formatted="false">"بہتر خودکار اسکرول"</string>
     <string name="feature_autoplay_summary" formatted="false">"ہر ویڈیو کے مینو میں خودکار اسکرول کھولیں"</string>
     <string name="feature_status_bar" formatted="false">"سسٹم کی اسٹیٹس بار چھپائیں"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"تخلیق کار کا خطہ دکھائیں"</string>
     <string name="feature_author_region_summary" formatted="false">"نام کے ساتھ ملک یا خطے کا پرچم اور کوڈ دکھائیں"</string>
     <string name="feature_copy_comment" formatted="false">"صرف متن کاپی کریں"</string>
-    <string name="feature_video_translation" formatted="false">"تفصیل کا ترجمہ کھولیں"</string>
-    <string name="feature_video_translation_summary" formatted="false">"جن اکاؤنٹس میں ترجمے کا اختیار نہیں، وہاں اسے دکھائیں"</string>
+    <string name="feature_video_translation" formatted="false">"سب ٹائٹلز اور ترجمے کا مینو"</string>
+    <string name="feature_video_translation_summary" formatted="false">"دیر تک دبانے والے مینو میں اختیار دکھائیں"</string>
     <string name="feature_comment_translation" formatted="false">"تبصروں کا ترجمہ"</string>
     <string name="feature_comment_translation_summary" formatted="false">"غیر ملکی زبان کے تبصروں کے اجتماعی ترجمے کا بٹن شامل کریں"</string>
     <string name="feature_filter_section" formatted="false">"فیڈ کی فلٹرنگ"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"رفتار"</string>
     <string name="status_feature_progress" formatted="false">"پیش رفت کی پٹی"</string>
     <string name="status_feature_clean" formatted="false">"چلتے وقت کنٹرول چھپانا"</string>
-    <string name="status_feature_immersive" formatted="false">"پوری اسکرین"</string>
+    <string name="status_feature_immersive" formatted="false">"ویڈیو کی نمائش"</string>
     <string name="status_feature_scroll" formatted="false">"خودکار اسکرول"</string>
     <string name="status_feature_duration" formatted="false">"دورانیے کی اطلاع"</string>
     <string name="status_feature_comment_translate" formatted="false">"تبصروں کا ترجمہ"</string>
-    <string name="status_feature_video_translate" formatted="false">"تفصیل کا ترجمہ"</string>
+    <string name="status_feature_video_translate" formatted="false">"سب ٹائٹلز اور ترجمے کا مینو"</string>
     <string name="status_feature_comment_copy" formatted="false">"تبصرے کاپی کرنا"</string>
     <string name="status_feature_author" formatted="false">"تخلیق کار کا خطہ"</string>
     <string name="status_feature_download" formatted="false">"ویڈیو محفوظ کرنا"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"محفوظ کرنے میں ناکامی: منتخب مقام پر لکھنے کی اجازت نہیں۔ دوبارہ منتخب کریں۔"</string>
     <string name="feature_filter_topics" formatted="false">"مجوزہ موضوعات چھپائیں"</string>
     <string name="feature_filter_creators" formatted="false">"مجوزہ تخلیق کار چھپائیں"</string>
-    <string name="host_scan_title_running" formatted="false">"طریقے تلاش کیے جا رہے ہیں"</string>
-    <string name="host_scan_title_saving" formatted="false">"نتائج محفوظ کیے جا رہے ہیں"</string>
     <string name="host_scan_title_complete" formatted="false">"تلاش مکمل ہو گئی"</string>
     <string name="host_scan_title_failed" formatted="false">"تلاش ناکام ہو گئی"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok کو سامنے کھلا رکھیں۔"</string>
-    <string name="host_scan_saving_hint" formatted="false">"براہ کرم انتظار کریں۔"</string>
     <string name="host_scan_restart_hint" formatted="false">"نتائج لاگو کرنے کے لیے TikTok کو دستی طور پر دوبارہ شروع کریں۔"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki میں خصوصیات کی تشخیص دیکھیں۔"</string>
-    <string name="host_scan_done" formatted="false">"سمجھ گیا"</string>
     <string name="layout_title" formatted="false">"صفحے کی ترتیب"</string>
     <string name="layout_summary" formatted="false">"چھپانے والے بٹن منتخب کریں"</string>
     <string name="layout_hint" formatted="false">"کسی آئٹم کو چھپانے کے لیے سوئچ آن کریں"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"معلوماتی لیبل"</string>
     <string name="layout_search_label" formatted="false">"تلاش کی تجویز"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"آٹو اسکرول روکنے کا بٹن"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"سکے اور انعامات"</string>
+    <string name="layout_quick_comment" formatted="false">"فوری تبصرے"</string>
+    <string name="layout_playlist" formatted="false">"پلے لسٹ"</string>
+    <string name="layout_creation_buttons" formatted="false">"تخلیق کے شارٹ کٹس"</string>
+    <string name="layout_live_notice" formatted="false">"لائیو یاد دہانیاں"</string>
+    <string name="layout_opacity" formatted="false">"غیر شفافیت"</string>
+    <string name="feature_background_audio">"پس منظر آڈیو کھولیں"</string>
+    <string name="layout_landscape">"فل اسکرین بٹن"</string>
+    <string name="layout_photo_indicators">"تصویر کے اشارے اور تجاویز"</string>
+    <string name="layout_quick_message">"فوری پیغامات اور شیئر کرنے والا"</string>
+    <string name="layout_user_card">"تجویز کردہ اکاؤنٹس"</string>
+    <string name="layout_survey">"سروے اور رائے"</string>
+    <string name="layout_ad_cards">"مصنوعات اور اشتہارات کے کارڈ"</string>
+    <string name="layout_bottom_banners">"دیگر نچلے بینر"</string>
+    <string name="layout_activities">"ایونٹ کا داخلی بٹن"</string>
+    <string name="host_scan_title_running" formatted="false">"طریقے تلاش کیے جا رہے ہیں"</string>
+    <string name="host_scan_title_saving" formatted="false">"نتائج محفوظ کیے جا رہے ہیں"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok کو سامنے کھلا رکھیں۔"</string>
+    <string name="host_scan_saving_hint" formatted="false">"براہ کرم انتظار کریں۔"</string>
+    <string name="host_scan_done" formatted="false">"سمجھ گیا"</string>
+    <string name="video_fit_center" formatted="false">"درمیان میں"</string>
+    <string name="video_fit_smart" formatted="false">"پوری اسکرین"</string>
 </resources>

@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Main balik"</string>
     <string name="feature_progress" formatted="false">"Sentiasa papar bar kemajuan"</string>
     <string name="feature_progress_summary" formatted="false">"Kekalkan paparan bar kemajuan, termasuk pada video pendek"</string>
-    <string name="feature_immersive" formatted="false">"Main balik skrin penuh"</string>
-    <string name="feature_immersive_summary" formatted="false">"Jadikan bar bawah lut sinar supaya video memenuhi skrin"</string>
+    <string name="feature_immersive" formatted="false">"Paparan video"</string>
     <string name="feature_autoplay" formatted="false">"Tatal automatik dipertingkat"</string>
     <string name="feature_autoplay_summary" formatted="false">"Buka tatal automatik dalam menu semua video"</string>
     <string name="feature_status_bar" formatted="false">"Sembunyikan bar status sistem"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Paparkan rantau pencipta"</string>
     <string name="feature_author_region_summary" formatted="false">"Paparkan bendera dan kod negara atau rantau di sebelah nama pencipta"</string>
     <string name="feature_copy_comment" formatted="false">"Salin teks sahaja"</string>
-    <string name="feature_video_translation" formatted="false">"Buka terjemahan kapsyen"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Paparkan pilihan terjemahan untuk akaun yang tidak memilikinya"</string>
+    <string name="feature_video_translation" formatted="false">"Menu sari kata dan terjemahan"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Paparkan pilihan dalam menu tekan lama"</string>
     <string name="feature_comment_translation" formatted="false">"Terjemah komen"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Tambah butang untuk menterjemahkan komen bahasa asing secara pukal"</string>
     <string name="feature_filter_section" formatted="false">"Penapisan suapan"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Kelajuan"</string>
     <string name="status_feature_progress" formatted="false">"Bar kemajuan"</string>
     <string name="status_feature_clean" formatted="false">"Sembunyi automatik"</string>
-    <string name="status_feature_immersive" formatted="false">"Skrin penuh"</string>
+    <string name="status_feature_immersive" formatted="false">"Paparan video"</string>
     <string name="status_feature_scroll" formatted="false">"Tatal automatik"</string>
     <string name="status_feature_duration" formatted="false">"Amaran tempoh"</string>
     <string name="status_feature_comment_translate" formatted="false">"Terjemahan komen"</string>
-    <string name="status_feature_video_translate" formatted="false">"Terjemahan kapsyen"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu sari kata dan terjemahan"</string>
     <string name="status_feature_comment_copy" formatted="false">"Salin komen"</string>
     <string name="status_feature_author" formatted="false">"Rantau pencipta"</string>
     <string name="status_feature_download" formatted="false">"Simpan video"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Gagal menyimpan. Kebenaran menulis tidak diberikan untuk lokasi ini. Pilih lokasi lain."</string>
     <string name="feature_filter_topics" formatted="false">"Sembunyikan cadangan topik"</string>
     <string name="feature_filter_creators" formatted="false">"Sembunyikan cadangan pencipta"</string>
-    <string name="host_scan_title_running" formatted="false">"Mencari kaedah"</string>
-    <string name="host_scan_title_saving" formatted="false">"Menyimpan hasil"</string>
     <string name="host_scan_title_complete" formatted="false">"Carian selesai"</string>
     <string name="host_scan_title_failed" formatted="false">"Carian gagal"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Pastikan TikTok kekal di latar depan."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Sila tunggu."</string>
     <string name="host_scan_restart_hint" formatted="false">"Mulakan semula TikTok secara manual untuk menggunakan hasilnya."</string>
     <string name="host_scan_failure_hint" formatted="false">"Lihat diagnostik ciri dalam Toki."</string>
-    <string name="host_scan_done" formatted="false">"Faham"</string>
     <string name="layout_title" formatted="false">"Susun atur halaman"</string>
     <string name="layout_summary" formatted="false">"Pilih kawalan yang hendak disembunyikan"</string>
     <string name="layout_hint" formatted="false">"Hidupkan suis untuk menyembunyikan item"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Label maklumat"</string>
     <string name="layout_search_label" formatted="false">"Cadangan carian"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Butang hentikan tatal automatik"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Syiling dan ganjaran"</string>
+    <string name="layout_quick_comment" formatted="false">"Komen pantas"</string>
+    <string name="layout_playlist" formatted="false">"Senarai main"</string>
+    <string name="layout_creation_buttons" formatted="false">"Pintasan ciptaan"</string>
+    <string name="layout_live_notice" formatted="false">"Peringatan LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Kelegapan"</string>
+    <string name="feature_background_audio">"Buka audio latar belakang"</string>
+    <string name="layout_landscape">"Butang skrin penuh"</string>
+    <string name="layout_photo_indicators">"Penunjuk dan petunjuk foto"</string>
+    <string name="layout_quick_message">"Mesej pantas dan sumber perkongsian"</string>
+    <string name="layout_user_card">"Akaun dicadangkan"</string>
+    <string name="layout_survey">"Tinjauan dan maklum balas"</string>
+    <string name="layout_ad_cards">"Kad produk dan iklan"</string>
+    <string name="layout_bottom_banners">"Sepanduk bawah lain"</string>
+    <string name="layout_activities">"Butang acara"</string>
+    <string name="host_scan_title_running" formatted="false">"Mencari kaedah"</string>
+    <string name="host_scan_title_saving" formatted="false">"Menyimpan hasil"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Pastikan TikTok kekal di latar depan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Sila tunggu."</string>
+    <string name="host_scan_done" formatted="false">"Faham"</string>
+    <string name="video_fit_center" formatted="false">"Di tengah"</string>
+    <string name="video_fit_smart" formatted="false">"Skrin penuh"</string>
 </resources>

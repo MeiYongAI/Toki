@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Luajtja"</string>
     <string name="feature_progress" formatted="false">"Shfaq gjithmonë shiritin e ecurisë"</string>
     <string name="feature_progress_summary" formatted="false">"Mbaje shiritin e ecurisë të dukshëm edhe në video të shkurtra"</string>
-    <string name="feature_immersive" formatted="false">"Luajtje në ekran të plotë"</string>
-    <string name="feature_immersive_summary" formatted="false">"Bëje shiritin e poshtëm të tejdukshëm për video në të gjithë ekranin"</string>
+    <string name="feature_immersive" formatted="false">"Shfaqja e videos"</string>
     <string name="feature_autoplay" formatted="false">"Lëvizje automatike e përmirësuar"</string>
     <string name="feature_autoplay_summary" formatted="false">"Zhbllokon lëvizjen automatike në menynë e çdo videoje"</string>
     <string name="feature_status_bar" formatted="false">"Fshih shiritin e gjendjes së sistemit"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Shfaq rajonin e krijuesit"</string>
     <string name="feature_author_region_summary" formatted="false">"Shfaq flamurin dhe kodin e shtetit ose rajonit pranë emrit të krijuesit"</string>
     <string name="feature_copy_comment" formatted="false">"Kopjo vetëm tekstin"</string>
-    <string name="feature_video_translation" formatted="false">"Zhblloko përkthimin e tekstit"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Shfaq mundësinë e përkthimit për llogaritë ku mungon"</string>
+    <string name="feature_video_translation" formatted="false">"Menyja e titrave dhe përkthimit"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Shfaq opsionin në menynë e shtypjes së gjatë"</string>
     <string name="feature_comment_translation" formatted="false">"Përkthe komentet"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Shto një buton për të përkthyer së bashku komentet në gjuhë të huaja"</string>
     <string name="feature_filter_section" formatted="false">"Filtrimi i rrjedhës"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Shpejtësia"</string>
     <string name="status_feature_progress" formatted="false">"Shiriti i ecurisë"</string>
     <string name="status_feature_clean" formatted="false">"Fshih kontrollet gjatë luajtjes"</string>
-    <string name="status_feature_immersive" formatted="false">"Ekran i plotë"</string>
+    <string name="status_feature_immersive" formatted="false">"Shfaqja e videos"</string>
     <string name="status_feature_scroll" formatted="false">"Lëvizje automatike"</string>
     <string name="status_feature_duration" formatted="false">"Njoftim për kohëzgjatjen"</string>
     <string name="status_feature_comment_translate" formatted="false">"Përkthim komentesh"</string>
-    <string name="status_feature_video_translate" formatted="false">"Përkthim tekstesh"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menyja e titrave dhe përkthimit"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kopjim komentesh"</string>
     <string name="status_feature_author" formatted="false">"Rajoni i krijuesit"</string>
     <string name="status_feature_download" formatted="false">"Ruajtje videosh"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Ruajtja dështoi. Nuk është dhënë leje shkrimi për këtë vend. Zgjidh një tjetër."</string>
     <string name="feature_filter_topics" formatted="false">"Fshih temat e sugjeruara"</string>
     <string name="feature_filter_creators" formatted="false">"Fshih krijuesit e sugjeruar"</string>
-    <string name="host_scan_title_running" formatted="false">"Po kërkohen metodat"</string>
-    <string name="host_scan_title_saving" formatted="false">"Po ruhen rezultatet"</string>
     <string name="host_scan_title_complete" formatted="false">"Kërkimi përfundoi"</string>
     <string name="host_scan_title_failed" formatted="false">"Kërkimi dështoi"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Mbaje TikTok në plan të parë."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Të lutem prit."</string>
     <string name="host_scan_restart_hint" formatted="false">"Rinis TikTok manualisht për të zbatuar rezultatet."</string>
     <string name="host_scan_failure_hint" formatted="false">"Shiko diagnostikimin e funksioneve në Toki."</string>
-    <string name="host_scan_done" formatted="false">"E kuptova"</string>
     <string name="layout_title" formatted="false">"Paraqitja e faqes"</string>
     <string name="layout_summary" formatted="false">"Zgjidh kontrollet që do të fshihen"</string>
     <string name="layout_hint" formatted="false">"Aktivizo çelësin për të fshehur elementin"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Etiketa informuese"</string>
     <string name="layout_search_label" formatted="false">"Sugjerim kërkimi"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Butoni i ndalimit të lëvizjes automatike"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Monedha dhe shpërblime"</string>
+    <string name="layout_quick_comment" formatted="false">"Komente të shpejta"</string>
+    <string name="layout_playlist" formatted="false">"Lista e luajtjes"</string>
+    <string name="layout_creation_buttons" formatted="false">"Shkurtore krijimi"</string>
+    <string name="layout_live_notice" formatted="false">"Kujtesa për LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Patejdukshmëria"</string>
+    <string name="feature_background_audio">"Zhblloko audion në sfond"</string>
+    <string name="layout_landscape">"Butoni i ekranit të plotë"</string>
+    <string name="layout_photo_indicators">"Treguesit dhe këshillat e fotove"</string>
+    <string name="layout_quick_message">"Mesazhe të shpejta dhe burimi i ndarjes"</string>
+    <string name="layout_user_card">"Llogari të sugjeruara"</string>
+    <string name="layout_survey">"Sondazhe dhe komente"</string>
+    <string name="layout_ad_cards">"Kartat e produkteve dhe reklamave"</string>
+    <string name="layout_bottom_banners">"Banderola të tjera poshtë"</string>
+    <string name="layout_activities">"Hyrja në ngjarje"</string>
+    <string name="host_scan_title_running" formatted="false">"Po kërkohen metodat"</string>
+    <string name="host_scan_title_saving" formatted="false">"Po ruhen rezultatet"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Mbaje TikTok në plan të parë."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Të lutem prit."</string>
+    <string name="host_scan_done" formatted="false">"E kuptova"</string>
+    <string name="video_fit_center" formatted="false">"Në qendër"</string>
+    <string name="video_fit_smart" formatted="false">"Ekran i plotë"</string>
 </resources>

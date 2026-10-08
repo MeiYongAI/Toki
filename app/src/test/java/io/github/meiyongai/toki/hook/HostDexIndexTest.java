@@ -20,6 +20,20 @@ import static org.junit.Assert.*;
 public class HostDexIndexTest {
     @Rule public TemporaryFolder temporary = new TemporaryFolder();
 
+    /** 无参数、无返回。Callers: JUnit；原生零候选不能转为全量搜索，多个候选仍须拒绝歧义。 */
+    @Test public void selectedCandidatesRetainStrictFailureSemantics() throws IOException {
+        var first = type("LX/A;", 1);
+        var second = type("LX/B;", 1);
+        var paths = List.of(apk(first, second));
+        var none = HostDexIndex.scan(paths, rule(first), (done, total) -> {},
+                new HostDexIndex.Candidates(Set.of(), Set.of(), Set.of(), Set.of()));
+        assertEquals("候选数量=0", none.getProperty("error.TEST"));
+        var both = HostDexIndex.scan(paths, rule(first), (done, total) -> {},
+                new HostDexIndex.Candidates(Set.of(), Set.of("LX/A;", "LX/B;"), Set.of(), Set.of()));
+        assertEquals(HostDexIndex.scan(paths, rule(first)), both);
+        assertEquals("候选数量=2", both.getProperty("error.TEST"));
+    }
+
     /**
      * 创建返回常量的独立 DEX 类。
      * @param name DEX 类描述符。

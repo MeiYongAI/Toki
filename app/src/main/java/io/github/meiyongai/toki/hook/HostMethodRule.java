@@ -37,7 +37,7 @@ record HostMethodRule(String symbol, String signature, Set<String> anchors, Stri
                     anchor.startsWith("write:L") && anchor.endsWith(";") ||
                     anchor.matches("invoke:INVOKE_(VIRTUAL|INTERFACE|STATIC|SUPER|DIRECT):(?:L[^;]+;->[^()]+|obfuscated:|self:)\\([^)]*\\).+") ||
                     anchor.matches("field:L[^;]+;->[^:]+:.+") ||
-                    anchor.matches("name:(?:<init>|[A-Za-z_$][A-Za-z0-9_$]*)") ||
+                    anchor.matches("name:(?:<init>|<clinit>|[A-Za-z_$][A-Za-z0-9_$]*)") ||
                     anchor.matches("called-by:[A-Za-z][A-Za-z0-9]*") ||
                     anchor.matches("class:L[^;]+;") || anchor.matches("owner:L[^;]+;") || anchor.equals("static") || anchor.equals("instance")))
                 throw new IllegalArgumentException("无效方法行为条件：" + anchor);
@@ -67,6 +67,10 @@ record HostMethodRule(String symbol, String signature, Set<String> anchors, Stri
 
     /** @param method 候选方法。@param actual 已计算签名。@return 是否满足头部契约。Callers: matches、Index.match。 */
     private boolean matchesHeader(Method method, String actual) {
+        for (String anchor : anchors) {
+            if (anchor.startsWith("owner:") && !anchor.substring(6).equals(method.getDefiningClass())) return false;
+            if (anchor.startsWith("name:") && !anchor.substring(5).equals(method.getName())) return false;
+        }
         var body = method.getImplementation();
         if (body == null || method.getName().startsWith("<") && !anchors.contains("name:" + method.getName()) ||
                 ((method.getAccessFlags() & 8) != 0) != anchors.contains("static")) return false;

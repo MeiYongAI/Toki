@@ -22,6 +22,18 @@ public final class HostDexIndex {
     private static final Pattern OBFUSCATED = Pattern.compile("LX/[^;]+;|Lkotlin/jvm/internal/[A-Z][^;]+;");
     private static final ProgressListener NO_PROGRESS = (completed, total) -> {};
 
+    /** 各类契约的原生候选互不扩大彼此的指令解析范围。 */
+    public record Candidates(Set<String> methods, Set<String> shapes, Set<String> speed, Set<String> comments) {
+        /** @return 全部候选类型；无参数。Callers: scan。 */
+        public Set<String> allTypes() {
+            Set<String> result = new HashSet<>(methods);
+            result.addAll(shapes);
+            result.addAll(speed);
+            result.addAll(comments);
+            return result;
+        }
+    }
+
     /** 方法候选按类与完整方法描述去重，同类多个匹配方法仍属于歧义。 */
     private record MethodTarget(String owner, String descriptor, String role, Set<String> calls) {}
 
@@ -277,6 +289,21 @@ public final class HostDexIndex {
      * Callers: HostSymbols、scan、单元测试。
      */
     public static Properties scan(List<String> paths, String rules, ProgressListener progress) throws IOException {
+        return scan(paths, rules, progress, null);
+    }
+
+    /**
+     * 在原生检索的候选集合上执行完整契约校验；空集合表示没有候选，不触发全量扫描。
+     * @param paths 完整代码包路径。
+     * @param rules 当前所需规则。
+     * @param progress 实际校验进度。
+     * @param selected 按契约分组的原生 DEX 类型集合；仅离线基准扫描允许 null。
+     * @return 经过关系与唯一性验证的结果。
+     * @throws IOException 代码包读取失败。
+     * Callers: HostNativeIndex.scan、scan 的离线入口。
+     */
+    public static Properties scan(List<String> paths, String rules, ProgressListener progress,
+            Candidates selected) throws IOException {
         Set<Rule> parsedRules = new LinkedHashSet<>();
         Set<HostMethodRule> methodRules = new LinkedHashSet<>();
         Set<String> speedSymbols = new LinkedHashSet<>();
@@ -319,10 +346,12 @@ public final class HostDexIndex {
         int total = (dexCount * 2 + candidates.size() + methodCandidates.size() + relationSymbols.size()) * 1000;
         progress.onProgress(0, total);
         HostMethodRule.Index methodIndex = new HostMethodRule.Index(methodRules);
+        Set<String> selectedTypes = selected == null ? null : selected.allTypes();
         visit(paths, type -> {
-            if (!speedSymbols.isEmpty()) speedIndex.collect(type);
-            if (!commentSymbols.isEmpty()) commentIndex.collect(type);
-            if (!methodRules.isEmpty()) for (Method method : type.getMethods()) {
+            if (selectedTypes != null && !selectedTypes.contains(type.getType())) return;
+            if (!speedSymbols.isEmpty() && (selected == null || selected.speed().contains(type.getType()))) speedIndex.collect(type);
+            if (!commentSymbols.isEmpty() && (selected == null || selected.comments().contains(type.getType()))) commentIndex.collect(type);
+            if (!methodRules.isEmpty() && (selected == null || selected.methods().contains(type.getType()))) for (Method method : type.getMethods()) {
                 for (HostMethodRule rule : methodIndex.match(method)) {
                     Set<String> calls = new HashSet<>();
                     for (var instruction : method.getImplementation().getInstructions())
@@ -334,6 +363,7 @@ public final class HostDexIndex {
                 }
             }
             if (byShape.isEmpty()) return;
+            if (selected != null && !selected.shapes().contains(type.getType())) return;
             List<Rule> matching = byShape.get(shape(type));
             if (matching == null) return;
             String content = literals(type);

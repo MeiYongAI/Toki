@@ -21,7 +21,9 @@ class ProgressBarRegistrationTest {
         /** @param canvas 绘制画布。@return Unit。Callers: Android、反射契约测试。 */
         override fun onDraw(canvas: android.graphics.Canvas) {}
     }
+    interface Panel
     class Controller {
+        @JvmField var renamedPanel: Panel? = null
         @JvmField var renamedView: Seek? = null
         @JvmField var renamedDuration: android.view.ViewGroup? = null
         /** @param show 请求显隐。@return 模式。Callers: 反射契约测试。 */
@@ -36,7 +38,8 @@ class ProgressBarRegistrationTest {
     /** 控件字段和方法改名仍按实际类型关联解析。无参数，无返回。Callers: JUnit。 */
     @Test fun renamedMembersResolveThroughViewRelationship() {
         val contract = ProgressBarHook.ViewContract(Seek::class.java, Controller::class.java, Mask::class.java,
-            "renamedDecision", "renamedApply")
+            "renamedDecision", "renamedApply", Panel::class.java)
+        assertEquals("renamedPanel", contract.panel.name)
         assertEquals("renamedView", contract.field.name)
         assertEquals("renamedDuration", contract.duration.name)
         assertEquals("renamedDecision", contract.decide.name)
@@ -47,11 +50,11 @@ class ProgressBarRegistrationTest {
     @Test fun incompleteAndAmbiguousViewRelationshipsAreRejected() {
         for (type in listOf(MissingController::class.java, AmbiguousController::class.java)) {
             assertThrows(RuntimeException::class.java) {
-                ProgressBarHook.ViewContract(Seek::class.java, type, Mask::class.java, "renamedDecision", "renamedApply")
+                ProgressBarHook.ViewContract(Seek::class.java, type, Mask::class.java, "renamedDecision", "renamedApply", Panel::class.java)
             }
         }
         assertThrows(NoSuchMethodException::class.java) {
-            ProgressBarHook.ViewContract(Seek::class.java, Controller::class.java, Mask::class.java, "missing", "renamedApply")
+            ProgressBarHook.ViewContract(Seek::class.java, Controller::class.java, Mask::class.java, "missing", "renamedApply", Panel::class.java)
         }
     }
 

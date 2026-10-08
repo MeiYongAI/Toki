@@ -17,10 +17,20 @@ object ProgressBarHook {
     private const val TAG = "TokiProgressBar"
     const val KEY_ALWAYS_SHOW_PROGRESS_BAR = "always_show_progress_bar"
     const val KEY_CLEAN_SHOW_PROGRESS_BAR = "clean_mode_show_progress_bar"
-    private var activeSeekBar: WeakReference<Any>? = null
     private var seekBarShowTypeMethod: Method? = null
-    @Volatile private var cleanSeekBarMode = 4
+    private var panelField: Field? = null
+    private val seekBars = WeakHashMap<View, SeekBinding>()
     private val interactionViews = WeakHashMap<View, Unit>()
+    /** @param controller 此进度条所属原生控制器。 */
+    private class SeekBinding(controller: Any) {
+        val controller = WeakReference(controller)
+        var mode = 4
+    }
+
+    /** 查询单个控件所属列表的清屏状态。@param view 进度条。@return 是否清屏。Callers: init、assertPlayingSeekBarMode。 */
+    private fun isClean(view: View): Boolean = seekBars[view]?.controller?.get()?.let {
+        AutoCleanModeHook.isCleanActive(panelField?.get(it))
+    } == true
 
     /**
      * 识别由原生进度控制器管理的时间提示容器，保留其显示与收起流程。
@@ -31,33 +41,24 @@ object ProgressBarHook {
     internal fun ownsInteractionView(view: View): Boolean = interactionViews.containsKey(view)
 
     /**
-     * 从有效配置读取播放态显示策略。
-     * @return Unit；尚无活跃进度条时无需提交。无入参。
-     * Callers: AutoCleanModeHook 的播放状态提交。
-     */
-    fun assertPlayingSeekBarMode() {
-        if (!AutoCleanModeHook.isCleanActive || activeSeekBar?.get() == null || seekBarShowTypeMethod == null) return
-        assertPlayingSeekBarMode(ConfigClient.getBoolean(KEY_CLEAN_SHOW_PROGRESS_BAR))
-    }
-
-    /**
      * 在播放事件上应用同一配置快照的细线或隐藏模式。
      * @param keep 是否保留播放进度条。
      * @return Unit。
-     * Callers: AutoCleanModeHook.commit、assertPlayingSeekBarMode。
+     * Callers: AutoCleanModeHook.commit。
      */
     fun assertPlayingSeekBarMode(keep: Boolean) {
-        if (!AutoCleanModeHook.isCleanActive) return
-        val seekBar = activeSeekBar?.get() ?: return
         val method = seekBarShowTypeMethod ?: return
-        method.invoke(seekBar, if (keep) 0 else 4)
+        for ((view, binding) in seekBars.entries.toList()) {
+            if (isClean(view)) method.invoke(view, cleanMode(binding.mode, keep))
+        }
     }
 
     /** 注册所需的控制器、视图关联及绘制入口，缺失任意成员均不能部分安装。 */
     internal class ViewContract(val seekBar: Class<*>, controller: Class<*>, val mask: Class<*>,
-        showTypeName: String, setShowTypeName: String) {
+        showTypeName: String, setShowTypeName: String, listPanel: Class<*>) {
         val field: Field
         val duration: Field
+        val panel: Field
         val constructors = controller.declaredConstructors
         val decide: Method
         val apply: Method
@@ -70,6 +71,8 @@ object ProgressBarHook {
             field = controller.declaredFields.single { it.type == seekBar && !Modifier.isStatic(it.modifiers) }
                 .apply { isAccessible = true }
             duration = controller.declaredFields.single { it.type == ViewGroup::class.java && !Modifier.isStatic(it.modifiers) }
+                .apply { isAccessible = true }
+            panel = controller.declaredFields.single { it.type == listPanel && !Modifier.isStatic(it.modifiers) }
                 .apply { isAccessible = true }
             decide = controller.getDeclaredMethod(showTypeName, Boolean::class.javaPrimitiveType)
                 .apply { isAccessible = true }
@@ -95,7 +98,8 @@ object ProgressBarHook {
         val controller = HostSymbols.resolve(classLoader, HostSymbol.SEEK_CONTROLLER)
         val mask = HostSymbols.resolve(classLoader, HostSymbol.DARK_LAYER)
         val contract = ViewContract(seekBar, controller, mask,
-            HostSymbols.member(HostSymbol.SEEK_CONTROLLER, "showType"), HostSymbols.member(HostSymbol.SEEK_BAR, "setShowType"))
+            HostSymbols.member(HostSymbol.SEEK_CONTROLLER, "showType"), HostSymbols.member(HostSymbol.SEEK_BAR, "setShowType"),
+            classLoader.loadClass("com.ss.android.ugc.aweme.feed.panel.IBaseListFragmentPanel"))
         val aweme = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.Aweme")
         val control = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.VideoControl")
         val getter = aweme.getMethod("getVideoControl").apply { isAccessible = true }
@@ -107,17 +111,18 @@ object ProgressBarHook {
         check(listOf(show, drag).all { it.type == Int::class.javaPrimitiveType && !Modifier.isStatic(it.modifiers) })
 
         HookRuntime.onDispose("ProgressBarHook") {
-            activeSeekBar?.clear()
-            activeSeekBar = null
+            seekBars.clear()
+            panelField = null
             seekBarShowTypeMethod = null
-            cleanSeekBarMode = 4
             interactionViews.clear()
         }
         seekBarShowTypeMethod = contract.apply
+        panelField = contract.panel
         for (constructor in contract.constructors) {
             module.trackHook("ProgressBarHook", constructor, requiresConfiguration = false).intercept { chain ->
                 val result = chain.proceed()
                 interactionViews[checkNotNull(contract.duration.get(chain.thisObject) as? View)] = Unit
+                seekBars[checkNotNull(contract.field.get(chain.thisObject) as? View)] = SeekBinding(checkNotNull(chain.thisObject))
                 result
             }
         }
@@ -130,22 +135,20 @@ object ProgressBarHook {
             }
         }
         module.trackHook("ProgressBarHook", contract.decide).intercept { chain ->
-            contract.field.get(chain.thisObject)?.let { activeSeekBar = WeakReference(it) }
             when {
-                AutoCleanModeHook.isCleanActive -> if (ConfigClient.getBoolean(KEY_CLEAN_SHOW_PROGRESS_BAR)) 0 else 4
                 ConfigClient.getBoolean(KEY_ALWAYS_SHOW_PROGRESS_BAR) -> 0
                 else -> chain.proceed()
             }
         }
         module.trackHook("ProgressBarHook", contract.apply).intercept { chain ->
             val view = chain.thisObject as View
-            activeSeekBar = WeakReference(view)
-            if (!AutoCleanModeHook.isCleanActive) return@intercept chain.proceed()
             val requested = chain.args[0] as Int
+            val binding = seekBars[view] ?: return@intercept chain.proceed()
+            binding.mode = requested
+            if (!isClean(view)) return@intercept chain.proceed()
             val mode = cleanMode(requested, ConfigClient.getBoolean(KEY_CLEAN_SHOW_PROGRESS_BAR))
-            cleanSeekBarMode = mode
             val result = if (mode == requested) chain.proceed() else chain.proceed(arrayOf(mode))
-            if (mode != 0 && mode != 4 && view.alpha != 1f) view.alpha = 1f
+            if (mode != 4 && mode != 3 && view.alpha != 1f) view.alpha = 1f
             result
         }
         module.trackHook("ProgressBarHook", contract.draw).intercept { chain ->
@@ -153,9 +156,11 @@ object ProgressBarHook {
         }
         module.trackHook("ProgressBarHook", alpha).intercept { chain ->
             val viewType = chain.thisObject?.javaClass
+            val view = chain.thisObject as View
+            val mode = seekBars[view]?.mode
             when {
-                viewType == seekBar && AutoCleanModeHook.isCleanActive &&
-                    (ConfigClient.getBoolean(KEY_CLEAN_SHOW_PROGRESS_BAR) || cleanSeekBarMode != 0 && cleanSeekBarMode != 4) ->
+                viewType == seekBar && isClean(view) &&
+                    (ConfigClient.getBoolean(KEY_CLEAN_SHOW_PROGRESS_BAR) || mode != null && mode !in listOf(0, 3, 4)) ->
                     chain.proceed(arrayOf(1f))
                 viewType == mask && ConfigClient.getBoolean(AutoCleanModeHook.KEY_CLEAN_MODE_ON_PLAY) ->
                     chain.proceed(arrayOf(0f))

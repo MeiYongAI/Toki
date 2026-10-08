@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Atskaņošana"</string>
     <string name="feature_progress" formatted="false">"Vienmēr rādīt norises joslu"</string>
     <string name="feature_progress_summary" formatted="false">"Rādīt norises joslu arī īsos video"</string>
-    <string name="feature_immersive" formatted="false">"Pilnekrāna atskaņošana"</string>
-    <string name="feature_immersive_summary" formatted="false">"Padarīt apakšējo joslu caurspīdīgu, lai video aizpildītu ekrānu"</string>
+    <string name="feature_immersive" formatted="false">"Video attēlojums"</string>
     <string name="feature_autoplay" formatted="false">"Uzlabota automātiskā ritināšana"</string>
     <string name="feature_autoplay_summary" formatted="false">"Atbloķē automātisko ritināšanu visu video izvēlnēs"</string>
     <string name="feature_status_bar" formatted="false">"Paslēpt sistēmas statusa joslu"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Rādīt autora reģionu"</string>
     <string name="feature_author_region_summary" formatted="false">"Blakus autora vārdam rādīt valsts vai reģiona karogu un kodu"</string>
     <string name="feature_copy_comment" formatted="false">"Kopēt tikai tekstu"</string>
-    <string name="feature_video_translation" formatted="false">"Atbloķēt teksta tulkošanu"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Rādīt tulkošanas opciju kontiem, kuriem tā nav pieejama"</string>
+    <string name="feature_video_translation" formatted="false">"Subtitru un tulkošanas izvēlne"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Rādīt opciju ilgā nospiediena izvēlnē"</string>
     <string name="feature_comment_translation" formatted="false">"Tulkot komentārus"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Pievienot pogu vairāku svešvalodas komentāru tulkošanai"</string>
     <string name="feature_filter_section" formatted="false">"Plūsmas filtrēšana"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Ātrums"</string>
     <string name="status_feature_progress" formatted="false">"Norises josla"</string>
     <string name="status_feature_clean" formatted="false">"Automātiska slēpšana"</string>
-    <string name="status_feature_immersive" formatted="false">"Pilnekrāns"</string>
+    <string name="status_feature_immersive" formatted="false">"Video attēlojums"</string>
     <string name="status_feature_scroll" formatted="false">"Automātiska ritināšana"</string>
     <string name="status_feature_duration" formatted="false">"Ilguma brīdinājums"</string>
     <string name="status_feature_comment_translate" formatted="false">"Komentāru tulkojums"</string>
-    <string name="status_feature_video_translate" formatted="false">"Teksta tulkojums"</string>
+    <string name="status_feature_video_translate" formatted="false">"Subtitru un tulkošanas izvēlne"</string>
     <string name="status_feature_comment_copy" formatted="false">"Komentāru kopēšana"</string>
     <string name="status_feature_author" formatted="false">"Autora reģions"</string>
     <string name="status_feature_download" formatted="false">"Video saglabāšana"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Saglabāšana neizdevās. Šajā vietā nav rakstīšanas atļaujas. Izvēlieties citu vietu."</string>
     <string name="feature_filter_topics" formatted="false">"Slēpt ieteiktās tēmas"</string>
     <string name="feature_filter_creators" formatted="false">"Slēpt ieteiktos veidotājus"</string>
-    <string name="host_scan_title_running" formatted="false">"Metožu meklēšana"</string>
-    <string name="host_scan_title_saving" formatted="false">"Rezultātu saglabāšana"</string>
     <string name="host_scan_title_complete" formatted="false">"Meklēšana pabeigta"</string>
     <string name="host_scan_title_failed" formatted="false">"Meklēšana neizdevās"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Atstājiet TikTok priekšplānā."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Lūdzu, uzgaidiet."</string>
     <string name="host_scan_restart_hint" formatted="false">"Manuāli restartējiet TikTok, lai lietotu rezultātus."</string>
     <string name="host_scan_failure_hint" formatted="false">"Skatiet funkciju diagnostiku lietotnē Toki."</string>
-    <string name="host_scan_done" formatted="false">"Sapratu"</string>
     <string name="layout_title" formatted="false">"Lapas izkārtojums"</string>
     <string name="layout_summary" formatted="false">"Izvēlieties slēpjamos elementus"</string>
     <string name="layout_hint" formatted="false">"Ieslēdziet slēdzi, lai paslēptu elementu"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Informācijas etiķetes"</string>
     <string name="layout_search_label" formatted="false">"Meklēšanas ieteikums"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Automātiskās ritināšanas apturēšanas poga"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Monētas un atlīdzības"</string>
+    <string name="layout_quick_comment" formatted="false">"Ātrie komentāri"</string>
+    <string name="layout_playlist" formatted="false">"Atskaņošanas saraksts"</string>
+    <string name="layout_creation_buttons" formatted="false">"Izveides saīsnes"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE atgādinājumi"</string>
+    <string name="layout_opacity" formatted="false">"Necaurspīdīgums"</string>
+    <string name="feature_background_audio">"Atbloķēt fona audio"</string>
+    <string name="layout_landscape">"Pilnekrāna poga"</string>
+    <string name="layout_photo_indicators">"Foto indikatori un padomi"</string>
+    <string name="layout_quick_message">"Ātrās ziņas un kopīgotājs"</string>
+    <string name="layout_user_card">"Ieteiktie konti"</string>
+    <string name="layout_survey">"Aptaujas un atsauksmes"</string>
+    <string name="layout_ad_cards">"Produktu un reklāmu kartītes"</string>
+    <string name="layout_bottom_banners">"Citi apakšējie baneri"</string>
+    <string name="layout_activities">"Pasākumu poga"</string>
+    <string name="host_scan_title_running" formatted="false">"Metožu meklēšana"</string>
+    <string name="host_scan_title_saving" formatted="false">"Rezultātu saglabāšana"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Atstājiet TikTok priekšplānā."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Lūdzu, uzgaidiet."</string>
+    <string name="host_scan_done" formatted="false">"Sapratu"</string>
+    <string name="video_fit_center" formatted="false">"Centrēts"</string>
+    <string name="video_fit_smart" formatted="false">"Pilnekrāns"</string>
 </resources>

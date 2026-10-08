@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Přehrávání"</string>
     <string name="feature_progress" formatted="false">"Vždy zobrazovat průběh"</string>
     <string name="feature_progress_summary" formatted="false">"Ponechá ukazatel průběhu viditelný i u krátkých videí"</string>
-    <string name="feature_immersive" formatted="false">"Přehrávání na celé obrazovce"</string>
-    <string name="feature_immersive_summary" formatted="false">"Zprůhlední dolní lištu, aby video vyplnilo celou obrazovku"</string>
+    <string name="feature_immersive" formatted="false">"Zobrazení videa"</string>
     <string name="feature_autoplay" formatted="false">"Rozšířené automatické posouvání"</string>
     <string name="feature_autoplay_summary" formatted="false">"Odemkne automatické posouvání v nabídce všech videí"</string>
     <string name="feature_status_bar" formatted="false">"Skrýt systémový stavový řádek"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Zobrazit oblast tvůrce"</string>
     <string name="feature_author_region_summary" formatted="false">"Zobrazí vlajku a kód země nebo oblasti vedle jména tvůrce"</string>
     <string name="feature_copy_comment" formatted="false">"Kopírovat jen text"</string>
-    <string name="feature_video_translation" formatted="false">"Odemknout překlad popisků"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Zobrazí možnost překladu u účtů, kde není dostupná"</string>
+    <string name="feature_video_translation" formatted="false">"Nabídka titulků a překladu"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Zobrazit položku v nabídce dlouhého stisknutí"</string>
     <string name="feature_comment_translation" formatted="false">"Přeložit komentáře"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Přidá tlačítko pro hromadný překlad cizojazyčných komentářů"</string>
     <string name="feature_filter_section" formatted="false">"Filtrování kanálu"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Rychlost"</string>
     <string name="status_feature_progress" formatted="false">"Ukazatel průběhu"</string>
     <string name="status_feature_clean" formatted="false">"Automatické skrytí"</string>
-    <string name="status_feature_immersive" formatted="false">"Celá obrazovka"</string>
+    <string name="status_feature_immersive" formatted="false">"Zobrazení videa"</string>
     <string name="status_feature_scroll" formatted="false">"Automatické posouvání"</string>
     <string name="status_feature_duration" formatted="false">"Upozornění na délku"</string>
     <string name="status_feature_comment_translate" formatted="false">"Překlad komentářů"</string>
-    <string name="status_feature_video_translate" formatted="false">"Překlad popisků"</string>
+    <string name="status_feature_video_translate" formatted="false">"Nabídka titulků a překladu"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kopie komentářů"</string>
     <string name="status_feature_author" formatted="false">"Oblast tvůrce"</string>
     <string name="status_feature_download" formatted="false">"Ukládání videí"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Uložení selhalo. Pro toto umístění nebyl povolen zápis. Vyberte jiné umístění."</string>
     <string name="feature_filter_topics" formatted="false">"Skrýt doporučená témata"</string>
     <string name="feature_filter_creators" formatted="false">"Skrýt doporučené tvůrce"</string>
-    <string name="host_scan_title_running" formatted="false">"Hledání metod"</string>
-    <string name="host_scan_title_saving" formatted="false">"Ukládání výsledků"</string>
     <string name="host_scan_title_complete" formatted="false">"Hledání dokončeno"</string>
     <string name="host_scan_title_failed" formatted="false">"Hledání selhalo"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Ponechte TikTok v popředí."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Počkejte prosím."</string>
     <string name="host_scan_restart_hint" formatted="false">"Ručně restartujte TikTok, aby se výsledky použily."</string>
     <string name="host_scan_failure_hint" formatted="false">"Prohlédněte si diagnostiku funkcí v Toki."</string>
-    <string name="host_scan_done" formatted="false">"Rozumím"</string>
     <string name="layout_title" formatted="false">"Rozvržení stránky"</string>
     <string name="layout_summary" formatted="false">"Vyberte ovládací prvky ke skrytí"</string>
     <string name="layout_hint" formatted="false">"Zapnutím přepínače položku skryjete"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Informační štítky"</string>
     <string name="layout_search_label" formatted="false">"Návrh hledání"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Tlačítko zastavení automatického posouvání"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Mince a odměny"</string>
+    <string name="layout_quick_comment" formatted="false">"Rychlé komentáře"</string>
+    <string name="layout_playlist" formatted="false">"Playlist"</string>
+    <string name="layout_creation_buttons" formatted="false">"Zkratky pro tvorbu"</string>
+    <string name="layout_live_notice" formatted="false">"Připomenutí LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Neprůhlednost"</string>
+    <string name="feature_background_audio">"Odemknout zvuk na pozadí"</string>
+    <string name="layout_landscape">"Tlačítko celé obrazovky"</string>
+    <string name="layout_photo_indicators">"Indikátory a tipy k fotkám"</string>
+    <string name="layout_quick_message">"Rychlé zprávy a zdroj sdílení"</string>
+    <string name="layout_user_card">"Doporučené účty"</string>
+    <string name="layout_survey">"Průzkumy a zpětná vazba"</string>
+    <string name="layout_ad_cards">"Karty produktů a reklam"</string>
+    <string name="layout_bottom_banners">"Další spodní bannery"</string>
+    <string name="layout_activities">"Vstup do událostí"</string>
+    <string name="host_scan_title_running" formatted="false">"Hledání metod"</string>
+    <string name="host_scan_title_saving" formatted="false">"Ukládání výsledků"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Ponechte TikTok v popředí."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Počkejte prosím."</string>
+    <string name="host_scan_done" formatted="false">"Rozumím"</string>
+    <string name="video_fit_center" formatted="false">"Na střed"</string>
+    <string name="video_fit_smart" formatted="false">"Celá obrazovka"</string>
 </resources>

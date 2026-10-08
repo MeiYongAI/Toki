@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Afspelen"</string>
     <string name="feature_progress" formatted="false">"Voortgangsbalk altijd tonen"</string>
     <string name="feature_progress_summary" formatted="false">"Houd de voortgangsbalk zichtbaar, ook bij korte video\'s"</string>
-    <string name="feature_immersive" formatted="false">"Schermvullend afspelen"</string>
-    <string name="feature_immersive_summary" formatted="false">"Maak de onderbalk transparant voor schermvullende video"</string>
+    <string name="feature_immersive" formatted="false">"Videoweergave"</string>
     <string name="feature_autoplay" formatted="false">"Uitgebreid automatisch scrollen"</string>
     <string name="feature_autoplay_summary" formatted="false">"Ontgrendel automatisch scrollen in elk videomenu"</string>
     <string name="feature_status_bar" formatted="false">"Systeemstatusbalk verbergen"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Regio van maker tonen"</string>
     <string name="feature_author_region_summary" formatted="false">"Toon de vlag en code van het land of de regio naast de naam van de maker"</string>
     <string name="feature_copy_comment" formatted="false">"Alleen tekst kopiëren"</string>
-    <string name="feature_video_translation" formatted="false">"Tekstvertaling ontgrendelen"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Toon de vertaaloptie bij accounts waar deze ontbreekt"</string>
+    <string name="feature_video_translation" formatted="false">"Menu voor ondertiteling en vertaling"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Toon de optie in het menu bij lang indrukken"</string>
     <string name="feature_comment_translation" formatted="false">"Reacties vertalen"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Voeg een knop toe om anderstalige reacties tegelijk te vertalen"</string>
     <string name="feature_filter_section" formatted="false">"Feedfiltering"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Snelheid"</string>
     <string name="status_feature_progress" formatted="false">"Voortgangsbalk"</string>
     <string name="status_feature_clean" formatted="false">"Automatisch verbergen"</string>
-    <string name="status_feature_immersive" formatted="false">"Volledig scherm"</string>
+    <string name="status_feature_immersive" formatted="false">"Videoweergave"</string>
     <string name="status_feature_scroll" formatted="false">"Automatisch scrollen"</string>
     <string name="status_feature_duration" formatted="false">"Duurmelding"</string>
     <string name="status_feature_comment_translate" formatted="false">"Reacties vertalen"</string>
-    <string name="status_feature_video_translate" formatted="false">"Tekst vertalen"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu voor ondertiteling en vertaling"</string>
     <string name="status_feature_comment_copy" formatted="false">"Reacties kopiëren"</string>
     <string name="status_feature_author" formatted="false">"Regio van maker"</string>
     <string name="status_feature_download" formatted="false">"Video\'s opslaan"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Opslaan mislukt. Geen schrijfrechten voor deze locatie. Kies een andere locatie."</string>
     <string name="feature_filter_topics" formatted="false">"Onderwerpsuggesties verbergen"</string>
     <string name="feature_filter_creators" formatted="false">"Voorgestelde makers verbergen"</string>
-    <string name="host_scan_title_running" formatted="false">"Methoden zoeken"</string>
-    <string name="host_scan_title_saving" formatted="false">"Resultaten opslaan"</string>
     <string name="host_scan_title_complete" formatted="false">"Zoeken voltooid"</string>
     <string name="host_scan_title_failed" formatted="false">"Zoeken mislukt"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Houd TikTok op de voorgrond."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Even geduld."</string>
     <string name="host_scan_restart_hint" formatted="false">"Start TikTok handmatig opnieuw om de resultaten toe te passen."</string>
     <string name="host_scan_failure_hint" formatted="false">"Bekijk de functiediagnose in Toki."</string>
-    <string name="host_scan_done" formatted="false">"Begrepen"</string>
     <string name="layout_title" formatted="false">"Pagina-indeling"</string>
     <string name="layout_summary" formatted="false">"Kies welke knoppen je wilt verbergen"</string>
     <string name="layout_hint" formatted="false">"Zet de schakelaar aan om het item te verbergen"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Informatielabels"</string>
     <string name="layout_search_label" formatted="false">"Zoeksuggestie"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Stopknop voor automatisch scrollen"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Munten en beloningen"</string>
+    <string name="layout_quick_comment" formatted="false">"Snelle reacties"</string>
+    <string name="layout_playlist" formatted="false">"Afspeellijst"</string>
+    <string name="layout_creation_buttons" formatted="false">"Snelkoppelingen voor maken"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE-herinneringen"</string>
+    <string name="layout_opacity" formatted="false">"Dekking"</string>
+    <string name="feature_background_audio">"Achtergrondaudio ontgrendelen"</string>
+    <string name="layout_landscape">"Knop voor volledig scherm"</string>
+    <string name="layout_photo_indicators">"Foto-indicatoren en tips"</string>
+    <string name="layout_quick_message">"Snelle berichten en gedeeld door"</string>
+    <string name="layout_user_card">"Voorgestelde accounts"</string>
+    <string name="layout_survey">"Enquêtes en feedback"</string>
+    <string name="layout_ad_cards">"Product- en advertentiekaarten"</string>
+    <string name="layout_bottom_banners">"Overige onderste banners"</string>
+    <string name="layout_activities">"Toegang tot evenementen"</string>
+    <string name="host_scan_title_running" formatted="false">"Methoden zoeken"</string>
+    <string name="host_scan_title_saving" formatted="false">"Resultaten opslaan"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Houd TikTok op de voorgrond."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Even geduld."</string>
+    <string name="host_scan_done" formatted="false">"Begrepen"</string>
+    <string name="video_fit_center" formatted="false">"Gecentreerd"</string>
+    <string name="video_fit_smart" formatted="false">"Volledig scherm"</string>
 </resources>

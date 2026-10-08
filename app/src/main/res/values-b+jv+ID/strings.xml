@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Puteran"</string>
     <string name="feature_progress" formatted="false">"Tansah tampilake bar kemajuan"</string>
     <string name="feature_progress_summary" formatted="false">"Bar kemajuan tetep katon, kalebu ing video cendhak"</string>
-    <string name="feature_immersive" formatted="false">"Puteran layar wutuh"</string>
-    <string name="feature_immersive_summary" formatted="false">"Nggawe bar ngisor transparan supaya video ngebaki layar"</string>
+    <string name="feature_immersive" formatted="false">"Tampilan video"</string>
     <string name="feature_autoplay" formatted="false">"Gulir otomatis luwih apik"</string>
     <string name="feature_autoplay_summary" formatted="false">"Mbukak gulir otomatis ing menu kabeh video"</string>
     <string name="feature_status_bar" formatted="false">"Dhelikake bar status sistem"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Tampilake wilayah pangripta"</string>
     <string name="feature_author_region_summary" formatted="false">"Tampilake gendera lan kode negara utawa wilayah ing jejere jeneng pangripta"</string>
     <string name="feature_copy_comment" formatted="false">"Mung salin teks"</string>
-    <string name="feature_video_translation" formatted="false">"Bukak terjemahan katrangan"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Tampilake pilihan terjemahan ing akun sing durung nduweni"</string>
+    <string name="feature_video_translation" formatted="false">"Menu subtitel lan terjemahan"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Tampilake pilihan ing menu penet suwe"</string>
     <string name="feature_comment_translation" formatted="false">"Terjemahake komentar"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Tambah tombol kanggo nerjemahake komentar basa manca bebarengan"</string>
     <string name="feature_filter_section" formatted="false">"Nyaring linimasa"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Kacepetan"</string>
     <string name="status_feature_progress" formatted="false">"Bar kemajuan"</string>
     <string name="status_feature_clean" formatted="false">"Ndhelik otomatis"</string>
-    <string name="status_feature_immersive" formatted="false">"Layar wutuh"</string>
+    <string name="status_feature_immersive" formatted="false">"Tampilan video"</string>
     <string name="status_feature_scroll" formatted="false">"Gulung otomatis"</string>
     <string name="status_feature_duration" formatted="false">"Pangeling wektu"</string>
     <string name="status_feature_comment_translate" formatted="false">"Terjemahan komentar"</string>
-    <string name="status_feature_video_translate" formatted="false">"Terjemahan katrangan"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu subtitel lan terjemahan"</string>
     <string name="status_feature_comment_copy" formatted="false">"Nyalin komentar"</string>
     <string name="status_feature_author" formatted="false">"Wilayah pangripta"</string>
     <string name="status_feature_download" formatted="false">"Nyimpen video"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Gagal nyimpen. Idin nulis ing panggonan iki durung diwenehake. Pilih panggonan liyane."</string>
     <string name="feature_filter_topics" formatted="false">"Dhelikake saran topik"</string>
     <string name="feature_filter_creators" formatted="false">"Dhelikake saran kreator"</string>
-    <string name="host_scan_title_running" formatted="false">"Nggoleki metode"</string>
-    <string name="host_scan_title_saving" formatted="false">"Nyimpen asil"</string>
     <string name="host_scan_title_complete" formatted="false">"Panelusuran rampung"</string>
     <string name="host_scan_title_failed" formatted="false">"Panelusuran gagal"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Tetep bukak TikTok ing latar ngarep."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Enteni sedhela."</string>
     <string name="host_scan_restart_hint" formatted="false">"Wiwiti maneh TikTok kanthi manual kanggo ngetrapake asil."</string>
     <string name="host_scan_failure_hint" formatted="false">"Delengen diagnostik fitur ing Toki."</string>
-    <string name="host_scan_done" formatted="false">"Ngerti"</string>
     <string name="layout_title" formatted="false">"Tata kaca"</string>
     <string name="layout_summary" formatted="false">"Pilih kontrol sing arep didhelikake"</string>
     <string name="layout_hint" formatted="false">"Uripake saklar kanggo ndhelikake item"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Label informasi"</string>
     <string name="layout_search_label" formatted="false">"Saran telusuran"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Tombol mandheg gulir otomatis"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Koin lan hadiah"</string>
+    <string name="layout_quick_comment" formatted="false">"Komentar cepet"</string>
+    <string name="layout_playlist" formatted="false">"Dhaptar puter"</string>
+    <string name="layout_creation_buttons" formatted="false">"Trabasan nggawe"</string>
+    <string name="layout_live_notice" formatted="false">"Pangeling LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Opasitas"</string>
+    <string name="feature_background_audio">"Bukak audio latar mburi"</string>
+    <string name="layout_landscape">"Tombol layar kebak"</string>
+    <string name="layout_photo_indicators">"Indikator lan pituduh foto"</string>
+    <string name="layout_quick_message">"Pesen cepet lan sing nuduhake"</string>
+    <string name="layout_user_card">"Akun sing disaranake"</string>
+    <string name="layout_survey">"Survei lan tanggapan"</string>
+    <string name="layout_ad_cards">"Kertu produk lan iklan"</string>
+    <string name="layout_bottom_banners">"Banner ngisor liyane"</string>
+    <string name="layout_activities">"Tombol acara"</string>
+    <string name="host_scan_title_running" formatted="false">"Nggoleki metode"</string>
+    <string name="host_scan_title_saving" formatted="false">"Nyimpen asil"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Tetep bukak TikTok ing latar ngarep."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Enteni sedhela."</string>
+    <string name="host_scan_done" formatted="false">"Ngerti"</string>
+    <string name="video_fit_center" formatted="false">"Ing tengah"</string>
+    <string name="video_fit_smart" formatted="false">"Layar kebak"</string>
 </resources>

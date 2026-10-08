@@ -24,6 +24,7 @@ internal object HookStatusCatalog {
         HookFeatureDefinition("VideoDurationAlertHook", R.string.status_feature_duration),
         HookFeatureDefinition("CommentTranslateHook", R.string.status_feature_comment_translate),
         HookFeatureDefinition("VideoTranslateHook", R.string.status_feature_video_translate),
+        HookFeatureDefinition("BackgroundAudioHook", R.string.feature_background_audio),
         HookFeatureDefinition("CommentCopyHook", R.string.status_feature_comment_copy),
         HookFeatureDefinition("AuthorLocationHook", R.string.status_feature_author),
         HookFeatureDefinition("DownloadHook", R.string.status_feature_download),

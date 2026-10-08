@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"播放与交互体验"</string>
     <string name="feature_progress" formatted="false">"总是显示视频进度条"</string>
     <string name="feature_progress_summary" formatted="false">"短视频也常驻显示底部播放进度条"</string>
-    <string name="feature_immersive" formatted="false">"全屏沉浸播放"</string>
-    <string name="feature_immersive_summary" formatted="false">"底栏透明悬浮，视频画面贯通全屏"</string>
+    <string name="feature_immersive" formatted="false">"视频显示"</string>
     <string name="feature_autoplay" formatted="false">"自动连播增强"</string>
     <string name="feature_autoplay_summary" formatted="false">"解锁所有视频页的长按连播入口"</string>
     <string name="feature_status_bar" formatted="false">"隐藏系统状态栏"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"显示作者位置"</string>
     <string name="feature_author_region_summary" formatted="false">"在作者昵称旁显示国家/地区旗帜与代号"</string>
     <string name="feature_copy_comment" formatted="false">"复制评论仅复制正文"</string>
-    <string name="feature_video_translation" formatted="false">"解锁视频内容翻译"</string>
-    <string name="feature_video_translation_summary" formatted="false">"解决部分账号不显示“查看翻译”的问题"</string>
+    <string name="feature_video_translation" formatted="false">"字幕和翻译入口"</string>
+    <string name="feature_video_translation_summary" formatted="false">"解锁长按菜单中的“字幕和翻译”入口"</string>
     <string name="feature_comment_translation" formatted="false">"评论区一键翻译"</string>
     <string name="feature_comment_translation_summary" formatted="false">"在评论区添加翻译按钮，批量翻译外语评论"</string>
     <string name="feature_filter_section" formatted="false">"动态流与精准过滤"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"播放倍速"</string>
     <string name="status_feature_progress" formatted="false">"进度条"</string>
     <string name="status_feature_clean" formatted="false">"自动清屏"</string>
-    <string name="status_feature_immersive" formatted="false">"沉浸播放"</string>
+    <string name="status_feature_immersive" formatted="false">"视频显示"</string>
     <string name="status_feature_scroll" formatted="false">"自动滚动"</string>
     <string name="status_feature_duration" formatted="false">"时长提示"</string>
     <string name="status_feature_comment_translate" formatted="false">"评论翻译"</string>
-    <string name="status_feature_video_translate" formatted="false">"视频文案翻译"</string>
+    <string name="status_feature_video_translate" formatted="false">"字幕和翻译入口"</string>
     <string name="status_feature_comment_copy" formatted="false">"评论复制"</string>
     <string name="status_feature_author" formatted="false">"作者地区"</string>
     <string name="status_feature_download" formatted="false">"视频保存"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"保存失败：所选位置未授予写入权限，请重新选择。"</string>
     <string name="feature_filter_topics" formatted="false">"过滤话题推荐"</string>
     <string name="feature_filter_creators" formatted="false">"过滤创作者推荐"</string>
-    <string name="host_scan_title_running" formatted="false">"正在查找方法"</string>
-    <string name="host_scan_title_saving" formatted="false">"正在保存结果"</string>
     <string name="host_scan_title_complete" formatted="false">"查找完成"</string>
     <string name="host_scan_title_failed" formatted="false">"查找未完成"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"保持 TikTok 在前台。"</string>
-    <string name="host_scan_saving_hint" formatted="false">"请稍候。"</string>
     <string name="host_scan_restart_hint" formatted="false">"请手动重启 TikTok 以应用结果。"</string>
     <string name="host_scan_failure_hint" formatted="false">"请在 Toki 查看功能诊断。"</string>
-    <string name="host_scan_done" formatted="false">"知道了"</string>
     <string name="layout_title" formatted="false">"页面布局净化"</string>
     <string name="layout_summary" formatted="false">"分区选择需要隐藏的控件"</string>
     <string name="layout_hint" formatted="false">"开启开关即可隐藏对应控件"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"信息标签"</string>
     <string name="layout_search_label" formatted="false">"搜索标签"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"停止连播按钮"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"金币与奖励"</string>
+    <string name="layout_quick_comment" formatted="false">"快捷评论"</string>
+    <string name="layout_playlist" formatted="false">"合集入口"</string>
+    <string name="layout_creation_buttons" formatted="false">"创作快捷按钮"</string>
+    <string name="layout_live_notice" formatted="false">"直播预约"</string>
+    <string name="layout_opacity" formatted="false">"不透明度"</string>
+    <string name="feature_background_audio">"解锁背景音频"</string>
+    <string name="layout_landscape">"全屏入口"</string>
+    <string name="layout_photo_indicators">"图集指示与滑动提示"</string>
+    <string name="layout_quick_message">"快捷私信与分享来源"</string>
+    <string name="layout_user_card">"推荐用户卡片"</string>
+    <string name="layout_survey">"问卷与反馈"</string>
+    <string name="layout_ad_cards">"商品与广告卡片"</string>
+    <string name="layout_bottom_banners">"其他底部横幅"</string>
+    <string name="layout_activities">"活动入口"</string>
+    <string name="host_scan_title_running" formatted="false">"正在查找方法"</string>
+    <string name="host_scan_title_saving" formatted="false">"正在保存结果"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"保持 TikTok 在前台。"</string>
+    <string name="host_scan_saving_hint" formatted="false">"请稍候。"</string>
+    <string name="host_scan_done" formatted="false">"知道了"</string>
+    <string name="video_fit_center" formatted="false">"居中"</string>
+    <string name="video_fit_smart" formatted="false">"全屏沉浸"</string>
 </resources>

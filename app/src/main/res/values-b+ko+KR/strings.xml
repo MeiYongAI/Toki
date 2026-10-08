@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"재생"</string>
     <string name="feature_progress" formatted="false">"진행률 표시줄 항상 표시"</string>
     <string name="feature_progress_summary" formatted="false">"짧은 동영상에도 하단 재생 진행률 표시줄을 표시합니다"</string>
-    <string name="feature_immersive" formatted="false">"전체 화면 재생"</string>
-    <string name="feature_immersive_summary" formatted="false">"하단 탐색 바를 투명하게 하여 동영상을 화면 전체에 표시합니다"</string>
+    <string name="feature_immersive" formatted="false">"동영상 표시"</string>
     <string name="feature_autoplay" formatted="false">"자동 스크롤 확장"</string>
     <string name="feature_autoplay_summary" formatted="false">"모든 동영상의 길게 누르기 메뉴에서 자동 스크롤 잠금 해제"</string>
     <string name="feature_status_bar" formatted="false">"시스템 상태 표시줄 숨기기"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"작성자 지역 표시"</string>
     <string name="feature_author_region_summary" formatted="false">"작성자 이름 옆에 국가·지역의 국기와 코드를 표시합니다"</string>
     <string name="feature_copy_comment" formatted="false">"댓글 본문만 복사"</string>
-    <string name="feature_video_translation" formatted="false">"설명 번역 잠금 해제"</string>
-    <string name="feature_video_translation_summary" formatted="false">"일부 계정에서 보이지 않는 번역 옵션을 표시합니다"</string>
+    <string name="feature_video_translation" formatted="false">"자막 및 번역 메뉴"</string>
+    <string name="feature_video_translation_summary" formatted="false">"길게 누르기 메뉴에 항목 표시"</string>
     <string name="feature_comment_translation" formatted="false">"댓글 번역"</string>
     <string name="feature_comment_translation_summary" formatted="false">"댓글에 번역 버튼을 추가하여 외국어 댓글을 한꺼번에 번역합니다"</string>
     <string name="feature_filter_section" formatted="false">"피드 필터링"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"재생 속도"</string>
     <string name="status_feature_progress" formatted="false">"진행률 표시줄"</string>
     <string name="status_feature_clean" formatted="false">"재생 중 조작 버튼 숨김"</string>
-    <string name="status_feature_immersive" formatted="false">"전체 화면"</string>
+    <string name="status_feature_immersive" formatted="false">"동영상 표시"</string>
     <string name="status_feature_scroll" formatted="false">"자동 스크롤"</string>
     <string name="status_feature_duration" formatted="false">"길이 알림"</string>
     <string name="status_feature_comment_translate" formatted="false">"댓글 번역"</string>
-    <string name="status_feature_video_translate" formatted="false">"설명 번역"</string>
+    <string name="status_feature_video_translate" formatted="false">"자막 및 번역 메뉴"</string>
     <string name="status_feature_comment_copy" formatted="false">"댓글 복사"</string>
     <string name="status_feature_author" formatted="false">"작성자 지역"</string>
     <string name="status_feature_download" formatted="false">"동영상 저장"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"저장 실패: 선택한 위치에 쓰기 권한이 없습니다. 다시 선택하세요."</string>
     <string name="feature_filter_topics" formatted="false">"추천 주제 숨기기"</string>
     <string name="feature_filter_creators" formatted="false">"추천 크리에이터 숨기기"</string>
-    <string name="host_scan_title_running" formatted="false">"메서드 찾는 중"</string>
-    <string name="host_scan_title_saving" formatted="false">"결과 저장 중"</string>
     <string name="host_scan_title_complete" formatted="false">"검색 완료"</string>
     <string name="host_scan_title_failed" formatted="false">"검색 실패"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok을 화면에 계속 띄워 두세요."</string>
-    <string name="host_scan_saving_hint" formatted="false">"잠시 기다려 주세요."</string>
     <string name="host_scan_restart_hint" formatted="false">"결과를 적용하려면 TikTok을 직접 다시 시작하세요."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki에서 기능 진단을 확인하세요."</string>
-    <string name="host_scan_done" formatted="false">"알겠어요"</string>
     <string name="layout_title" formatted="false">"화면 레이아웃"</string>
     <string name="layout_summary" formatted="false">"숨길 항목 선택"</string>
     <string name="layout_hint" formatted="false">"스위치를 켜면 해당 항목이 숨겨집니다"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"정보 라벨"</string>
     <string name="layout_search_label" formatted="false">"검색 제안"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"자동 스크롤 중지 버튼"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"코인 및 보상"</string>
+    <string name="layout_quick_comment" formatted="false">"빠른 댓글"</string>
+    <string name="layout_playlist" formatted="false">"재생 목록"</string>
+    <string name="layout_creation_buttons" formatted="false">"만들기 바로가기"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE 알림"</string>
+    <string name="layout_opacity" formatted="false">"불투명도"</string>
+    <string name="feature_background_audio">"백그라운드 오디오 잠금 해제"</string>
+    <string name="layout_landscape">"전체 화면 버튼"</string>
+    <string name="layout_photo_indicators">"사진 표시 및 넘기기 안내"</string>
+    <string name="layout_quick_message">"빠른 메시지 및 공유 출처"</string>
+    <string name="layout_user_card">"추천 계정 카드"</string>
+    <string name="layout_survey">"설문 및 의견"</string>
+    <string name="layout_ad_cards">"상품 및 광고 카드"</string>
+    <string name="layout_bottom_banners">"기타 하단 배너"</string>
+    <string name="layout_activities">"이벤트 진입 버튼"</string>
+    <string name="host_scan_title_running" formatted="false">"메서드 찾는 중"</string>
+    <string name="host_scan_title_saving" formatted="false">"결과 저장 중"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok을 화면에 계속 띄워 두세요."</string>
+    <string name="host_scan_saving_hint" formatted="false">"잠시 기다려 주세요."</string>
+    <string name="host_scan_done" formatted="false">"알겠어요"</string>
+    <string name="video_fit_center" formatted="false">"가운데 정렬"</string>
+    <string name="video_fit_smart" formatted="false">"전체 화면"</string>
 </resources>

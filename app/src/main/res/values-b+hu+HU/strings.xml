@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Lejátszás"</string>
     <string name="feature_progress" formatted="false">"Folyamatjelző állandó megjelenítése"</string>
     <string name="feature_progress_summary" formatted="false">"A folyamatjelző rövid videóknál is látható marad"</string>
-    <string name="feature_immersive" formatted="false">"Teljes képernyős lejátszás"</string>
-    <string name="feature_immersive_summary" formatted="false">"Átlátszó alsó sáv, a teljes képernyőt kitöltő videóval"</string>
+    <string name="feature_immersive" formatted="false">"Videó megjelenítése"</string>
     <string name="feature_autoplay" formatted="false">"Bővített automatikus görgetés"</string>
     <string name="feature_autoplay_summary" formatted="false">"Feloldja az automatikus görgetést minden videó menüjében"</string>
     <string name="feature_status_bar" formatted="false">"Rendszerállapotsáv elrejtése"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Alkotó régiójának megjelenítése"</string>
     <string name="feature_author_region_summary" formatted="false">"Ország- vagy régiózászló és kód megjelenítése az alkotó neve mellett"</string>
     <string name="feature_copy_comment" formatted="false">"Csak szöveg másolása"</string>
-    <string name="feature_video_translation" formatted="false">"Szövegfordítás feloldása"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Fordítási lehetőség megjelenítése azokon a fiókokon, ahol hiányzik"</string>
+    <string name="feature_video_translation" formatted="false">"Feliratok és fordítás menü"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Bejegyzés megjelenítése a hosszú megnyomás menüjében"</string>
     <string name="feature_comment_translation" formatted="false">"Hozzászólások fordítása"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Gomb hozzáadása idegen nyelvű hozzászólások csoportos fordításához"</string>
     <string name="feature_filter_section" formatted="false">"Hírfolyam szűrése"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Sebesség"</string>
     <string name="status_feature_progress" formatted="false">"Folyamatjelző"</string>
     <string name="status_feature_clean" formatted="false">"Automatikus elrejtés"</string>
-    <string name="status_feature_immersive" formatted="false">"Teljes képernyő"</string>
+    <string name="status_feature_immersive" formatted="false">"Videó megjelenítése"</string>
     <string name="status_feature_scroll" formatted="false">"Automatikus görgetés"</string>
     <string name="status_feature_duration" formatted="false">"Hosszjelzés"</string>
     <string name="status_feature_comment_translate" formatted="false">"Hozzászólás fordítása"</string>
-    <string name="status_feature_video_translate" formatted="false">"Szövegfordítás"</string>
+    <string name="status_feature_video_translate" formatted="false">"Feliratok és fordítás menü"</string>
     <string name="status_feature_comment_copy" formatted="false">"Hozzászólás másolása"</string>
     <string name="status_feature_author" formatted="false">"Alkotó régiója"</string>
     <string name="status_feature_download" formatted="false">"Videómentés"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Sikertelen mentés. Nincs írási engedély ehhez a helyhez. Válassz másikat."</string>
     <string name="feature_filter_topics" formatted="false">"Ajánlott témák elrejtése"</string>
     <string name="feature_filter_creators" formatted="false">"Ajánlott alkotók elrejtése"</string>
-    <string name="host_scan_title_running" formatted="false">"Metódusok keresése"</string>
-    <string name="host_scan_title_saving" formatted="false">"Eredmények mentése"</string>
     <string name="host_scan_title_complete" formatted="false">"Keresés befejezve"</string>
     <string name="host_scan_title_failed" formatted="false">"A keresés sikertelen"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Tartsd a TikTok alkalmazást az előtérben."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Kérlek, várj."</string>
     <string name="host_scan_restart_hint" formatted="false">"Az eredmények alkalmazásához indítsd újra kézzel a TikTok alkalmazást."</string>
     <string name="host_scan_failure_hint" formatted="false">"Nézd meg a funkciók diagnosztikáját a Toki alkalmazásban."</string>
-    <string name="host_scan_done" formatted="false">"Értem"</string>
     <string name="layout_title" formatted="false">"Oldalelrendezés"</string>
     <string name="layout_summary" formatted="false">"Válaszd ki az elrejtendő elemeket"</string>
     <string name="layout_hint" formatted="false">"Kapcsold be az elem elrejtéséhez"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Információs címkék"</string>
     <string name="layout_search_label" formatted="false">"Keresési javaslat"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Automatikus görgetés leállítógombja"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Érmék és jutalmak"</string>
+    <string name="layout_quick_comment" formatted="false">"Gyors hozzászólások"</string>
+    <string name="layout_playlist" formatted="false">"Lejátszási lista"</string>
+    <string name="layout_creation_buttons" formatted="false">"Létrehozási parancsikonok"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE-emlékeztetők"</string>
+    <string name="layout_opacity" formatted="false">"Átlátszatlanság"</string>
+    <string name="feature_background_audio">"Háttérhang feloldása"</string>
+    <string name="layout_landscape">"Teljes képernyő gomb"</string>
+    <string name="layout_photo_indicators">"Fotójelzők és tippek"</string>
+    <string name="layout_quick_message">"Gyorsüzenetek és megosztó"</string>
+    <string name="layout_user_card">"Ajánlott fiókok"</string>
+    <string name="layout_survey">"Felmérések és visszajelzés"</string>
+    <string name="layout_ad_cards">"Termék- és hirdetéskártyák"</string>
+    <string name="layout_bottom_banners">"Egyéb alsó szalaghirdetések"</string>
+    <string name="layout_activities">"Események gombja"</string>
+    <string name="host_scan_title_running" formatted="false">"Metódusok keresése"</string>
+    <string name="host_scan_title_saving" formatted="false">"Eredmények mentése"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Tartsd a TikTok alkalmazást az előtérben."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Kérlek, várj."</string>
+    <string name="host_scan_done" formatted="false">"Értem"</string>
+    <string name="video_fit_center" formatted="false">"Középre"</string>
+    <string name="video_fit_smart" formatted="false">"Teljes képernyő"</string>
 </resources>

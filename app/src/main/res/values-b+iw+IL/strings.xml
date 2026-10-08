@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"הפעלה"</string>
     <string name="feature_progress" formatted="false">"הצגת סרגל ההתקדמות תמיד"</string>
     <string name="feature_progress_summary" formatted="false">"הצגת סרגל ההתקדמות התחתון גם בסרטונים קצרים"</string>
-    <string name="feature_immersive" formatted="false">"הפעלה במסך מלא"</string>
-    <string name="feature_immersive_summary" formatted="false">"סרגל תחתון שקוף להצגת הסרטון על כל המסך"</string>
+    <string name="feature_immersive" formatted="false">"תצוגת וידאו"</string>
     <string name="feature_autoplay" formatted="false">"גלילה אוטומטית משופרת"</string>
     <string name="feature_autoplay_summary" formatted="false">"פתיחת גלילה אוטומטית בתפריט של כל סרטון"</string>
     <string name="feature_status_bar" formatted="false">"הסתרת שורת המצב של המערכת"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"הצגת אזור היוצר"</string>
     <string name="feature_author_region_summary" formatted="false">"הצגת דגל וקוד מדינה או אזור לצד שם היוצר"</string>
     <string name="feature_copy_comment" formatted="false">"העתקת טקסט בלבד"</string>
-    <string name="feature_video_translation" formatted="false">"פתיחת תרגום תיאורים"</string>
-    <string name="feature_video_translation_summary" formatted="false">"הצגת אפשרות התרגום בחשבונות שבהם היא חסרה"</string>
+    <string name="feature_video_translation" formatted="false">"תפריט כתוביות ותרגום"</string>
+    <string name="feature_video_translation_summary" formatted="false">"הצגת האפשרות בתפריט הלחיצה הארוכה"</string>
     <string name="feature_comment_translation" formatted="false">"תרגום תגובות"</string>
     <string name="feature_comment_translation_summary" formatted="false">"הוספת כפתור לתרגום מרוכז של תגובות בשפות זרות"</string>
     <string name="feature_filter_section" formatted="false">"סינון הפיד"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"מהירות הפעלה"</string>
     <string name="status_feature_progress" formatted="false">"סרגל התקדמות"</string>
     <string name="status_feature_clean" formatted="false">"הסתרת פקדים בהפעלה"</string>
-    <string name="status_feature_immersive" formatted="false">"מסך מלא"</string>
+    <string name="status_feature_immersive" formatted="false">"תצוגת וידאו"</string>
     <string name="status_feature_scroll" formatted="false">"גלילה אוטומטית"</string>
     <string name="status_feature_duration" formatted="false">"התראת אורך"</string>
     <string name="status_feature_comment_translate" formatted="false">"תרגום תגובות"</string>
-    <string name="status_feature_video_translate" formatted="false">"תרגום תיאורים"</string>
+    <string name="status_feature_video_translate" formatted="false">"תפריט כתוביות ותרגום"</string>
     <string name="status_feature_comment_copy" formatted="false">"העתקת תגובות"</string>
     <string name="status_feature_author" formatted="false">"אזור היוצר"</string>
     <string name="status_feature_download" formatted="false">"שמירת סרטונים"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"השמירה נכשלה: אין הרשאת כתיבה למיקום שנבחר. יש לבחור שוב."</string>
     <string name="feature_filter_topics" formatted="false">"הסתרת נושאים מוצעים"</string>
     <string name="feature_filter_creators" formatted="false">"הסתרת יוצרים מוצעים"</string>
-    <string name="host_scan_title_running" formatted="false">"חיפוש שיטות"</string>
-    <string name="host_scan_title_saving" formatted="false">"שמירת תוצאות"</string>
     <string name="host_scan_title_complete" formatted="false">"החיפוש הושלם"</string>
     <string name="host_scan_title_failed" formatted="false">"החיפוש נכשל"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"יש להשאיר את TikTok בחזית."</string>
-    <string name="host_scan_saving_hint" formatted="false">"נא להמתין."</string>
     <string name="host_scan_restart_hint" formatted="false">"יש להפעיל מחדש את TikTok באופן ידני כדי להחיל את התוצאות."</string>
     <string name="host_scan_failure_hint" formatted="false">"ניתן לצפות באבחון התכונות ב-Toki."</string>
-    <string name="host_scan_done" formatted="false">"הבנתי"</string>
     <string name="layout_title" formatted="false">"פריסת העמוד"</string>
     <string name="layout_summary" formatted="false">"בחירת הפקדים להסתרה"</string>
     <string name="layout_hint" formatted="false">"הפעלת המתג מסתירה את הפריט"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"תוויות מידע"</string>
     <string name="layout_search_label" formatted="false">"הצעת חיפוש"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"כפתור עצירת גלילה אוטומטית"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"מטבעות ופרסים"</string>
+    <string name="layout_quick_comment" formatted="false">"תגובות מהירות"</string>
+    <string name="layout_playlist" formatted="false">"רשימת השמעה"</string>
+    <string name="layout_creation_buttons" formatted="false">"קיצורי דרך ליצירה"</string>
+    <string name="layout_live_notice" formatted="false">"תזכורות לשידורים חיים"</string>
+    <string name="layout_opacity" formatted="false">"אטימות"</string>
+    <string name="feature_background_audio">"פתיחת שמע ברקע"</string>
+    <string name="layout_landscape">"כפתור מסך מלא"</string>
+    <string name="layout_photo_indicators">"מחוונים ורמזים לתמונות"</string>
+    <string name="layout_quick_message">"הודעות מהירות ומקור השיתוף"</string>
+    <string name="layout_user_card">"חשבונות מומלצים"</string>
+    <string name="layout_survey">"סקרים ומשוב"</string>
+    <string name="layout_ad_cards">"כרטיסי מוצרים ופרסומות"</string>
+    <string name="layout_bottom_banners">"באנרים תחתונים אחרים"</string>
+    <string name="layout_activities">"כניסה לאירועים"</string>
+    <string name="host_scan_title_running" formatted="false">"חיפוש שיטות"</string>
+    <string name="host_scan_title_saving" formatted="false">"שמירת תוצאות"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"יש להשאיר את TikTok בחזית."</string>
+    <string name="host_scan_saving_hint" formatted="false">"נא להמתין."</string>
+    <string name="host_scan_done" formatted="false">"הבנתי"</string>
+    <string name="video_fit_center" formatted="false">"במרכז"</string>
+    <string name="video_fit_smart" formatted="false">"מסך מלא"</string>
 </resources>

@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Reprodução"</string>
     <string name="feature_progress" formatted="false">"Mostrar sempre a barra de progresso"</string>
     <string name="feature_progress_summary" formatted="false">"Manter a barra de progresso visível, mesmo em vídeos curtos"</string>
-    <string name="feature_immersive" formatted="false">"Reprodução em ecrã inteiro"</string>
-    <string name="feature_immersive_summary" formatted="false">"Tornar a barra inferior transparente para vídeo em todo o ecrã"</string>
+    <string name="feature_immersive" formatted="false">"Exibição de vídeo"</string>
     <string name="feature_autoplay" formatted="false">"Deslocamento automático melhorado"</string>
     <string name="feature_autoplay_summary" formatted="false">"Desbloqueia o deslocamento automático no menu de todos os vídeos"</string>
     <string name="feature_status_bar" formatted="false">"Ocultar barra de estado do sistema"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Mostrar região do criador"</string>
     <string name="feature_author_region_summary" formatted="false">"Mostrar a bandeira e o código do país ou região junto ao nome do criador"</string>
     <string name="feature_copy_comment" formatted="false">"Copiar só o texto"</string>
-    <string name="feature_video_translation" formatted="false">"Desbloquear tradução de textos"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Mostrar a opção de tradução nas contas onde não está disponível"</string>
+    <string name="feature_video_translation" formatted="false">"Menu de legendas e tradução"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Mostrar a opção no menu de toque prolongado"</string>
     <string name="feature_comment_translation" formatted="false">"Traduzir comentários"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Adicionar um botão para traduzir vários comentários em línguas estrangeiras"</string>
     <string name="feature_filter_section" formatted="false">"Filtragem do feed"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Velocidade"</string>
     <string name="status_feature_progress" formatted="false">"Barra de progresso"</string>
     <string name="status_feature_clean" formatted="false">"Ocultar controlos ao reproduzir"</string>
-    <string name="status_feature_immersive" formatted="false">"Ecrã inteiro"</string>
+    <string name="status_feature_immersive" formatted="false">"Exibição de vídeo"</string>
     <string name="status_feature_scroll" formatted="false">"Deslocamento automático"</string>
     <string name="status_feature_duration" formatted="false">"Aviso de duração"</string>
     <string name="status_feature_comment_translate" formatted="false">"Traduzir comentários"</string>
-    <string name="status_feature_video_translate" formatted="false">"Tradução de textos"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu de legendas e tradução"</string>
     <string name="status_feature_comment_copy" formatted="false">"Copiar comentários"</string>
     <string name="status_feature_author" formatted="false">"Região do criador"</string>
     <string name="status_feature_download" formatted="false">"Guardar vídeos"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Falha ao guardar. Não foi concedida permissão de escrita neste local. Selecione outro."</string>
     <string name="feature_filter_topics" formatted="false">"Ocultar sugestões de temas"</string>
     <string name="feature_filter_creators" formatted="false">"Ocultar criadores sugeridos"</string>
-    <string name="host_scan_title_running" formatted="false">"A procurar métodos"</string>
-    <string name="host_scan_title_saving" formatted="false">"A guardar resultados"</string>
     <string name="host_scan_title_complete" formatted="false">"Pesquisa concluída"</string>
     <string name="host_scan_title_failed" formatted="false">"A pesquisa falhou"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Mantenha o TikTok em primeiro plano."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Aguarde."</string>
     <string name="host_scan_restart_hint" formatted="false">"Reinicie o TikTok manualmente para aplicar os resultados."</string>
     <string name="host_scan_failure_hint" formatted="false">"Consulte o diagnóstico de funcionalidades no Toki."</string>
-    <string name="host_scan_done" formatted="false">"Entendido"</string>
     <string name="layout_title" formatted="false">"Esquema da página"</string>
     <string name="layout_summary" formatted="false">"Escolhe os controlos a ocultar"</string>
     <string name="layout_hint" formatted="false">"Ativa o interruptor para ocultar o elemento"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Etiquetas informativas"</string>
     <string name="layout_search_label" formatted="false">"Sugestão de pesquisa"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Botão para parar o deslocamento automático"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Moedas e recompensas"</string>
+    <string name="layout_quick_comment" formatted="false">"Comentários rápidos"</string>
+    <string name="layout_playlist" formatted="false">"Lista de reprodução"</string>
+    <string name="layout_creation_buttons" formatted="false">"Atalhos de criação"</string>
+    <string name="layout_live_notice" formatted="false">"Lembretes de LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Opacidade"</string>
+    <string name="feature_background_audio">"Desbloquear áudio em segundo plano"</string>
+    <string name="layout_landscape">"Botão de ecrã inteiro"</string>
+    <string name="layout_photo_indicators">"Indicadores e dicas de fotos"</string>
+    <string name="layout_quick_message">"Mensagens rápidas e origem da partilha"</string>
+    <string name="layout_user_card">"Contas sugeridas"</string>
+    <string name="layout_survey">"Inquéritos e comentários"</string>
+    <string name="layout_ad_cards">"Cartões de produtos e anúncios"</string>
+    <string name="layout_bottom_banners">"Outros banners inferiores"</string>
+    <string name="layout_activities">"Acesso a eventos"</string>
+    <string name="host_scan_title_running" formatted="false">"A procurar métodos"</string>
+    <string name="host_scan_title_saving" formatted="false">"A guardar resultados"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Mantenha o TikTok em primeiro plano."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Aguarde."</string>
+    <string name="host_scan_done" formatted="false">"Entendido"</string>
+    <string name="video_fit_center" formatted="false">"Centrado"</string>
+    <string name="video_fit_smart" formatted="false">"Ecrã inteiro"</string>
 </resources>

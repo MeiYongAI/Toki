@@ -1,6 +1,6 @@
 package io.github.meiyongai.toki.hook
 
-/** 扫描和缓存发布的有序阶段；完成结果等待用户确认与手动重启。 */
+/** 扫描和缓存发布的有序阶段；完成结果等待用户确认。 */
 internal enum class HostScanPhase { IDLE, SCANNING, SAVING, READY, FAILED }
 
 /** 单次发布的不可变进度；单位表示已处理工作，不表示预计耗时。 */
@@ -58,7 +58,7 @@ internal class HostScanSession {
      */
     @Synchronized fun fail() { status = status.copy(phase = HostScanPhase.FAILED) }
 
-    /** 仅确认完成或失败提示，不改变缓存和宿主进程。@return Unit。Callers: HostScanController、单元测试。 */
+    /** 用户关闭结果窗口，不改变缓存和宿主进程。无参数，返回 Unit。Callers: HostScanController、单元测试。 */
     @Synchronized fun dismissResult() {
         check(status.phase == HostScanPhase.READY || status.phase == HostScanPhase.FAILED)
         status = HostScanStatus()

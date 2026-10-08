@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"التشغيل"</string>
     <string name="feature_progress" formatted="false">"إظهار شريط التقدم دائمًا"</string>
     <string name="feature_progress_summary" formatted="false">"إبقاء شريط التقدم السفلي ظاهرًا حتى في الفيديوهات القصيرة"</string>
-    <string name="feature_immersive" formatted="false">"تشغيل بملء الشاشة"</string>
-    <string name="feature_immersive_summary" formatted="false">"جعل الشريط السفلي شفافًا لعرض الفيديو على كامل الشاشة"</string>
+    <string name="feature_immersive" formatted="false">"عرض الفيديو"</string>
     <string name="feature_autoplay" formatted="false">"تمرير تلقائي محسّن"</string>
     <string name="feature_autoplay_summary" formatted="false">"إتاحة التمرير التلقائي في قوائم جميع الفيديوهات"</string>
     <string name="feature_status_bar" formatted="false">"إخفاء شريط حالة النظام"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"إظهار منطقة المنشئ"</string>
     <string name="feature_author_region_summary" formatted="false">"إظهار علم البلد أو المنطقة ورمزها بجانب اسم المنشئ"</string>
     <string name="feature_copy_comment" formatted="false">"نسخ النص فقط"</string>
-    <string name="feature_video_translation" formatted="false">"فتح ترجمة الأوصاف"</string>
-    <string name="feature_video_translation_summary" formatted="false">"إظهار خيار الترجمة للحسابات التي لا يظهر لديها"</string>
+    <string name="feature_video_translation" formatted="false">"قائمة الترجمة والتسميات التوضيحية"</string>
+    <string name="feature_video_translation_summary" formatted="false">"إظهار المدخل في قائمة الضغط المطوّل"</string>
     <string name="feature_comment_translation" formatted="false">"ترجمة التعليقات"</string>
     <string name="feature_comment_translation_summary" formatted="false">"إضافة زر لترجمة التعليقات الأجنبية دفعة واحدة"</string>
     <string name="feature_filter_section" formatted="false">"تصفية الموجز"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"سرعة التشغيل"</string>
     <string name="status_feature_progress" formatted="false">"شريط التقدم"</string>
     <string name="status_feature_clean" formatted="false">"إخفاء التحكم أثناء التشغيل"</string>
-    <string name="status_feature_immersive" formatted="false">"ملء الشاشة"</string>
+    <string name="status_feature_immersive" formatted="false">"عرض الفيديو"</string>
     <string name="status_feature_scroll" formatted="false">"التمرير التلقائي"</string>
     <string name="status_feature_duration" formatted="false">"تنبيه المدة"</string>
     <string name="status_feature_comment_translate" formatted="false">"ترجمة التعليقات"</string>
-    <string name="status_feature_video_translate" formatted="false">"ترجمة الأوصاف"</string>
+    <string name="status_feature_video_translate" formatted="false">"قائمة الترجمة والتسميات التوضيحية"</string>
     <string name="status_feature_comment_copy" formatted="false">"نسخ التعليقات"</string>
     <string name="status_feature_author" formatted="false">"منطقة المنشئ"</string>
     <string name="status_feature_download" formatted="false">"حفظ الفيديو"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"فشل الحفظ: لا توجد صلاحية للكتابة في الموقع المحدد. اختره مجددًا."</string>
     <string name="feature_filter_topics" formatted="false">"إخفاء المواضيع المقترحة"</string>
     <string name="feature_filter_creators" formatted="false">"إخفاء المبدعين المقترحين"</string>
-    <string name="host_scan_title_running" formatted="false">"جارٍ البحث عن الطرق"</string>
-    <string name="host_scan_title_saving" formatted="false">"جارٍ حفظ النتائج"</string>
     <string name="host_scan_title_complete" formatted="false">"اكتمل البحث"</string>
     <string name="host_scan_title_failed" formatted="false">"فشل البحث"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"أبقِ TikTok في المقدمة."</string>
-    <string name="host_scan_saving_hint" formatted="false">"يُرجى الانتظار."</string>
     <string name="host_scan_restart_hint" formatted="false">"أعد تشغيل TikTok يدويًا لتطبيق النتائج."</string>
     <string name="host_scan_failure_hint" formatted="false">"اعرض تشخيص الميزات في Toki."</string>
-    <string name="host_scan_done" formatted="false">"فهمت"</string>
     <string name="layout_title" formatted="false">"تخصيص الواجهة"</string>
     <string name="layout_summary" formatted="false">"اختر العناصر التي تريد إخفاءها"</string>
     <string name="layout_hint" formatted="false">"فعّل المفتاح لإخفاء العنصر"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"تسميات المعلومات"</string>
     <string name="layout_search_label" formatted="false">"اقتراح البحث"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"زر إيقاف التمرير التلقائي"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"العملات والمكافآت"</string>
+    <string name="layout_quick_comment" formatted="false">"التعليقات السريعة"</string>
+    <string name="layout_playlist" formatted="false">"قائمة التشغيل"</string>
+    <string name="layout_creation_buttons" formatted="false">"اختصارات الإنشاء"</string>
+    <string name="layout_live_notice" formatted="false">"تذكيرات البث"</string>
+    <string name="layout_opacity" formatted="false">"التعتيم"</string>
+    <string name="feature_background_audio">"فتح الصوت في الخلفية"</string>
+    <string name="layout_landscape">"زر ملء الشاشة"</string>
+    <string name="layout_photo_indicators">"مؤشرات الصور وتلميحاتها"</string>
+    <string name="layout_quick_message">"الرسائل السريعة ومصدر المشاركة"</string>
+    <string name="layout_user_card">"الحسابات المقترحة"</string>
+    <string name="layout_survey">"الاستطلاعات والملاحظات"</string>
+    <string name="layout_ad_cards">"بطاقات المنتجات والإعلانات"</string>
+    <string name="layout_bottom_banners">"اللافتات السفلية الأخرى"</string>
+    <string name="layout_activities">"مدخل الفعاليات"</string>
+    <string name="host_scan_title_running" formatted="false">"جارٍ البحث عن الطرق"</string>
+    <string name="host_scan_title_saving" formatted="false">"جارٍ حفظ النتائج"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"أبقِ TikTok في المقدمة."</string>
+    <string name="host_scan_saving_hint" formatted="false">"يُرجى الانتظار."</string>
+    <string name="host_scan_done" formatted="false">"فهمت"</string>
+    <string name="video_fit_center" formatted="false">"توسيط الفيديو"</string>
+    <string name="video_fit_smart" formatted="false">"ملء الشاشة"</string>
 </resources>

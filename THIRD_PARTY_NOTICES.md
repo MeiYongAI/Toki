@@ -15,6 +15,14 @@ in effect for their code and binary distributions.
   <https://github.com/google/guava>
 - dexlib2 (smali), licensed under the BSD 3-Clause License.
   <https://github.com/JesusFreke/smali>
+- DexKit 2.0.7, distributed under LGPL-3.0 and Apache-2.0 as declared in its Maven metadata.
+  Source for the unmodified dependency: <https://github.com/LuckyPray/DexKit/tree/2.0.7>.
+  License texts: <https://www.gnu.org/licenses/lgpl-3.0.html> and
+  <https://www.apache.org/licenses/LICENSE-2.0>.
+- FlatBuffers Java, licensed under the Apache License 2.0.
+  <https://github.com/google/flatbuffers>
+- Rikka cxx 1.2.0 (Android C++ runtime packaging).
+  <https://github.com/RikkaW/ndk-cxx>
 
 Test-only dependencies include JUnit 4 (Eclipse Public License 1.0),
 Robolectric (MIT), AndroidX Compose test libraries (Apache License 2.0),

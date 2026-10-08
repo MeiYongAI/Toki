@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Ойнату"</string>
     <string name="feature_progress" formatted="false">"Орындалу жолағын үнемі көрсету"</string>
     <string name="feature_progress_summary" formatted="false">"Қысқа бейнелерде де төменгі орындалу жолағын көрсету"</string>
-    <string name="feature_immersive" formatted="false">"Толық экранда ойнату"</string>
-    <string name="feature_immersive_summary" formatted="false">"Төменгі жолақты мөлдір етіп, бейнені бүкіл экранға көрсету"</string>
+    <string name="feature_immersive" formatted="false">"Бейнені көрсету"</string>
     <string name="feature_autoplay" formatted="false">"Жетілдірілген автоайналдыру"</string>
     <string name="feature_autoplay_summary" formatted="false">"Барлық видео мәзірінде автоайналдыруды ашады"</string>
     <string name="feature_status_bar" formatted="false">"Жүйенің күй жолағын жасыру"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Автор аймағын көрсету"</string>
     <string name="feature_author_region_summary" formatted="false">"Автор атының жанында елдің немесе аймақтың туы мен кодын көрсету"</string>
     <string name="feature_copy_comment" formatted="false">"Тек мәтінді көшіру"</string>
-    <string name="feature_video_translation" formatted="false">"Сипаттама аудармасын ашу"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Аударма таңдауы жоқ тіркелгілерде оны көрсету"</string>
+    <string name="feature_video_translation" formatted="false">"Субтитрлер мен аударма мәзірі"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Ұзақ басу мәзірінде тармақты көрсету"</string>
     <string name="feature_comment_translation" formatted="false">"Пікірлерді аудару"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Шет тіліндегі пікірлерді бірге аударуға арналған түйме қосу"</string>
     <string name="feature_filter_section" formatted="false">"Таспаны сүзу"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Жылдамдық"</string>
     <string name="status_feature_progress" formatted="false">"Орындалу жолағы"</string>
     <string name="status_feature_clean" formatted="false">"Ойнатқанда басқаруды жасыру"</string>
-    <string name="status_feature_immersive" formatted="false">"Толық экран"</string>
+    <string name="status_feature_immersive" formatted="false">"Бейнені көрсету"</string>
     <string name="status_feature_scroll" formatted="false">"Автоматты айналдыру"</string>
     <string name="status_feature_duration" formatted="false">"Ұзақтық ескертуі"</string>
     <string name="status_feature_comment_translate" formatted="false">"Пікірлер аудармасы"</string>
-    <string name="status_feature_video_translate" formatted="false">"Сипаттама аудармасы"</string>
+    <string name="status_feature_video_translate" formatted="false">"Субтитрлер мен аударма мәзірі"</string>
     <string name="status_feature_comment_copy" formatted="false">"Пікірлерді көшіру"</string>
     <string name="status_feature_author" formatted="false">"Автор аймағы"</string>
     <string name="status_feature_download" formatted="false">"Бейнені сақтау"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Сақтау сәтсіз: таңдалған орынға жазу рұқсаты жоқ. Қайта таңдаңыз."</string>
     <string name="feature_filter_topics" formatted="false">"Ұсынылған тақырыптарды жасыру"</string>
     <string name="feature_filter_creators" formatted="false">"Ұсынылған авторларды жасыру"</string>
-    <string name="host_scan_title_running" formatted="false">"Әдістер ізделуде"</string>
-    <string name="host_scan_title_saving" formatted="false">"Нәтижелер сақталуда"</string>
     <string name="host_scan_title_complete" formatted="false">"Іздеу аяқталды"</string>
     <string name="host_scan_title_failed" formatted="false">"Іздеу сәтсіз аяқталды"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok қолданбасын алдыңғы қатарда ұстаңыз."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Күте тұрыңыз."</string>
     <string name="host_scan_restart_hint" formatted="false">"Нәтижелерді қолдану үшін TikTok қолданбасын қолмен қайта іске қосыңыз."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki ішіндегі функциялар диагностикасын қараңыз."</string>
-    <string name="host_scan_done" formatted="false">"Түсіндім"</string>
     <string name="layout_title" formatted="false">"Бет орналасуы"</string>
     <string name="layout_summary" formatted="false">"Жасырылатын басқару элементтерін таңдаңыз"</string>
     <string name="layout_hint" formatted="false">"Элементті жасыру үшін қосқышты қосыңыз"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Ақпарат белгілері"</string>
     <string name="layout_search_label" formatted="false">"Іздеу ұсынысы"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Автоматты айналдыруды тоқтату түймесі"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Монеталар мен сыйақылар"</string>
+    <string name="layout_quick_comment" formatted="false">"Жылдам пікірлер"</string>
+    <string name="layout_playlist" formatted="false">"Ойнату тізімі"</string>
+    <string name="layout_creation_buttons" formatted="false">"Жасау таңбашалары"</string>
+    <string name="layout_live_notice" formatted="false">"Тікелей эфир еске салғыштары"</string>
+    <string name="layout_opacity" formatted="false">"Мөлдір еместік"</string>
+    <string name="feature_background_audio">"Фондық аудионы ашу"</string>
+    <string name="layout_landscape">"Толық экран түймесі"</string>
+    <string name="layout_photo_indicators">"Фото көрсеткіштері мен кеңестер"</string>
+    <string name="layout_quick_message">"Жылдам хабарлар және бөліскен адам"</string>
+    <string name="layout_user_card">"Ұсынылған аккаунттар"</string>
+    <string name="layout_survey">"Сауалнамалар мен пікірлер"</string>
+    <string name="layout_ad_cards">"Тауар және жарнама карталары"</string>
+    <string name="layout_bottom_banners">"Басқа төменгі баннерлер"</string>
+    <string name="layout_activities">"Іс-шараларға кіру"</string>
+    <string name="host_scan_title_running" formatted="false">"Әдістер ізделуде"</string>
+    <string name="host_scan_title_saving" formatted="false">"Нәтижелер сақталуда"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok қолданбасын алдыңғы қатарда ұстаңыз."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Күте тұрыңыз."</string>
+    <string name="host_scan_done" formatted="false">"Түсіндім"</string>
+    <string name="video_fit_center" formatted="false">"Ортада"</string>
+    <string name="video_fit_smart" formatted="false">"Толық экран"</string>
 </resources>

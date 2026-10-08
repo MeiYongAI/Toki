@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Pag-play"</string>
     <string name="feature_progress" formatted="false">"Kanunay ipakita ang progress bar"</string>
     <string name="feature_progress_summary" formatted="false">"Ipadayon ang pagpakita sa progress bar, bisan sa mugbong mga video"</string>
-    <string name="feature_immersive" formatted="false">"Pag-play sa tibuok screen"</string>
-    <string name="feature_immersive_summary" formatted="false">"Himoon nga transparent ang ubos nga bar aron mapuno sa video ang screen"</string>
+    <string name="feature_immersive" formatted="false">"Pagpakita sa video"</string>
     <string name="feature_autoplay" formatted="false">"Gipaayong auto-scroll"</string>
     <string name="feature_autoplay_summary" formatted="false">"Maablihan ang auto-scroll sa menu sa tanang video"</string>
     <string name="feature_status_bar" formatted="false">"Itago ang status bar sa sistema"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Ipakita ang rehiyon sa tiglalang"</string>
     <string name="feature_author_region_summary" formatted="false">"Ipakita ang bandila ug code sa nasod o rehiyon tapad sa ngalan sa tiglalang"</string>
     <string name="feature_copy_comment" formatted="false">"Kopyaha ang teksto ra"</string>
-    <string name="feature_video_translation" formatted="false">"Ablihi ang hubad sa paghulagway"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Ipakita ang kapilian sa paghubad sa mga account nga wala niini"</string>
+    <string name="feature_video_translation" formatted="false">"Menu sa subtitle ug paghubad"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Ipakita ang opsyon sa menu sa dugay nga pagpislit"</string>
     <string name="feature_comment_translation" formatted="false">"Hubara ang komento"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Idugang ang buton aron dungan nga hubaron ang mga komento sa laing pinulongan"</string>
     <string name="feature_filter_section" formatted="false">"Pagsala sa feed"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Katulin"</string>
     <string name="status_feature_progress" formatted="false">"Progress bar"</string>
     <string name="status_feature_clean" formatted="false">"Awtomatikong pagtago"</string>
-    <string name="status_feature_immersive" formatted="false">"Tibuok screen"</string>
+    <string name="status_feature_immersive" formatted="false">"Pagpakita sa video"</string>
     <string name="status_feature_scroll" formatted="false">"Awtomatikong pag-scroll"</string>
     <string name="status_feature_duration" formatted="false">"Pahimangno sa gitas-on"</string>
     <string name="status_feature_comment_translate" formatted="false">"Hubad sa komento"</string>
-    <string name="status_feature_video_translate" formatted="false">"Hubad sa paghulagway"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu sa subtitle ug paghubad"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kopya sa komento"</string>
     <string name="status_feature_author" formatted="false">"Rehiyon sa tiglalang"</string>
     <string name="status_feature_download" formatted="false">"Tipig sa video"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Napakyas ang pagtipig. Wala gihatag ang pagtugot sa pagsulat niini nga lokasyon. Pagpili og lain."</string>
     <string name="feature_filter_topics" formatted="false">"Itago ang gisugyot nga mga topiko"</string>
     <string name="feature_filter_creators" formatted="false">"Itago ang gisugyot nga mga creator"</string>
-    <string name="host_scan_title_running" formatted="false">"Nangita og mga metodo"</string>
-    <string name="host_scan_title_saving" formatted="false">"Gitipigan ang mga resulta"</string>
     <string name="host_scan_title_complete" formatted="false">"Nahuman ang pagpangita"</string>
     <string name="host_scan_title_failed" formatted="false">"Napakyas ang pagpangita"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Ipadayon ang TikTok sa atubangan."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Palihog paghulat."</string>
     <string name="host_scan_restart_hint" formatted="false">"Manwal nga i-restart ang TikTok aron maaplikar ang mga resulta."</string>
     <string name="host_scan_failure_hint" formatted="false">"Tan-awa ang mga diagnostic sa mga feature sa Toki."</string>
-    <string name="host_scan_done" formatted="false">"Nasabtan"</string>
     <string name="layout_title" formatted="false">"Porma sa pahina"</string>
     <string name="layout_summary" formatted="false">"Pilia ang mga kontrol nga itago"</string>
     <string name="layout_hint" formatted="false">"I-on ang switch aron itago ang item"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Mga label sa impormasyon"</string>
     <string name="layout_search_label" formatted="false">"Sugyot sa pagpangita"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Buton sa paghunong sa auto scroll"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Mga coin ug ganti"</string>
+    <string name="layout_quick_comment" formatted="false">"Daling komento"</string>
+    <string name="layout_playlist" formatted="false">"Playlist"</string>
+    <string name="layout_creation_buttons" formatted="false">"Mga shortcut sa paghimo"</string>
+    <string name="layout_live_notice" formatted="false">"Mga pahinumdom sa LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Pagkadili-aninag"</string>
+    <string name="feature_background_audio">"I-unlock ang background audio"</string>
+    <string name="layout_landscape">"Buton sa tibuok screen"</string>
+    <string name="layout_photo_indicators">"Mga timailhan ug giya sa litrato"</string>
+    <string name="layout_quick_message">"Daling mensahe ug nagpaambit"</string>
+    <string name="layout_user_card">"Gisugyot nga mga account"</string>
+    <string name="layout_survey">"Mga survey ug feedback"</string>
+    <string name="layout_ad_cards">"Mga kard sa produkto ug ad"</string>
+    <string name="layout_bottom_banners">"Ubang banner sa ubos"</string>
+    <string name="layout_activities">"Agianan sa kalihokan"</string>
+    <string name="host_scan_title_running" formatted="false">"Nangita og mga metodo"</string>
+    <string name="host_scan_title_saving" formatted="false">"Gitipigan ang mga resulta"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Ipadayon ang TikTok sa atubangan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Palihog paghulat."</string>
+    <string name="host_scan_done" formatted="false">"Nasabtan"</string>
+    <string name="video_fit_center" formatted="false">"Sa tunga"</string>
+    <string name="video_fit_smart" formatted="false">"Tibuok screen"</string>
 </resources>

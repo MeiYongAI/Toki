@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Pemutaran"</string>
     <string name="feature_progress" formatted="false">"Selalu tampilkan bilah progres"</string>
     <string name="feature_progress_summary" formatted="false">"Tetap menampilkan bilah progres, bahkan pada video pendek"</string>
-    <string name="feature_immersive" formatted="false">"Pemutaran layar penuh"</string>
-    <string name="feature_immersive_summary" formatted="false">"Membuat bilah bawah transparan agar video memenuhi layar"</string>
+    <string name="feature_immersive" formatted="false">"Tampilan video"</string>
     <string name="feature_autoplay" formatted="false">"Gulir otomatis yang ditingkatkan"</string>
     <string name="feature_autoplay_summary" formatted="false">"Buka gulir otomatis di menu semua video"</string>
     <string name="feature_status_bar" formatted="false">"Sembunyikan bilah status sistem"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Tampilkan wilayah kreator"</string>
     <string name="feature_author_region_summary" formatted="false">"Tampilkan bendera dan kode negara atau wilayah di samping nama kreator"</string>
     <string name="feature_copy_comment" formatted="false">"Salin teks saja"</string>
-    <string name="feature_video_translation" formatted="false">"Buka terjemahan deskripsi"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Tampilkan opsi terjemahan pada akun yang belum memilikinya"</string>
+    <string name="feature_video_translation" formatted="false">"Menu subtitel dan terjemahan"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Tampilkan opsi di menu tekan lama"</string>
     <string name="feature_comment_translation" formatted="false">"Terjemahkan komentar"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Tambahkan tombol untuk menerjemahkan komentar berbahasa asing sekaligus"</string>
     <string name="feature_filter_section" formatted="false">"Penyaringan linimasa"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Kecepatan"</string>
     <string name="status_feature_progress" formatted="false">"Bilah progres"</string>
     <string name="status_feature_clean" formatted="false">"Sembunyi otomatis"</string>
-    <string name="status_feature_immersive" formatted="false">"Layar penuh"</string>
+    <string name="status_feature_immersive" formatted="false">"Tampilan video"</string>
     <string name="status_feature_scroll" formatted="false">"Gulir otomatis"</string>
     <string name="status_feature_duration" formatted="false">"Peringatan durasi"</string>
     <string name="status_feature_comment_translate" formatted="false">"Terjemahan komentar"</string>
-    <string name="status_feature_video_translate" formatted="false">"Terjemahan deskripsi"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu subtitel dan terjemahan"</string>
     <string name="status_feature_comment_copy" formatted="false">"Salin komentar"</string>
     <string name="status_feature_author" formatted="false">"Wilayah kreator"</string>
     <string name="status_feature_download" formatted="false">"Simpan video"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Gagal menyimpan. Izin menulis di lokasi ini belum diberikan. Pilih lokasi lain."</string>
     <string name="feature_filter_topics" formatted="false">"Sembunyikan saran topik"</string>
     <string name="feature_filter_creators" formatted="false">"Sembunyikan saran kreator"</string>
-    <string name="host_scan_title_running" formatted="false">"Mencari metode"</string>
-    <string name="host_scan_title_saving" formatted="false">"Menyimpan hasil"</string>
     <string name="host_scan_title_complete" formatted="false">"Pencarian selesai"</string>
     <string name="host_scan_title_failed" formatted="false">"Pencarian gagal"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Biarkan TikTok tetap di latar depan."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Harap tunggu."</string>
     <string name="host_scan_restart_hint" formatted="false">"Mulai ulang TikTok secara manual untuk menerapkan hasilnya."</string>
     <string name="host_scan_failure_hint" formatted="false">"Lihat diagnostik fitur di Toki."</string>
-    <string name="host_scan_done" formatted="false">"Mengerti"</string>
     <string name="layout_title" formatted="false">"Tata letak halaman"</string>
     <string name="layout_summary" formatted="false">"Pilih kontrol yang ingin disembunyikan"</string>
     <string name="layout_hint" formatted="false">"Aktifkan sakelar untuk menyembunyikan item"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Label informasi"</string>
     <string name="layout_search_label" formatted="false">"Saran pencarian"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Tombol hentikan gulir otomatis"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Koin dan hadiah"</string>
+    <string name="layout_quick_comment" formatted="false">"Komentar cepat"</string>
+    <string name="layout_playlist" formatted="false">"Daftar putar"</string>
+    <string name="layout_creation_buttons" formatted="false">"Pintasan kreasi"</string>
+    <string name="layout_live_notice" formatted="false">"Pengingat LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Opasitas"</string>
+    <string name="feature_background_audio">"Buka audio latar belakang"</string>
+    <string name="layout_landscape">"Tombol layar penuh"</string>
+    <string name="layout_photo_indicators">"Indikator dan petunjuk foto"</string>
+    <string name="layout_quick_message">"Pesan cepat dan sumber berbagi"</string>
+    <string name="layout_user_card">"Akun yang disarankan"</string>
+    <string name="layout_survey">"Survei dan masukan"</string>
+    <string name="layout_ad_cards">"Kartu produk dan iklan"</string>
+    <string name="layout_bottom_banners">"Banner bawah lainnya"</string>
+    <string name="layout_activities">"Tombol acara"</string>
+    <string name="host_scan_title_running" formatted="false">"Mencari metode"</string>
+    <string name="host_scan_title_saving" formatted="false">"Menyimpan hasil"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Biarkan TikTok tetap di latar depan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Harap tunggu."</string>
+    <string name="host_scan_done" formatted="false">"Mengerti"</string>
+    <string name="video_fit_center" formatted="false">"Di tengah"</string>
+    <string name="video_fit_smart" formatted="false">"Layar penuh"</string>
 </resources>

@@ -199,6 +199,13 @@ object ConfigClient {
     /** 保存开关。@param context 管理端上下文。@param key 配置键。@param value 值。@return Unit。Callers: DashboardScreen。 */
     fun putBoolean(context: Context, key: String, value: Boolean) { init(context); store.update(mapOf(key to value)) }
 
+    /** 保存分区透明度及安装开关。@param context 管理端。@param group 分区。@param percent 不透明百分比。@return Unit。Callers: LayoutOpacityControl。 */
+    fun putLayoutOpacity(context: Context, group: io.github.meiyongai.toki.model.LayoutGroup, percent: Int) {
+        require(percent in 0..100)
+        init(context)
+        store.update(mapOf(group.opacityKey to percent.toString(), group.opacityEnabledKey to (percent != 100)))
+    }
+
     /** 保存字符串。@param context 管理端上下文。@param key 配置键。@param value 值，null 删除。@return Unit。Callers: DashboardScreen。 */
     fun putString(context: Context, key: String, value: String?) { init(context); store.update(mapOf(key to value)) }
 

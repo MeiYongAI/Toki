@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Redare"</string>
     <string name="feature_progress" formatted="false">"Arată mereu bara de progres"</string>
     <string name="feature_progress_summary" formatted="false">"Menține bara de progres vizibilă, inclusiv la videoclipurile scurte"</string>
-    <string name="feature_immersive" formatted="false">"Redare pe tot ecranul"</string>
-    <string name="feature_immersive_summary" formatted="false">"Fă bara de jos transparentă pentru videoclipuri pe tot ecranul"</string>
+    <string name="feature_immersive" formatted="false">"Afișare video"</string>
     <string name="feature_autoplay" formatted="false">"Derulare automată extinsă"</string>
     <string name="feature_autoplay_summary" formatted="false">"Deblochează derularea automată în meniul oricărui videoclip"</string>
     <string name="feature_status_bar" formatted="false">"Ascunde bara de stare a sistemului"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Arată regiunea creatorului"</string>
     <string name="feature_author_region_summary" formatted="false">"Arată steagul și codul țării sau regiunii lângă numele creatorului"</string>
     <string name="feature_copy_comment" formatted="false">"Copiază doar textul"</string>
-    <string name="feature_video_translation" formatted="false">"Deblochează traducerea textelor"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Arată opțiunea de traducere pentru conturile unde lipsește"</string>
+    <string name="feature_video_translation" formatted="false">"Meniu de subtitrări și traducere"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Afișează opțiunea în meniul de apăsare lungă"</string>
     <string name="feature_comment_translation" formatted="false">"Tradu comentariile"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Adaugă un buton pentru traducerea în bloc a comentariilor în limbi străine"</string>
     <string name="feature_filter_section" formatted="false">"Filtrarea fluxului"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Viteză"</string>
     <string name="status_feature_progress" formatted="false">"Bară de progres"</string>
     <string name="status_feature_clean" formatted="false">"Ascunde comenzile la redare"</string>
-    <string name="status_feature_immersive" formatted="false">"Ecran complet"</string>
+    <string name="status_feature_immersive" formatted="false">"Afișare video"</string>
     <string name="status_feature_scroll" formatted="false">"Derulare automată"</string>
     <string name="status_feature_duration" formatted="false">"Alertă de durată"</string>
     <string name="status_feature_comment_translate" formatted="false">"Traducere comentarii"</string>
-    <string name="status_feature_video_translate" formatted="false">"Traducere texte"</string>
+    <string name="status_feature_video_translate" formatted="false">"Meniu de subtitrări și traducere"</string>
     <string name="status_feature_comment_copy" formatted="false">"Copiere comentarii"</string>
     <string name="status_feature_author" formatted="false">"Regiunea creatorului"</string>
     <string name="status_feature_download" formatted="false">"Salvare video"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Salvarea a eșuat. Nu există permisiune de scriere în această locație. Selectează alta."</string>
     <string name="feature_filter_topics" formatted="false">"Ascunde subiectele sugerate"</string>
     <string name="feature_filter_creators" formatted="false">"Ascunde creatorii sugerați"</string>
-    <string name="host_scan_title_running" formatted="false">"Se caută metode"</string>
-    <string name="host_scan_title_saving" formatted="false">"Se salvează rezultatele"</string>
     <string name="host_scan_title_complete" formatted="false">"Căutare finalizată"</string>
     <string name="host_scan_title_failed" formatted="false">"Căutarea a eșuat"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Menține TikTok în prim-plan."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Te rugăm să aștepți."</string>
     <string name="host_scan_restart_hint" formatted="false">"Repornește TikTok manual pentru a aplica rezultatele."</string>
     <string name="host_scan_failure_hint" formatted="false">"Vezi diagnosticarea funcțiilor în Toki."</string>
-    <string name="host_scan_done" formatted="false">"Am înțeles"</string>
     <string name="layout_title" formatted="false">"Aspectul paginii"</string>
     <string name="layout_summary" formatted="false">"Alege comenzile de ascuns"</string>
     <string name="layout_hint" formatted="false">"Activează comutatorul pentru a ascunde elementul"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Etichete informative"</string>
     <string name="layout_search_label" formatted="false">"Sugestie de căutare"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Buton de oprire a derulării automate"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Monede și recompense"</string>
+    <string name="layout_quick_comment" formatted="false">"Comentarii rapide"</string>
+    <string name="layout_playlist" formatted="false">"Listă de redare"</string>
+    <string name="layout_creation_buttons" formatted="false">"Scurtături de creare"</string>
+    <string name="layout_live_notice" formatted="false">"Mementouri LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Opacitate"</string>
+    <string name="feature_background_audio">"Deblochează sunetul în fundal"</string>
+    <string name="layout_landscape">"Buton ecran complet"</string>
+    <string name="layout_photo_indicators">"Indicatori și indicii pentru fotografii"</string>
+    <string name="layout_quick_message">"Mesaje rapide și sursa distribuirii"</string>
+    <string name="layout_user_card">"Conturi sugerate"</string>
+    <string name="layout_survey">"Sondaje și feedback"</string>
+    <string name="layout_ad_cards">"Carduri de produse și reclame"</string>
+    <string name="layout_bottom_banners">"Alte bannere inferioare"</string>
+    <string name="layout_activities">"Acces la evenimente"</string>
+    <string name="host_scan_title_running" formatted="false">"Se caută metode"</string>
+    <string name="host_scan_title_saving" formatted="false">"Se salvează rezultatele"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Menține TikTok în prim-plan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Te rugăm să aștepți."</string>
+    <string name="host_scan_done" formatted="false">"Am înțeles"</string>
+    <string name="video_fit_center" formatted="false">"Centrat"</string>
+    <string name="video_fit_smart" formatted="false">"Ecran complet"</string>
 </resources>

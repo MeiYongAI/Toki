@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Oynatma"</string>
     <string name="feature_progress" formatted="false">"İlerleme çubuğunu hep göster"</string>
     <string name="feature_progress_summary" formatted="false">"Kısa videolarda da alt ilerleme çubuğunu gösterir"</string>
-    <string name="feature_immersive" formatted="false">"Tam ekran oynatma"</string>
-    <string name="feature_immersive_summary" formatted="false">"Alt çubuğu saydam yaparak videoyu ekranın tamamına yayar"</string>
+    <string name="feature_immersive" formatted="false">"Video görünümü"</string>
     <string name="feature_autoplay" formatted="false">"Gelişmiş otomatik kaydırma"</string>
     <string name="feature_autoplay_summary" formatted="false">"Tüm video menülerinde otomatik kaydırmayı açar"</string>
     <string name="feature_status_bar" formatted="false">"Sistem durum çubuğunu gizle"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"İçerik üreticisinin bölgesini göster"</string>
     <string name="feature_author_region_summary" formatted="false">"İsmin yanında ülke veya bölge bayrağını ve kodunu gösterir"</string>
     <string name="feature_copy_comment" formatted="false">"Yalnızca metni kopyala"</string>
-    <string name="feature_video_translation" formatted="false">"Açıklama çevirisini aç"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Çeviri seçeneği görünmeyen hesaplarda seçeneği gösterir"</string>
+    <string name="feature_video_translation" formatted="false">"Altyazı ve çeviri menüsü"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Uzun basma menüsünde seçeneği göster"</string>
     <string name="feature_comment_translation" formatted="false">"Yorumları çevir"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Yabancı dildeki yorumları topluca çevirmek için düğme ekler"</string>
     <string name="feature_filter_section" formatted="false">"Akış filtreleme"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Oynatma hızı"</string>
     <string name="status_feature_progress" formatted="false">"İlerleme çubuğu"</string>
     <string name="status_feature_clean" formatted="false">"Oynatırken kontrolleri gizle"</string>
-    <string name="status_feature_immersive" formatted="false">"Tam ekran oynatma"</string>
+    <string name="status_feature_immersive" formatted="false">"Video görünümü"</string>
     <string name="status_feature_scroll" formatted="false">"Otomatik kaydırma"</string>
     <string name="status_feature_duration" formatted="false">"Süre uyarısı"</string>
     <string name="status_feature_comment_translate" formatted="false">"Yorum çevirisi"</string>
-    <string name="status_feature_video_translate" formatted="false">"Açıklama çevirisi"</string>
+    <string name="status_feature_video_translate" formatted="false">"Altyazı ve çeviri menüsü"</string>
     <string name="status_feature_comment_copy" formatted="false">"Yorum kopyalama"</string>
     <string name="status_feature_author" formatted="false">"Üretici bölgesi"</string>
     <string name="status_feature_download" formatted="false">"Video kaydetme"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Kaydedilemedi: seçilen konuma yazma izni yok. Yeniden seçin."</string>
     <string name="feature_filter_topics" formatted="false">"Önerilen konuları gizle"</string>
     <string name="feature_filter_creators" formatted="false">"Önerilen içerik üreticilerini gizle"</string>
-    <string name="host_scan_title_running" formatted="false">"Yöntemler aranıyor"</string>
-    <string name="host_scan_title_saving" formatted="false">"Sonuçlar kaydediliyor"</string>
     <string name="host_scan_title_complete" formatted="false">"Arama tamamlandı"</string>
     <string name="host_scan_title_failed" formatted="false">"Arama başarısız"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok\'u ön planda tutun."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Lütfen bekleyin."</string>
     <string name="host_scan_restart_hint" formatted="false">"Sonuçları uygulamak için TikTok\'u elle yeniden başlatın."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki\'de özellik tanılamasını görüntüleyin."</string>
-    <string name="host_scan_done" formatted="false">"Anladım"</string>
     <string name="layout_title" formatted="false">"Sayfa düzeni"</string>
     <string name="layout_summary" formatted="false">"Gizlenecek kontrolleri seçin"</string>
     <string name="layout_hint" formatted="false">"Öğeyi gizlemek için anahtarı açın"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Bilgi etiketleri"</string>
     <string name="layout_search_label" formatted="false">"Arama önerisi"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Otomatik kaydırmayı durdurma düğmesi"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Jetonlar ve ödüller"</string>
+    <string name="layout_quick_comment" formatted="false">"Hızlı yorumlar"</string>
+    <string name="layout_playlist" formatted="false">"Çalma listesi"</string>
+    <string name="layout_creation_buttons" formatted="false">"Oluşturma kısayolları"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE hatırlatıcıları"</string>
+    <string name="layout_opacity" formatted="false">"Opaklık"</string>
+    <string name="feature_background_audio">"Arka plan sesini aç"</string>
+    <string name="layout_landscape">"Tam ekran düğmesi"</string>
+    <string name="layout_photo_indicators">"Fotoğraf göstergeleri ve ipuçları"</string>
+    <string name="layout_quick_message">"Hızlı mesajlar ve paylaşan kişi"</string>
+    <string name="layout_user_card">"Önerilen hesaplar"</string>
+    <string name="layout_survey">"Anketler ve geri bildirim"</string>
+    <string name="layout_ad_cards">"Ürün ve reklam kartları"</string>
+    <string name="layout_bottom_banners">"Diğer alt bannerlar"</string>
+    <string name="layout_activities">"Etkinlik girişi"</string>
+    <string name="host_scan_title_running" formatted="false">"Yöntemler aranıyor"</string>
+    <string name="host_scan_title_saving" formatted="false">"Sonuçlar kaydediliyor"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok\'u ön planda tutun."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Lütfen bekleyin."</string>
+    <string name="host_scan_done" formatted="false">"Anladım"</string>
+    <string name="video_fit_center" formatted="false">"Ortala"</string>
+    <string name="video_fit_smart" formatted="false">"Tam ekran"</string>
 </resources>

@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Athsheinm"</string>
     <string name="feature_progress" formatted="false">"Taispeáin dul chun cinn i gcónaí"</string>
     <string name="feature_progress_summary" formatted="false">"Coinníonn sé an barra dul chun cinn infheicthe, fiú ar fhíseáin ghearra"</string>
-    <string name="feature_immersive" formatted="false">"Athsheinm lánscáileáin"</string>
-    <string name="feature_immersive_summary" formatted="false">"Déanann sé an barra íochtair trédhearcach chun an scáileán a líonadh leis an bhfíseán"</string>
+    <string name="feature_immersive" formatted="false">"Taispeáint físeáin"</string>
     <string name="feature_autoplay" formatted="false">"Scrollú uathoibríoch feabhsaithe"</string>
     <string name="feature_autoplay_summary" formatted="false">"Díghlasáil scrollú uathoibríoch i roghchlár gach físeáin"</string>
     <string name="feature_status_bar" formatted="false">"Folaigh barra stádais an chórais"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Taispeáin réigiún an chruthaitheora"</string>
     <string name="feature_author_region_summary" formatted="false">"Taispeáin bratach agus cód na tíre nó an réigiúin in aice le hainm an chruthaitheora"</string>
     <string name="feature_copy_comment" formatted="false">"Cóipeáil téacs amháin"</string>
-    <string name="feature_video_translation" formatted="false">"Díghlasáil aistriúchán téacs"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Taispeáin an rogha aistriúcháin do chuntais nach bhfuil sí ar fáil dóibh"</string>
+    <string name="feature_video_translation" formatted="false">"Roghchlár fotheideal agus aistriúcháin"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Taispeáin an rogha sa roghchlár brú fada"</string>
     <string name="feature_comment_translation" formatted="false">"Aistrigh nótaí tráchta"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Cuir cnaipe leis chun nótaí tráchta i dteangacha eile a aistriú i mbaisceanna"</string>
     <string name="feature_filter_section" formatted="false">"Scagadh an fhotha"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Luas"</string>
     <string name="status_feature_progress" formatted="false">"Barra dul chun cinn"</string>
     <string name="status_feature_clean" formatted="false">"Folú uathoibríoch"</string>
-    <string name="status_feature_immersive" formatted="false">"Lánscáileán"</string>
+    <string name="status_feature_immersive" formatted="false">"Taispeáint físeáin"</string>
     <string name="status_feature_scroll" formatted="false">"Scrollú uathoibríoch"</string>
     <string name="status_feature_duration" formatted="false">"Foláireamh faid"</string>
     <string name="status_feature_comment_translate" formatted="false">"Aistriú nótaí tráchta"</string>
-    <string name="status_feature_video_translate" formatted="false">"Aistriú téacs"</string>
+    <string name="status_feature_video_translate" formatted="false">"Roghchlár fotheideal agus aistriúcháin"</string>
     <string name="status_feature_comment_copy" formatted="false">"Cóipeáil nótaí tráchta"</string>
     <string name="status_feature_author" formatted="false">"Réigiún an chruthaitheora"</string>
     <string name="status_feature_download" formatted="false">"Sábháil físeán"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Theip ar shábháil. Níor deonaíodh cead scríofa don suíomh seo. Roghnaigh suíomh eile."</string>
     <string name="feature_filter_topics" formatted="false">"Folaigh ábhair mholta"</string>
     <string name="feature_filter_creators" formatted="false">"Folaigh cruthaitheoirí molta"</string>
-    <string name="host_scan_title_running" formatted="false">"Modhanna á lorg"</string>
-    <string name="host_scan_title_saving" formatted="false">"Torthaí á sábháil"</string>
     <string name="host_scan_title_complete" formatted="false">"Cuardach críochnaithe"</string>
     <string name="host_scan_title_failed" formatted="false">"Theip ar an gcuardach"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Coinnigh TikTok sa tulra."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Fan go fóill."</string>
     <string name="host_scan_restart_hint" formatted="false">"Atosaigh TikTok de láimh chun na torthaí a chur i bhfeidhm."</string>
     <string name="host_scan_failure_hint" formatted="false">"Féach ar dhiagnóisic na ngnéithe in Toki."</string>
-    <string name="host_scan_done" formatted="false">"Tuigim"</string>
     <string name="layout_title" formatted="false">"Leagan amach"</string>
     <string name="layout_summary" formatted="false">"Roghnaigh na rialtáin le cur i bhfolach"</string>
     <string name="layout_hint" formatted="false">"Cuir an lasc ar siúl chun an mhír a cheilt"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Lipéid eolais"</string>
     <string name="layout_search_label" formatted="false">"Moladh cuardaigh"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Cnaipe chun uathscrollú a stopadh"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Boinn agus luaíochtaí"</string>
+    <string name="layout_quick_comment" formatted="false">"Tráchtanna tapa"</string>
+    <string name="layout_playlist" formatted="false">"Seinmliosta"</string>
+    <string name="layout_creation_buttons" formatted="false">"Aicearraí cruthaithe"</string>
+    <string name="layout_live_notice" formatted="false">"Meabhrúcháin bheo"</string>
+    <string name="layout_opacity" formatted="false">"Teimhneacht"</string>
+    <string name="feature_background_audio">"Díghlasáil fuaim chúlra"</string>
+    <string name="layout_landscape">"Cnaipe lánscáileáin"</string>
+    <string name="layout_photo_indicators">"Táscairí agus leideanna grianghraf"</string>
+    <string name="layout_quick_message">"Teachtaireachtaí tapa agus foinse comhroinnte"</string>
+    <string name="layout_user_card">"Cuntais mholta"</string>
+    <string name="layout_survey">"Suirbhéanna agus aiseolas"</string>
+    <string name="layout_ad_cards">"Cártaí táirgí agus fógraí"</string>
+    <string name="layout_bottom_banners">"Meirgí íochtaracha eile"</string>
+    <string name="layout_activities">"Rochtain ar imeachtaí"</string>
+    <string name="host_scan_title_running" formatted="false">"Modhanna á lorg"</string>
+    <string name="host_scan_title_saving" formatted="false">"Torthaí á sábháil"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Coinnigh TikTok sa tulra."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Fan go fóill."</string>
+    <string name="host_scan_done" formatted="false">"Tuigim"</string>
+    <string name="video_fit_center" formatted="false">"Láraithe"</string>
+    <string name="video_fit_smart" formatted="false">"Lánscáileán"</string>
 </resources>

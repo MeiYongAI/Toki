@@ -14,11 +14,25 @@ internal class HostScanPlan(
     private val exact = stored.getProperty("cache.key") == HostDexIndex.digest("$format\n$identity\n$rules")
     private val sameCode = exact || (stored.getProperty("cache.identity") == identity &&
         stored.getProperty("cache.format") == format)
-    val retained: Set<HostSymbol> = if (!sameCode) emptySet() else HostSymbols.coverage(stored).filterTo(linkedSetOf()) {
+    val retained: Set<HostSymbol> = if (!sameCode) emptySet() else currentCoverage().filterTo(linkedSetOf()) {
         HostSymbols.cacheComplete(stored, setOf(it), setOf(it)) &&
             (exact || stored.getProperty("cache.rule.${it.name}") == fingerprint(it))
     }
     val pending = required - retained
+
+    /**
+     * 将持久缓存覆盖范围投影到当前规则目录，移除不再定义的目标。
+     * @return 当前目录中有缓存记录的符号；无参数。
+     * Callers: retained 初始化。
+     */
+    private fun currentCoverage(): Set<HostSymbol> {
+        val names = checkNotNull(stored.getProperty("cache.symbols")) { "适配缓存缺少符号覆盖范围" }
+        require(names.isNotBlank()) { "适配缓存符号覆盖范围为空" }
+        val covered = names.split(',').toSet()
+        val defined = source.lineSequence().filter { it.isNotBlank() && !it.startsWith("#") }
+            .map { it.substringBefore('\t') }.toSet()
+        return HostSymbol.entries.filterTo(linkedSetOf()) { it.name in covered && it.name in defined }
+    }
 
     /** @param symbol 查找目标。@return 该目标全部规则摘要，忽略行顺序和换行风格。Callers: 初始化、merge。 */
     private fun fingerprint(symbol: HostSymbol): String = HostDexIndex.digest(

@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Ijro"</string>
     <string name="feature_progress" formatted="false">"Ijro chizigʻini doim koʻrsatish"</string>
     <string name="feature_progress_summary" formatted="false">"Qisqa videolarda ham ijro chizigʻini koʻrsatish"</string>
-    <string name="feature_immersive" formatted="false">"Toʻliq ekranda ijro"</string>
-    <string name="feature_immersive_summary" formatted="false">"Video butun ekranga yoyilishi uchun pastki panelni shaffof qilish"</string>
+    <string name="feature_immersive" formatted="false">"Video ko‘rinishi"</string>
     <string name="feature_autoplay" formatted="false">"Kengaytirilgan avtomatik aylantirish"</string>
     <string name="feature_autoplay_summary" formatted="false">"Barcha video menyularida avtomatik aylantirishni ochadi"</string>
     <string name="feature_status_bar" formatted="false">"Tizim holat panelini yashirish"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Muallif hududini koʻrsatish"</string>
     <string name="feature_author_region_summary" formatted="false">"Muallif nomi yonida mamlakat yoki hudud bayrogʻi va kodini koʻrsatish"</string>
     <string name="feature_copy_comment" formatted="false">"Faqat matnni nusxalash"</string>
-    <string name="feature_video_translation" formatted="false">"Matn tarjimasini ochish"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Tarjima mavjud boʻlmagan hisoblarda tarjima bandini koʻrsatish"</string>
+    <string name="feature_video_translation" formatted="false">"Subtitr va tarjima menyusi"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Uzoq bosish menyusida bandni ko‘rsatish"</string>
     <string name="feature_comment_translation" formatted="false">"Izohlarni tarjima qilish"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Chet tilidagi izohlarni birgalikda tarjima qiluvchi tugma qoʻshish"</string>
     <string name="feature_filter_section" formatted="false">"Tasma filtrlari"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Tezlik"</string>
     <string name="status_feature_progress" formatted="false">"Ijro chizigʻi"</string>
     <string name="status_feature_clean" formatted="false">"Avtomatik yashirish"</string>
-    <string name="status_feature_immersive" formatted="false">"Toʻliq ekran"</string>
+    <string name="status_feature_immersive" formatted="false">"Video ko‘rinishi"</string>
     <string name="status_feature_scroll" formatted="false">"Avtomatik aylantirish"</string>
     <string name="status_feature_duration" formatted="false">"Uzunlik ogohlantirishi"</string>
     <string name="status_feature_comment_translate" formatted="false">"Izohlar tarjimasi"</string>
-    <string name="status_feature_video_translate" formatted="false">"Matn tarjimasi"</string>
+    <string name="status_feature_video_translate" formatted="false">"Subtitr va tarjima menyusi"</string>
     <string name="status_feature_comment_copy" formatted="false">"Izohlarni nusxalash"</string>
     <string name="status_feature_author" formatted="false">"Muallif hududi"</string>
     <string name="status_feature_download" formatted="false">"Video saqlash"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Saqlash amalga oshmadi. Bu joyga yozish ruxsati berilmagan. Boshqa joyni tanlang."</string>
     <string name="feature_filter_topics" formatted="false">"Tavsiya etilgan mavzularni yashirish"</string>
     <string name="feature_filter_creators" formatted="false">"Tavsiya etilgan ijodkorlarni yashirish"</string>
-    <string name="host_scan_title_running" formatted="false">"Metodlar qidirilmoqda"</string>
-    <string name="host_scan_title_saving" formatted="false">"Natijalar saqlanmoqda"</string>
     <string name="host_scan_title_complete" formatted="false">"Qidiruv tugallandi"</string>
     <string name="host_scan_title_failed" formatted="false">"Qidiruv amalga oshmadi"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok ilovasini old planda saqlang."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Iltimos, kuting."</string>
     <string name="host_scan_restart_hint" formatted="false">"Natijalarni qoʻllash uchun TikTok ilovasini qoʻlda qayta ishga tushiring."</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki ilovasida funksiyalar diagnostikasini koʻring."</string>
-    <string name="host_scan_done" formatted="false">"Tushunarli"</string>
     <string name="layout_title" formatted="false">"Sahifa tartibi"</string>
     <string name="layout_summary" formatted="false">"Yashiriladigan tugmalarni tanlang"</string>
     <string name="layout_hint" formatted="false">"Elementni yashirish uchun kalitni yoqing"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Ma’lumot yorliqlari"</string>
     <string name="layout_search_label" formatted="false">"Qidiruv taklifi"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Avtomatik aylantirishni to‘xtatish tugmasi"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Tangalar va mukofotlar"</string>
+    <string name="layout_quick_comment" formatted="false">"Tezkor izohlar"</string>
+    <string name="layout_playlist" formatted="false">"Pleylist"</string>
+    <string name="layout_creation_buttons" formatted="false">"Yaratish yorliqlari"</string>
+    <string name="layout_live_notice" formatted="false">"Jonli efir eslatmalari"</string>
+    <string name="layout_opacity" formatted="false">"Xiralik"</string>
+    <string name="feature_background_audio">"Fondagi audioni ochish"</string>
+    <string name="layout_landscape">"Toʻliq ekran tugmasi"</string>
+    <string name="layout_photo_indicators">"Surat koʻrsatkichlari va maslahatlar"</string>
+    <string name="layout_quick_message">"Tezkor xabarlar va ulashgan shaxs"</string>
+    <string name="layout_user_card">"Tavsiya etilgan hisoblar"</string>
+    <string name="layout_survey">"Soʻrovnomalar va fikrlar"</string>
+    <string name="layout_ad_cards">"Mahsulot va reklama kartalari"</string>
+    <string name="layout_bottom_banners">"Boshqa pastki bannerlar"</string>
+    <string name="layout_activities">"Tadbirga kirish"</string>
+    <string name="host_scan_title_running" formatted="false">"Metodlar qidirilmoqda"</string>
+    <string name="host_scan_title_saving" formatted="false">"Natijalar saqlanmoqda"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok ilovasini old planda saqlang."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Iltimos, kuting."</string>
+    <string name="host_scan_done" formatted="false">"Tushunarli"</string>
+    <string name="video_fit_center" formatted="false">"Markazda"</string>
+    <string name="video_fit_smart" formatted="false">"To‘liq ekran"</string>
 </resources>

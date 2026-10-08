@@ -1,0 +1,4 @@
+# 这些资源参与预计算适配的摘要，工作区与发布包必须保留相同字节。
+app/src/main/resources/toki-host-rules.tsv text eol=lf
+app/src/main/resources/toki-host-shapes.tsv text eol=lf
+app/src/main/resources/toki-host-profiles/*.properties text eol=lf

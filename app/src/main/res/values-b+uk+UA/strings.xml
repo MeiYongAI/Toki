@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Відтворення"</string>
     <string name="feature_progress" formatted="false">"Завжди показувати прогрес"</string>
     <string name="feature_progress_summary" formatted="false">"Показувати нижню смугу прогресу навіть у коротких відео"</string>
-    <string name="feature_immersive" formatted="false">"Повноекранний режим"</string>
-    <string name="feature_immersive_summary" formatted="false">"Прозора нижня панель і відео на весь екран"</string>
+    <string name="feature_immersive" formatted="false">"Відображення відео"</string>
     <string name="feature_autoplay" formatted="false">"Розширене автопрокручування"</string>
     <string name="feature_autoplay_summary" formatted="false">"Відкриває автопрокручування в меню всіх відео"</string>
     <string name="feature_status_bar" formatted="false">"Приховати системний рядок стану"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Показувати регіон автора"</string>
     <string name="feature_author_region_summary" formatted="false">"Показувати прапор і код країни або регіону біля імені автора"</string>
     <string name="feature_copy_comment" formatted="false">"Копіювати лише текст"</string>
-    <string name="feature_video_translation" formatted="false">"Відкрити переклад описів"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Показувати переклад для облікових записів, де цього пункту немає"</string>
+    <string name="feature_video_translation" formatted="false">"Меню субтитрів і перекладу"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Показати пункт у меню довгого натискання"</string>
     <string name="feature_comment_translation" formatted="false">"Переклад коментарів"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Додати кнопку для масового перекладу іншомовних коментарів"</string>
     <string name="feature_filter_section" formatted="false">"Фільтрація стрічки"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Швидкість"</string>
     <string name="status_feature_progress" formatted="false">"Смуга прогресу"</string>
     <string name="status_feature_clean" formatted="false">"Автоприховування керування"</string>
-    <string name="status_feature_immersive" formatted="false">"Повний екран"</string>
+    <string name="status_feature_immersive" formatted="false">"Відображення відео"</string>
     <string name="status_feature_scroll" formatted="false">"Автопрокручування"</string>
     <string name="status_feature_duration" formatted="false">"Нагадування про довжину"</string>
     <string name="status_feature_comment_translate" formatted="false">"Переклад коментарів"</string>
-    <string name="status_feature_video_translate" formatted="false">"Переклад описів"</string>
+    <string name="status_feature_video_translate" formatted="false">"Меню субтитрів і перекладу"</string>
     <string name="status_feature_comment_copy" formatted="false">"Копіювання коментарів"</string>
     <string name="status_feature_author" formatted="false">"Регіон автора"</string>
     <string name="status_feature_download" formatted="false">"Збереження відео"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Не вдалося зберегти: немає дозволу на запис у вибране місце. Виберіть його знову."</string>
     <string name="feature_filter_topics" formatted="false">"Приховувати рекомендовані теми"</string>
     <string name="feature_filter_creators" formatted="false">"Приховувати рекомендованих авторів"</string>
-    <string name="host_scan_title_running" formatted="false">"Пошук методів"</string>
-    <string name="host_scan_title_saving" formatted="false">"Збереження результатів"</string>
     <string name="host_scan_title_complete" formatted="false">"Пошук завершено"</string>
     <string name="host_scan_title_failed" formatted="false">"Пошук не вдався"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Залиште TikTok на передньому плані."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Зачекайте."</string>
     <string name="host_scan_restart_hint" formatted="false">"Перезапустіть TikTok вручну, щоб застосувати результати."</string>
     <string name="host_scan_failure_hint" formatted="false">"Перегляньте діагностику функцій у Toki."</string>
-    <string name="host_scan_done" formatted="false">"Зрозуміло"</string>
     <string name="layout_title" formatted="false">"Оформлення сторінок"</string>
     <string name="layout_summary" formatted="false">"Виберіть елементи для приховування"</string>
     <string name="layout_hint" formatted="false">"Увімкніть перемикач, щоб приховати елемент"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Інформаційні мітки"</string>
     <string name="layout_search_label" formatted="false">"Пошукова підказка"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Кнопка зупинки автопрокрутки"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Монети й нагороди"</string>
+    <string name="layout_quick_comment" formatted="false">"Швидкі коментарі"</string>
+    <string name="layout_playlist" formatted="false">"Список відтворення"</string>
+    <string name="layout_creation_buttons" formatted="false">"Кнопки створення"</string>
+    <string name="layout_live_notice" formatted="false">"Нагадування про ефіри"</string>
+    <string name="layout_opacity" formatted="false">"Непрозорість"</string>
+    <string name="feature_background_audio">"Розблокувати фонове аудіо"</string>
+    <string name="layout_landscape">"Кнопка повного екрана"</string>
+    <string name="layout_photo_indicators">"Індикатори фото й підказки"</string>
+    <string name="layout_quick_message">"Швидкі повідомлення й автор поширення"</string>
+    <string name="layout_user_card">"Рекомендовані акаунти"</string>
+    <string name="layout_survey">"Опитування та відгуки"</string>
+    <string name="layout_ad_cards">"Картки товарів і реклами"</string>
+    <string name="layout_bottom_banners">"Інші нижні банери"</string>
+    <string name="layout_activities">"Вхід до подій"</string>
+    <string name="host_scan_title_running" formatted="false">"Пошук методів"</string>
+    <string name="host_scan_title_saving" formatted="false">"Збереження результатів"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Залиште TikTok на передньому плані."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Зачекайте."</string>
+    <string name="host_scan_done" formatted="false">"Зрозуміло"</string>
+    <string name="video_fit_center" formatted="false">"По центру"</string>
+    <string name="video_fit_smart" formatted="false">"Повний екран"</string>
 </resources>

@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Avspilling"</string>
     <string name="feature_progress" formatted="false">"Vis alltid fremdriftslinjen"</string>
     <string name="feature_progress_summary" formatted="false">"Hold fremdriftslinjen synlig, også i korte videoer"</string>
-    <string name="feature_immersive" formatted="false">"Fullskjermavspilling"</string>
-    <string name="feature_immersive_summary" formatted="false">"Gjør bunnlinjen gjennomsiktig for video over hele skjermen"</string>
+    <string name="feature_immersive" formatted="false">"Videovisning"</string>
     <string name="feature_autoplay" formatted="false">"Utvidet automatisk rulling"</string>
     <string name="feature_autoplay_summary" formatted="false">"Lås opp automatisk rulling i alle videomenyer"</string>
     <string name="feature_status_bar" formatted="false">"Skjul systemets statuslinje"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Vis skaperens region"</string>
     <string name="feature_author_region_summary" formatted="false">"Vis flagg og kode for land eller region ved skaperens navn"</string>
     <string name="feature_copy_comment" formatted="false">"Kopier bare tekst"</string>
-    <string name="feature_video_translation" formatted="false">"Lås opp tekstoversettelse"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Vis oversettelsesvalget for kontoer der det mangler"</string>
+    <string name="feature_video_translation" formatted="false">"Meny for undertekster og oversettelse"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Vis valget i menyen ved langt trykk"</string>
     <string name="feature_comment_translation" formatted="false">"Oversett kommentarer"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Legg til en knapp for å oversette flere fremmedspråklige kommentarer"</string>
     <string name="feature_filter_section" formatted="false">"Filtrering av strømmen"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Hastighet"</string>
     <string name="status_feature_progress" formatted="false">"Fremdriftslinje"</string>
     <string name="status_feature_clean" formatted="false">"Skjul automatisk"</string>
-    <string name="status_feature_immersive" formatted="false">"Fullskjerm"</string>
+    <string name="status_feature_immersive" formatted="false">"Videovisning"</string>
     <string name="status_feature_scroll" formatted="false">"Automatisk rulling"</string>
     <string name="status_feature_duration" formatted="false">"Lengdevarsel"</string>
     <string name="status_feature_comment_translate" formatted="false">"Oversett kommentarer"</string>
-    <string name="status_feature_video_translate" formatted="false">"Oversett tekst"</string>
+    <string name="status_feature_video_translate" formatted="false">"Meny for undertekster og oversettelse"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kopier kommentarer"</string>
     <string name="status_feature_author" formatted="false">"Skaperens region"</string>
     <string name="status_feature_download" formatted="false">"Lagre videoer"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Lagring mislyktes. Skrivetilgang til stedet ble ikke gitt. Velg et annet sted."</string>
     <string name="feature_filter_topics" formatted="false">"Skjul foreslåtte emner"</string>
     <string name="feature_filter_creators" formatted="false">"Skjul foreslåtte skapere"</string>
-    <string name="host_scan_title_running" formatted="false">"Finner metoder"</string>
-    <string name="host_scan_title_saving" formatted="false">"Lagrer resultater"</string>
     <string name="host_scan_title_complete" formatted="false">"Søk fullført"</string>
     <string name="host_scan_title_failed" formatted="false">"Søk mislyktes"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Hold TikTok i forgrunnen."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Vennligst vent."</string>
     <string name="host_scan_restart_hint" formatted="false">"Start TikTok på nytt manuelt for å ta i bruk resultatene."</string>
     <string name="host_scan_failure_hint" formatted="false">"Se funksjonsdiagnostikk i Toki."</string>
-    <string name="host_scan_done" formatted="false">"Forstått"</string>
     <string name="layout_title" formatted="false">"Sideoppsett"</string>
     <string name="layout_summary" formatted="false">"Velg hvilke knapper som skal skjules"</string>
     <string name="layout_hint" formatted="false">"Slå på bryteren for å skjule elementet"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Infoetiketter"</string>
     <string name="layout_search_label" formatted="false">"Søkeforslag"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Stoppknapp for automatisk rulling"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Mynter og belønninger"</string>
+    <string name="layout_quick_comment" formatted="false">"Hurtigkommentarer"</string>
+    <string name="layout_playlist" formatted="false">"Spilleliste"</string>
+    <string name="layout_creation_buttons" formatted="false">"Snarveier for oppretting"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE-påminnelser"</string>
+    <string name="layout_opacity" formatted="false">"Ugjennomsiktighet"</string>
+    <string name="feature_background_audio">"Lås opp bakgrunnslyd"</string>
+    <string name="layout_landscape">"Fullskjermknapp"</string>
+    <string name="layout_photo_indicators">"Bildeindikatorer og tips"</string>
+    <string name="layout_quick_message">"Hurtigmeldinger og delt av"</string>
+    <string name="layout_user_card">"Foreslåtte kontoer"</string>
+    <string name="layout_survey">"Spørreundersøkelser og tilbakemeldinger"</string>
+    <string name="layout_ad_cards">"Produkt- og annonsekort"</string>
+    <string name="layout_bottom_banners">"Andre bannere nederst"</string>
+    <string name="layout_activities">"Inngang til arrangementer"</string>
+    <string name="host_scan_title_running" formatted="false">"Finner metoder"</string>
+    <string name="host_scan_title_saving" formatted="false">"Lagrer resultater"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Hold TikTok i forgrunnen."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Vennligst vent."</string>
+    <string name="host_scan_done" formatted="false">"Forstått"</string>
+    <string name="video_fit_center" formatted="false">"Midtstilt"</string>
+    <string name="video_fit_smart" formatted="false">"Fullskjerm"</string>
 </resources>

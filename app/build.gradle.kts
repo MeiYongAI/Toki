@@ -20,8 +20,8 @@ android {
         applicationId = "io.github.meiyongai.toki"
         minSdk = 28
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.0.3"
+        versionCode = 5
+        versionName = "1.0.4"
     }
 
     signingConfigs {
@@ -81,6 +81,7 @@ dependencies {
         exclude(group = "com.google.guava", module = "guava")
     }
     implementation("com.google.guava:guava:33.7.1-android")
+    implementation("org.luckypray:dexkit:2.0.7")
 
     // Jetpack Compose BOM 依赖版本对齐
     val composeBom = platform("androidx.compose:compose-bom:2024.10.01")

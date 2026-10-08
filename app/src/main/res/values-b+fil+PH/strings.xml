@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Pag-play"</string>
     <string name="feature_progress" formatted="false">"Laging ipakita ang progress bar"</string>
     <string name="feature_progress_summary" formatted="false">"Panatilihing nakikita ang progress bar, kahit sa maiikling video"</string>
-    <string name="feature_immersive" formatted="false">"Pag-play sa buong screen"</string>
-    <string name="feature_immersive_summary" formatted="false">"Gawing transparent ang ibabang bar para mapuno ng video ang screen"</string>
+    <string name="feature_immersive" formatted="false">"Pagpapakita ng video"</string>
     <string name="feature_autoplay" formatted="false">"Pinahusay na auto-scroll"</string>
     <string name="feature_autoplay_summary" formatted="false">"I-unlock ang auto-scroll sa menu ng lahat ng video"</string>
     <string name="feature_status_bar" formatted="false">"Itago ang status bar ng sistema"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Ipakita ang rehiyon ng tagalikha"</string>
     <string name="feature_author_region_summary" formatted="false">"Ipakita ang bandila at code ng bansa o rehiyon sa tabi ng pangalan ng tagalikha"</string>
     <string name="feature_copy_comment" formatted="false">"Kopyahin lang ang teksto"</string>
-    <string name="feature_video_translation" formatted="false">"I-unlock ang salin ng paglalarawan"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Ipakita ang opsyon sa pagsasalin para sa mga account na wala nito"</string>
+    <string name="feature_video_translation" formatted="false">"Menu ng subtitle at pagsasalin"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Ipakita ang opsyon sa menu ng matagal na pagpindot"</string>
     <string name="feature_comment_translation" formatted="false">"Isalin ang mga komento"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Magdagdag ng button para sabay-sabay na isalin ang mga komento sa ibang wika"</string>
     <string name="feature_filter_section" formatted="false">"Pagsala ng feed"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Bilis"</string>
     <string name="status_feature_progress" formatted="false">"Progress bar"</string>
     <string name="status_feature_clean" formatted="false">"Awtomatikong pagtatago"</string>
-    <string name="status_feature_immersive" formatted="false">"Buong screen"</string>
+    <string name="status_feature_immersive" formatted="false">"Pagpapakita ng video"</string>
     <string name="status_feature_scroll" formatted="false">"Awtomatikong pag-scroll"</string>
     <string name="status_feature_duration" formatted="false">"Babala sa haba"</string>
     <string name="status_feature_comment_translate" formatted="false">"Salin ng komento"</string>
-    <string name="status_feature_video_translate" formatted="false">"Salin ng paglalarawan"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu ng subtitle at pagsasalin"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kopya ng komento"</string>
     <string name="status_feature_author" formatted="false">"Rehiyon ng tagalikha"</string>
     <string name="status_feature_download" formatted="false">"Pag-save ng video"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Hindi na-save. Walang ipinagkaloob na pahintulot na sumulat sa lokasyong ito. Pumili ng iba."</string>
     <string name="feature_filter_topics" formatted="false">"Itago ang mga mungkahing paksa"</string>
     <string name="feature_filter_creators" formatted="false">"Itago ang mga mungkahing creator"</string>
-    <string name="host_scan_title_running" formatted="false">"Naghahanap ng mga method"</string>
-    <string name="host_scan_title_saving" formatted="false">"Sine-save ang mga resulta"</string>
     <string name="host_scan_title_complete" formatted="false">"Tapos na ang paghahanap"</string>
     <string name="host_scan_title_failed" formatted="false">"Nabigo ang paghahanap"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Panatilihin ang TikTok sa foreground."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Mangyaring maghintay."</string>
     <string name="host_scan_restart_hint" formatted="false">"Manu-manong i-restart ang TikTok upang mailapat ang mga resulta."</string>
     <string name="host_scan_failure_hint" formatted="false">"Tingnan ang mga diagnostic ng feature sa Toki."</string>
-    <string name="host_scan_done" formatted="false">"Naintindihan ko"</string>
     <string name="layout_title" formatted="false">"Ayos ng pahina"</string>
     <string name="layout_summary" formatted="false">"Piliin ang mga kontrol na itatago"</string>
     <string name="layout_hint" formatted="false">"I-on ang switch para itago ang item"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Mga label ng impormasyon"</string>
     <string name="layout_search_label" formatted="false">"Mungkahi sa paghahanap"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Button na ihinto ang auto scroll"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Mga coin at reward"</string>
+    <string name="layout_quick_comment" formatted="false">"Mabilis na komento"</string>
+    <string name="layout_playlist" formatted="false">"Playlist"</string>
+    <string name="layout_creation_buttons" formatted="false">"Mga shortcut sa paggawa"</string>
+    <string name="layout_live_notice" formatted="false">"Mga paalala sa LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Opacity"</string>
+    <string name="feature_background_audio">"I-unlock ang background audio"</string>
+    <string name="layout_landscape">"Button ng buong screen"</string>
+    <string name="layout_photo_indicators">"Mga indicator at tip ng larawan"</string>
+    <string name="layout_quick_message">"Mabilis na mensahe at nagbahagi"</string>
+    <string name="layout_user_card">"Mga iminungkahing account"</string>
+    <string name="layout_survey">"Mga survey at feedback"</string>
+    <string name="layout_ad_cards">"Mga card ng produkto at ad"</string>
+    <string name="layout_bottom_banners">"Iba pang banner sa ibaba"</string>
+    <string name="layout_activities">"Pasukan sa mga event"</string>
+    <string name="host_scan_title_running" formatted="false">"Naghahanap ng mga method"</string>
+    <string name="host_scan_title_saving" formatted="false">"Sine-save ang mga resulta"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Panatilihin ang TikTok sa foreground."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Mangyaring maghintay."</string>
+    <string name="host_scan_done" formatted="false">"Naintindihan ko"</string>
+    <string name="video_fit_center" formatted="false">"Nakasentro"</string>
+    <string name="video_fit_smart" formatted="false">"Buong screen"</string>
 </resources>

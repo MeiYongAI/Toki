@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.0.4 — 2026-10-08
+
+### English
+
+- Faster first setup: verified TikTok builds use bundled adaptation results; other builds use native method discovery.
+- Added Center and Fullscreen video modes. Fullscreen crops suitable portrait videos while keeping landscape videos centered.
+- Expanded layout cleanup and added separate control opacity settings, including the top navigation indicator.
+- Fixed the progress bar disappearing on profile videos in automatic clean mode.
+- Added a Belarus SIM preset and a background audio unlock option; simplified access to the native Captions and translation menu.
+- Refined settings and translations across supported languages.
+
+Update directly from **1.0.1–1.0.3**; the signing key is unchanged. Restart TikTok after updating. If method discovery runs, restart again when it finishes. Official TikTok clients only; subtitle availability still depends on TikTok.
+
+### 中文
+
+- 加快首次适配：已验证的 TikTok 构建直接使用内置适配结果，其他构建使用原生方法查找。
+- 新增「居中」和「全屏沉浸」视频显示选项，适合的竖屏视频可裁切铺满，横屏视频保持居中。
+- 扩展页面布局净化，新增分区域控件透明度设置，覆盖顶部导航指示条。
+- 修复作者主页视频在播放清屏时无法保留进度条的问题。
+- 新增白俄罗斯 SIM 预设和后台音频解锁选项，简化原生「字幕和翻译」入口解锁。
+- 精简设置文案，完善多语言适配。
+
+可直接覆盖升级 **1.0.1–1.0.3**，沿用原签名。更新后重启 TikTok；如触发方法查找，完成后再次重启。目前仅支持官方版 TikTok，字幕是否可用仍由 TikTok 决定。
+
+
 ## 1.0.3 — 2026-10-04
 
 ### English

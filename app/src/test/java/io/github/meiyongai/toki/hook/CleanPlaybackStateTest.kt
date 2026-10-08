@@ -17,7 +17,7 @@ class CleanPlaybackStateTest {
         assertTrue(state.shouldClean)
         state.prepare()
         assertTrue(state.shouldClean)
-        state.pause()
+        state.play()
         assertTrue(state.shouldClean)
         state.release()
         assertTrue(state.shouldClean)
@@ -30,7 +30,7 @@ class CleanPlaybackStateTest {
     @Test fun actualPauseAndResume() {
         val state = page()
         state.select(true)
-        state.pause()
+        state.stop()
         assertFalse(state.shouldClean)
         state.play()
         assertTrue(state.shouldClean)
@@ -43,6 +43,8 @@ class CleanPlaybackStateTest {
         state.stop()
         assertFalse(state.shouldClean)
         state.prepare()
+        assertFalse(state.shouldClean)
+        state.play()
         assertTrue(state.shouldClean)
     }
 
@@ -60,10 +62,12 @@ class CleanPlaybackStateTest {
         state.select(true)
         state.visible = false
         assertFalse(state.shouldClean)
-        state.pause()
+        state.stop()
         state.visible = true
         assertFalse(state.shouldClean)
         state.prepare()
+        assertFalse(state.shouldClean)
+        state.play()
         assertTrue(state.shouldClean)
     }
 
@@ -71,37 +75,29 @@ class CleanPlaybackStateTest {
     @Test fun switchingVideosHasNoVisibleIntermediatePhase() {
         val state = page()
         state.select(true)
-        state.beginTransition()
-        state.pause()
-        assertTrue(state.shouldClean)
         state.release()
         assertTrue(state.shouldClean)
         state.select()
-        state.settle(true)
         assertTrue(state.shouldClean)
         state.prepare()
         state.play()
         assertTrue(state.shouldClean)
     }
 
-    /** 取消翻页后仍暂停时显示控件。@return Unit；无入参。Callers: JUnit。 */
-    @Test fun cancelledScrollUsesActualStoppedState() {
+    /** 明确暂停后保持显示控件。@return Unit；无入参。Callers: JUnit。 */
+    @Test fun explicitPauseRetainsControls() {
         val state = page()
         state.select(true)
-        state.beginTransition()
-        state.pause()
-        state.settle(false)
+        state.stop()
         assertFalse(state.shouldClean)
     }
 
-    /** 取消翻页前已恢复播放，不显示控件。@return Unit；无入参。Callers: JUnit。 */
-    @Test fun cancelledScrollWithResumedPlaybackStaysClean() {
+    /** 暂停后恢复播放，不显示控件。@return Unit；无入参。Callers: JUnit。 */
+    @Test fun resumeAfterExplicitPauseHidesControls() {
         val state = page()
         state.select(true)
-        state.beginTransition()
-        state.pause()
+        state.stop()
         state.play()
-        state.settle(false)
         assertTrue(state.shouldClean)
     }
 

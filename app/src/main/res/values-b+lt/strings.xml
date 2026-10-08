@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Atkūrimas"</string>
     <string name="feature_progress" formatted="false">"Visada rodyti eigos juostą"</string>
     <string name="feature_progress_summary" formatted="false">"Rodyti eigos juostą ir trumpuose vaizdo įrašuose"</string>
-    <string name="feature_immersive" formatted="false">"Atkūrimas visame ekrane"</string>
-    <string name="feature_immersive_summary" formatted="false">"Apatinę juostą padaryti skaidrią, kad vaizdas užpildytų ekraną"</string>
+    <string name="feature_immersive" formatted="false">"Vaizdo rodymas"</string>
     <string name="feature_autoplay" formatted="false">"Išplėstas automatinis slinkimas"</string>
     <string name="feature_autoplay_summary" formatted="false">"Atrakina automatinį slinkimą visų vaizdo įrašų meniu"</string>
     <string name="feature_status_bar" formatted="false">"Slėpti sistemos būsenos juostą"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Rodyti kūrėjo regioną"</string>
     <string name="feature_author_region_summary" formatted="false">"Šalia kūrėjo vardo rodyti šalies ar regiono vėliavą ir kodą"</string>
     <string name="feature_copy_comment" formatted="false">"Kopijuoti tik tekstą"</string>
-    <string name="feature_video_translation" formatted="false">"Atrakinti tekstų vertimą"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Rodyti vertimo parinktį paskyroms, kuriose jos nėra"</string>
+    <string name="feature_video_translation" formatted="false">"Subtitrų ir vertimo meniu"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Rodyti parinktį ilgo paspaudimo meniu"</string>
     <string name="feature_comment_translation" formatted="false">"Versti komentarus"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Pridėti mygtuką keliems užsienio kalbos komentarams išversti"</string>
     <string name="feature_filter_section" formatted="false">"Srauto filtravimas"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Greitis"</string>
     <string name="status_feature_progress" formatted="false">"Eigos juosta"</string>
     <string name="status_feature_clean" formatted="false">"Automatinis slėpimas"</string>
-    <string name="status_feature_immersive" formatted="false">"Visas ekranas"</string>
+    <string name="status_feature_immersive" formatted="false">"Vaizdo rodymas"</string>
     <string name="status_feature_scroll" formatted="false">"Automatinis slinkimas"</string>
     <string name="status_feature_duration" formatted="false">"Trukmės įspėjimas"</string>
     <string name="status_feature_comment_translate" formatted="false">"Komentarų vertimas"</string>
-    <string name="status_feature_video_translate" formatted="false">"Tekstų vertimas"</string>
+    <string name="status_feature_video_translate" formatted="false">"Subtitrų ir vertimo meniu"</string>
     <string name="status_feature_comment_copy" formatted="false">"Komentarų kopijavimas"</string>
     <string name="status_feature_author" formatted="false">"Kūrėjo regionas"</string>
     <string name="status_feature_download" formatted="false">"Įrašų išsaugojimas"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Išsaugoti nepavyko. Šiai vietai nesuteiktas rašymo leidimas. Pasirinkite kitą vietą."</string>
     <string name="feature_filter_topics" formatted="false">"Slėpti siūlomas temas"</string>
     <string name="feature_filter_creators" formatted="false">"Slėpti siūlomus kūrėjus"</string>
-    <string name="host_scan_title_running" formatted="false">"Ieškoma metodų"</string>
-    <string name="host_scan_title_saving" formatted="false">"Išsaugomi rezultatai"</string>
     <string name="host_scan_title_complete" formatted="false">"Paieška baigta"</string>
     <string name="host_scan_title_failed" formatted="false">"Paieška nepavyko"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Palikite TikTok pirmame plane."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Palaukite."</string>
     <string name="host_scan_restart_hint" formatted="false">"Rankiniu būdu paleiskite TikTok iš naujo, kad pritaikytumėte rezultatus."</string>
     <string name="host_scan_failure_hint" formatted="false">"Peržiūrėkite funkcijų diagnostiką Toki."</string>
-    <string name="host_scan_done" formatted="false">"Supratau"</string>
     <string name="layout_title" formatted="false">"Puslapio išdėstymas"</string>
     <string name="layout_summary" formatted="false">"Pasirinkite, kuriuos valdiklius slėpti"</string>
     <string name="layout_hint" formatted="false">"Įjunkite jungiklį, kad paslėptumėte elementą"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Informacinės žymos"</string>
     <string name="layout_search_label" formatted="false">"Paieškos pasiūlymas"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Automatinio slinkimo stabdymo mygtukas"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Monetos ir atlygiai"</string>
+    <string name="layout_quick_comment" formatted="false">"Greitieji komentarai"</string>
+    <string name="layout_playlist" formatted="false">"Grojaraštis"</string>
+    <string name="layout_creation_buttons" formatted="false">"Kūrimo nuorodos"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE priminimai"</string>
+    <string name="layout_opacity" formatted="false">"Nepermatomumas"</string>
+    <string name="feature_background_audio">"Atrakinti foninį garsą"</string>
+    <string name="layout_landscape">"Viso ekrano mygtukas"</string>
+    <string name="layout_photo_indicators">"Nuotraukų indikatoriai ir patarimai"</string>
+    <string name="layout_quick_message">"Greitosios žinutės ir bendrintojas"</string>
+    <string name="layout_user_card">"Siūlomos paskyros"</string>
+    <string name="layout_survey">"Apklausos ir atsiliepimai"</string>
+    <string name="layout_ad_cards">"Produktų ir reklamų kortelės"</string>
+    <string name="layout_bottom_banners">"Kitos apatinės juostos"</string>
+    <string name="layout_activities">"Renginių mygtukas"</string>
+    <string name="host_scan_title_running" formatted="false">"Ieškoma metodų"</string>
+    <string name="host_scan_title_saving" formatted="false">"Išsaugomi rezultatai"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Palikite TikTok pirmame plane."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Palaukite."</string>
+    <string name="host_scan_done" formatted="false">"Supratau"</string>
+    <string name="video_fit_center" formatted="false">"Centre"</string>
+    <string name="video_fit_smart" formatted="false">"Visas ekranas"</string>
 </resources>

@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"ការចាក់"</string>
     <string name="feature_progress" formatted="false">"បង្ហាញរបារវឌ្ឍនភាពវីដេអូជានិច្ច"</string>
     <string name="feature_progress_summary" formatted="false">"រក្សារបារវឌ្ឍនភាពឱ្យមើលឃើញ សូម្បីវីដេអូខ្លី"</string>
-    <string name="feature_immersive" formatted="false">"ចាក់ពេញអេក្រង់"</string>
-    <string name="feature_immersive_summary" formatted="false">"ធ្វើឱ្យរបារខាងក្រោមថ្លា ដើម្បីឱ្យវីដេអូពេញអេក្រង់"</string>
+    <string name="feature_immersive" formatted="false">"ការបង្ហាញវីដេអូ"</string>
     <string name="feature_autoplay" formatted="false">"ការរំកិលស្វ័យប្រវត្តិប្រសើរឡើង"</string>
     <string name="feature_autoplay_summary" formatted="false">"ដោះសោការរំកិលស្វ័យប្រវត្តិក្នុងម៉ឺនុយវីដេអូទាំងអស់"</string>
     <string name="feature_status_bar" formatted="false">"លាក់របារស្ថានភាពប្រព័ន្ធ"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"បង្ហាញតំបន់អ្នកបង្កើត"</string>
     <string name="feature_author_region_summary" formatted="false">"បង្ហាញទង់ជាតិ និងកូដប្រទេសឬតំបន់ ក្បែរឈ្មោះអ្នកបង្កើត"</string>
     <string name="feature_copy_comment" formatted="false">"ចម្លងតែអត្ថបទ"</string>
-    <string name="feature_video_translation" formatted="false">"ដោះសោបកប្រែអត្ថបទ"</string>
-    <string name="feature_video_translation_summary" formatted="false">"បង្ហាញជម្រើសបកប្រែសម្រាប់គណនីដែលមិនមានវា"</string>
+    <string name="feature_video_translation" formatted="false">"ម៉ឺនុយចំណងជើងរង និងការបកប្រែ"</string>
+    <string name="feature_video_translation_summary" formatted="false">"បង្ហាញជម្រើសក្នុងម៉ឺនុយចុចឱ្យជាប់"</string>
     <string name="feature_comment_translation" formatted="false">"បកប្រែមតិ"</string>
     <string name="feature_comment_translation_summary" formatted="false">"បន្ថែមប៊ូតុងបកប្រែមតិភាសាបរទេសជាច្រើនក្នុងពេលតែមួយ"</string>
     <string name="feature_filter_section" formatted="false">"ការច្រោះផ្ទាំងព័ត៌មាន"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"ល្បឿនចាក់"</string>
     <string name="status_feature_progress" formatted="false">"របារវឌ្ឍនភាព"</string>
     <string name="status_feature_clean" formatted="false">"លាក់ប៊ូតុងបញ្ជាស្វ័យប្រវត្តិ"</string>
-    <string name="status_feature_immersive" formatted="false">"ចាក់ពេញអេក្រង់"</string>
+    <string name="status_feature_immersive" formatted="false">"ការបង្ហាញវីដេអូ"</string>
     <string name="status_feature_scroll" formatted="false">"រមូរស្វ័យប្រវត្តិ"</string>
     <string name="status_feature_duration" formatted="false">"ជូនដំណឹងរយៈពេល"</string>
     <string name="status_feature_comment_translate" formatted="false">"បកប្រែមតិ"</string>
-    <string name="status_feature_video_translate" formatted="false">"បកប្រែអត្ថបទ"</string>
+    <string name="status_feature_video_translate" formatted="false">"ម៉ឺនុយចំណងជើងរង និងការបកប្រែ"</string>
     <string name="status_feature_comment_copy" formatted="false">"ចម្លងមតិ"</string>
     <string name="status_feature_author" formatted="false">"តំបន់អ្នកបង្កើត"</string>
     <string name="status_feature_download" formatted="false">"រក្សាទុកវីដេអូ"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"រក្សាទុកបរាជ័យ។ មិនមានសិទ្ធិសរសេរនៅទីតាំងនេះ។ សូមជ្រើសទីតាំងផ្សេង។"</string>
     <string name="feature_filter_topics" formatted="false">"លាក់ប្រធានបទដែលបានណែនាំ"</string>
     <string name="feature_filter_creators" formatted="false">"លាក់អ្នកបង្កើតដែលបានណែនាំ"</string>
-    <string name="host_scan_title_running" formatted="false">"កំពុងស្វែងរកមេតូត"</string>
-    <string name="host_scan_title_saving" formatted="false">"កំពុងរក្សាទុកលទ្ធផល"</string>
     <string name="host_scan_title_complete" formatted="false">"ការស្វែងរកបានបញ្ចប់"</string>
     <string name="host_scan_title_failed" formatted="false">"ការស្វែងរកបរាជ័យ"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"សូមទុក TikTok ឱ្យបើកនៅផ្ទៃខាងមុខ។"</string>
-    <string name="host_scan_saving_hint" formatted="false">"សូមរង់ចាំ។"</string>
     <string name="host_scan_restart_hint" formatted="false">"សូមចាប់ផ្តើម TikTok ឡើងវិញដោយខ្លួនឯង ដើម្បីអនុវត្តលទ្ធផល។"</string>
     <string name="host_scan_failure_hint" formatted="false">"សូមមើលការវិនិច្ឆ័យមុខងារនៅក្នុង Toki។"</string>
-    <string name="host_scan_done" formatted="false">"យល់ហើយ"</string>
     <string name="layout_title" formatted="false">"ប្លង់ទំព័រ"</string>
     <string name="layout_summary" formatted="false">"ជ្រើសរើសប៊ូតុងដែលត្រូវលាក់"</string>
     <string name="layout_hint" formatted="false">"បើកកុងតាក់ដើម្បីលាក់ធាតុ"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"ស្លាកព័ត៌មាន"</string>
     <string name="layout_search_label" formatted="false">"ការណែនាំស្វែងរក"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"ប៊ូតុងបញ្ឈប់ការរមូរស្វ័យប្រវត្តិ"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"កាក់ និងរង្វាន់"</string>
+    <string name="layout_quick_comment" formatted="false">"មតិរហ័ស"</string>
+    <string name="layout_playlist" formatted="false">"បញ្ជីចាក់"</string>
+    <string name="layout_creation_buttons" formatted="false">"ផ្លូវកាត់បង្កើត"</string>
+    <string name="layout_live_notice" formatted="false">"ការរំលឹក LIVE"</string>
+    <string name="layout_opacity" formatted="false">"ភាពស្រអាប់"</string>
+    <string name="feature_background_audio">"ដោះសោសំឡេងផ្ទៃខាងក្រោយ"</string>
+    <string name="layout_landscape">"ប៊ូតុងពេញអេក្រង់"</string>
+    <string name="layout_photo_indicators">"សូចនាករ និងការណែនាំរូបថត"</string>
+    <string name="layout_quick_message">"សាររហ័ស និងអ្នកចែករំលែក"</string>
+    <string name="layout_user_card">"គណនីដែលបានណែនាំ"</string>
+    <string name="layout_survey">"ការស្ទង់មតិ និងមតិកែលម្អ"</string>
+    <string name="layout_ad_cards">"កាតផលិតផល និងពាណិជ្ជកម្ម"</string>
+    <string name="layout_bottom_banners">"បដាខាងក្រោមផ្សេងទៀត"</string>
+    <string name="layout_activities">"ច្រកចូលព្រឹត្តិការណ៍"</string>
+    <string name="host_scan_title_running" formatted="false">"កំពុងស្វែងរកមេតូត"</string>
+    <string name="host_scan_title_saving" formatted="false">"កំពុងរក្សាទុកលទ្ធផល"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"សូមទុក TikTok ឱ្យបើកនៅផ្ទៃខាងមុខ។"</string>
+    <string name="host_scan_saving_hint" formatted="false">"សូមរង់ចាំ។"</string>
+    <string name="host_scan_done" formatted="false">"យល់ហើយ"</string>
+    <string name="video_fit_center" formatted="false">"នៅកណ្ដាល"</string>
+    <string name="video_fit_smart" formatted="false">"ពេញអេក្រង់"</string>
 </resources>

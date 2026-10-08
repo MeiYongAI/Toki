@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Toisto"</string>
     <string name="feature_progress" formatted="false">"Näytä videon etenemispalkki aina"</string>
     <string name="feature_progress_summary" formatted="false">"Pidä etenemispalkki näkyvissä myös lyhyissä videoissa"</string>
-    <string name="feature_immersive" formatted="false">"Koko näytön toisto"</string>
-    <string name="feature_immersive_summary" formatted="false">"Tee alapalkista läpinäkyvä, jotta video täyttää näytön"</string>
+    <string name="feature_immersive" formatted="false">"Videon näyttö"</string>
     <string name="feature_autoplay" formatted="false">"Laajennettu automaattivieritys"</string>
     <string name="feature_autoplay_summary" formatted="false">"Avaa automaattivierityksen kaikkien videoiden valikkoon"</string>
     <string name="feature_status_bar" formatted="false">"Piilota järjestelmän tilapalkki"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Näytä tekijän alue"</string>
     <string name="feature_author_region_summary" formatted="false">"Näytä maan tai alueen lippu ja tunnus tekijän nimen vieressä"</string>
     <string name="feature_copy_comment" formatted="false">"Kopioi vain teksti"</string>
-    <string name="feature_video_translation" formatted="false">"Avaa videotekstin käännös"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Näytä käännösvalinta tileille, joilta se puuttuu"</string>
+    <string name="feature_video_translation" formatted="false">"Tekstitys- ja käännösvalikko"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Näytä kohta pitkän painalluksen valikossa"</string>
     <string name="feature_comment_translation" formatted="false">"Käännä kommentit"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Lisää painike vieraskielisten kommenttien joukkokääntämiseen"</string>
     <string name="feature_filter_section" formatted="false">"Syötteen suodatus"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Toistonopeus"</string>
     <string name="status_feature_progress" formatted="false">"Etenemispalkki"</string>
     <string name="status_feature_clean" formatted="false">"Piilota ohjaimet toistettaessa"</string>
-    <string name="status_feature_immersive" formatted="false">"Koko näyttö"</string>
+    <string name="status_feature_immersive" formatted="false">"Videon näyttö"</string>
     <string name="status_feature_scroll" formatted="false">"Automaattinen vieritys"</string>
     <string name="status_feature_duration" formatted="false">"Kestoilmoitus"</string>
     <string name="status_feature_comment_translate" formatted="false">"Kommenttien käännös"</string>
-    <string name="status_feature_video_translate" formatted="false">"Videotekstin käännös"</string>
+    <string name="status_feature_video_translate" formatted="false">"Tekstitys- ja käännösvalikko"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kommenttien kopiointi"</string>
     <string name="status_feature_author" formatted="false">"Tekijän alue"</string>
     <string name="status_feature_download" formatted="false">"Videoiden tallennus"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Tallennus epäonnistui. Sijainnille ei myönnetty kirjoitusoikeutta. Valitse toinen sijainti."</string>
     <string name="feature_filter_topics" formatted="false">"Piilota aihe-ehdotukset"</string>
     <string name="feature_filter_creators" formatted="false">"Piilota tekijäsuositukset"</string>
-    <string name="host_scan_title_running" formatted="false">"Etsitään metodeja"</string>
-    <string name="host_scan_title_saving" formatted="false">"Tallennetaan tuloksia"</string>
     <string name="host_scan_title_complete" formatted="false">"Haku valmis"</string>
     <string name="host_scan_title_failed" formatted="false">"Haku epäonnistui"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Pidä TikTok etualalla."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Odota hetki."</string>
     <string name="host_scan_restart_hint" formatted="false">"Käynnistä TikTok uudelleen käsin, jotta tulokset tulevat voimaan."</string>
     <string name="host_scan_failure_hint" formatted="false">"Katso toimintojen diagnostiikka Toki-sovelluksessa."</string>
-    <string name="host_scan_done" formatted="false">"Selvä"</string>
     <string name="layout_title" formatted="false">"Sivun asettelu"</string>
     <string name="layout_summary" formatted="false">"Valitse piilotettavat painikkeet"</string>
     <string name="layout_hint" formatted="false">"Piilota kohde kytkemällä valinta päälle"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Tietotunnisteet"</string>
     <string name="layout_search_label" formatted="false">"Hakuehdotus"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Automaattisen vierityksen pysäytyspainike"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Kolikot ja palkinnot"</string>
+    <string name="layout_quick_comment" formatted="false">"Pikakommentit"</string>
+    <string name="layout_playlist" formatted="false">"Soittolista"</string>
+    <string name="layout_creation_buttons" formatted="false">"Luomisen pikavalinnat"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE-muistutukset"</string>
+    <string name="layout_opacity" formatted="false">"Peittävyys"</string>
+    <string name="feature_background_audio">"Avaa taustaääni"</string>
+    <string name="layout_landscape">"Koko näytön painike"</string>
+    <string name="layout_photo_indicators">"Kuvien ilmaisimet ja vihjeet"</string>
+    <string name="layout_quick_message">"Pikaviestit ja jakaja"</string>
+    <string name="layout_user_card">"Ehdotetut tilit"</string>
+    <string name="layout_survey">"Kyselyt ja palaute"</string>
+    <string name="layout_ad_cards">"Tuote- ja mainoskortit"</string>
+    <string name="layout_bottom_banners">"Muut alapalkit"</string>
+    <string name="layout_activities">"Tapahtumapainike"</string>
+    <string name="host_scan_title_running" formatted="false">"Etsitään metodeja"</string>
+    <string name="host_scan_title_saving" formatted="false">"Tallennetaan tuloksia"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Pidä TikTok etualalla."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Odota hetki."</string>
+    <string name="host_scan_done" formatted="false">"Selvä"</string>
+    <string name="video_fit_center" formatted="false">"Keskitetty"</string>
+    <string name="video_fit_smart" formatted="false">"Koko näyttö"</string>
 </resources>

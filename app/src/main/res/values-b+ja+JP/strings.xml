@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"再生"</string>
     <string name="feature_progress" formatted="false">"シークバーを常に表示"</string>
     <string name="feature_progress_summary" formatted="false">"短い動画でも下部のシークバーを表示します"</string>
-    <string name="feature_immersive" formatted="false">"全画面再生"</string>
-    <string name="feature_immersive_summary" formatted="false">"下部バーを透明にし、動画を画面全体に表示します"</string>
+    <string name="feature_immersive" formatted="false">"動画の表示"</string>
     <string name="feature_autoplay" formatted="false">"自動スクロールの拡張"</string>
     <string name="feature_autoplay_summary" formatted="false">"すべての動画で、長押しメニューの自動スクロールを解放"</string>
     <string name="feature_status_bar" formatted="false">"システムのステータスバーを隠す"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"投稿者の地域を表示"</string>
     <string name="feature_author_region_summary" formatted="false">"投稿者名の横に国・地域の旗とコードを表示します"</string>
     <string name="feature_copy_comment" formatted="false">"本文のみコピー"</string>
-    <string name="feature_video_translation" formatted="false">"説明文の翻訳を有効化"</string>
-    <string name="feature_video_translation_summary" formatted="false">"一部のアカウントで表示されない翻訳オプションを表示します"</string>
+    <string name="feature_video_translation" formatted="false">"字幕と翻訳のメニュー"</string>
+    <string name="feature_video_translation_summary" formatted="false">"長押しメニューに項目を表示"</string>
     <string name="feature_comment_translation" formatted="false">"コメントを翻訳"</string>
     <string name="feature_comment_translation_summary" formatted="false">"コメント欄に翻訳ボタンを追加し、外国語のコメントをまとめて翻訳します"</string>
     <string name="feature_filter_section" formatted="false">"フィードのフィルター"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"再生速度"</string>
     <string name="status_feature_progress" formatted="false">"シークバー"</string>
     <string name="status_feature_clean" formatted="false">"操作表示を自動で隠す"</string>
-    <string name="status_feature_immersive" formatted="false">"全画面再生"</string>
+    <string name="status_feature_immersive" formatted="false">"動画の表示"</string>
     <string name="status_feature_scroll" formatted="false">"自動スクロール"</string>
     <string name="status_feature_duration" formatted="false">"長さの通知"</string>
     <string name="status_feature_comment_translate" formatted="false">"コメント翻訳"</string>
-    <string name="status_feature_video_translate" formatted="false">"説明文の翻訳"</string>
+    <string name="status_feature_video_translate" formatted="false">"字幕と翻訳のメニュー"</string>
     <string name="status_feature_comment_copy" formatted="false">"コメントコピー"</string>
     <string name="status_feature_author" formatted="false">"投稿者の地域"</string>
     <string name="status_feature_download" formatted="false">"動画保存"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"保存に失敗しました。この場所への書き込み権限がありません。選択し直してください。"</string>
     <string name="feature_filter_topics" formatted="false">"おすすめ話題を非表示"</string>
     <string name="feature_filter_creators" formatted="false">"おすすめ投稿者を非表示"</string>
-    <string name="host_scan_title_running" formatted="false">"メソッドを検索中"</string>
-    <string name="host_scan_title_saving" formatted="false">"結果を保存中"</string>
     <string name="host_scan_title_complete" formatted="false">"検索完了"</string>
     <string name="host_scan_title_failed" formatted="false">"検索失敗"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok を前面に表示したままにしてください。"</string>
-    <string name="host_scan_saving_hint" formatted="false">"お待ちください。"</string>
     <string name="host_scan_restart_hint" formatted="false">"結果を適用するには、TikTok を手動で再起動してください。"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki で機能の診断を確認してください。"</string>
-    <string name="host_scan_done" formatted="false">"わかりました"</string>
     <string name="layout_title" formatted="false">"画面レイアウト"</string>
     <string name="layout_summary" formatted="false">"非表示にする項目を選択"</string>
     <string name="layout_hint" formatted="false">"スイッチをオンにすると項目を非表示にします"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"情報ラベル"</string>
     <string name="layout_search_label" formatted="false">"検索候補"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"自動スクロール停止ボタン"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"コイン・報酬"</string>
+    <string name="layout_quick_comment" formatted="false">"クイックコメント"</string>
+    <string name="layout_playlist" formatted="false">"プレイリスト"</string>
+    <string name="layout_creation_buttons" formatted="false">"作成ショートカット"</string>
+    <string name="layout_live_notice" formatted="false">"LIVEリマインダー"</string>
+    <string name="layout_opacity" formatted="false">"不透明度"</string>
+    <string name="feature_background_audio">"バックグラウンド音声を解放"</string>
+    <string name="layout_landscape">"全画面ボタン"</string>
+    <string name="layout_photo_indicators">"写真の表示位置・スワイプ案内"</string>
+    <string name="layout_quick_message">"クイックメッセージ・共有元"</string>
+    <string name="layout_user_card">"おすすめユーザーカード"</string>
+    <string name="layout_survey">"アンケート・フィードバック"</string>
+    <string name="layout_ad_cards">"商品・広告カード"</string>
+    <string name="layout_bottom_banners">"その他の下部バナー"</string>
+    <string name="layout_activities">"イベントへの入口"</string>
+    <string name="host_scan_title_running" formatted="false">"メソッドを検索中"</string>
+    <string name="host_scan_title_saving" formatted="false">"結果を保存中"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok を前面に表示したままにしてください。"</string>
+    <string name="host_scan_saving_hint" formatted="false">"お待ちください。"</string>
+    <string name="host_scan_done" formatted="false">"わかりました"</string>
+    <string name="video_fit_center" formatted="false">"中央表示"</string>
+    <string name="video_fit_smart" formatted="false">"全画面表示"</string>
 </resources>

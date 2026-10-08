@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Воспроизведение"</string>
     <string name="feature_progress" formatted="false">"Всегда показывать прогресс"</string>
     <string name="feature_progress_summary" formatted="false">"Показывать нижнюю полосу прогресса даже в коротких видео"</string>
-    <string name="feature_immersive" formatted="false">"Полноэкранный режим"</string>
-    <string name="feature_immersive_summary" formatted="false">"Прозрачная нижняя панель и видео на весь экран"</string>
+    <string name="feature_immersive" formatted="false">"Отображение видео"</string>
     <string name="feature_autoplay" formatted="false">"Расширенная автопрокрутка"</string>
     <string name="feature_autoplay_summary" formatted="false">"Открывает автопрокрутку в меню всех видео"</string>
     <string name="feature_status_bar" formatted="false">"Скрыть системную строку состояния"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Показывать регион автора"</string>
     <string name="feature_author_region_summary" formatted="false">"Флаг и код страны или региона рядом с именем автора"</string>
     <string name="feature_copy_comment" formatted="false">"Копировать только текст"</string>
-    <string name="feature_video_translation" formatted="false">"Открыть перевод описаний"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Показывать перевод для аккаунтов, у которых этот пункт отсутствует"</string>
+    <string name="feature_video_translation" formatted="false">"Меню субтитров и перевода"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Показать пункт в меню долгого нажатия"</string>
     <string name="feature_comment_translation" formatted="false">"Перевод комментариев"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Добавить кнопку для массового перевода иностранных комментариев"</string>
     <string name="feature_filter_section" formatted="false">"Фильтрация ленты"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Скорость"</string>
     <string name="status_feature_progress" formatted="false">"Полоса прогресса"</string>
     <string name="status_feature_clean" formatted="false">"Автоскрытие управления"</string>
-    <string name="status_feature_immersive" formatted="false">"Полный экран"</string>
+    <string name="status_feature_immersive" formatted="false">"Отображение видео"</string>
     <string name="status_feature_scroll" formatted="false">"Автопрокрутка"</string>
     <string name="status_feature_duration" formatted="false">"Напоминание о длине"</string>
     <string name="status_feature_comment_translate" formatted="false">"Перевод комментариев"</string>
-    <string name="status_feature_video_translate" formatted="false">"Перевод описаний"</string>
+    <string name="status_feature_video_translate" formatted="false">"Меню субтитров и перевода"</string>
     <string name="status_feature_comment_copy" formatted="false">"Копирование комментариев"</string>
     <string name="status_feature_author" formatted="false">"Регион автора"</string>
     <string name="status_feature_download" formatted="false">"Сохранение видео"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Не удалось сохранить: нет разрешения на запись в выбранное место. Выберите его заново."</string>
     <string name="feature_filter_topics" formatted="false">"Скрывать рекомендуемые темы"</string>
     <string name="feature_filter_creators" formatted="false">"Скрывать рекомендуемых авторов"</string>
-    <string name="host_scan_title_running" formatted="false">"Поиск методов"</string>
-    <string name="host_scan_title_saving" formatted="false">"Сохранение результатов"</string>
     <string name="host_scan_title_complete" formatted="false">"Поиск завершён"</string>
     <string name="host_scan_title_failed" formatted="false">"Поиск не удался"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Оставьте TikTok на переднем плане."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Подождите."</string>
     <string name="host_scan_restart_hint" formatted="false">"Перезапустите TikTok вручную, чтобы применить результаты."</string>
     <string name="host_scan_failure_hint" formatted="false">"Посмотрите диагностику функций в Toki."</string>
-    <string name="host_scan_done" formatted="false">"Понятно"</string>
     <string name="layout_title" formatted="false">"Оформление страниц"</string>
     <string name="layout_summary" formatted="false">"Выберите элементы для скрытия"</string>
     <string name="layout_hint" formatted="false">"Включите переключатель, чтобы скрыть элемент"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Информационные метки"</string>
     <string name="layout_search_label" formatted="false">"Поисковая подсказка"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Кнопка остановки автопрокрутки"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Монеты и награды"</string>
+    <string name="layout_quick_comment" formatted="false">"Быстрые комментарии"</string>
+    <string name="layout_playlist" formatted="false">"Плейлист"</string>
+    <string name="layout_creation_buttons" formatted="false">"Кнопки создания"</string>
+    <string name="layout_live_notice" formatted="false">"Напоминания об эфирах"</string>
+    <string name="layout_opacity" formatted="false">"Непрозрачность"</string>
+    <string name="feature_background_audio">"Разблокировать фоновое аудио"</string>
+    <string name="layout_landscape">"Кнопка полного экрана"</string>
+    <string name="layout_photo_indicators">"Индикаторы фото и подсказки"</string>
+    <string name="layout_quick_message">"Быстрые сообщения и автор репоста"</string>
+    <string name="layout_user_card">"Рекомендуемые аккаунты"</string>
+    <string name="layout_survey">"Опросы и отзывы"</string>
+    <string name="layout_ad_cards">"Карточки товаров и рекламы"</string>
+    <string name="layout_bottom_banners">"Другие нижние баннеры"</string>
+    <string name="layout_activities">"Вход в события"</string>
+    <string name="host_scan_title_running" formatted="false">"Поиск методов"</string>
+    <string name="host_scan_title_saving" formatted="false">"Сохранение результатов"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Оставьте TikTok на переднем плане."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Подождите."</string>
+    <string name="host_scan_done" formatted="false">"Понятно"</string>
+    <string name="video_fit_center" formatted="false">"По центру"</string>
+    <string name="video_fit_smart" formatted="false">"Полный экран"</string>
 </resources>

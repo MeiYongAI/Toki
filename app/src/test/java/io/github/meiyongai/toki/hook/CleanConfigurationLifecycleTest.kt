@@ -6,7 +6,6 @@ import android.widget.FrameLayout
 import io.github.meiyongai.toki.provider.ConfigClient
 import io.github.meiyongai.toki.provider.ConfigSnapshot
 import io.github.meiyongai.toki.provider.ConfigStore
-import java.lang.ref.WeakReference
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -20,7 +19,12 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, application = Application::class, sdk = [35])
 class CleanConfigurationLifecycleTest {
-    class SeekBarModeRecorder {
+    class Panel(private val fragment: Any) {
+        /** 返回模拟宿主页面。@return 页面身份；无入参。Callers: AutoCleanModeHook 反射。 */
+        fun getFragment(): Any = fragment
+    }
+    class Controller(@JvmField val panel: Panel)
+    class SeekBarModeRecorder : View(RuntimeEnvironment.getApplication()) {
         var mode = -1
         fun setSeekBarShowType(value: Int) { mode = value }
     }
@@ -33,9 +37,54 @@ class CleanConfigurationLifecycleTest {
         val store = field(ConfigClient::class.java, "store").get(null) as ConfigStore
         field(ConfigStore::class.java, "isReady").set(store, false)
         field(ConfigStore::class.java, "current").set(store, null)
-        field(ProgressBarHook::class.java, "activeSeekBar").set(null, null)
+        (field(ProgressBarHook::class.java, "seekBars").get(null) as MutableMap<*, *>).clear()
+        field(ProgressBarHook::class.java, "panelField").set(null, null)
+        field(AutoCleanModeHook::class.java, "listFragment").set(null, null)
         field(ProgressBarHook::class.java, "seekBarShowTypeMethod").set(null, null)
         HookRuntime.start("clean-test") { _, _ -> }
+    }
+
+    /** 建立真实进度条到列表的弱引用关系。@param seek 记录器。@param controller 宿主控制器。@return Unit。Callers: 本类测试。 */
+    private fun registerSeekBar(seek: SeekBarModeRecorder, controller: Controller) {
+        field(AutoCleanModeHook::class.java, "listFragment").set(null, Panel::class.java.getMethod("getFragment"))
+        field(ProgressBarHook::class.java, "panelField").set(null, Controller::class.java.getField("panel"))
+        val type = ProgressBarHook::class.java.declaredClasses.single { it.simpleName == "SeekBinding" }
+        val binding = type.getDeclaredConstructor(Any::class.java).apply { isAccessible = true }.newInstance(controller)
+        @Suppress("UNCHECKED_CAST")
+        val bars = field(ProgressBarHook::class.java, "seekBars").get(null) as MutableMap<View, Any>
+        bars[seek] = binding
+        field(ProgressBarHook::class.java, "seekBarShowTypeMethod").set(null,
+            SeekBarModeRecorder::class.java.getMethod("setSeekBarShowType", Int::class.javaPrimitiveType))
+    }
+
+    /** 推荐页与作者详情同时存在时，只更新所属清屏页面，拖动模式不受播放提交覆盖。@return Unit；无入参。Callers: JUnit。 */
+    @Test fun progressCommitUsesOwningPageInsteadOfLastCallback() {
+        val fragments = listOf(Any(), Any())
+        val controllers = fragments.map { Controller(Panel(it)) }
+        val bars = fragments.map { SeekBarModeRecorder() }
+        val type = AutoCleanModeHook::class.java.declaredClasses.single { it.simpleName == "Page" }
+        @Suppress("UNCHECKED_CAST")
+        val pages = field(AutoCleanModeHook::class.java, "pages").get(null) as MutableMap<Any, Any>
+        val owners = fragments.map { fragment ->
+            val page = type.getDeclaredConstructor(Any::class.java).apply { isAccessible = true }.newInstance(fragment)
+            pages[fragment] = page
+            field(type, "owner").get(page) as CleanViewGate.Owner
+        }
+        bars.indices.forEach { registerSeekBar(bars[it], controllers[it]) }
+        owners[0].clean = true
+        ProgressBarHook.assertPlayingSeekBarMode(true)
+        assertEquals(0, bars[0].mode)
+        assertEquals(-1, bars[1].mode)
+        owners[0].clean = false
+        owners[1].clean = true
+        ProgressBarHook.assertPlayingSeekBarMode(false)
+        assertEquals(0, bars[0].mode)
+        assertEquals(4, bars[1].mode)
+        val bindings = field(ProgressBarHook::class.java, "seekBars").get(null) as Map<*, *>
+        val binding = checkNotNull(bindings[bars[1]])
+        field(binding.javaClass, "mode").setInt(binding, 100)
+        ProgressBarHook.assertPlayingSeekBarMode(true)
+        assertEquals(100, bars[1].mode)
     }
 
     private fun applyConfiguration(snapshot: ConfigSnapshot?) = AutoCleanModeHook::class.java
@@ -65,7 +114,8 @@ class CleanConfigurationLifecycleTest {
         }
         field(pageType, "binding").set(page, binding)
         val seekBar = SeekBarModeRecorder()
-        field(ProgressBarHook::class.java, "activeSeekBar").set(null, WeakReference<Any>(seekBar))
+        val controller = Controller(Panel(fragment))
+        registerSeekBar(seekBar, controller)
         field(ProgressBarHook::class.java, "seekBarShowTypeMethod").set(null,
             SeekBarModeRecorder::class.java.getMethod("setSeekBarShowType", Int::class.javaPrimitiveType))
 

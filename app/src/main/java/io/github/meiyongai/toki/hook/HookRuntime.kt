@@ -38,7 +38,7 @@ internal object HookRuntime {
     /** 设置进程标识和持久诊断出口。@param name 进程名。@param reporter 框架日志出口。@return Unit。Callers: TokiModule。 */
     fun start(name: String, reporter: (String, String) -> Unit) { process = name; reportEvent = reporter }
 
-    /** 记录不包含用户内容的关键生命周期事件。@param tag 组件名称。@param message 元数据摘要。@return Unit。Callers: HostSymbols、HostScanController。 */
+    /** 记录不包含用户内容的关键生命周期事件。@param tag 组件名称。@param message 元数据摘要。@return Unit。Callers: HostSymbols、HostScanController、install。 */
     fun event(tag: String, message: String) { reportEvent(tag, message) }
 
     /**
@@ -63,6 +63,8 @@ internal object HookRuntime {
      * Callers: TokiModule。
      */
     fun install(feature: String, install: () -> Unit) {
+        val installStarted = SystemClock.elapsedRealtime()
+        event("TokiHookRuntime", "开始注册 feature=$feature")
         val scope = synchronized(this) {
             scope(feature).also {
                 check(it.active) { "本次会话已撤销功能 $feature，不能重新安装" }
@@ -76,6 +78,8 @@ internal object HookRuntime {
             dispose(feature, error)
             if (error !is Exception && error !is LinkageError) throw error
             failure(feature, error, "注册失败，已撤销")
+        } finally {
+            event("TokiHookRuntime", "结束注册 feature=$feature elapsedMs=${SystemClock.elapsedRealtime() - installStarted} active=${scope.active}")
         }
     }
 

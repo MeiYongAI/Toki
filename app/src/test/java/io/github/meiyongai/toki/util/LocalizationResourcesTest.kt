@@ -16,7 +16,7 @@ class LocalizationResourcesTest {
     @Test fun everySelectableLanguageHasCompleteResources() {
         val root = File("src/main/res")
         val baseline = readStrings(File(root, "values/strings.xml"))
-        assertEquals("Expected the complete UI catalog", 296, baseline.size)
+        assertEquals("Expected the complete UI catalog", 313, baseline.size)
         val languages = AppLanguage.entries.filter { it != AppLanguage.SYSTEM }
         assertEquals(57, languages.size)
         for (language in languages) {
@@ -40,7 +40,7 @@ class LocalizationResourcesTest {
     @Test fun catalogCoversEveryUserFacingArea() {
         val baseline = readStrings(File("src/main/res/values/strings.xml"))
         listOf("nav_home", "language_title", "page_hook_status", "config_import", "sponsor_title",
-            "host_scan_title_running", "host_scan_restart_hint", "host_scan_done").forEach {
+            "host_scan_title_complete", "host_scan_restart_hint", "host_scan_failure_hint").forEach {
             assertTrue("Missing area: $it", baseline.containsKey(it))
         }
         assertTrue("Formatting placeholders must be indexed", baseline.values.none {

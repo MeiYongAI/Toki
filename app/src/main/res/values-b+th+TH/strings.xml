@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"การเล่น"</string>
     <string name="feature_progress" formatted="false">"แสดงแถบความคืบหน้าเสมอ"</string>
     <string name="feature_progress_summary" formatted="false">"แสดงแถบความคืบหน้าไว้ตลอด แม้ในวิดีโอสั้น"</string>
-    <string name="feature_immersive" formatted="false">"เล่นเต็มหน้าจอ"</string>
-    <string name="feature_immersive_summary" formatted="false">"ทำให้แถบด้านล่างโปร่งใสเพื่อให้วิดีโอแสดงเต็มหน้าจอ"</string>
+    <string name="feature_immersive" formatted="false">"การแสดงวิดีโอ"</string>
     <string name="feature_autoplay" formatted="false">"เลื่อนอัตโนมัติแบบปรับปรุง"</string>
     <string name="feature_autoplay_summary" formatted="false">"ปลดล็อกการเลื่อนอัตโนมัติในเมนูของทุกวิดีโอ"</string>
     <string name="feature_status_bar" formatted="false">"ซ่อนแถบสถานะระบบ"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"แสดงภูมิภาคของผู้สร้าง"</string>
     <string name="feature_author_region_summary" formatted="false">"แสดงธงและรหัสประเทศหรือภูมิภาคข้างชื่อผู้สร้าง"</string>
     <string name="feature_copy_comment" formatted="false">"คัดลอกเฉพาะข้อความ"</string>
-    <string name="feature_video_translation" formatted="false">"ปลดล็อกการแปลคำอธิบาย"</string>
-    <string name="feature_video_translation_summary" formatted="false">"แสดงตัวเลือกการแปลสำหรับบัญชีที่ไม่มีตัวเลือกนี้"</string>
+    <string name="feature_video_translation" formatted="false">"เมนูคำบรรยายและการแปล"</string>
+    <string name="feature_video_translation_summary" formatted="false">"แสดงตัวเลือกในเมนูกดค้าง"</string>
     <string name="feature_comment_translation" formatted="false">"แปลความคิดเห็น"</string>
     <string name="feature_comment_translation_summary" formatted="false">"เพิ่มปุ่มเพื่อแปลความคิดเห็นภาษาต่างประเทศหลายรายการพร้อมกัน"</string>
     <string name="feature_filter_section" formatted="false">"การกรองฟีด"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"ความเร็วเล่น"</string>
     <string name="status_feature_progress" formatted="false">"แถบความคืบหน้า"</string>
     <string name="status_feature_clean" formatted="false">"ซ่อนตัวควบคุมอัตโนมัติ"</string>
-    <string name="status_feature_immersive" formatted="false">"การเล่นแบบไร้ขอบ"</string>
+    <string name="status_feature_immersive" formatted="false">"การแสดงวิดีโอ"</string>
     <string name="status_feature_scroll" formatted="false">"การเลื่อนอัตโนมัติ"</string>
     <string name="status_feature_duration" formatted="false">"แจ้งเตือนความยาว"</string>
     <string name="status_feature_comment_translate" formatted="false">"แปลความคิดเห็น"</string>
-    <string name="status_feature_video_translate" formatted="false">"แปลคำอธิบาย"</string>
+    <string name="status_feature_video_translate" formatted="false">"เมนูคำบรรยายและการแปล"</string>
     <string name="status_feature_comment_copy" formatted="false">"คัดลอกความคิดเห็น"</string>
     <string name="status_feature_author" formatted="false">"ภูมิภาคผู้สร้าง"</string>
     <string name="status_feature_download" formatted="false">"บันทึกวิดีโอ"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"บันทึกไม่สำเร็จ ไม่ได้รับสิทธิ์เขียนในตำแหน่งนี้ โปรดเลือกตำแหน่งอื่น"</string>
     <string name="feature_filter_topics" formatted="false">"ซ่อนหัวข้อแนะนำ"</string>
     <string name="feature_filter_creators" formatted="false">"ซ่อนครีเอเตอร์แนะนำ"</string>
-    <string name="host_scan_title_running" formatted="false">"กำลังค้นหาเมธอด"</string>
-    <string name="host_scan_title_saving" formatted="false">"กำลังบันทึกผลลัพธ์"</string>
     <string name="host_scan_title_complete" formatted="false">"ค้นหาเสร็จแล้ว"</string>
     <string name="host_scan_title_failed" formatted="false">"ค้นหาไม่สำเร็จ"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"เปิด TikTok ไว้ในเบื้องหน้า"</string>
-    <string name="host_scan_saving_hint" formatted="false">"โปรดรอสักครู่"</string>
     <string name="host_scan_restart_hint" formatted="false">"เริ่ม TikTok ใหม่ด้วยตนเองเพื่อใช้ผลลัพธ์"</string>
     <string name="host_scan_failure_hint" formatted="false">"ดูการวินิจฉัยฟีเจอร์ใน Toki"</string>
-    <string name="host_scan_done" formatted="false">"เข้าใจแล้ว"</string>
     <string name="layout_title" formatted="false">"เค้าโครงหน้า"</string>
     <string name="layout_summary" formatted="false">"เลือกปุ่มที่ต้องการซ่อน"</string>
     <string name="layout_hint" formatted="false">"เปิดสวิตช์เพื่อซ่อนรายการนั้น"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"ป้ายข้อมูล"</string>
     <string name="layout_search_label" formatted="false">"คำแนะนำการค้นหา"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"ปุ่มหยุดเลื่อนอัตโนมัติ"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"เหรียญและรางวัล"</string>
+    <string name="layout_quick_comment" formatted="false">"ความคิดเห็นด่วน"</string>
+    <string name="layout_playlist" formatted="false">"เพลย์ลิสต์"</string>
+    <string name="layout_creation_buttons" formatted="false">"ทางลัดการสร้าง"</string>
+    <string name="layout_live_notice" formatted="false">"การเตือน LIVE"</string>
+    <string name="layout_opacity" formatted="false">"ความทึบ"</string>
+    <string name="feature_background_audio">"ปลดล็อกเสียงเบื้องหลัง"</string>
+    <string name="layout_landscape">"ปุ่มเต็มหน้าจอ"</string>
+    <string name="layout_photo_indicators">"ตัวบ่งชี้และคำแนะนำรูปภาพ"</string>
+    <string name="layout_quick_message">"ข้อความด่วนและผู้แชร์"</string>
+    <string name="layout_user_card">"บัญชีที่แนะนำ"</string>
+    <string name="layout_survey">"แบบสำรวจและความคิดเห็น"</string>
+    <string name="layout_ad_cards">"การ์ดสินค้าและโฆษณา"</string>
+    <string name="layout_bottom_banners">"แบนเนอร์ด้านล่างอื่น ๆ"</string>
+    <string name="layout_activities">"ทางเข้ากิจกรรม"</string>
+    <string name="host_scan_title_running" formatted="false">"กำลังค้นหาเมธอด"</string>
+    <string name="host_scan_title_saving" formatted="false">"กำลังบันทึกผลลัพธ์"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"เปิด TikTok ไว้ในเบื้องหน้า"</string>
+    <string name="host_scan_saving_hint" formatted="false">"โปรดรอสักครู่"</string>
+    <string name="host_scan_done" formatted="false">"เข้าใจแล้ว"</string>
+    <string name="video_fit_center" formatted="false">"จัดกึ่งกลาง"</string>
+    <string name="video_fit_smart" formatted="false">"เต็มหน้าจอ"</string>
 </resources>

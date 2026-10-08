@@ -76,13 +76,14 @@ internal class HostFeaturePlan(private val startup: ConfigSnapshot?) {
             if (key in ConfigSchema.booleanDefaults) snapshot.boolean(key) else snapshot.string(key)
 
         private val startupKeys = mapOf(
+            "BackgroundAudioHook" to setOf("background_audio_unlock"),
             "SimHook" to setOf("sim_spoof_enabled", "target_region", "sim_operator_code", "sim_operator_name"),
             "LocaleHook" to setOf("language_spoof_enabled", "language_follow_region", "target_region", "custom_language"),
             "TimeZoneHook" to setOf("timezone_spoof_enabled", "timezone_follow_region", "target_region", "custom_timezone"),
             "GpsHook" to setOf("gps_spoof_enabled", "gps_follow_region", "target_region", "custom_latitude", "custom_longitude"),
             "PlaybackSpeedHook" to setOf("fixed_speed_enabled", "speed_expand_enabled", "fixed_speed_value", "speed_expand_list"),
             // 当前沉浸修改没有成对恢复全部宿主布局/背景，明确按会话应用。
-            "ImmersiveFullScreenHook" to setOf("immersive_full_screen"),
+            "ImmersiveFullScreenHook" to setOf("immersive_full_screen", "video_fit_mode"),
         )
         private val fixedSpeedSymbols = setOf(HostSymbol.PLAYER_CONTROLLER, HostSymbol.PLAYER_MANAGER, HostSymbol.SPEED_MANAGER)
         private val speedMenuSymbols = setOf(HostSymbol.SPEED_OPTIONS)
@@ -92,11 +93,12 @@ internal class HostFeaturePlan(private val startup: ConfigSnapshot?) {
             "FeedFilterHook" to setOf(HostSymbol.COLD_FEED, HostSymbol.PRELOADED_FEED, HostSymbol.OFFLINE_RECOVERY,
                 HostSymbol.FEED_ADAPTER, HostSymbol.RECOMMEND_ADAPTER, HostSymbol.RECOMMEND_MODEL),
             "CommentTranslateHook" to setOf(HostSymbol.COMMENT_TRANSLATION),
-            "VideoTranslateHook" to setOf(HostSymbol.DESCRIPTION_TRANSLATION, HostSymbol.TRANSLATION_REVERSE),
+            "VideoTranslateHook" to setOf(HostSymbol.MENU_CAPTION_ACL, HostSymbol.CAPTION_CONSUMER, HostSymbol.TRANSLATION_REVERSE),
+            "BackgroundAudioHook" to setOf(HostSymbol.BACKGROUND_AUDIO),
             "CommentCopyHook" to setOf(HostSymbol.COMMENT_COPY),
             "AuthorLocationHook" to setOf(HostSymbol.AUTHOR_LOCATION),
             "ProgressBarHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.DARK_LAYER, HostSymbol.SEEK_CONTROLLER),
-            "AutoCleanModeHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.VIDEO_CELL, HostSymbol.PLAYER_CONTROLLER, HostSymbol.PLAY_BUTTON),
+            "AutoCleanModeHook" to setOf(HostSymbol.SEEK_BAR, HostSymbol.VIDEO_CELL, HostSymbol.PLAY_BUTTON),
             "ImmersiveFullScreenHook" to setOf(HostSymbol.RESERVED_AREA, HostSymbol.FEED_ADAPTION, HostSymbol.PHOTO_LAYOUT),
             "AutoScrollHook" to setOf(HostSymbol.SETTINGS, HostSymbol.SEARCH_AUTO_SCROLL,
                 HostSymbol.AUTO_SCROLL_MENU, HostSymbol.AUTO_SCROLL_PLAYBACK, HostSymbol.AUTO_SCROLL_CONTEXT,

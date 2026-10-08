@@ -186,6 +186,7 @@ fun DashboardScreen(
     }
 
     // 6.1 视频文案原生翻译状态
+    var isBackgroundAudioEnabled by remember { mutableStateOf(ConfigClient.getBoolean(context, "background_audio_unlock")) }
     var isVideoTranslateEnabled by remember {
         mutableStateOf(ConfigClient.getBoolean(context, VideoTranslateHook.KEY_VIDEO_TRANSLATE_ENABLED))
     }
@@ -216,6 +217,9 @@ fun DashboardScreen(
     // 11. 全屏沉浸播放状态
     var isImmersiveFullScreenEnabled by remember {
         mutableStateOf(ConfigClient.getBoolean(context, ImmersiveFullScreenHook.KEY_IMMERSIVE_FULL_SCREEN))
+    }
+    var videoFitMode by remember {
+        mutableStateOf(ConfigClient.getString(context, ImmersiveFullScreenHook.KEY_VIDEO_FIT_MODE, "center")!!)
     }
 
     // 12. 自动滚动解锁状态
@@ -507,14 +511,17 @@ fun DashboardScreen(
                 }
             )
 
-            SwitchPreferenceItem(
+            VideoDisplayCard(
                 shape = getGroupedShape(3, 7),
-                title = strings.getString(R.string.feature_immersive),
-                summary = strings.getString(R.string.feature_immersive_summary),
-                checked = isImmersiveFullScreenEnabled,
-                onCheckedChange = { state ->
+                enabled = isImmersiveFullScreenEnabled,
+                mode = videoFitMode,
+                onEnabledChange = { state ->
                     isImmersiveFullScreenEnabled = state
                     ConfigClient.putBoolean(context, ImmersiveFullScreenHook.KEY_IMMERSIVE_FULL_SCREEN, state)
+                },
+                onModeChange = { mode ->
+                    videoFitMode = mode
+                    ConfigClient.putString(context, ImmersiveFullScreenHook.KEY_VIDEO_FIT_MODE, mode)
                 }
             )
 
@@ -553,10 +560,10 @@ fun DashboardScreen(
 
         LayoutCleanupSection()
 
-        // === 分组 3: 内容下载与操作增强 (共 7 项) ===
+        // === 分组 3: 内容下载与操作增强 (共 8 项) ===
         PreferenceSection(title = strings.getString(R.string.feature_media_section)) {
             SwitchPreferenceItem(
-                shape = getGroupedShape(0, 7),
+                shape = getGroupedShape(0, 8),
                 title = strings.getString(R.string.feature_download),
                 summary = strings.getString(R.string.feature_download_summary),
                 checked = isDownloadForceEnabled,
@@ -567,7 +574,7 @@ fun DashboardScreen(
             )
 
             DownloadPathCard(
-                shape = getGroupedShape(1, 7),
+                shape = getGroupedShape(1, 8),
                 enabled = isDownloadPathEnabled,
                 onEnabledChange = { state ->
                     isDownloadPathEnabled = state
@@ -579,7 +586,7 @@ fun DashboardScreen(
             )
 
             SwitchPreferenceItem(
-                shape = getGroupedShape(2, 7),
+                shape = getGroupedShape(2, 8),
                 title = strings.getString(R.string.feature_music),
                 summary = strings.getString(R.string.feature_music_summary),
                 checked = isMusicUnlockEnabled,
@@ -590,7 +597,7 @@ fun DashboardScreen(
             )
 
             SwitchPreferenceItem(
-                shape = getGroupedShape(3, 7),
+                shape = getGroupedShape(3, 8),
                 title = strings.getString(R.string.feature_author_region),
                 summary = strings.getString(R.string.feature_author_region_summary),
                 checked = isAuthorLocationEnabled,
@@ -601,7 +608,7 @@ fun DashboardScreen(
             )
 
             SwitchPreferenceItem(
-                shape = getGroupedShape(4, 7),
+                shape = getGroupedShape(4, 8),
                 title = strings.getString(R.string.feature_copy_comment),
                 checked = isCopyCommentTextOnlyEnabled,
                 onCheckedChange = { state ->
@@ -611,7 +618,7 @@ fun DashboardScreen(
             )
 
             SwitchPreferenceItem(
-                shape = getGroupedShape(5, 7),
+                shape = getGroupedShape(5, 8),
                 title = strings.getString(R.string.feature_video_translation),
                 summary = strings.getString(R.string.feature_video_translation_summary),
                 checked = isVideoTranslateEnabled,
@@ -622,13 +629,22 @@ fun DashboardScreen(
             )
 
             SwitchPreferenceItem(
-                shape = getGroupedShape(6, 7),
+                shape = getGroupedShape(6, 8),
                 title = strings.getString(R.string.feature_comment_translation),
                 summary = strings.getString(R.string.feature_comment_translation_summary),
                 checked = isCommentTranslateEnabled,
                 onCheckedChange = { state ->
                     isCommentTranslateEnabled = state
                     ConfigClient.putBoolean(context, "comment_translate_enabled", state)
+                }
+            )
+            SwitchPreferenceItem(
+                shape = getGroupedShape(7, 8),
+                title = strings.getString(R.string.feature_background_audio),
+                checked = isBackgroundAudioEnabled,
+                onCheckedChange = { state ->
+                    isBackgroundAudioEnabled = state
+                    ConfigClient.putBoolean(context, "background_audio_unlock", state)
                 }
             )
         }

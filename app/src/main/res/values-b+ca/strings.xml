@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Reproducció"</string>
     <string name="feature_progress" formatted="false">"Mostra sempre la barra de progrés"</string>
     <string name="feature_progress_summary" formatted="false">"Manté visible la barra de progrés, fins i tot en vídeos curts"</string>
-    <string name="feature_immersive" formatted="false">"Reproducció a pantalla completa"</string>
-    <string name="feature_immersive_summary" formatted="false">"Fa transparent la barra inferior perquè el vídeo ocupi tota la pantalla"</string>
+    <string name="feature_immersive" formatted="false">"Visualització de vídeo"</string>
     <string name="feature_autoplay" formatted="false">"Desplaçament automàtic millorat"</string>
     <string name="feature_autoplay_summary" formatted="false">"Desbloqueja el desplaçament automàtic al menú de cada vídeo"</string>
     <string name="feature_status_bar" formatted="false">"Amaga la barra d’estat del sistema"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Mostra la regió del creador"</string>
     <string name="feature_author_region_summary" formatted="false">"Mostra la bandera i el codi del país o regió al costat del nom del creador"</string>
     <string name="feature_copy_comment" formatted="false">"Copia només el text"</string>
-    <string name="feature_video_translation" formatted="false">"Desbloqueja la traducció del text"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Mostra l’opció de traducció als comptes on no està disponible"</string>
+    <string name="feature_video_translation" formatted="false">"Menú de subtítols i traducció"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Mostra l’opció al menú de pulsació llarga"</string>
     <string name="feature_comment_translation" formatted="false">"Tradueix comentaris"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Afegeix un botó per traduir en bloc els comentaris en llengües estrangeres"</string>
     <string name="feature_filter_section" formatted="false">"Filtratge del canal"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Velocitat"</string>
     <string name="status_feature_progress" formatted="false">"Barra de progrés"</string>
     <string name="status_feature_clean" formatted="false">"Ocultació automàtica"</string>
-    <string name="status_feature_immersive" formatted="false">"Pantalla completa"</string>
+    <string name="status_feature_immersive" formatted="false">"Visualització de vídeo"</string>
     <string name="status_feature_scroll" formatted="false">"Desplaçament automàtic"</string>
     <string name="status_feature_duration" formatted="false">"Avís de durada"</string>
     <string name="status_feature_comment_translate" formatted="false">"Traducció de comentaris"</string>
-    <string name="status_feature_video_translate" formatted="false">"Traducció de textos"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menú de subtítols i traducció"</string>
     <string name="status_feature_comment_copy" formatted="false">"Còpia de comentaris"</string>
     <string name="status_feature_author" formatted="false">"Regió del creador"</string>
     <string name="status_feature_download" formatted="false">"Desament de vídeos"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"No s’ha pogut desar. No s’ha concedit permís d’escriptura en aquesta ubicació. Tria’n una altra."</string>
     <string name="feature_filter_topics" formatted="false">"Amaga els temes suggerits"</string>
     <string name="feature_filter_creators" formatted="false">"Amaga els creadors suggerits"</string>
-    <string name="host_scan_title_running" formatted="false">"Cercant mètodes"</string>
-    <string name="host_scan_title_saving" formatted="false">"Desant els resultats"</string>
     <string name="host_scan_title_complete" formatted="false">"Cerca completada"</string>
     <string name="host_scan_title_failed" formatted="false">"La cerca ha fallat"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Manteniu TikTok en primer pla."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Espereu, si us plau."</string>
     <string name="host_scan_restart_hint" formatted="false">"Reinicieu TikTok manualment per aplicar els resultats."</string>
     <string name="host_scan_failure_hint" formatted="false">"Consulteu el diagnòstic de les funcions a Toki."</string>
-    <string name="host_scan_done" formatted="false">"Entesos"</string>
     <string name="layout_title" formatted="false">"Disseny de la pàgina"</string>
     <string name="layout_summary" formatted="false">"Tria quins controls vols amagar"</string>
     <string name="layout_hint" formatted="false">"Activa cada opció per amagar-la"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Etiquetes informatives"</string>
     <string name="layout_search_label" formatted="false">"Suggeriment de cerca"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Botó per aturar el desplaçament automàtic"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Monedes i recompenses"</string>
+    <string name="layout_quick_comment" formatted="false">"Comentaris ràpids"</string>
+    <string name="layout_playlist" formatted="false">"Llista de reproducció"</string>
+    <string name="layout_creation_buttons" formatted="false">"Dreceres de creació"</string>
+    <string name="layout_live_notice" formatted="false">"Recordatoris de directes"</string>
+    <string name="layout_opacity" formatted="false">"Opacitat"</string>
+    <string name="feature_background_audio">"Desbloca l’àudio en segon pla"</string>
+    <string name="layout_landscape">"Botó de pantalla completa"</string>
+    <string name="layout_photo_indicators">"Indicadors i pistes de fotos"</string>
+    <string name="layout_quick_message">"Missatges ràpids i origen compartit"</string>
+    <string name="layout_user_card">"Comptes suggerits"</string>
+    <string name="layout_survey">"Enquestes i comentaris"</string>
+    <string name="layout_ad_cards">"Targetes de productes i anuncis"</string>
+    <string name="layout_bottom_banners">"Altres bàners inferiors"</string>
+    <string name="layout_activities">"Accés a esdeveniments"</string>
+    <string name="host_scan_title_running" formatted="false">"Cercant mètodes"</string>
+    <string name="host_scan_title_saving" formatted="false">"Desant els resultats"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Manteniu TikTok en primer pla."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Espereu, si us plau."</string>
+    <string name="host_scan_done" formatted="false">"Entesos"</string>
+    <string name="video_fit_center" formatted="false">"Centrat"</string>
+    <string name="video_fit_smart" formatted="false">"Pantalla completa"</string>
 </resources>

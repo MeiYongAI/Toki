@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Predvajanje"</string>
     <string name="feature_progress" formatted="false">"Vedno pokaži napredek videa"</string>
     <string name="feature_progress_summary" formatted="false">"Vrstica napredka naj bo vidna tudi pri kratkih videih"</string>
-    <string name="feature_immersive" formatted="false">"Celozaslonsko predvajanje"</string>
-    <string name="feature_immersive_summary" formatted="false">"Prosojna spodnja vrstica omogoča video čez celoten zaslon"</string>
+    <string name="feature_immersive" formatted="false">"Prikaz videa"</string>
     <string name="feature_autoplay" formatted="false">"Izboljšano samodejno pomikanje"</string>
     <string name="feature_autoplay_summary" formatted="false">"Odklene samodejno pomikanje v meniju vseh videov"</string>
     <string name="feature_status_bar" formatted="false">"Skrij sistemsko vrstico stanja"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Pokaži regijo ustvarjalca"</string>
     <string name="feature_author_region_summary" formatted="false">"Ob imenu ustvarjalca pokaži zastavo in kodo države ali regije"</string>
     <string name="feature_copy_comment" formatted="false">"Kopiraj le besedilo"</string>
-    <string name="feature_video_translation" formatted="false">"Odkleni prevajanje besedil"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Pokaži možnost prevajanja računom, kjer ni na voljo"</string>
+    <string name="feature_video_translation" formatted="false">"Meni podnapisov in prevoda"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Prikaži možnost v meniju dolgega pritiska"</string>
     <string name="feature_comment_translation" formatted="false">"Prevedi komentarje"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Dodaj gumb za skupinski prevod tujejezičnih komentarjev"</string>
     <string name="feature_filter_section" formatted="false">"Filtriranje vira"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Hitrost"</string>
     <string name="status_feature_progress" formatted="false">"Vrstica napredka"</string>
     <string name="status_feature_clean" formatted="false">"Skrij kontrolnike med predvajanjem"</string>
-    <string name="status_feature_immersive" formatted="false">"Celoten zaslon"</string>
+    <string name="status_feature_immersive" formatted="false">"Prikaz videa"</string>
     <string name="status_feature_scroll" formatted="false">"Samodejno pomikanje"</string>
     <string name="status_feature_duration" formatted="false">"Opozorilo o dolžini"</string>
     <string name="status_feature_comment_translate" formatted="false">"Prevajanje komentarjev"</string>
-    <string name="status_feature_video_translate" formatted="false">"Prevajanje opisov"</string>
+    <string name="status_feature_video_translate" formatted="false">"Meni podnapisov in prevoda"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kopiranje komentarjev"</string>
     <string name="status_feature_author" formatted="false">"Regija ustvarjalca"</string>
     <string name="status_feature_download" formatted="false">"Shranjevanje videov"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Shranjevanje ni uspelo. Za to mesto ni dovoljenja za pisanje. Izberite drugo mesto."</string>
     <string name="feature_filter_topics" formatted="false">"Skrij predlagane teme"</string>
     <string name="feature_filter_creators" formatted="false">"Skrij predlagane ustvarjalce"</string>
-    <string name="host_scan_title_running" formatted="false">"Iskanje metod"</string>
-    <string name="host_scan_title_saving" formatted="false">"Shranjevanje rezultatov"</string>
     <string name="host_scan_title_complete" formatted="false">"Iskanje končano"</string>
     <string name="host_scan_title_failed" formatted="false">"Iskanje ni uspelo"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Pusti TikTok v ospredju."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Počakaj."</string>
     <string name="host_scan_restart_hint" formatted="false">"Ročno znova zaženi TikTok, da uveljaviš rezultate."</string>
     <string name="host_scan_failure_hint" formatted="false">"Oglej si diagnostiko funkcij v Toki."</string>
-    <string name="host_scan_done" formatted="false">"Razumem"</string>
     <string name="layout_title" formatted="false">"Postavitev strani"</string>
     <string name="layout_summary" formatted="false">"Izberite gumbe, ki jih želite skriti"</string>
     <string name="layout_hint" formatted="false">"Vklopite stikalo, da skrijete element"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Informacijske oznake"</string>
     <string name="layout_search_label" formatted="false">"Predlog iskanja"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Gumb za ustavitev samodejnega pomikanja"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Kovanci in nagrade"</string>
+    <string name="layout_quick_comment" formatted="false">"Hitri komentarji"</string>
+    <string name="layout_playlist" formatted="false">"Seznam predvajanja"</string>
+    <string name="layout_creation_buttons" formatted="false">"Bližnjice za ustvarjanje"</string>
+    <string name="layout_live_notice" formatted="false">"Opomniki za LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Neprosojnost"</string>
+    <string name="feature_background_audio">"Odkleni zvok v ozadju"</string>
+    <string name="layout_landscape">"Gumb za celoten zaslon"</string>
+    <string name="layout_photo_indicators">"Kazalniki in namigi za fotografije"</string>
+    <string name="layout_quick_message">"Hitra sporočila in vir deljenja"</string>
+    <string name="layout_user_card">"Predlagani računi"</string>
+    <string name="layout_survey">"Ankete in povratne informacije"</string>
+    <string name="layout_ad_cards">"Kartice izdelkov in oglasov"</string>
+    <string name="layout_bottom_banners">"Druge spodnje pasice"</string>
+    <string name="layout_activities">"Vstop v dogodke"</string>
+    <string name="host_scan_title_running" formatted="false">"Iskanje metod"</string>
+    <string name="host_scan_title_saving" formatted="false">"Shranjevanje rezultatov"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Pusti TikTok v ospredju."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Počakaj."</string>
+    <string name="host_scan_done" formatted="false">"Razumem"</string>
+    <string name="video_fit_center" formatted="false">"Na sredini"</string>
+    <string name="video_fit_smart" formatted="false">"Celoten zaslon"</string>
 </resources>

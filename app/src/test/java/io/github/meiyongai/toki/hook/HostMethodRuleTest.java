@@ -118,40 +118,6 @@ public class HostMethodRuleTest {
                 STRING, 9, Set.of(), Set.of(), new ImmutableMethodImplementation(4, code, List.of(), List.of()));
     }
 
-    /** 正文规则必须忽略同名的标题资格方法，并拒绝两个正文候选。无参数，无返回。Callers: JUnit。 */
-    @Test public void descriptionRuleDistinguishesPhotoTitleDespiteMethodName() throws IOException {
-        String rule;
-        try (var stream = getClass().getResourceAsStream("/toki-host-rules.tsv")) {
-            rule = new String(Objects.requireNonNull(stream).readAllBytes(), StandardCharsets.UTF_8)
-                    .lines().filter(line -> line.startsWith("DESCRIPTION_TRANSLATION\t")).findFirst().orElseThrow();
-        }
-        String owner = "LX/TranslationService;";
-        var title = translationMethod(owner, "LIZLLL", "isPhotoTitleTranslatable");
-        var desc = translationMethod(owner, "renamedDescription", "isDescTranslatable");
-        var result = HostDexIndex.scan(List.of(apk(type(owner, title, desc))), rule);
-        assertEquals("renamedDescription(" + AWEME + ")Z", result.getProperty("member.DESCRIPTION_TRANSLATION.eligible"));
-        var absent = HostDexIndex.scan(List.of(apk(type(owner, title))), rule);
-        assertEquals("候选数量=0", absent.getProperty("error.DESCRIPTION_TRANSLATION"));
-        var ambiguous = HostDexIndex.scan(List.of(apk(type(owner, desc,
-                translationMethod(owner, "duplicate", "isDescTranslatable")))), rule);
-        assertEquals("候选数量=2", ambiguous.getProperty("error.DESCRIPTION_TRANSLATION"));
-    }
-
-    /** @param owner 所属类。@param name 混淆方法名。@param getter 正文或标题标记。
-     * @return 用于检查语义匹配的 DEX 方法。Callers: descriptionRuleDistinguishesPhotoTitleDespiteMethodName。 */
-    private ImmutableMethod translationMethod(String owner, String name, String getter) {
-        String text = "Ljava/lang/CharSequence;";
-        List<Instruction> code = new ArrayList<>();
-        code.add(call(AWEME, getter, "Z", 2));
-        code.add(new ImmutableInstruction35c(Opcode.INVOKE_STATIC, 1, 0, 0, 0, 0, 0,
-                new ImmutableMethodReference("Landroid/text/TextUtils;", "isEmpty", List.of(text), "Z")));
-        code.add(new ImmutableInstruction35c(Opcode.INVOKE_STATIC, 2, 0, 0, 0, 0, 0,
-                new ImmutableMethodReference("Landroid/text/TextUtils;", "equals", List.of(text, text), "Z")));
-        code.add(new ImmutableInstruction11x(Opcode.RETURN, 0));
-        return new ImmutableMethod(owner, name, List.of(new ImmutableMethodParameter(AWEME, Set.of(), null)),
-                "Z", 1, Set.of(), Set.of(), new ImmutableMethodImplementation(3, code, List.of(), List.of()));
-    }
-
     /** 显式构造器规则按资源字段读取识别，字段改写或缺少名称不匹配。无参数，无返回。Callers: JUnit。 */
     @Test public void constructorRequiresExplicitNameAndResourceRead() throws IOException {
         String owner = "LX/RenamedMask;";
@@ -167,6 +133,21 @@ public class HostMethodRuleTest {
             var implicit = HostDexIndex.scan(List.of(target), rule.replace("name:<init>|", ""));
             assertFalse(implicit.containsKey("DARK_LAYER"));
         }
+    }
+
+    /** 静态初始化必须显式声明，普通日志方法不能冒充实验类。无参数、无返回。Callers: JUnit。 */
+    @Test public void staticInitializerRequiresExplicitName() throws IOException {
+        String owner = "LX/CaptionGate;";
+        String rule = "STATIC_INITIALIZER\tmethod-v1\t()V\tstatic|name:<clinit>|string:test_static_initializer\tinitialize";
+        var instructions = List.of(new ImmutableInstruction21c(Opcode.CONST_STRING, 0,
+                new ImmutableStringReference("test_static_initializer")));
+        var init = new ImmutableMethod(owner, "<clinit>", List.of(), "V", 8, Set.of(), Set.of(),
+                new ImmutableMethodImplementation(1, instructions, List.of(), List.of()));
+        var log = new ImmutableMethod("LX/Log;", "log", List.of(), "V", 8, Set.of(), Set.of(),
+                new ImmutableMethodImplementation(1, instructions, List.of(), List.of()));
+        var target = apk(type(owner, init), type("LX/Log;", log));
+        assertEquals("X.CaptionGate", HostDexIndex.scan(List.of(target), rule).getProperty("STATIC_INITIALIZER"));
+        assertEquals("X.Log", HostDexIndex.scan(List.of(target), rule.replace("name:<clinit>|", "")).getProperty("STATIC_INITIALIZER"));
     }
 
     /** @return 发布的下载规则。无参数。Callers: 本类测试。 */

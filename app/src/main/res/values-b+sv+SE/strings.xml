@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Uppspelning"</string>
     <string name="feature_progress" formatted="false">"Visa alltid videoförloppet"</string>
     <string name="feature_progress_summary" formatted="false">"Håll förloppsindikatorn synlig även i korta videor"</string>
-    <string name="feature_immersive" formatted="false">"Helskärmsuppspelning"</string>
-    <string name="feature_immersive_summary" formatted="false">"Gör nederfältet genomskinligt för video över hela skärmen"</string>
+    <string name="feature_immersive" formatted="false">"Videovisning"</string>
     <string name="feature_autoplay" formatted="false">"Utökad automatisk rullning"</string>
     <string name="feature_autoplay_summary" formatted="false">"Lås upp automatisk rullning i alla videomenyer"</string>
     <string name="feature_status_bar" formatted="false">"Dölj systemets statusfält"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Visa skaparens region"</string>
     <string name="feature_author_region_summary" formatted="false">"Visa landets eller regionens flagga och kod vid skaparens namn"</string>
     <string name="feature_copy_comment" formatted="false">"Kopiera bara text"</string>
-    <string name="feature_video_translation" formatted="false">"Lås upp översättning av videotext"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Visa översättningsalternativet för konton där det saknas"</string>
+    <string name="feature_video_translation" formatted="false">"Meny för undertexter och översättning"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Visa alternativet i menyn vid långt tryck"</string>
     <string name="feature_comment_translation" formatted="false">"Översätt kommentarer"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Lägg till en knapp för att översätta flera kommentarer på främmande språk"</string>
     <string name="feature_filter_section" formatted="false">"Filtrering av flödet"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Hastighet"</string>
     <string name="status_feature_progress" formatted="false">"Förloppsindikator"</string>
     <string name="status_feature_clean" formatted="false">"Dölj kontroller automatiskt"</string>
-    <string name="status_feature_immersive" formatted="false">"Helskärm"</string>
+    <string name="status_feature_immersive" formatted="false">"Videovisning"</string>
     <string name="status_feature_scroll" formatted="false">"Automatisk rullning"</string>
     <string name="status_feature_duration" formatted="false">"Längdvarning"</string>
     <string name="status_feature_comment_translate" formatted="false">"Översätt kommentarer"</string>
-    <string name="status_feature_video_translate" formatted="false">"Översätt videotext"</string>
+    <string name="status_feature_video_translate" formatted="false">"Meny för undertexter och översättning"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kopiera kommentarer"</string>
     <string name="status_feature_author" formatted="false">"Skaparens region"</string>
     <string name="status_feature_download" formatted="false">"Spara videor"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Det gick inte att spara. Skrivbehörighet saknas för platsen. Välj en annan plats."</string>
     <string name="feature_filter_topics" formatted="false">"Dölj föreslagna ämnen"</string>
     <string name="feature_filter_creators" formatted="false">"Dölj föreslagna kreatörer"</string>
-    <string name="host_scan_title_running" formatted="false">"Söker efter metoder"</string>
-    <string name="host_scan_title_saving" formatted="false">"Sparar resultat"</string>
     <string name="host_scan_title_complete" formatted="false">"Sökningen är klar"</string>
     <string name="host_scan_title_failed" formatted="false">"Sökningen misslyckades"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Håll TikTok i förgrunden."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Vänta."</string>
     <string name="host_scan_restart_hint" formatted="false">"Starta om TikTok manuellt för att tillämpa resultaten."</string>
     <string name="host_scan_failure_hint" formatted="false">"Visa funktionsdiagnostik i Toki."</string>
-    <string name="host_scan_done" formatted="false">"Jag förstår"</string>
     <string name="layout_title" formatted="false">"Sidlayout"</string>
     <string name="layout_summary" formatted="false">"Välj vilka knappar som ska döljas"</string>
     <string name="layout_hint" formatted="false">"Slå på reglaget för att dölja objektet"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Infoetiketter"</string>
     <string name="layout_search_label" formatted="false">"Sökförslag"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Stoppknapp för automatisk rullning"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Mynt och belöningar"</string>
+    <string name="layout_quick_comment" formatted="false">"Snabbkommentarer"</string>
+    <string name="layout_playlist" formatted="false">"Spellista"</string>
+    <string name="layout_creation_buttons" formatted="false">"Genvägar för skapande"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE-påminnelser"</string>
+    <string name="layout_opacity" formatted="false">"Opacitet"</string>
+    <string name="feature_background_audio">"Lås upp bakgrundsljud"</string>
+    <string name="layout_landscape">"Helskärmsknapp"</string>
+    <string name="layout_photo_indicators">"Fotoindikatorer och tips"</string>
+    <string name="layout_quick_message">"Snabbmeddelanden och delat av"</string>
+    <string name="layout_user_card">"Föreslagna konton"</string>
+    <string name="layout_survey">"Enkäter och feedback"</string>
+    <string name="layout_ad_cards">"Produkt- och annonskort"</string>
+    <string name="layout_bottom_banners">"Andra nedre banderoller"</string>
+    <string name="layout_activities">"Ingång till evenemang"</string>
+    <string name="host_scan_title_running" formatted="false">"Söker efter metoder"</string>
+    <string name="host_scan_title_saving" formatted="false">"Sparar resultat"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Håll TikTok i förgrunden."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Vänta."</string>
+    <string name="host_scan_done" formatted="false">"Jag förstår"</string>
+    <string name="video_fit_center" formatted="false">"Centrerat"</string>
+    <string name="video_fit_smart" formatted="false">"Helskärm"</string>
 </resources>

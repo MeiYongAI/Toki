@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Uchezaji"</string>
     <string name="feature_progress" formatted="false">"Onyesha upau wa maendeleo daima"</string>
     <string name="feature_progress_summary" formatted="false">"Weka upau wa maendeleo uonekane hata kwenye video fupi"</string>
-    <string name="feature_immersive" formatted="false">"Uchezaji wa skrini nzima"</string>
-    <string name="feature_immersive_summary" formatted="false">"Fanya upau wa chini uwe wazi ili video ienee skrini nzima"</string>
+    <string name="feature_immersive" formatted="false">"Mwonekano wa video"</string>
     <string name="feature_autoplay" formatted="false">"Usogezaji otomatiki ulioboreshwa"</string>
     <string name="feature_autoplay_summary" formatted="false">"Fungua usogezaji otomatiki kwenye menyu za video zote"</string>
     <string name="feature_status_bar" formatted="false">"Ficha upau wa hali wa mfumo"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Onyesha eneo la mtayarishi"</string>
     <string name="feature_author_region_summary" formatted="false">"Onyesha bendera na msimbo wa nchi au eneo kando ya jina la mtayarishi"</string>
     <string name="feature_copy_comment" formatted="false">"Nakili maandishi tu"</string>
-    <string name="feature_video_translation" formatted="false">"Fungua tafsiri ya maelezo"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Onyesha chaguo la tafsiri kwa akaunti ambako halipatikani"</string>
+    <string name="feature_video_translation" formatted="false">"Menyu ya manukuu na tafsiri"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Onyesha chaguo kwenye menyu ya kubonyeza kwa muda mrefu"</string>
     <string name="feature_comment_translation" formatted="false">"Tafsiri maoni"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Ongeza kitufe cha kutafsiri maoni mengi ya lugha za kigeni"</string>
     <string name="feature_filter_section" formatted="false">"Uchujaji wa mlisho"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Kasi"</string>
     <string name="status_feature_progress" formatted="false">"Upau wa maendeleo"</string>
     <string name="status_feature_clean" formatted="false">"Kuficha kiotomatiki"</string>
-    <string name="status_feature_immersive" formatted="false">"Skrini nzima"</string>
+    <string name="status_feature_immersive" formatted="false">"Mwonekano wa video"</string>
     <string name="status_feature_scroll" formatted="false">"Usogezaji otomatiki"</string>
     <string name="status_feature_duration" formatted="false">"Tahadhari ya muda"</string>
     <string name="status_feature_comment_translate" formatted="false">"Tafsiri ya maoni"</string>
-    <string name="status_feature_video_translate" formatted="false">"Tafsiri ya maelezo"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menyu ya manukuu na tafsiri"</string>
     <string name="status_feature_comment_copy" formatted="false">"Nakili maoni"</string>
     <string name="status_feature_author" formatted="false">"Eneo la mtayarishi"</string>
     <string name="status_feature_download" formatted="false">"Hifadhi video"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Kuhifadhi kumeshindwa. Ruhusa ya kuandika hapa haijatolewa. Chagua mahali pengine."</string>
     <string name="feature_filter_topics" formatted="false">"Ficha mada zilizopendekezwa"</string>
     <string name="feature_filter_creators" formatted="false">"Ficha mapendekezo ya watayarishi"</string>
-    <string name="host_scan_title_running" formatted="false">"Inatafuta mbinu"</string>
-    <string name="host_scan_title_saving" formatted="false">"Inahifadhi matokeo"</string>
     <string name="host_scan_title_complete" formatted="false">"Utafutaji umekamilika"</string>
     <string name="host_scan_title_failed" formatted="false">"Utafutaji umeshindwa"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Weka TikTok kwenye mandhari ya mbele."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Tafadhali subiri."</string>
     <string name="host_scan_restart_hint" formatted="false">"Anzisha upya TikTok wewe mwenyewe ili kutumia matokeo."</string>
     <string name="host_scan_failure_hint" formatted="false">"Angalia uchunguzi wa vipengele katika Toki."</string>
-    <string name="host_scan_done" formatted="false">"Nimeelewa"</string>
     <string name="layout_title" formatted="false">"Mpangilio wa ukurasa"</string>
     <string name="layout_summary" formatted="false">"Chagua vidhibiti vya kuficha"</string>
     <string name="layout_hint" formatted="false">"Washa swichi ili kuficha kipengee"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Lebo za taarifa"</string>
     <string name="layout_search_label" formatted="false">"Pendekezo la utafutaji"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Kitufe cha kusimamisha usogezaji otomatiki"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Sarafu na zawadi"</string>
+    <string name="layout_quick_comment" formatted="false">"Maoni ya haraka"</string>
+    <string name="layout_playlist" formatted="false">"Orodha ya kucheza"</string>
+    <string name="layout_creation_buttons" formatted="false">"Njia za mkato za kuunda"</string>
+    <string name="layout_live_notice" formatted="false">"Vikumbusho vya LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Kutopitisha mwanga"</string>
+    <string name="feature_background_audio">"Fungua sauti ya chinichini"</string>
+    <string name="layout_landscape">"Kitufe cha skrini nzima"</string>
+    <string name="layout_photo_indicators">"Viashiria na vidokezo vya picha"</string>
+    <string name="layout_quick_message">"Ujumbe wa haraka na aliyeshiriki"</string>
+    <string name="layout_user_card">"Akaunti zinazopendekezwa"</string>
+    <string name="layout_survey">"Tafiti na maoni"</string>
+    <string name="layout_ad_cards">"Kadi za bidhaa na matangazo"</string>
+    <string name="layout_bottom_banners">"Mabango mengine ya chini"</string>
+    <string name="layout_activities">"Kitufe cha matukio"</string>
+    <string name="host_scan_title_running" formatted="false">"Inatafuta mbinu"</string>
+    <string name="host_scan_title_saving" formatted="false">"Inahifadhi matokeo"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Weka TikTok kwenye mandhari ya mbele."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Tafadhali subiri."</string>
+    <string name="host_scan_done" formatted="false">"Nimeelewa"</string>
+    <string name="video_fit_center" formatted="false">"Katikati"</string>
+    <string name="video_fit_smart" formatted="false">"Skrini nzima"</string>
 </resources>

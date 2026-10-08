@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Taasesitus"</string>
     <string name="feature_progress" formatted="false">"Näita alati edenemisriba"</string>
     <string name="feature_progress_summary" formatted="false">"Hoiab edenemisriba nähtaval ka lühikestes videotes"</string>
-    <string name="feature_immersive" formatted="false">"Täisekraaniesitus"</string>
-    <string name="feature_immersive_summary" formatted="false">"Muudab alumise riba läbipaistvaks, et video täidaks kogu ekraani"</string>
+    <string name="feature_immersive" formatted="false">"Video kuvamine"</string>
     <string name="feature_autoplay" formatted="false">"Täiustatud automaatkerimine"</string>
     <string name="feature_autoplay_summary" formatted="false">"Avab automaatkerimise kõigi videote menüüs"</string>
     <string name="feature_status_bar" formatted="false">"Peida süsteemi olekuriba"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Näita looja piirkonda"</string>
     <string name="feature_author_region_summary" formatted="false">"Näita looja nime kõrval riigi või piirkonna lippu ja koodi"</string>
     <string name="feature_copy_comment" formatted="false">"Kopeeri ainult tekst"</string>
-    <string name="feature_video_translation" formatted="false">"Ava kirjelduste tõlge"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Näita tõlkevalikut kontodel, kus see pole saadaval"</string>
+    <string name="feature_video_translation" formatted="false">"Subtiitrite ja tõlke menüü"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Kuva valik pika vajutuse menüüs"</string>
     <string name="feature_comment_translation" formatted="false">"Tõlgi kommentaare"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Lisa nupp võõrkeelsete kommentaaride hulgitõlkimiseks"</string>
     <string name="feature_filter_section" formatted="false">"Voo filtreerimine"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Kiirus"</string>
     <string name="status_feature_progress" formatted="false">"Edenemisriba"</string>
     <string name="status_feature_clean" formatted="false">"Automaatne peitmine"</string>
-    <string name="status_feature_immersive" formatted="false">"Täisekraan"</string>
+    <string name="status_feature_immersive" formatted="false">"Video kuvamine"</string>
     <string name="status_feature_scroll" formatted="false">"Automaatne kerimine"</string>
     <string name="status_feature_duration" formatted="false">"Kestuse hoiatus"</string>
     <string name="status_feature_comment_translate" formatted="false">"Kommentaaride tõlge"</string>
-    <string name="status_feature_video_translate" formatted="false">"Kirjelduste tõlge"</string>
+    <string name="status_feature_video_translate" formatted="false">"Subtiitrite ja tõlke menüü"</string>
     <string name="status_feature_comment_copy" formatted="false">"Kommentaaride koopia"</string>
     <string name="status_feature_author" formatted="false">"Looja piirkond"</string>
     <string name="status_feature_download" formatted="false">"Video salvestamine"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Salvestamine nurjus. Sellele asukohale pole kirjutamisluba antud. Vali teine asukoht."</string>
     <string name="feature_filter_topics" formatted="false">"Peida soovitatud teemad"</string>
     <string name="feature_filter_creators" formatted="false">"Peida soovitatud loojad"</string>
-    <string name="host_scan_title_running" formatted="false">"Meetodite otsimine"</string>
-    <string name="host_scan_title_saving" formatted="false">"Tulemuste salvestamine"</string>
     <string name="host_scan_title_complete" formatted="false">"Otsing lõpetatud"</string>
     <string name="host_scan_title_failed" formatted="false">"Otsing ebaõnnestus"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Hoia TikTok esiplaanil."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Palun oota."</string>
     <string name="host_scan_restart_hint" formatted="false">"Tulemuste rakendamiseks taaskäivita TikTok käsitsi."</string>
     <string name="host_scan_failure_hint" formatted="false">"Vaata Toki funktsioonide diagnostikat."</string>
-    <string name="host_scan_done" formatted="false">"Selge"</string>
     <string name="layout_title" formatted="false">"Lehe paigutus"</string>
     <string name="layout_summary" formatted="false">"Vali peidetavad elemendid"</string>
     <string name="layout_hint" formatted="false">"Elemendi peitmiseks lülita lüliti sisse"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Infosildid"</string>
     <string name="layout_search_label" formatted="false">"Otsingusoovitus"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Automaatkerimise peatamise nupp"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Mündid ja preemiad"</string>
+    <string name="layout_quick_comment" formatted="false">"Kiirkommentaarid"</string>
+    <string name="layout_playlist" formatted="false">"Esitusloend"</string>
+    <string name="layout_creation_buttons" formatted="false">"Loomise otseteed"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE-meeldetuletused"</string>
+    <string name="layout_opacity" formatted="false">"Läbipaistmatus"</string>
+    <string name="feature_background_audio">"Ava taustaheli"</string>
+    <string name="layout_landscape">"Täisekraani nupp"</string>
+    <string name="layout_photo_indicators">"Fotode näidikud ja vihjed"</string>
+    <string name="layout_quick_message">"Kiirsõnumid ja jagaja"</string>
+    <string name="layout_user_card">"Soovitatud kontod"</string>
+    <string name="layout_survey">"Küsitlused ja tagasiside"</string>
+    <string name="layout_ad_cards">"Toote- ja reklaamikaardid"</string>
+    <string name="layout_bottom_banners">"Muud alumised bännerid"</string>
+    <string name="layout_activities">"Sündmuste nupp"</string>
+    <string name="host_scan_title_running" formatted="false">"Meetodite otsimine"</string>
+    <string name="host_scan_title_saving" formatted="false">"Tulemuste salvestamine"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Hoia TikTok esiplaanil."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Palun oota."</string>
+    <string name="host_scan_done" formatted="false">"Selge"</string>
+    <string name="video_fit_center" formatted="false">"Keskel"</string>
+    <string name="video_fit_smart" formatted="false">"Täisekraan"</string>
 </resources>

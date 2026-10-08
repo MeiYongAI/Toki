@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Αναπαραγωγή"</string>
     <string name="feature_progress" formatted="false">"Πάντα εμφάνιση γραμμής προόδου"</string>
     <string name="feature_progress_summary" formatted="false">"Εμφάνιση της κάτω γραμμής προόδου και στα σύντομα βίντεο"</string>
-    <string name="feature_immersive" formatted="false">"Αναπαραγωγή πλήρους οθόνης"</string>
-    <string name="feature_immersive_summary" formatted="false">"Διαφανής κάτω γραμμή και βίντεο σε ολόκληρη την οθόνη"</string>
+    <string name="feature_immersive" formatted="false">"Προβολή βίντεο"</string>
     <string name="feature_autoplay" formatted="false">"Βελτιωμένη αυτόματη κύλιση"</string>
     <string name="feature_autoplay_summary" formatted="false">"Ξεκλειδώνει την αυτόματη κύλιση στο μενού κάθε βίντεο"</string>
     <string name="feature_status_bar" formatted="false">"Απόκρυψη γραμμής κατάστασης συστήματος"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Εμφάνιση περιοχής δημιουργού"</string>
     <string name="feature_author_region_summary" formatted="false">"Εμφάνιση σημαίας και κωδικού χώρας ή περιοχής δίπλα στο όνομα"</string>
     <string name="feature_copy_comment" formatted="false">"Αντιγραφή μόνο κειμένου"</string>
-    <string name="feature_video_translation" formatted="false">"Ξεκλείδωμα μετάφρασης περιγραφών"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Εμφάνιση της μετάφρασης σε λογαριασμούς όπου δεν είναι διαθέσιμη"</string>
+    <string name="feature_video_translation" formatted="false">"Μενού υποτίτλων και μετάφρασης"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Εμφάνιση επιλογής στο μενού παρατεταμένου πατήματος"</string>
     <string name="feature_comment_translation" formatted="false">"Μετάφραση σχολίων"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Προσθήκη κουμπιού για μαζική μετάφραση ξενόγλωσσων σχολίων"</string>
     <string name="feature_filter_section" formatted="false">"Φιλτράρισμα ροής"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Ταχύτητα"</string>
     <string name="status_feature_progress" formatted="false">"Γραμμή προόδου"</string>
     <string name="status_feature_clean" formatted="false">"Κρυφά χειριστήρια στην αναπαραγωγή"</string>
-    <string name="status_feature_immersive" formatted="false">"Πλήρης οθόνη"</string>
+    <string name="status_feature_immersive" formatted="false">"Προβολή βίντεο"</string>
     <string name="status_feature_scroll" formatted="false">"Αυτόματη κύλιση"</string>
     <string name="status_feature_duration" formatted="false">"Ειδοποίηση διάρκειας"</string>
     <string name="status_feature_comment_translate" formatted="false">"Μετάφραση σχολίων"</string>
-    <string name="status_feature_video_translate" formatted="false">"Μετάφραση περιγραφών"</string>
+    <string name="status_feature_video_translate" formatted="false">"Μενού υποτίτλων και μετάφρασης"</string>
     <string name="status_feature_comment_copy" formatted="false">"Αντιγραφή σχολίων"</string>
     <string name="status_feature_author" formatted="false">"Περιοχή δημιουργού"</string>
     <string name="status_feature_download" formatted="false">"Αποθήκευση βίντεο"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Αποτυχία αποθήκευσης: δεν υπάρχει άδεια εγγραφής στη θέση. Επιλέξτε ξανά."</string>
     <string name="feature_filter_topics" formatted="false">"Απόκρυψη προτεινόμενων θεμάτων"</string>
     <string name="feature_filter_creators" formatted="false">"Απόκρυψη προτεινόμενων δημιουργών"</string>
-    <string name="host_scan_title_running" formatted="false">"Αναζήτηση μεθόδων"</string>
-    <string name="host_scan_title_saving" formatted="false">"Αποθήκευση αποτελεσμάτων"</string>
     <string name="host_scan_title_complete" formatted="false">"Η αναζήτηση ολοκληρώθηκε"</string>
     <string name="host_scan_title_failed" formatted="false">"Η αναζήτηση απέτυχε"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Κρατήστε το TikTok στο προσκήνιο."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Περιμένετε."</string>
     <string name="host_scan_restart_hint" formatted="false">"Επανεκκινήστε το TikTok χειροκίνητα για να εφαρμοστούν τα αποτελέσματα."</string>
     <string name="host_scan_failure_hint" formatted="false">"Δείτε τα διαγνωστικά λειτουργιών στο Toki."</string>
-    <string name="host_scan_done" formatted="false">"Κατάλαβα"</string>
     <string name="layout_title" formatted="false">"Διάταξη σελίδας"</string>
     <string name="layout_summary" formatted="false">"Επιλέξτε ποια στοιχεία θα κρύβονται"</string>
     <string name="layout_hint" formatted="false">"Ενεργοποιήστε τον διακόπτη για απόκρυψη"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Ετικέτες πληροφοριών"</string>
     <string name="layout_search_label" formatted="false">"Πρόταση αναζήτησης"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Κουμπί διακοπής αυτόματης κύλισης"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Νομίσματα και ανταμοιβές"</string>
+    <string name="layout_quick_comment" formatted="false">"Γρήγορα σχόλια"</string>
+    <string name="layout_playlist" formatted="false">"Λίστα αναπαραγωγής"</string>
+    <string name="layout_creation_buttons" formatted="false">"Συντομεύσεις δημιουργίας"</string>
+    <string name="layout_live_notice" formatted="false">"Υπενθυμίσεις LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Αδιαφάνεια"</string>
+    <string name="feature_background_audio">"Ξεκλείδωμα ήχου στο παρασκήνιο"</string>
+    <string name="layout_landscape">"Κουμπί πλήρους οθόνης"</string>
+    <string name="layout_photo_indicators">"Ενδείξεις και υποδείξεις φωτογραφιών"</string>
+    <string name="layout_quick_message">"Γρήγορα μηνύματα και πηγή κοινοποίησης"</string>
+    <string name="layout_user_card">"Προτεινόμενοι λογαριασμοί"</string>
+    <string name="layout_survey">"Έρευνες και σχόλια"</string>
+    <string name="layout_ad_cards">"Κάρτες προϊόντων και διαφημίσεων"</string>
+    <string name="layout_bottom_banners">"Άλλα κάτω banner"</string>
+    <string name="layout_activities">"Είσοδος εκδηλώσεων"</string>
+    <string name="host_scan_title_running" formatted="false">"Αναζήτηση μεθόδων"</string>
+    <string name="host_scan_title_saving" formatted="false">"Αποθήκευση αποτελεσμάτων"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Κρατήστε το TikTok στο προσκήνιο."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Περιμένετε."</string>
+    <string name="host_scan_done" formatted="false">"Κατάλαβα"</string>
+    <string name="video_fit_center" formatted="false">"Στο κέντρο"</string>
+    <string name="video_fit_smart" formatted="false">"Πλήρης οθόνη"</string>
 </resources>

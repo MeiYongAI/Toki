@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"ဖွင့်ခြင်း"</string>
     <string name="feature_progress" formatted="false">"ဗီဒီယိုတိုးတက်မှုဘား အမြဲပြရန်"</string>
     <string name="feature_progress_summary" formatted="false">"ဗီဒီယိုတိုများတွင်လည်း တိုးတက်မှုဘားကို ပြထားရန်"</string>
-    <string name="feature_immersive" formatted="false">"မျက်နှာပြင်အပြည့် ဖွင့်ရန်"</string>
-    <string name="feature_immersive_summary" formatted="false">"အောက်ဘားကို ဖောက်ထွင်းမြင်ရစေပြီး ဗီဒီယိုကို မျက်နှာပြင်အပြည့် ပြရန်"</string>
+    <string name="feature_immersive" formatted="false">"ဗီဒီယိုပြသမှု"</string>
     <string name="feature_autoplay" formatted="false">"အဆင့်မြှင့် အလိုအလျောက်ရွှေ့ခြင်း"</string>
     <string name="feature_autoplay_summary" formatted="false">"ဗီဒီယိုအားလုံး၏ မီနူးတွင် အလိုအလျောက်ရွှေ့ခြင်းကို ဖွင့်ပေးသည်"</string>
     <string name="feature_status_bar" formatted="false">"စနစ်အခြေအနေဘား ဖျောက်ရန်"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"ဖန်တီးသူ၏ဒေသ ပြရန်"</string>
     <string name="feature_author_region_summary" formatted="false">"ဖန်တီးသူအမည်ဘေးတွင် နိုင်ငံ/ဒေသ အလံနှင့်ကုဒ် ပြရန်"</string>
     <string name="feature_copy_comment" formatted="false">"စာသားသာ ကူးရန်"</string>
-    <string name="feature_video_translation" formatted="false">"စာသားဘာသာပြန်ခြင်း ဖွင့်ရန်"</string>
-    <string name="feature_video_translation_summary" formatted="false">"ဘာသာပြန်ရွေးချယ်မှု မရှိသောအကောင့်များတွင် ပြပေးရန်"</string>
+    <string name="feature_video_translation" formatted="false">"စာတန်းထိုးနှင့် ဘာသာပြန် မီနူး"</string>
+    <string name="feature_video_translation_summary" formatted="false">"ဖိထားသည့်အခါ ပေါ်လာသောမီနူးတွင် ရွေးချယ်စရာကို ပြပါ"</string>
     <string name="feature_comment_translation" formatted="false">"မှတ်ချက် ဘာသာပြန်ရန်"</string>
     <string name="feature_comment_translation_summary" formatted="false">"နိုင်ငံခြားဘာသာ မှတ်ချက်များကို တစ်ပြိုင်နက် ဘာသာပြန်သည့်ခလုတ် ထည့်ရန်"</string>
     <string name="feature_filter_section" formatted="false">"ပို့စ်စီးကြောင်း စစ်ထုတ်ခြင်း"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"ဖွင့်နှုန်း"</string>
     <string name="status_feature_progress" formatted="false">"တိုးတက်မှုဘား"</string>
     <string name="status_feature_clean" formatted="false">"ဖွင့်နေစဉ် ခလုတ်ဖျောက်ခြင်း"</string>
-    <string name="status_feature_immersive" formatted="false">"မျက်နှာပြင်အပြည့် ဖွင့်ခြင်း"</string>
+    <string name="status_feature_immersive" formatted="false">"ဗီဒီယိုပြသမှု"</string>
     <string name="status_feature_scroll" formatted="false">"အလိုအလျောက်ရွှေ့ခြင်း"</string>
     <string name="status_feature_duration" formatted="false">"ကြာချိန်သတိပေးချက်"</string>
     <string name="status_feature_comment_translate" formatted="false">"မှတ်ချက်ဘာသာပြန်ခြင်း"</string>
-    <string name="status_feature_video_translate" formatted="false">"စာသားဘာသာပြန်ခြင်း"</string>
+    <string name="status_feature_video_translate" formatted="false">"စာတန်းထိုးနှင့် ဘာသာပြန် မီနူး"</string>
     <string name="status_feature_comment_copy" formatted="false">"မှတ်ချက်ကူးခြင်း"</string>
     <string name="status_feature_author" formatted="false">"ဖန်တီးသူ၏ဒေသ"</string>
     <string name="status_feature_download" formatted="false">"ဗီဒီယိုသိမ်းခြင်း"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"သိမ်းခြင်း မအောင်မြင်ပါ။ ဤနေရာတွင် ရေးခွင့်မရှိပါ။ အခြားနေရာ ရွေးပါ။"</string>
     <string name="feature_filter_topics" formatted="false">"အကြံပြုထားသော ခေါင်းစဉ်များ ဖျောက်ရန်"</string>
     <string name="feature_filter_creators" formatted="false">"အကြံပြုဖန်တီးသူများ ဖျောက်ရန်"</string>
-    <string name="host_scan_title_running" formatted="false">"မက်သဒ်များကို ရှာဖွေနေသည်"</string>
-    <string name="host_scan_title_saving" formatted="false">"ရလဒ်များကို သိမ်းဆည်းနေသည်"</string>
     <string name="host_scan_title_complete" formatted="false">"ရှာဖွေမှု ပြီးဆုံးပြီ"</string>
     <string name="host_scan_title_failed" formatted="false">"ရှာဖွေမှု မအောင်မြင်ပါ"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok ကို ရှေ့မျက်နှာပြင်တွင် ဖွင့်ထားပါ။"</string>
-    <string name="host_scan_saving_hint" formatted="false">"ခဏစောင့်ပါ။"</string>
     <string name="host_scan_restart_hint" formatted="false">"ရလဒ်များကို အသုံးပြုရန် TikTok ကို ကိုယ်တိုင် ပြန်လည်စတင်ပါ။"</string>
     <string name="host_scan_failure_hint" formatted="false">"Toki တွင် လုပ်ဆောင်ချက် စစ်ဆေးမှုကို ကြည့်ပါ။"</string>
-    <string name="host_scan_done" formatted="false">"နားလည်ပါပြီ"</string>
     <string name="layout_title" formatted="false">"စာမျက်နှာ အပြင်အဆင်"</string>
     <string name="layout_summary" formatted="false">"ဖျောက်လိုသည့် ခလုတ်များကို ရွေးပါ"</string>
     <string name="layout_hint" formatted="false">"ပစ္စည်းကို ဖျောက်ရန် ခလုတ်ကို ဖွင့်ပါ"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"အချက်အလက် အညွှန်းများ"</string>
     <string name="layout_search_label" formatted="false">"ရှာဖွေမှု အကြံပြုချက်"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"အလိုအလျောက်ရွှေ့ခြင်း ရပ်ရန်ခလုတ်"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"အကြွေစေ့နှင့် ဆုများ"</string>
+    <string name="layout_quick_comment" formatted="false">"အမြန်မှတ်ချက်"</string>
+    <string name="layout_playlist" formatted="false">"ဖွင့်ရန်စာရင်း"</string>
+    <string name="layout_creation_buttons" formatted="false">"ဖန်တီးမှု ဖြတ်လမ်းများ"</string>
+    <string name="layout_live_notice" formatted="false">"LIVE သတိပေးချက်များ"</string>
+    <string name="layout_opacity" formatted="false">"အလင်းပိတ်မှု"</string>
+    <string name="feature_background_audio">"နောက်ခံအသံ ဖွင့်ခွင့်ပြုရန်"</string>
+    <string name="layout_landscape">"မျက်နှာပြင်အပြည့် ခလုတ်"</string>
+    <string name="layout_photo_indicators">"ဓာတ်ပုံအညွှန်းနှင့် အကြံပြုချက်များ"</string>
+    <string name="layout_quick_message">"အမြန်စာတိုနှင့် မျှဝေသူ"</string>
+    <string name="layout_user_card">"အကြံပြုအကောင့်များ"</string>
+    <string name="layout_survey">"စစ်တမ်းနှင့် တုံ့ပြန်ချက်"</string>
+    <string name="layout_ad_cards">"ကုန်ပစ္စည်းနှင့် ကြော်ငြာကတ်များ"</string>
+    <string name="layout_bottom_banners">"အခြားအောက်ခြေဘန်နာများ"</string>
+    <string name="layout_activities">"ပွဲအစီအစဉ် ဝင်ပေါက်"</string>
+    <string name="host_scan_title_running" formatted="false">"မက်သဒ်များကို ရှာဖွေနေသည်"</string>
+    <string name="host_scan_title_saving" formatted="false">"ရလဒ်များကို သိမ်းဆည်းနေသည်"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok ကို ရှေ့မျက်နှာပြင်တွင် ဖွင့်ထားပါ။"</string>
+    <string name="host_scan_saving_hint" formatted="false">"ခဏစောင့်ပါ။"</string>
+    <string name="host_scan_done" formatted="false">"နားလည်ပါပြီ"</string>
+    <string name="video_fit_center" formatted="false">"အလယ်တွင်"</string>
+    <string name="video_fit_smart" formatted="false">"မျက်နှာပြင်အပြည့်"</string>
 </resources>

@@ -13,11 +13,13 @@ object ConfigSchema {
         "SpeedOptions" to listOf("speed_expand_enabled"),
         "CommentTranslateHook" to listOf("comment_translate_enabled"),
         "VideoTranslateHook" to listOf("video_translate_enabled"),
+        "BackgroundAudioHook" to listOf("background_audio_unlock"),
         "CommentCopyHook" to listOf("copy_comment_text_only"),
         "AuthorLocationHook" to listOf("show_author_location"),
         "ProgressBarHook" to listOf("always_show_progress_bar", "clean_mode_show_progress_bar"),
         "AutoCleanModeHook" to listOf("clean_mode_on_play"),
-        "LayoutCleanupHook" to io.github.meiyongai.toki.model.LayoutElement.entries.map { it.key },
+        "LayoutCleanupHook" to io.github.meiyongai.toki.model.LayoutElement.entries.map { it.key } +
+            io.github.meiyongai.toki.model.LayoutGroup.entries.map { it.opacityEnabledKey },
         "ImmersiveFullScreenHook" to listOf("immersive_full_screen"),
         "AutoScrollHook" to listOf("auto_scroll_unlock"),
         "DownloadHook" to listOf("download_force_no_watermark", "download_path_enabled"),
@@ -35,8 +37,9 @@ object ConfigSchema {
     private val stringKeys = setOf("target_region", "sim_operator_code", "sim_operator_name",
         "custom_language", "custom_timezone", "custom_latitude", "custom_longitude",
         "fixed_speed_value", "speed_expand_list", "download_video_path", "download_image_path",
-        "video_duration_alert_threshold", "feed_filter_keywords_json") +
-        rangePrefixes.flatMap { listOf("${it}_min", "${it}_max") }
+        "video_duration_alert_threshold", "feed_filter_keywords_json", "video_fit_mode") +
+        rangePrefixes.flatMap { listOf("${it}_min", "${it}_max") } +
+        io.github.meiyongai.toki.model.LayoutGroup.entries.map { it.opacityKey }
     val keys: Set<String> = booleanDefaults.keys + stringKeys
 
     /**
@@ -61,8 +64,12 @@ object ConfigSchema {
                 continue
             }
             require(value is String) { "$key 必须为字符串" }
+            if (io.github.meiyongai.toki.model.LayoutGroup.entries.any { it.opacityKey == key }) {
+                require(value.toIntOrNull() in 0..100) { "$key 必须为 0 至 100 的整数" }
+            }
             require(value.length <= if (key == "feed_filter_keywords_json") 131072 else 4096) { "$key 内容过长" }
             when (key) {
+                "video_fit_mode" -> require(value in setOf("center", "smart")) { "视频显示模式无效" }
                 "target_region" -> require(value.matches(Regex("[A-Za-z]{2}"))) { "国家代码必须为两个英文字母" }
                 "sim_operator_code" -> require(value.matches(Regex("[0-9]{5,6}"))) { "运营商代码必须为五至六位数字" }
                 "sim_operator_name" -> require(value.isNotBlank()) { "运营商名称不能为空" }

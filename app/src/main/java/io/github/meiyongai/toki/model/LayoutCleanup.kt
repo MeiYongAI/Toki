@@ -4,7 +4,10 @@ import io.github.meiyongai.toki.R
 
 /** 页面净化的三个独立配置区域；名称由资源系统本地化。 */
 enum class LayoutGroup(val title: Int) {
-    TOP(R.string.layout_top), BOTTOM(R.string.layout_bottom), SIDE(R.string.layout_side)
+    TOP(R.string.layout_top), BOTTOM(R.string.layout_bottom), SIDE(R.string.layout_side);
+
+    val opacityKey = "layout_opacity_" + name.lowercase(java.util.Locale.ROOT)
+    val opacityEnabledKey = "${opacityKey}_enabled"
 }
 
 /**
@@ -45,11 +48,40 @@ enum class LayoutElement(val group: LayoutGroup, val title: Int, val tag: String
     MUSIC_TITLE(LayoutGroup.SIDE, R.string.layout_music_title),
     TAGS(LayoutGroup.SIDE, R.string.layout_tags),
     SEARCH_LABEL(LayoutGroup.SIDE, R.string.layout_search_label),
-    AUTO_SCROLL_STOP(LayoutGroup.SIDE, R.string.layout_auto_scroll_stop);
+    AUTO_SCROLL_STOP(LayoutGroup.SIDE, R.string.layout_auto_scroll_stop),
+    TAKO(LayoutGroup.SIDE, R.string.layout_tako),
+    REWARDS(LayoutGroup.SIDE, R.string.layout_rewards),
+    QUICK_COMMENT(LayoutGroup.SIDE, R.string.layout_quick_comment),
+    PLAYLIST(LayoutGroup.SIDE, R.string.layout_playlist),
+    CREATION_BUTTONS(LayoutGroup.SIDE, R.string.layout_creation_buttons),
+    LIVE_NOTICE(LayoutGroup.SIDE, R.string.layout_live_notice),
+    LANDSCAPE(LayoutGroup.SIDE, R.string.layout_landscape),
+    PHOTO_INDICATORS(LayoutGroup.SIDE, R.string.layout_photo_indicators),
+    QUICK_MESSAGE(LayoutGroup.SIDE, R.string.layout_quick_message),
+    USER_CARD(LayoutGroup.SIDE, R.string.layout_user_card),
+    SURVEY(LayoutGroup.SIDE, R.string.layout_survey),
+    AD_CARDS(LayoutGroup.SIDE, R.string.layout_ad_cards),
+    BOTTOM_BANNERS(LayoutGroup.SIDE, R.string.layout_bottom_banners),
+    ACTIVITIES(LayoutGroup.SIDE, R.string.layout_activities);
 
     val key: String = "layout_hide_" + name.lowercase(java.util.Locale.ROOT)
 
     companion object {
+        /**
+         * 将宿主工具栏的业务标识映射到现有净化开关。
+         * @param tag 宿主工具栏 getTag 返回的稳定业务标识。
+         * @return 对应开关；未列入目录的入口返回 null。
+         * Callers: LayoutCleanupHook.init 工具栏绑定回调、LayoutComponentSelectorTest。
+         */
+        fun toolbar(tag: String): LayoutElement? = when (tag) {
+            "tako" -> TAKO
+            "coin" -> REWARDS
+            "special_event" -> ACTIVITIES
+            "dm_notice" -> QUICK_MESSAGE
+            "publish", "story", "story_camera" -> CREATION_BUTTONS
+            else -> navigation(LayoutGroup.TOP, tag)
+        }
+
         /** @param group 区域。@param tag 宿主语义标识。@return 对应控件或 null。Callers: LayoutCleanupHook。 */
         fun navigation(group: LayoutGroup, tag: String): LayoutElement? =
             entries.singleOrNull { it.group == group && it.tag == tag } ?:

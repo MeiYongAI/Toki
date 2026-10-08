@@ -54,6 +54,7 @@ internal fun LayoutCleanupSection() {
                 Spacer(Modifier.height(12.dp))
                 androidx.compose.runtime.key(group) {
                     Column(Modifier.verticalScroll(rememberScrollState())) {
+                        LayoutOpacityControl(selected)
                         for (element in LayoutElement.entries.filter { it.group == selected }) {
                             CompactPreferenceSwitch(
                                 title = strings.getString(element.title),

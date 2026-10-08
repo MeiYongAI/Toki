@@ -9,8 +9,10 @@ internal enum class HostSymbol {
     LAYOUT_TOOLBAR,
     LAYOUT_BOTTOM_ITEM,
     COMMENT_TRANSLATION,
-    DESCRIPTION_TRANSLATION,
+    MENU_CAPTION_ACL,
+    CAPTION_CONSUMER,
     TRANSLATION_REVERSE,
+    BACKGROUND_AUDIO,
     SPEED_MANAGER,
     PLAYER_CONTROLLER,
     PLAYER_MANAGER,
@@ -36,7 +38,6 @@ internal enum class HostSymbol {
     RECOMMEND_MODEL,
     RECOMMEND_ADAPTER,
     COMMENT_COPY,
-    PINCH,
     SPEED_OPTIONS,
     MUTE_INFO,
     VIDEO_CELL,
@@ -69,6 +70,14 @@ internal object HostSymbols {
         }
     }
 
+    /**
+     * 统一选择本地或随模块发布的已验证结果，未知代码集合才进入原生检索。
+     * @param info 完整代码路径和私有目录。
+     * @param scanAllowed 是否由当前主进程负责生成适配结果。
+     * @param required 已启用功能的依赖。
+     * @return 结果是否已可用于当前进程注册。
+     * Callers: initialize。
+     */
     private fun prepare(info: android.content.pm.ApplicationInfo, scanAllowed: Boolean, required: Set<HostSymbol>): Boolean {
         require(required.isNotEmpty()) { "无需符号适配的会话不能启动扫描" }
         val paths = listOf(info.sourceDir) + info.splitSourceDirs.orEmpty()
@@ -76,9 +85,13 @@ internal object HostSymbols {
         val rulesIdentity = HostDexIndex.digest(rules)
         val key = HostDexIndex.digest("$INDEX_FORMAT\n$identity\n" + rulesIdentity)
         val cache = storageFile(java.io.File(info.dataDir))
-        val stored = HostSymbolCache.read(cache)
+        val local = HostSymbolCache.read(cache)
+        val bundled = if (HostScanPlan(local, rules, identity, INDEX_FORMAT, required).pending.isEmpty()) null
+            else HostBundledProfiles.load(identity, rules)
+        val stored = bundled ?: local
         val plan = HostScanPlan(stored, rules, identity, INDEX_FORMAT, required)
         if (plan.pending.isEmpty()) {
+            if (bundled != null && scanAllowed) HostSymbolCache.write(cache, bundled)
             resolved = if (stored.getProperty("cache.format") == INDEX_FORMAT && stored.getProperty("cache.key") == key) stored else {
                 plan.merge(java.util.Properties()).apply {
                     for (field in listOf("cache.scanPid", "cache.createdAt", "cache.reason")) {
@@ -89,7 +102,8 @@ internal object HostSymbols {
             }
             val failures = resolved.stringPropertyNames().filter { it.startsWith("error.") }
             HookRuntime.adaptation("适配缓存有效\n代码标识：$identity\n未匹配目标：${failures.joinToString().ifEmpty { "无" }}")
-            HookRuntime.state("HostSymbols", "缓存已验证")
+            HookRuntime.state("HostSymbols", if (bundled != null) "内置适配已验证" else "缓存已验证")
+            if (bundled != null) HookRuntime.event("TokiHostSymbols", "内置适配直接启用 code=$identity；无需扫描或重启")
             HookRuntime.event("TokiHostSymbols", "缓存已验证 pid=${android.os.Process.myPid()} key=$key scanPid=${stored.getProperty("cache.scanPid")} code=$identity rules=$rulesIdentity")
             return true
         }
@@ -103,7 +117,7 @@ internal object HostSymbols {
             HostScanController.session.begin()
             Thread({
                 try {
-                    val scanned = HostDexIndex.scan(paths, selectedRules) { completed, total ->
+                    val scanned = HostNativeIndex.scan(paths, selectedRules) { completed, total ->
                         HostScanController.session.progress(completed, total)
                     }
                     HostScanController.session.saving()

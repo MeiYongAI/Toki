@@ -3,6 +3,8 @@ package io.github.meiyongai.toki.hook
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
+import android.view.SurfaceView
+import android.view.TextureView
 import android.widget.FrameLayout
 import io.github.meiyongai.toki.provider.ConfigSnapshot
 import io.github.libxposed.api.XposedInterface
@@ -27,7 +29,6 @@ object AutoCleanModeHook {
     private lateinit var cellFragment: Field
     private lateinit var currentHolder: Method
     private lateinit var listFragment: Method
-    private lateinit var cellAweme: Method
     private lateinit var videoCell: Class<*>
     private lateinit var feedFragment: Class<*>
     private lateinit var mainFragment: Class<*>
@@ -40,17 +41,20 @@ object AutoCleanModeHook {
         var cell = WeakReference<Any>(null)
         var list = WeakReference<Any>(null)
         var binding: CleanSceneBinding? = null
+        val controls = WeakHashMap<View, Unit>()
         var reported = ""
     }
     /** @param page 卡片所属页面。 */
-    private class Component(val page: Page) { val owner = CleanViewGate.Owner() }
+    private class Component(val page: Page, val binding: CleanSceneBinding) { val owner get() = binding.owner }
     /** @param page 翻页器所属页面。 */
-    private class Pager(val page: Page) { var origin: WeakReference<Any>? = null }
+    private class Pager(val page: Page)
     /** @param binding 导航区域。@param current 读取已选子 Fragment，不持有宿主强引用。 */
     private class Shell(val binding: CleanSceneBinding, val current: () -> Any?)
 
-    /** 当前可见视频页是否清屏。@return 清屏状态；无入参。Callers: ProgressBarHook。 */
-    val isCleanActive: Boolean get() = pages.values.any { it.owner.clean }
+    /** 查询进度控制器实际所属页面。@param panel 宿主列表。@return 该页是否清屏。Callers: ProgressBarHook。 */
+    internal fun isCleanActive(panel: Any?): Boolean = panel?.let {
+        if (::listFragment.isInitialized) listFragment.invoke(it)?.let { fragment -> pages[fragment]?.owner?.clean } else null
+    } == true
 
     /** 读取组件所属 Fragment。@param component 页面组件。@return Fragment 或 null。Callers: init。 */
     private fun owner(component: Any): Any? = panelFragment.get(panelContext.invoke(component))
@@ -103,7 +107,7 @@ object AutoCleanModeHook {
                 HookRuntime.count("AutoCleanModeHook", if (page.owner.clean) "进入清屏" else "退出清屏")
             }
         }
-        if (event != "frame" && isCleanActive) ProgressBarHook.assertPlayingSeekBarMode(
+        if (event != "frame" && configuration != null) ProgressBarHook.assertPlayingSeekBarMode(
             checkNotNull(configuration).boolean(ProgressBarHook.KEY_CLEAN_SHOW_PROGRESS_BAR))
     }
 
@@ -111,7 +115,7 @@ object AutoCleanModeHook {
      * 按列表当前 Holder 选择卡片；尚无 Holder 保持加载状态，非视频明确解除清屏。
      * @param page 所属页面。
      * @return 当前视频卡片；尚未创建或为其它内容时返回 null。
-     * Callers: startPlayback、pause、settle、选页与暂停命令。
+     * Callers: startPlayback、playbackFailed、settle、选页与暂停命令。
      */
     private fun selectCurrent(page: Page): Any? {
         val panel = page.list.get() ?: return null
@@ -128,7 +132,7 @@ object AutoCleanModeHook {
         return cell
     }
 
-    /** 核对播放通知归属。@param page 页面。@param cell 通知卡片。@return 是否为当前卡片。Callers: startPlayback、pause。 */
+    /** 核对播放通知归属。@param page 页面。@param cell 通知卡片。@return 是否为当前卡片。Callers: startPlayback、playbackFailed。 */
     private fun isCurrent(page: Page, cell: Any): Boolean =
         page.list.get()?.let { currentHolder.invoke(it) === cell } == true
 
@@ -143,31 +147,13 @@ object AutoCleanModeHook {
         commit(if (preparing) "prepare" else "play")
     }
 
-    /** 处理当前卡片停播或失败。@param cell 当前卡片。@param failed 是否失败。@return Unit。Callers: init 的停止回调。 */
-    private fun pause(cell: Any, failed: Boolean) {
+    /** 当前视频播放失败时恢复控件。@param cell 当前卡片。@return Unit。Callers: init 的失败回调。 */
+    private fun playbackFailed(cell: Any) {
         val page = page(cell) ?: return
         if (!isCurrent(page, cell)) return
         selectCurrent(page)
-        if (failed) page.state.stop() else page.state.pause()
-        commit(if (failed) "failed" else "pause")
-    }
-
-    /**
-     * 明确暂停交互完成后读取实际暂停状态，拒绝其它视频的迟到事件。
-     * @param contract 已核实的暂停接口。
-     * @param controller 控制器。
-     * @param aweme 交互视频；null 表示控制器暂停命令。
-     * @return Unit。
-     * Callers: init。
-     */
-    private fun playbackStopped(contract: CleanPlaybackContract, controller: Any, aweme: Any?) {
-        if (!contract.isPaused(controller)) return
-        val page = contract.panel.invoke(controller)?.let(::listPage) ?: return
-        val cell = page.list.get()?.let { currentHolder.invoke(it) } ?: return
-        if (!videoCell.isInstance(cell) || (aweme != null && cellAweme.invoke(cell) !== aweme)) return
-        selectCurrent(page)
         page.state.stop()
-        commit("pauseCommand")
+        commit("failed")
     }
 
     /** 释放身份并保持页面交接。@param cell 解除绑定的卡片。@return Unit。Callers: init。 */
@@ -179,17 +165,9 @@ object AutoCleanModeHook {
         commit("release")
     }
 
-    /** 开始翻页事务。@param binding 翻页器。@return Unit。Callers: init。 */
-    private fun beginTransition(binding: Pager) {
-        if (binding.origin == null) binding.origin = WeakReference(binding.page.cell.get())
-        binding.page.state.beginTransition()
-    }
-
     /** 完成翻页并提交当前内容。@param binding 翻页器。@return Unit。Callers: init。 */
     private fun settle(binding: Pager) {
-        val selected = selectCurrent(binding.page)
-        binding.page.state.settle(binding.origin?.get() !== selected)
-        binding.origin = null
+        selectCurrent(binding.page)
         commit("settle")
     }
 
@@ -239,9 +217,9 @@ object AutoCleanModeHook {
         val tabContent = tabHost.declaredFields.single { it.type == FrameLayout::class.java }.apply { isAccessible = true }
         val tabCurrent = tabHost.getMethod("getCurrentFragment")
         val seekBar = HostSymbols.resolve(classLoader, HostSymbol.SEEK_BAR)
-        val preserve = { view: View -> CleanSceneBinding.containsView(view) {
-            seekBar.isInstance(it) || ProgressBarHook.ownsInteractionView(it)
-        } }
+        val protectedControl = { view: View -> seekBar.isInstance(view) ||
+            ProgressBarHook.ownsInteractionView(view) || view is SurfaceView || view is TextureView }
+        val preserve = { view: View -> CleanSceneBinding.containsView(view, protectedControl) }
         val homeCurrent = mainFragment.getMethod("getCurrentFragment")
         videoCell = HostSymbols.resolve(classLoader, HostSymbol.VIDEO_CELL)
         val base = classLoader.loadClass("com.ss.android.ugc.aweme.feed.adapter.VideoBaseCell")
@@ -251,7 +229,6 @@ object AutoCleanModeHook {
         panelContext = panel.getMethod("getPanelContext")
         panelFragment = panelContext.returnType.declaredFields.single { it.type == fragment }.apply { isAccessible = true }
         cellFragment = base.declaredFields.single { it.type == fragment }.apply { isAccessible = true }
-        cellAweme = videoCell.getMethod("getAweme")
         val pageParams = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.BaseFeedPageParams")
         val componentBase = classLoader.loadClass("com.ss.android.ugc.feed.platform.cell.BaseCellContentComponent")
         val componentContext = componentBase.declaredMethods.single {
@@ -272,6 +249,19 @@ object AutoCleanModeHook {
         check(playButtonContext.returnType == panelContext.returnType)
         val showPause = playButton.getDeclaredMethod(HostSymbols.member(HostSymbol.PLAY_BUTTON, "show"))
         check(showPause.returnType == Void.TYPE)
+        val autoScroll = classLoader.loadClass("com.ss.android.ugc.feed.platform.panel.autoscroll.AutoScrollComponent")
+        val autoScrollContext = autoScroll.getMethod("getPanelContext")
+        check(autoScrollContext.returnType == panelContext.returnType)
+        module.trackScene(autoScroll.getMethod("onViewCreated", View::class.java)).intercept { chain ->
+            val result = chain.proceed()
+            panelFragment.get(autoScrollContext.invoke(checkNotNull(chain.thisObject)))?.let {
+                val page = pageFor(it)
+                page.controls[chain.args[0] as View] = Unit
+                page.binding?.updateTargets()
+                commit("autoScrollCreated")
+            }
+            result
+        }
         module.trackScene(showPause).intercept { chain ->
             panelFragment.get(playButtonContext.invoke(checkNotNull(chain.thisObject)))?.let {
                 val page = pageFor(it)
@@ -314,7 +304,11 @@ object AutoCleanModeHook {
         module.trackScene(registerView).intercept { chain ->
             val result = chain.proceed()
             val view = chain.args[0] as? View
-            if (view != null) owner(chain.thisObject!!)?.let { views.bind(pageFor(it).owner, view) }
+            if (view != null) owner(chain.thisObject!!)?.let {
+                val page = pageFor(it)
+                page.controls[view] = Unit
+                page.binding?.updateTargets()
+            }
             result
         }
         module.trackScene(panel.getMethod("onViewCreated", View::class.java)).intercept { chain ->
@@ -322,7 +316,8 @@ object AutoCleanModeHook {
             owner(chain.thisObject!!)?.let {
                 val page = pageFor(it)
                 page.binding?.close()
-                page.binding = CleanSceneBinding(chain.args[0] as View, null, views, page.owner) { commit("frame") }
+                page.binding = CleanSceneBinding(chain.args[0] as View, null, views, page.owner,
+                    protectedControl, controls = { page.controls.keys.toList() }) { commit("frame") }
                     .apply { setActive(configuration != null) }
                 commit("pageCreated")
             }
@@ -333,10 +328,15 @@ object AutoCleanModeHook {
             val instance = chain.thisObject!!
             val context = componentPanel.invoke(componentContext.invoke(instance))
             if (context != null) panelFragment.get(context)?.let {
-                components.remove(instance)?.let { old -> views.detach(old.owner) }
-                val binding = Component(pageFor(it))
+                components.remove(instance)?.binding?.close()
+                val reference = WeakReference(instance)
+                val scene = CleanSceneBinding(chain.args[0] as View, null, views, CleanViewGate.Owner(),
+                    protectedControl, controls = {
+                        reference.get()?.let { value -> componentViews.mapNotNull { field -> field.get(value) as? View } }.orEmpty()
+                    }) { commit("frame") }
+                scene.setActive(configuration != null)
+                val binding = Component(pageFor(it), scene)
                 components[instance] = binding
-                views.replace(binding.owner, componentViews.mapNotNull { field -> field.get(instance) as? View }.toSet())
                 commit("cellCreated")
             }
             result
@@ -347,7 +347,7 @@ object AutoCleanModeHook {
                     page.binding?.close()
                     views.detach(page.owner)
                     components.entries.removeAll { binding ->
-                        if (binding.value.page !== page) false else { views.detach(binding.value.owner); true }
+                        if (binding.value.page !== page) false else { binding.value.binding.close(); true }
                     }
                     pagers.entries.removeAll { binding -> binding.value.page === page }
                 }
@@ -361,7 +361,6 @@ object AutoCleanModeHook {
         listFragment = listPanel.getMethod("getFragment")
         val pagerField = listPanel.declaredFields.single { it.type == pager }.apply { isAccessible = true }
         val scrollState = pager.getMethod("getScrollState")
-        val currentItem = pager.getMethod("getCurrentItem")
         val selectItem = pager.declaredMethods.single {
             it.returnType == Void.TYPE && it.parameterTypes.contentEquals(arrayOf(
                 Int::class.javaPrimitiveType, Boolean::class.javaPrimitiveType,
@@ -375,14 +374,6 @@ object AutoCleanModeHook {
         }
         installPageStatusHooks(module, classLoader)
         val aweme = classLoader.loadClass("com.ss.android.ugc.aweme.feed.model.Aweme")
-        val playback = CleanPlaybackContract(HostSymbols.resolve(classLoader, HostSymbol.PLAYER_CONTROLLER), listPanelType, aweme)
-        for (method in listOf(playback.handle, playback.pause)) {
-            module.trackScene(method).intercept { chain ->
-                val result = chain.proceed()
-                playbackStopped(playback, chain.thisObject!!, chain.args.firstOrNull())
-                result
-            }
-        }
         module.trackScene(listPanel.getMethod("onViewCreated", View::class.java, Bundle::class.java)).intercept { chain ->
             val instance = chain.thisObject!!
             val page = listPage(instance)
@@ -394,14 +385,12 @@ object AutoCleanModeHook {
         module.trackScene(pager.getMethod("setScrollState", Int::class.javaPrimitiveType)).intercept { chain ->
             val binding = pagers[chain.thisObject]
             val moving = chain.args[0] != 0
-            if (moving && binding != null) beginTransition(binding)
             val result = chain.proceed()
             if (!moving && binding != null) settle(binding)
             result
         }
         module.trackScene(selectItem).intercept { chain ->
             val binding = pagers[chain.thisObject]
-            if (binding != null && chain.args[0] != currentItem.invoke(chain.thisObject)) beginTransition(binding)
             val result = chain.proceed()
             if (binding != null && scrollState.invoke(chain.thisObject) == 0) settle(binding)
             result
@@ -418,10 +407,9 @@ object AutoCleanModeHook {
                 chain.proceed()
             }
         }
-        for (method in listOf(videoCell.getMethod("onPausePlay", String::class.java)) +
-            videoCell.declaredMethods.filter { it.name == "onPlayFailed" && !it.isSynthetic }) {
+        for (method in videoCell.declaredMethods.filter { it.name == "onPlayFailed" && !it.isSynthetic }) {
             module.trackScene(method).intercept { chain ->
-                pause(chain.thisObject!!, method.name == "onPlayFailed")
+                playbackFailed(chain.thisObject!!)
                 chain.proceed()
             }
         }
@@ -446,9 +434,11 @@ object AutoCleanModeHook {
             commit("configurationUnavailable")
             pages.values.forEach { it.binding?.setActive(false) }
             shells.values.forEach { it.binding.setActive(false) }
+            components.values.forEach { it.binding.setActive(false) }
         } else {
             pages.values.forEach { it.binding?.setActive(true) }
             shells.values.forEach { it.binding.setActive(true) }
+            components.values.forEach { it.binding.setActive(true) }
             commit("configuration")
             HookRuntime.appliedConfiguration("AutoCleanModeHook", snapshot, snapshot.boolean(KEY_CLEAN_MODE_ON_PLAY))
         }
@@ -459,7 +449,7 @@ object AutoCleanModeHook {
         configuration = null
         pages.values.forEach { it.binding?.close(); views.detach(it.owner) }
         shells.values.forEach { it.binding.close() }
-        components.values.forEach { views.detach(it.owner) }
+        components.values.forEach { it.binding.close() }
         pages.clear()
         shells.clear()
         components.clear()

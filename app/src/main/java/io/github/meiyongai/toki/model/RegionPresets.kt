@@ -90,7 +90,8 @@ object RegionPresets {
         RegionPreset("哈萨克斯坦", "Kazakhstan", "KZ", "40102", "Kcell", "kk-KZ", "Asia/Almaty", 43.2220, 76.8512),
         RegionPreset("乌兹别克斯坦", "Uzbekistan", "UZ", "43404", "Beeline UZ", "uz-UZ", "Asia/Tashkent", 41.2995, 69.2401),
 
-        // === 欧洲（西欧与北欧） ===
+        // === 欧洲 ===
+        RegionPreset("白俄罗斯", "Belarus", "BY", "257002", "MTS", "be-BY", "Europe/Minsk", 53.9006, 27.5590),
         RegionPreset("英国", "United Kingdom", "GB", "23410", "O2", "en-GB", "Europe/London", 51.5074, -0.1278),
         RegionPreset("德国", "Germany", "DE", "26201", "Telekom", "de-DE", "Europe/Berlin", 52.5200, 13.4050),
         RegionPreset("法国", "France", "FR", "20801", "Orange", "fr-FR", "Europe/Paris", 48.8566, 2.3522),

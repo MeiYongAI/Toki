@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Spilun"</string>
     <string name="feature_progress" formatted="false">"Sýna alltaf framvindustiku"</string>
     <string name="feature_progress_summary" formatted="false">"Halda framvindustikunni sýnilegri, líka í stuttum myndskeiðum"</string>
-    <string name="feature_immersive" formatted="false">"Spilun á öllum skjánum"</string>
-    <string name="feature_immersive_summary" formatted="false">"Gera neðri stikuna gegnsæja svo myndskeið fylli skjáinn"</string>
+    <string name="feature_immersive" formatted="false">"Birting myndskeiða"</string>
     <string name="feature_autoplay" formatted="false">"Bætt sjálfvirkt skrun"</string>
     <string name="feature_autoplay_summary" formatted="false">"Opnar sjálfvirkt skrun í valmynd allra myndskeiða"</string>
     <string name="feature_status_bar" formatted="false">"Fela stöðustiku kerfis"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Sýna svæði höfundar"</string>
     <string name="feature_author_region_summary" formatted="false">"Sýna fána og kóða lands eða svæðis við nafn höfundar"</string>
     <string name="feature_copy_comment" formatted="false">"Afrita aðeins texta"</string>
-    <string name="feature_video_translation" formatted="false">"Opna textaþýðingu"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Sýna þýðingarvalkost hjá reikningum þar sem hann vantar"</string>
+    <string name="feature_video_translation" formatted="false">"Valmynd texta og þýðinga"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Sýna valkost í valmynd við langa snertingu"</string>
     <string name="feature_comment_translation" formatted="false">"Þýða athugasemdir"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Bæta við hnappi til að þýða margar erlendar athugasemdir"</string>
     <string name="feature_filter_section" formatted="false">"Síun streymis"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Hraði"</string>
     <string name="status_feature_progress" formatted="false">"Framvindustika"</string>
     <string name="status_feature_clean" formatted="false">"Sjálfvirk felun"</string>
-    <string name="status_feature_immersive" formatted="false">"Allur skjárinn"</string>
+    <string name="status_feature_immersive" formatted="false">"Birting myndskeiða"</string>
     <string name="status_feature_scroll" formatted="false">"Sjálfvirk fletting"</string>
     <string name="status_feature_duration" formatted="false">"Lengdarviðvörun"</string>
     <string name="status_feature_comment_translate" formatted="false">"Þýða athugasemdir"</string>
-    <string name="status_feature_video_translate" formatted="false">"Þýða texta"</string>
+    <string name="status_feature_video_translate" formatted="false">"Valmynd texta og þýðinga"</string>
     <string name="status_feature_comment_copy" formatted="false">"Afrita athugasemdir"</string>
     <string name="status_feature_author" formatted="false">"Svæði höfundar"</string>
     <string name="status_feature_download" formatted="false">"Vista myndskeið"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Vistun mistókst. Skrifheimild að staðnum vantar. Veldu annan stað."</string>
     <string name="feature_filter_topics" formatted="false">"Fela tillögur að umræðuefnum"</string>
     <string name="feature_filter_creators" formatted="false">"Fela tillögur að höfundum"</string>
-    <string name="host_scan_title_running" formatted="false">"Leita að aðferðum"</string>
-    <string name="host_scan_title_saving" formatted="false">"Vista niðurstöður"</string>
     <string name="host_scan_title_complete" formatted="false">"Leit lokið"</string>
     <string name="host_scan_title_failed" formatted="false">"Leit mistókst"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Haltu TikTok í forgrunni."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Bíddu augnablik."</string>
     <string name="host_scan_restart_hint" formatted="false">"Endurræstu TikTok handvirkt til að virkja niðurstöðurnar."</string>
     <string name="host_scan_failure_hint" formatted="false">"Skoðaðu greiningu eiginleika í Toki."</string>
-    <string name="host_scan_done" formatted="false">"Skilið"</string>
     <string name="layout_title" formatted="false">"Útlit síðu"</string>
     <string name="layout_summary" formatted="false">"Veldu hvaða hnappa á að fela"</string>
     <string name="layout_hint" formatted="false">"Kveiktu á rofanum til að fela atriðið"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Upplýsingamerkingar"</string>
     <string name="layout_search_label" formatted="false">"Leitartillaga"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Stöðvunarhnappur sjálfvirkrar flettingar"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Mynt og verðlaun"</string>
+    <string name="layout_quick_comment" formatted="false">"Fljótlegar athugasemdir"</string>
+    <string name="layout_playlist" formatted="false">"Spilunarlisti"</string>
+    <string name="layout_creation_buttons" formatted="false">"Flýtileiðir til sköpunar"</string>
+    <string name="layout_live_notice" formatted="false">"Áminningar um beinar útsendingar"</string>
+    <string name="layout_opacity" formatted="false">"Ógagnsæi"</string>
+    <string name="feature_background_audio">"Opna bakgrunnshljóð"</string>
+    <string name="layout_landscape">"Hnappur fyrir allan skjáinn"</string>
+    <string name="layout_photo_indicators">"Myndavísar og ábendingar"</string>
+    <string name="layout_quick_message">"Flýtiskilaboð og deilt af"</string>
+    <string name="layout_user_card">"Tillögur að reikningum"</string>
+    <string name="layout_survey">"Kannanir og endurgjöf"</string>
+    <string name="layout_ad_cards">"Vöru- og auglýsingaspjöld"</string>
+    <string name="layout_bottom_banners">"Aðrir borðar neðst"</string>
+    <string name="layout_activities">"Aðgangur að viðburðum"</string>
+    <string name="host_scan_title_running" formatted="false">"Leita að aðferðum"</string>
+    <string name="host_scan_title_saving" formatted="false">"Vista niðurstöður"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Haltu TikTok í forgrunni."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Bíddu augnablik."</string>
+    <string name="host_scan_done" formatted="false">"Skilið"</string>
+    <string name="video_fit_center" formatted="false">"Miðjað"</string>
+    <string name="video_fit_smart" formatted="false">"Allur skjárinn"</string>
 </resources>

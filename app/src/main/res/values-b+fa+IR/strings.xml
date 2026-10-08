@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"پخش"</string>
     <string name="feature_progress" formatted="false">"نمایش همیشگی نوار پیشرفت"</string>
     <string name="feature_progress_summary" formatted="false">"نمایش نوار پیشرفت پایین حتی برای ویدئوهای کوتاه"</string>
-    <string name="feature_immersive" formatted="false">"پخش تمام‌صفحه"</string>
-    <string name="feature_immersive_summary" formatted="false">"شفاف کردن نوار پایین برای نمایش ویدئو در سراسر صفحه"</string>
+    <string name="feature_immersive" formatted="false">"نمایش ویدیو"</string>
     <string name="feature_autoplay" formatted="false">"پیمایش خودکار پیشرفته"</string>
     <string name="feature_autoplay_summary" formatted="false">"پیمایش خودکار را در منوی همهٔ ویدئوها در دسترس می‌گذارد"</string>
     <string name="feature_status_bar" formatted="false">"پنهان کردن نوار وضعیت سیستم"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"نمایش منطقه سازنده"</string>
     <string name="feature_author_region_summary" formatted="false">"نمایش پرچم و کد کشور یا منطقه کنار نام سازنده"</string>
     <string name="feature_copy_comment" formatted="false">"کپی فقط متن"</string>
-    <string name="feature_video_translation" formatted="false">"فعال‌سازی ترجمه توضیحات"</string>
-    <string name="feature_video_translation_summary" formatted="false">"نمایش گزینه ترجمه برای حساب‌هایی که آن را ندارند"</string>
+    <string name="feature_video_translation" formatted="false">"منوی زیرنویس و ترجمه"</string>
+    <string name="feature_video_translation_summary" formatted="false">"نمایش گزینه در منوی لمس طولانی"</string>
     <string name="feature_comment_translation" formatted="false">"ترجمه نظرات"</string>
     <string name="feature_comment_translation_summary" formatted="false">"افزودن دکمه برای ترجمه گروهی نظرات به زبان‌های دیگر"</string>
     <string name="feature_filter_section" formatted="false">"فیلتر خوراک"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"سرعت پخش"</string>
     <string name="status_feature_progress" formatted="false">"نوار پیشرفت"</string>
     <string name="status_feature_clean" formatted="false">"پنهان کردن کنترل‌ها هنگام پخش"</string>
-    <string name="status_feature_immersive" formatted="false">"پخش تمام‌صفحه"</string>
+    <string name="status_feature_immersive" formatted="false">"نمایش ویدیو"</string>
     <string name="status_feature_scroll" formatted="false">"پیمایش خودکار"</string>
     <string name="status_feature_duration" formatted="false">"هشدار مدت"</string>
     <string name="status_feature_comment_translate" formatted="false">"ترجمه نظرات"</string>
-    <string name="status_feature_video_translate" formatted="false">"ترجمه توضیحات"</string>
+    <string name="status_feature_video_translate" formatted="false">"منوی زیرنویس و ترجمه"</string>
     <string name="status_feature_comment_copy" formatted="false">"کپی نظرات"</string>
     <string name="status_feature_author" formatted="false">"منطقه سازنده"</string>
     <string name="status_feature_download" formatted="false">"ذخیره ویدئو"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"ذخیره ناموفق بود: مجوز نوشتن در محل انتخاب‌شده وجود ندارد. دوباره انتخاب کنید."</string>
     <string name="feature_filter_topics" formatted="false">"پنهان کردن موضوعات پیشنهادی"</string>
     <string name="feature_filter_creators" formatted="false">"پنهان کردن سازندگان پیشنهادی"</string>
-    <string name="host_scan_title_running" formatted="false">"در حال جستجوی متدها"</string>
-    <string name="host_scan_title_saving" formatted="false">"در حال ذخیره نتایج"</string>
     <string name="host_scan_title_complete" formatted="false">"جستجو کامل شد"</string>
     <string name="host_scan_title_failed" formatted="false">"جستجو ناموفق بود"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"TikTok را در پیش‌زمینه نگه دارید."</string>
-    <string name="host_scan_saving_hint" formatted="false">"لطفاً منتظر بمانید."</string>
     <string name="host_scan_restart_hint" formatted="false">"برای اعمال نتایج، TikTok را به‌صورت دستی دوباره راه‌اندازی کنید."</string>
     <string name="host_scan_failure_hint" formatted="false">"عیب‌یابی قابلیت‌ها را در Toki ببینید."</string>
-    <string name="host_scan_done" formatted="false">"متوجه شدم"</string>
     <string name="layout_title" formatted="false">"چیدمان صفحه"</string>
     <string name="layout_summary" formatted="false">"دکمه‌هایی را که می‌خواهید پنهان شوند انتخاب کنید"</string>
     <string name="layout_hint" formatted="false">"برای پنهان کردن هر مورد، کلیدش را روشن کنید"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"برچسب‌های اطلاعات"</string>
     <string name="layout_search_label" formatted="false">"پیشنهاد جستجو"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"دکمه توقف پیمایش خودکار"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"سکه‌ها و پاداش‌ها"</string>
+    <string name="layout_quick_comment" formatted="false">"نظرهای سریع"</string>
+    <string name="layout_playlist" formatted="false">"فهرست پخش"</string>
+    <string name="layout_creation_buttons" formatted="false">"میان‌برهای ساخت"</string>
+    <string name="layout_live_notice" formatted="false">"یادآورهای پخش زنده"</string>
+    <string name="layout_opacity" formatted="false">"تیرگی"</string>
+    <string name="feature_background_audio">"فعال‌سازی صدای پس‌زمینه"</string>
+    <string name="layout_landscape">"دکمه تمام‌صفحه"</string>
+    <string name="layout_photo_indicators">"نشانگرها و راهنمای عکس"</string>
+    <string name="layout_quick_message">"پیام سریع و منبع اشتراک‌گذاری"</string>
+    <string name="layout_user_card">"حساب‌های پیشنهادی"</string>
+    <string name="layout_survey">"نظرسنجی و بازخورد"</string>
+    <string name="layout_ad_cards">"کارت‌های محصول و تبلیغ"</string>
+    <string name="layout_bottom_banners">"سایر بنرهای پایین"</string>
+    <string name="layout_activities">"ورودی رویدادها"</string>
+    <string name="host_scan_title_running" formatted="false">"در حال جستجوی متدها"</string>
+    <string name="host_scan_title_saving" formatted="false">"در حال ذخیره نتایج"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"TikTok را در پیش‌زمینه نگه دارید."</string>
+    <string name="host_scan_saving_hint" formatted="false">"لطفاً منتظر بمانید."</string>
+    <string name="host_scan_done" formatted="false">"متوجه شدم"</string>
+    <string name="video_fit_center" formatted="false">"وسط‌چین"</string>
+    <string name="video_fit_smart" formatted="false">"تمام‌صفحه"</string>
 </resources>

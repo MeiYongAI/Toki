@@ -46,8 +46,7 @@
     <string name="feature_playback_section" formatted="false">"Lecture"</string>
     <string name="feature_progress" formatted="false">"Toujours afficher la progression"</string>
     <string name="feature_progress_summary" formatted="false">"Garde la barre de progression visible, même sur les vidéos courtes"</string>
-    <string name="feature_immersive" formatted="false">"Lecture plein écran"</string>
-    <string name="feature_immersive_summary" formatted="false">"Rend la barre inférieure transparente pour une vidéo bord à bord"</string>
+    <string name="feature_immersive" formatted="false">"Affichage vidéo"</string>
     <string name="feature_autoplay" formatted="false">"Défilement auto amélioré"</string>
     <string name="feature_autoplay_summary" formatted="false">"Débloque le défilement auto dans le menu de chaque vidéo"</string>
     <string name="feature_status_bar" formatted="false">"Masquer la barre d’état du système"</string>
@@ -59,8 +58,8 @@
     <string name="feature_author_region" formatted="false">"Afficher la région du créateur"</string>
     <string name="feature_author_region_summary" formatted="false">"Affiche le drapeau et le code du pays ou de la région à côté du nom du créateur"</string>
     <string name="feature_copy_comment" formatted="false">"Copier le texte seul"</string>
-    <string name="feature_video_translation" formatted="false">"Débloquer la traduction du texte"</string>
-    <string name="feature_video_translation_summary" formatted="false">"Affiche l’option de traduction sur les comptes où elle est indisponible"</string>
+    <string name="feature_video_translation" formatted="false">"Menu des sous-titres et de traduction"</string>
+    <string name="feature_video_translation_summary" formatted="false">"Afficher l’entrée dans le menu d’appui long"</string>
     <string name="feature_comment_translation" formatted="false">"Traduire les commentaires"</string>
     <string name="feature_comment_translation_summary" formatted="false">"Ajoute un bouton pour traduire les commentaires en langue étrangère par lots"</string>
     <string name="feature_filter_section" formatted="false">"Filtrage du fil"</string>
@@ -195,11 +194,11 @@
     <string name="status_feature_speed" formatted="false">"Vitesse"</string>
     <string name="status_feature_progress" formatted="false">"Progression"</string>
     <string name="status_feature_clean" formatted="false">"Masquage automatique"</string>
-    <string name="status_feature_immersive" formatted="false">"Plein écran"</string>
+    <string name="status_feature_immersive" formatted="false">"Affichage vidéo"</string>
     <string name="status_feature_scroll" formatted="false">"Défilement automatique"</string>
     <string name="status_feature_duration" formatted="false">"Alerte de durée"</string>
     <string name="status_feature_comment_translate" formatted="false">"Traduire les commentaires"</string>
-    <string name="status_feature_video_translate" formatted="false">"Traduire les textes"</string>
+    <string name="status_feature_video_translate" formatted="false">"Menu des sous-titres et de traduction"</string>
     <string name="status_feature_comment_copy" formatted="false">"Copier les commentaires"</string>
     <string name="status_feature_author" formatted="false">"Région du créateur"</string>
     <string name="status_feature_download" formatted="false">"Enregistrer les vidéos"</string>
@@ -253,15 +252,10 @@
     <string name="sponsor_error_permission" formatted="false">"Échec de l’enregistrement. L’écriture n’a pas été autorisée à cet emplacement. Choisissez-en un autre."</string>
     <string name="feature_filter_topics" formatted="false">"Masquer les sujets suggérés"</string>
     <string name="feature_filter_creators" formatted="false">"Masquer les créateurs suggérés"</string>
-    <string name="host_scan_title_running" formatted="false">"Recherche de méthodes"</string>
-    <string name="host_scan_title_saving" formatted="false">"Enregistrement des résultats"</string>
     <string name="host_scan_title_complete" formatted="false">"Recherche terminée"</string>
     <string name="host_scan_title_failed" formatted="false">"Échec de la recherche"</string>
-    <string name="host_scan_keep_foreground" formatted="false">"Gardez TikTok au premier plan."</string>
-    <string name="host_scan_saving_hint" formatted="false">"Veuillez patienter."</string>
     <string name="host_scan_restart_hint" formatted="false">"Redémarrez TikTok manuellement pour appliquer les résultats."</string>
     <string name="host_scan_failure_hint" formatted="false">"Consultez le diagnostic des fonctionnalités dans Toki."</string>
-    <string name="host_scan_done" formatted="false">"Compris"</string>
     <string name="layout_title" formatted="false">"Disposition de la page"</string>
     <string name="layout_summary" formatted="false">"Choisir les éléments à masquer"</string>
     <string name="layout_hint" formatted="false">"Activez une option pour masquer cet élément"</string>
@@ -296,4 +290,27 @@
     <string name="layout_tags" formatted="false">"Étiquettes d’information"</string>
     <string name="layout_search_label" formatted="false">"Suggestion de recherche"</string>
     <string name="layout_auto_scroll_stop" formatted="false">"Bouton d’arrêt du défilement automatique"</string>
+    <string name="layout_tako" formatted="false">"Tako"</string>
+    <string name="layout_rewards" formatted="false">"Pièces et récompenses"</string>
+    <string name="layout_quick_comment" formatted="false">"Commentaires rapides"</string>
+    <string name="layout_playlist" formatted="false">"Liste de lecture"</string>
+    <string name="layout_creation_buttons" formatted="false">"Raccourcis de création"</string>
+    <string name="layout_live_notice" formatted="false">"Rappels de LIVE"</string>
+    <string name="layout_opacity" formatted="false">"Opacité"</string>
+    <string name="feature_background_audio">"Débloquer l’audio en arrière-plan"</string>
+    <string name="layout_landscape">"Bouton plein écran"</string>
+    <string name="layout_photo_indicators">"Indicateurs et astuces des photos"</string>
+    <string name="layout_quick_message">"Messages rapides et source du partage"</string>
+    <string name="layout_user_card">"Comptes suggérés"</string>
+    <string name="layout_survey">"Sondages et commentaires"</string>
+    <string name="layout_ad_cards">"Cartes de produits et publicités"</string>
+    <string name="layout_bottom_banners">"Autres bannières inférieures"</string>
+    <string name="layout_activities">"Accès aux événements"</string>
+    <string name="host_scan_title_running" formatted="false">"Recherche de méthodes"</string>
+    <string name="host_scan_title_saving" formatted="false">"Enregistrement des résultats"</string>
+    <string name="host_scan_keep_foreground" formatted="false">"Gardez TikTok au premier plan."</string>
+    <string name="host_scan_saving_hint" formatted="false">"Veuillez patienter."</string>
+    <string name="host_scan_done" formatted="false">"Compris"</string>
+    <string name="video_fit_center" formatted="false">"Centré"</string>
+    <string name="video_fit_smart" formatted="false">"Plein écran"</string>
 </resources>
